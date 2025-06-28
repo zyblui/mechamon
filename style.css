@@ -1,95 +1,157 @@
-html,body{
-    font-family: "Segoe UI",sans-serif;
-    height:100%;
-    margin:0;
+html,
+body {
+    font-family: "Segoe UI", sans-serif;
+    height: 100%;
+    margin: 0;
 }
-.dim{
-    color:gray;
+
+.dim {
+    color: gray;
     font-style: italic;
 }
-#turnNumber{
-    border:solid 3px black;
+
+#turnNumber {
+    border: solid 3px black;
     background-color: white;
     font-weight: bold;
     font-size: xx-large;
     position: absolute;
-    top:10px;
-    left:10px;
+    top: 10px;
+    left: 10px;
     padding: 0 10px;
 }
-#text{
+
+#text {
     position: absolute;
-    bottom:10px;
-    left:10px;
-    background-color: rgba(0,0,0,0.9);
-    color:white;
+    bottom: 10px;
+    left: 10px;
+    background-color: rgba(0, 0, 0, 0.9);
+    color: white;
     font-size: large;
-    padding:10px
+    padding: 10px
 }
-#battlePanel{
-    position:absolute;
-    top:0;
-    left:0;
-    height:80%;
-    width:60%;
-    background-color: rgba(0,0,0,0.05);
+
+#battlePanel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 80%;
+    width: 60%;
+    background-color: rgba(0, 0, 0, 0.05);
 }
-#decisionPanel{
-    position:absolute;
-    bottom:0;
-    left:0;
-    width:60%;
-    height:20%;
-    background-color: rgba(0,0,0,0.1);
+
+#decisionPanel {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60%;
+    height: 20%;
+    background-color: rgba(0, 0, 0, 0.1);
 }
-#rightPanel{
-    position:absolute;
-    right:0;
-    top:0;
-    width:calc(40% - 10px);
-    height:100%;
-    padding-left:10px
+
+#rightPanel {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: calc(40% - 10px);
+    height: 100%;
+    padding-left: 10px
 }
-#p1Pokemon,#p2Pokemon{
-    width:384px;
-    height:384px;
+
+#p1Pokemon,
+#p2Pokemon {
+    width: 384px;
+    height: 384px;
     background-size: cover;
     image-rendering: pixelated;
 }
-#p1Pokemon{
-    position:absolute;
-    bottom:0;
-    left:10%;
+
+#p1Pokemon {
+    position: absolute;
+    bottom: 0;
+    left: 10%;
 }
-#p2Pokemon{
-    position:absolute;
-    top:0;
+
+#p2Pokemon {
+    position: absolute;
+    top: 0;
     right: 10%
 }
-#p1Gauge{
-    position:absolute;
-    bottom:300px;
-    left:calc(10% + 42px);
+
+#p1Gauge {
+    position: absolute;
+    bottom: 300px;
+    left: calc(10% + 42px);
 }
-#p2Gauge{
-    position:absolute;
-    top:0;
+
+#p2Gauge {
+    position: absolute;
+    top: 0;
     right: calc(10% + 42px)
 }
-.outer-bar{
-    width:300px;
+
+.outer-bar {
+    width: 300px;
     background-color: lightgray;
-    height:15px;
+    height: 15px;
 }
-.inner-bar{
-    width:300px;
-    background-color:green;
-    height:15px
+
+.inner-bar {
+    width: 300px;
+    background-color: green;
+    height: 15px
 }
-.name{
+
+.name {
     font-weight: bold;
 }
-.percentage{
+
+.percentage {
     text-align: right;
-    width:300px
+    width: 300px
+}
+
+th,td{
+    border:solid 2px transparent;
+}
+.pokemon-select {
+    &:hover {
+        border: solid 2px rgba(30, 144, 255, 0.5);
+        background-color: rgba(30, 144, 255, 0.2);
+        cursor: pointer;
+    }
+
+    &.selected {
+        border: solid 2px rgba(30, 144, 255, 0.8);
+        background-color: rgba(30, 144, 255, 0.5);
+    }
+}
+
+table {
+    width: 100%;
+}
+#pokemonList{
+    display: none;
+    &.show{
+        display:block
+    }
+}
+.listButton{
+    width:calc(100% / 3 - 4px);
+    display: inline-block;
+    border:solid 2px transparent;
+    &:hover {
+        border: solid 2px rgba(30, 144, 255, 0.5);
+        background-color: rgba(30, 144, 255, 0.2);
+        cursor: pointer;
+    }
+}
+p{
+    display: inline-block;
+}
+#startGame{
+    position:absolute;
+    right:10px;
+    margin-top:1em;
+    font-family: "Segoe UI",sans-serif;
 }
