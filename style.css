@@ -30,6 +30,66 @@ html,body{
     position:absolute;
     top:0;
     left:0;
-    height:70%;
-    width:60%
+    height:80%;
+    width:60%;
+    background-color: rgba(0,0,0,0.05);
+}
+#decisionPanel{
+    position:absolute;
+    bottom:0;
+    left:0;
+    width:60%;
+    height:20%;
+    background-color: rgba(0,0,0,0.1);
+}
+#rightPanel{
+    position:absolute;
+    right:0;
+    top:0;
+    width:calc(40% - 10px);
+    height:100%;
+    padding-left:10px
+}
+#p1Pokemon,#p2Pokemon{
+    width:384px;
+    height:384px;
+    background-size: cover;
+    image-rendering: pixelated;
+}
+#p1Pokemon{
+    position:absolute;
+    bottom:0;
+    left:10%;
+}
+#p2Pokemon{
+    position:absolute;
+    top:0;
+    right: 10%
+}
+#p1Gauge{
+    position:absolute;
+    bottom:300px;
+    left:calc(10% + 42px);
+}
+#p2Gauge{
+    position:absolute;
+    top:0;
+    right: calc(10% + 42px)
+}
+.outer-bar{
+    width:300px;
+    background-color: lightgray;
+    height:15px;
+}
+.inner-bar{
+    width:300px;
+    background-color:green;
+    height:15px
+}
+.name{
+    font-weight: bold;
+}
+.percentage{
+    text-align: right;
+    width:300px
 }
