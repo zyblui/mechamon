@@ -25,10 +25,9 @@ body {
     position: absolute;
     bottom: 10px;
     left: 10px;
-    background-color: rgba(0, 0, 0, 0.9);
+    /*background-color: rgba(0, 0, 0, 0.9);
     color: white;
-    font-size: large;
-    padding: 10px
+    font-size: large;*/
 }
 
 #battlePanel {
@@ -111,9 +110,11 @@ body {
     width: 300px
 }
 
-th,td{
-    border:solid 2px transparent;
+th,
+td {
+    border: solid 2px transparent;
 }
+
 .pokemon-select {
     &:hover {
         border: solid 2px rgba(30, 144, 255, 0.5);
@@ -130,28 +131,64 @@ th,td{
 table {
     width: 100%;
 }
-#pokemonList{
+
+#pokemonList {
     display: none;
-    &.show{
-        display:block
+
+    &.show {
+        display: block
     }
 }
-.listButton{
-    width:calc(100% / 3 - 4px);
+
+.listButton {
+    width: calc(100% / 3 - 4px);
     display: inline-block;
-    border:solid 2px transparent;
+    border: solid 2px transparent;
+
     &:hover {
         border: solid 2px rgba(30, 144, 255, 0.5);
         background-color: rgba(30, 144, 255, 0.2);
         cursor: pointer;
     }
 }
-p{
+
+p {
     display: inline-block;
 }
-#startGame{
-    position:absolute;
-    right:10px;
-    margin-top:1em;
+
+#startGame {
+    position: absolute;
+    right: 10px;
+    margin-top: 1em;
+    font-family: "Segoe UI", sans-serif;
+}
+.decisionMove,.decisionSwitch{
+    height:40px;
     font-family: "Segoe UI",sans-serif;
+    font-size: large;
+    background-color: rgba(255,255,255,0.5);
+    margin:3px;
+    border:solid 3px transparent;
+    &:hover{
+        border:solid 3px gray
+    }
+}
+.decisionMove {
+    width: calc(25% - 6px)
+}
+
+.decisionSwitch {
+    width: calc(100% / 6 - 6px)
+}
+.main-text{
+    background-color: black;
+    color:white;
+    padding:10px;
+    font-size: large;
+}
+.small-text{
+    background-color: rgba(255,255,255,0.9);
+    color:gray;
+    padding:5px;
+    font-size: medium;
 }

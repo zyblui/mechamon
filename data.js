@@ -40,324 +40,1119 @@ let moves = [{
     "power": 65,
     "acc": 100,
     "pp": 20
-},{
-    "name":"barrage"
-},{
-    "name":"barrier"
-},{
-    "name":"bide"
-},{
-    "name":"bind"
-},{
-    "name":"bite"
-},{
-    "name":"blizzard"
-},{
-    "name":"body slam"
-},{
-    "name":"bone club"
-},{
-    "name":"bonemerang"
-},{
-    "name":"bubble"
-},{
-    "name":"bubble beam"
-},{
-    "name":"clamp"
-},{
-    "name":"comet punch"
-},{
-    "name":"confuse ray"
-},{
-    "name":"confusion"
-},{
-    "name":"constrict"
-},{
-    "name":"conversion"
-},{
-    "name":"counter"
-},{
-    "name":"crabhammer"
-},{
-    "name":"cut"
-},{
-    "name":"defense curl"
-},{
-    "name":"dig"
-},{
-    "name":"disable"
-},{
-    "name":"dizzy punch"
-},{
-    "name":"double kick"
-},{
-    "name":"double slap"
-},{
-    "name":"double team"
-},{
-    "name":"double-edge"
-},{
-    "name":"dragon rage"
-},{
-    "name":"dream eater"
-},{
-    "name":"drill peck"
-},{
-    "name":"earthquake"
-},{
-    "name":"egg bomb"
-},{
-    "name":"ember"
-},{
-    "name":"explosion"
-},{
-    "name":"fire blast"
-},{
-    "name":"fire punch"
-},{
-    "name":"fire spin"
-},{
-    "name":"fissure"
-},{
-    "name":"flamethrower"
-},{
-    "name":"flash"
-},{
-    "name":"fly"
-},{
-    "name":"focus energy"
-},{
-    "name":"fury attack"
-},{
-    "name":"fury swipes"
-},{
-    "name":"glare"
-},{
-    "name":"growl"
-},{
-    "name":"growth"
-},{
-    "name":"guillotine"
-},{
-    "name":"gust"
-},{
-    "name":"harden"
-},{
-    "name":"haze"
-},{
-    "name":"headbutt"
-},{
-    "name":"high jump kick"
-},{
-    "name":"horn attack"
-},{
-    "name":"horn drill"
-},{
-    "name":"hydro pump"
-},{
-    "name":"hyper beam"
-},{
-    "name":"hyper fang"
-},{
-    "name":"hypnosis"
-},{
-    "name":"ice beam"
-},{
-    "name":"ice punch"
-},{
-    "name":"jump kick"
-},{
-    "name":"karate chop"
-},{
-    "name":"kinesis"
-},{
-    "name":"leech life"
-},{
-    "name":"leech seed"
-},{
-    "name":"leer"
-},{
-    "name":"lick"
-},{
-    "name":"light screen"
-},{
-    "name":"lovely kiss"
-},{
-    "name":"low kick"
-},{
-    "name":"meditate"
-},{
-    "name":"mega drain"
-},{
-    "name":"mega kick"
-},{
-    "name":"mega punch"
-},{
-    "name":"metronome"
-},{
-    "name":"mimic"
-},{
-    "name":"minimize"
-},{
-    "name":"mirror move"
-},{
-    "name":"mist"
-},{
-    "name":"night shade"
-},{
-    "name":"pay day"
-},{
-    "name":"peck"
-},{
-    "name":"petal dance"
-},{
-    "name":"pin missile"
-},{
-    "name":"poison gas"
-},{
-    "name":"poison powder"
-},{
-    "name":"poison sting"
-},{
-    "name":"pound"
-},{
-    "name":"psybeam"
-},{
-    "name":"psychic"
-},{
-    "name":"psywave"
-},{
-    "name":"quick attack"
-},{
-    "name":"rage"
-},{
-    "name":"razor leaf"
-},{
-    "name":"razor wind"
-},{
-    "name":"recover"
-},{
-    "name":"reflect"
-},{
-    "name":"rest"
-},{
-    "name":"roar"
-},{
-    "name":"rock slide"
-},{
-    "name":"rock throw"
-},{
-    "name":"rolling kick"
-},{
-    "name":"sand attack"
-},{
-    "name":"scratch"
-},{
-    "name":"screech"
-},{
-    "name":"seismic toss"
-},{
-    "name":"self-destruct"
-},{
-    "name":"sharpen"
-},{
-    "name":"sing"
-},{
-    "name":"skull bash"
-},{
-    "name":"sky attack"
-},{
-    "name":"slam"
-},{
-    "name":"slash"
-},{
-    "name":"sleep powder"
-},{
-    "name":"sludge"
-},{
-    "name":"smog"
-},{
-    "name":"smokescreen"
-},{
-    "name":"soft-boiled"
-},{
-    "name":"solar beam"
-},{
-    "name":"sonic boom"
-},{
-    "name":"spike cannon"
-},{
-    "name":"splash"
-},{
-    "name":"spore"
-},{
-    "name":"stomp"
-},{
-    "name":"strength"
-},{
-    "name":"string shot"
-},{
-    "name":"struggle"
-},{
-    "name":"stun spore"
-},{
-    "name":"submission"
-},{
-    "name":"substitute"
-},{
-    "name":"super fang"
-},{
-    "name":"supersonic"
-},{
-    "name":"surf"
-},{
-    "name":"swift"
-},{
-    "name":"swords dance"
-},{
-    "name":"tackle"
-},{
-    "name":"tail whip"
-},{
-    "name":"take down"
-},{
-    "name":"teleport"
-},{
-    "name":"thrash"
-},{
-    "name":"thunder"
-},{
-    "name":"thunder punch"
-},{
-    "name":"thunder shock"
-},{
-    "name":"thunder wave"
-},{
-    "name":"thunderbolt"
-},{
-    "name":"toxic"
-},{
-    "name":"transform"
-},{
-    "name":"tri attack"
-},{
-    "name":"twineedle"
-},{
-    "name":"vice grip"
-},{
-    "name":"vine whip"
-},{
-    "name":"water gun"
-},{
-    "name":"waterfall"
-},{
-    "name":"whirlwind"
-},{
-    "name":"wing attack"
-},{
-    "name":"withdraw"
-},{
-    "name":"wrap"
+}, {
+    "name": "barrage",
+    "type": "normal",
+    "category": "",
+    "power": 15,
+    "accuracy": 85,
+    "pp": 20
+}, {
+    "name": "barrier",
+    "type": "psychic",
+    "category": "",
+    "power": 0,
+    "accuracy": -1,
+    "pp": 30
+}, {
+    "name": "bide",
+    "type": "normal",
+    "category": "",
+    "power": 0,
+    "accuracy": -1,
+    "pp": 10
+}, {
+    "name": "bind",
+    "type": "normal",
+    "category": "",
+    "power": 15,
+    "accuracy": 75,
+    "pp": 20
+}, {
+    "name": "bite",
+    "type": "normal",
+    "category": "",
+    "power": 60,
+    "accuracy": 100,
+    "pp": 25
+}, {
+    "name": "blizzard",
+    "type": "ice",
+    "category": "",
+    "power": 120,
+    "accuracy": 90,
+    "pp": 5
+}, {
+    "name": "body slam",
+    "type": "normal",
+    "category": "",
+    "power": 85,
+    "accuracy": 100,
+    "pp": 15
+}, {
+    "name": "bone club",
+    "type": "ground",
+    "category": "",
+    "power": 65,
+    "accuracy": 85,
+    "pp": 20
+}, {
+    "name": "bonemerang",
+    "type": "ground",
+    "category": "",
+    "power": 50,
+    "accuracy": 90,
+    "pp": 10
+}, {
+    "name": "bubble",
+    "type": "water",
+    "category": "",
+    "power": 20,
+    "accuracy": 100,
+    "pp": 30
+}, {
+    "name": "bubble beam",
+    "type": "water",
+    "category": "",
+    "power": 65,
+    "accuracy": 100,
+    "pp": 20
+}, {
+    "name": "clamp",
+    "type": "water",
+    "category": "",
+    "power": 35,
+    "accuracy": 75,
+    "pp": 10
+}, {
+    "name": "comet punch",
+    "type": "normal",
+    "category": "",
+    "power": 18,
+    "accuracy": 85,
+    "pp": 15
+}, {
+    "name": "confuse ray",
+    "type": "ghost",
+    "category": "",
+    "power": 0,
+    "accuracy": 100,
+    "pp": 10
+}, {
+    "name": "confusion",
+    "type": "psychic",
+    "category": "",
+    "power": 50,
+    "accuracy": 100,
+    "pp": 25
+}, {
+    "name": "constrict",
+    "type": "normal",
+    "category": "",
+    "power": 10,
+    "accuracy": 100,
+    "pp": 35
+}, {
+    "name": "conversion",
+    "type": "normal",
+    "category": "",
+    "power": 0,
+    "accuracy": -1,
+    "pp": 30
+}, {
+    "name": "counter",
+    "type": "fighting",
+    "category": "",
+    "power": 1,
+    "accuracy": 100,
+    "pp": 20
+}, {
+    "name": "crabhammer",
+    "type": "water",
+    "category": "",
+    "power": 90,
+    "accuracy": 85,
+    "pp": 10
+}, {
+    "name": "cut",
+    "type": "normal",
+    "category": "",
+    "power": 50,
+    "accuracy": 95,
+    "pp": 30
+}, {
+    "name": "defense curl",
+    "type": "normal",
+    "category": "",
+    "power": 0,
+    "accuracy": -1,
+    "pp": 40
+}, {
+    "name": "dig",
+    "type": "ground",
+    "category": "",
+    "power": 100,
+    "accuracy": 100,
+    "pp": 10
+}, {
+    "name": "disable",
+    "type": "normal",
+    "category": "",
+    "power": 0,
+    "accuracy": 55,
+    "pp": 20
+}, {
+    "name": "dizzy punch",
+    "type": "normal",
+    "category": "",
+    "power": 70,
+    "accuracy": 100,
+    "pp": 10
+}, {
+    "name": "double kick",
+    "type": "fighting",
+    "category": "",
+    "power": 30,
+    "accuracy": 100,
+    "pp": 30
+}, {
+    "name": "double slap",
+    "type": "normal",
+    "category": "",
+    "power": 15,
+    "accuracy": 85,
+    "pp": 10
+}, {
+    "name": "double team",
+    "type": "normal",
+    "category": "",
+    "power": 0,
+    "accuracy": -1,
+    "pp": 15
+}, {
+    "name": "double-edge",
+    "type": "normal",
+    "category": "",
+    "power": 100,
+    "accuracy": 100,
+    "pp": 15
+}, {
+    "name": "dragon rage",
+    "type": "dragon",
+    "category": "",
+    "power": 1,
+    "accuracy": 100,
+    "pp": 10
+}, {
+    "name": "dream eater",
+    "type": "psychic",
+    "category": "",
+    "power": 100,
+    "accuracy": 100,
+    "pp": 15
+}, {
+    "name": "drill peck",
+    "type": "flying",
+    "category": "",
+    "power": 80,
+    "accuracy": 100,
+    "pp": 20
+}, {
+    "name": "earthquake",
+    "type": "ground",
+    "category": "",
+    "power": 100,
+    "accuracy": 100,
+    "pp": 10
+}, {
+    "name": "egg bomb",
+    "type": "normal",
+    "category": "",
+    "power": 100,
+    "accuracy": 75,
+    "pp": 10
+}, {
+    "name": "ember",
+    "type": "fire",
+    "category": "",
+    "power": 40,
+    "accuracy": 100,
+    "pp": 25
+}, {
+    "name": "explosion",
+    "type": "normal",
+    "category": "",
+    "power": 170,
+    "accuracy": 100,
+    "pp": 5
+}, {
+    "name": "fire blast",
+    "type": "fire",
+    "category": "",
+    "power": 120,
+    "accuracy": 85,
+    "pp": 5
+}, {
+    "name": "fire punch",
+    "type": "fire",
+    "category": "",
+    "power": 75,
+    "accuracy": 100,
+    "pp": 15
+}, {
+    "name": "fire spin",
+    "type": "fire",
+    "category": "",
+    "power": 15,
+    "accuracy": 70,
+    "pp": 15
+}, {
+    "name": "fissure",
+    "type": "ground",
+    "category": "",
+    "power": 0,
+    "accuracy": 30,
+    "pp": 5
+}, {
+    "name": "flamethrower",
+    "type": "fire",
+    "category": "",
+    "power": 95,
+    "accuracy": 100,
+    "pp": 15
+}, {
+    "name": "flash",
+    "type": "normal",
+    "category": "",
+    "power": 0,
+    "accuracy": 70,
+    "pp": 20
+}, {
+    "name": "fly",
+    "type": "flying",
+    "category": "",
+    "power": 70,
+    "accuracy": 95,
+    "pp": 15
+}, {
+    "name": "focus energy",
+    "type": "normal",
+    "category": "",
+    "power": 0,
+    "accuracy": -1,
+    "pp": 30
+}, {
+    "name": "fury attack",
+    "type": "normal",
+    "category": "",
+    "power": 15,
+    "accuracy": 85,
+    "pp": 20
+}, {
+    "name": "fury swipes",
+    "type": "normal",
+    "category": "",
+    "power": 18,
+    "accuracy": 80,
+    "pp": 15
+}, {
+    "name": "glare",
+    "type": "normal",
+    "category": "",
+    "power": 0,
+    "accuracy": 75,
+    "pp": 30
+}, {
+    "name": "growl",
+    "type": "normal",
+    "category": "",
+    "power": 0,
+    "accuracy": 100,
+    "pp": 40
+}, {
+    "name": "growth",
+    "type": "normal",
+    "category": "",
+    "power": 0,
+    "accuracy": -1,
+    "pp": 40
+}, {
+    "name": "guillotine",
+    "type": "normal",
+    "category": "",
+    "power": 0,
+    "accuracy": 30,
+    "pp": 5
+}, {
+    "name": "gust",
+    "type": "normal",
+    "category": "",
+    "power": 40,
+    "accuracy": 100,
+    "pp": 35
+}, {
+    "name": "harden",
+    "type": "normal",
+    "category": "",
+    "power": 0,
+    "accuracy": -1,
+    "pp": 30
+}, {
+    "name": "haze",
+    "type": "ice",
+    "category": "",
+    "power": 0,
+    "accuracy": -1,
+    "pp": 30
+}, {
+    "name": "headbutt",
+    "type": "normal",
+    "category": "",
+    "power": 70,
+    "accuracy": 100,
+    "pp": 15
+}, {
+    "name": "high jump kick",
+    "type": "fighting",
+    "category": "",
+    "power": 85,
+    "accuracy": 90,
+    "pp": 20
+}, {
+    "name": "horn attack",
+    "type": "normal",
+    "category": "",
+    "power": 65,
+    "accuracy": 100,
+    "pp": 25
+}, {
+    "name": "horn drill",
+    "type": "normal",
+    "category": "",
+    "power": 0,
+    "accuracy": 30,
+    "pp": 5
+}, {
+    "name": "hydro pump",
+    "type": "water",
+    "category": "",
+    "power": 120,
+    "accuracy": 80,
+    "pp": 5
+}, {
+    "name": "hyper beam",
+    "type": "normal",
+    "category": "",
+    "power": 150,
+    "accuracy": 90,
+    "pp": 5
+}, {
+    "name": "hyper fang",
+    "type": "normal",
+    "category": "",
+    "power": 80,
+    "accuracy": 90,
+    "pp": 15
+}, {
+    "name": "hypnosis",
+    "type": "psychic",
+    "category": "",
+    "power": 0,
+    "accuracy": 60,
+    "pp": 20
+}, {
+    "name": "ice beam",
+    "type": "ice",
+    "category": "",
+    "power": 95,
+    "accuracy": 100,
+    "pp": 10
+}, {
+    "name": "ice punch",
+    "type": "ice",
+    "category": "",
+    "power": 75,
+    "accuracy": 100,
+    "pp": 15
+}, {
+    "name": "jump kick",
+    "type": "fighting",
+    "category": "",
+    "power": 70,
+    "accuracy": 95,
+    "pp": 25
+}, {
+    "name": "karate chop",
+    "type": "normal",
+    "category": "",
+    "power": 50,
+    "accuracy": 100,
+    "pp": 25
+}, {
+    "name": "kinesis",
+    "type": "psychic",
+    "category": "",
+    "power": 0,
+    "accuracy": 80,
+    "pp": 15
+}, {
+    "name": "leech life",
+    "type": "bug",
+    "category": "",
+    "power": 20,
+    "accuracy": 100,
+    "pp": 15
+}, {
+    "name": "leech seed",
+    "type": "grass",
+    "category": "",
+    "power": 0,
+    "accuracy": 90,
+    "pp": 10
+}, {
+    "name": "leer",
+    "type": "normal",
+    "category": "",
+    "power": 0,
+    "accuracy": 100,
+    "pp": 30
+}, {
+    "name": "lick",
+    "type": "ghost",
+    "category": "",
+    "power": 20,
+    "accuracy": 100,
+    "pp": 30
+}, {
+    "name": "light screen",
+    "type": "psychic",
+    "category": "",
+    "power": 0,
+    "accuracy": -1,
+    "pp": 30
+}, {
+    "name": "lovely kiss",
+    "type": "normal",
+    "category": "",
+    "power": 0,
+    "accuracy": 75,
+    "pp": 10
+}, {
+    "name": "low kick",
+    "type": "fighting",
+    "category": "",
+    "power": 50,
+    "accuracy": 90,
+    "pp": 20
+}, {
+    "name": "meditate",
+    "type": "psychic",
+    "category": "",
+    "power": 0,
+    "accuracy": -1,
+    "pp": 40
+}, {
+    "name": "mega drain",
+    "type": "grass",
+    "category": "",
+    "power": 40,
+    "accuracy": 100,
+    "pp": 10
+}, {
+    "name": "mega kick",
+    "type": "normal",
+    "category": "",
+    "power": 120,
+    "accuracy": 75,
+    "pp": 5
+}, {
+    "name": "mega punch",
+    "type": "normal",
+    "category": "",
+    "power": 80,
+    "accuracy": 85,
+    "pp": 20
+}, {
+    "name": "metronome",
+    "type": "normal",
+    "category": "",
+    "power": 0,
+    "accuracy": -1,
+    "pp": 10
+}, {
+    "name": "mimic",
+    "type": "normal",
+    "category": "",
+    "power": 0,
+    "accuracy": 100,
+    "pp": 10
+}, {
+    "name": "minimize",
+    "type": "normal",
+    "category": "",
+    "power": 0,
+    "accuracy": -1,
+    "pp": 20
+}, {
+    "name": "mirror move",
+    "type": "flying",
+    "category": "",
+    "power": 0,
+    "accuracy": -1,
+    "pp": 20
+}, {
+    "name": "mist",
+    "type": "ice",
+    "category": "",
+    "power": 0,
+    "accuracy": -1,
+    "pp": 30
+}, {
+    "name": "night shade",
+    "type": "ghost",
+    "category": "",
+    "power": 1,
+    "accuracy": 100,
+    "pp": 15
+}, {
+    "name": "pay day",
+    "type": "normal",
+    "category": "",
+    "power": 40,
+    "accuracy": 100,
+    "pp": 20
+}, {
+    "name": "peck",
+    "type": "flying",
+    "category": "",
+    "power": 35,
+    "accuracy": 100,
+    "pp": 35
+}, {
+    "name": "petal dance",
+    "type": "grass",
+    "category": "",
+    "power": 70,
+    "accuracy": 100,
+    "pp": 20
+}, {
+    "name": "pin missile",
+    "type": "bug",
+    "category": "",
+    "power": 14,
+    "accuracy": 85,
+    "pp": 20
+}, {
+    "name": "poison gas",
+    "type": "poison",
+    "category": "",
+    "power": 0,
+    "accuracy": 55,
+    "pp": 40
+}, {
+    "name": "poison powder",
+    "type": "poison",
+    "category": "",
+    "power": 0,
+    "accuracy": 75,
+    "pp": 35
+}, {
+    "name": "poison sting",
+    "type": "poison",
+    "category": "",
+    "power": 15,
+    "accuracy": 100,
+    "pp": 35
+}, {
+    "name": "pound",
+    "type": "normal",
+    "category": "",
+    "power": 40,
+    "accuracy": 100,
+    "pp": 35
+}, {
+    "name": "psybeam",
+    "type": "psychic",
+    "category": "",
+    "power": 65,
+    "accuracy": 100,
+    "pp": 20
+}, {
+    "name": "psychic",
+    "type": "psychic",
+    "category": "",
+    "power": 90,
+    "accuracy": 100,
+    "pp": 10
+}, {
+    "name": "psywave",
+    "type": "psychic",
+    "category": "",
+    "power": 1,
+    "accuracy": 80,
+    "pp": 15
+}, {
+    "name": "quick attack",
+    "type": "normal",
+    "category": "",
+    "power": 40,
+    "accuracy": 100,
+    "pp": 30
+}, {
+    "name": "rage",
+    "type": "normal",
+    "category": "",
+    "power": 20,
+    "accuracy": 100,
+    "pp": 20
+}, {
+    "name": "razor leaf",
+    "type": "grass",
+    "category": "",
+    "power": 55,
+    "accuracy": 95,
+    "pp": 25
+}, {
+    "name": "razor wind",
+    "type": "normal",
+    "category": "",
+    "power": 80,
+    "accuracy": 75,
+    "pp": 10
+}, {
+    "name": "recover",
+    "type": "normal",
+    "category": "",
+    "power": 0,
+    "accuracy": -1,
+    "pp": 20
+}, {
+    "name": "reflect",
+    "type": "psychic",
+    "category": "",
+    "power": 0,
+    "accuracy": -1,
+    "pp": 20
+}, {
+    "name": "rest",
+    "type": "psychic",
+    "category": "",
+    "power": 0,
+    "accuracy": -1,
+    "pp": 10
+}, {
+    "name": "roar",
+    "type": "normal",
+    "category": "",
+    "power": 0,
+    "accuracy": 100,
+    "pp": 20
+}, {
+    "name": "rock slide",
+    "type": "rock",
+    "category": "",
+    "power": 75,
+    "accuracy": 90,
+    "pp": 10
+}, {
+    "name": "rock throw",
+    "type": "rock",
+    "category": "",
+    "power": 50,
+    "accuracy": 65,
+    "pp": 15
+}, {
+    "name": "rolling kick",
+    "type": "fighting",
+    "category": "",
+    "power": 60,
+    "accuracy": 85,
+    "pp": 15
+}, {
+    "name": "sand attack",
+    "type": "normal",
+    "category": "",
+    "power": 0,
+    "accuracy": 100,
+    "pp": 15
+}, {
+    "name": "scratch",
+    "type": "normal",
+    "category": "",
+    "power": 40,
+    "accuracy": 100,
+    "pp": 35
+}, {
+    "name": "screech",
+    "type": "normal",
+    "category": "",
+    "power": 0,
+    "accuracy": 85,
+    "pp": 40
+}, {
+    "name": "seismic toss",
+    "type": "fighting",
+    "category": "",
+    "power": 1,
+    "accuracy": 100,
+    "pp": 20
+}, {
+    "name": "self-destruct",
+    "type": "normal",
+    "category": "",
+    "power": 130,
+    "accuracy": 100,
+    "pp": 5
+}, {
+    "name": "sharpen",
+    "type": "normal",
+    "category": "",
+    "power": 0,
+    "accuracy": -1,
+    "pp": 30
+}, {
+    "name": "sing",
+    "type": "normal",
+    "category": "",
+    "power": 0,
+    "accuracy": 55,
+    "pp": 15
+}, {
+    "name": "skull bash",
+    "type": "normal",
+    "category": "",
+    "power": 100,
+    "accuracy": 100,
+    "pp": 15
+}, {
+    "name": "sky attack",
+    "type": "flying",
+    "category": "",
+    "power": 140,
+    "accuracy": 90,
+    "pp": 5
+}, {
+    "name": "slam",
+    "type": "normal",
+    "category": "",
+    "power": 80,
+    "accuracy": 75,
+    "pp": 20
+}, {
+    "name": "slash",
+    "type": "normal",
+    "category": "",
+    "power": 70,
+    "accuracy": 100,
+    "pp": 20
+}, {
+    "name": "sleep powder",
+    "type": "grass",
+    "category": "",
+    "power": 0,
+    "accuracy": 75,
+    "pp": 15
+}, {
+    "name": "sludge",
+    "type": "poison",
+    "category": "",
+    "power": 65,
+    "accuracy": 100,
+    "pp": 20
+}, {
+    "name": "smog",
+    "type": "poison",
+    "category": "",
+    "power": 20,
+    "accuracy": 70,
+    "pp": 20
+}, {
+    "name": "smokescreen",
+    "type": "normal",
+    "category": "",
+    "power": 0,
+    "accuracy": 100,
+    "pp": 20
+}, {
+    "name": "soft-boiled",
+    "type": "normal",
+    "category": "",
+    "power": 0,
+    "accuracy": -1,
+    "pp": 10
+}, {
+    "name": "solar beam",
+    "type": "grass",
+    "category": "",
+    "power": 120,
+    "accuracy": 100,
+    "pp": 10
+}, {
+    "name": "sonic boom",
+    "type": "normal",
+    "category": "",
+    "power": 1,
+    "accuracy": 90,
+    "pp": 20
+}, {
+    "name": "spike cannon",
+    "type": "normal",
+    "category": "",
+    "power": 20,
+    "accuracy": 100,
+    "pp": 15
+}, {
+    "name": "splash",
+    "type": "normal",
+    "category": "",
+    "power": 0,
+    "accuracy": -1,
+    "pp": 40
+}, {
+    "name": "spore",
+    "type": "grass",
+    "category": "",
+    "power": 0,
+    "accuracy": 100,
+    "pp": 15
+}, {
+    "name": "stomp",
+    "type": "normal",
+    "category": "",
+    "power": 65,
+    "accuracy": 100,
+    "pp": 20
+}, {
+    "name": "strength",
+    "type": "normal",
+    "category": "",
+    "power": 80,
+    "accuracy": 100,
+    "pp": 15
+}, {
+    "name": "string shot",
+    "type": "bug",
+    "category": "",
+    "power": 0,
+    "accuracy": 95,
+    "pp": 40
+}, {
+    "name": "struggle",
+    "type": "normal",
+    "category": "",
+    "power": 50,
+    "accuracy": 100,
+    "pp": 10
+}, {
+    "name": "stun spore",
+    "type": "grass",
+    "category": "",
+    "power": 0,
+    "accuracy": 75,
+    "pp": 30
+}, {
+    "name": "submission",
+    "type": "fighting",
+    "category": "",
+    "power": 80,
+    "accuracy": 80,
+    "pp": 25
+}, {
+    "name": "substitute",
+    "type": "normal",
+    "category": "",
+    "power": 0,
+    "accuracy": -1,
+    "pp": 10
+}, {
+    "name": "super fang",
+    "type": "normal",
+    "category": "",
+    "power": 1,
+    "accuracy": 90,
+    "pp": 10
+}, {
+    "name": "supersonic",
+    "type": "normal",
+    "category": "",
+    "power": 0,
+    "accuracy": 55,
+    "pp": 20
+}, {
+    "name": "surf",
+    "type": "water",
+    "category": "",
+    "power": 95,
+    "accuracy": 100,
+    "pp": 15
+}, {
+    "name": "swift",
+    "type": "normal",
+    "category": "",
+    "power": 60,
+    "accuracy": -1,
+    "pp": 20
+}, {
+    "name": "swords dance",
+    "type": "normal",
+    "category": "",
+    "power": 0,
+    "accuracy": -1,
+    "pp": 30
+}, {
+    "name": "tackle",
+    "type": "normal",
+    "category": "",
+    "power": 35,
+    "accuracy": 95,
+    "pp": 35
+}, {
+    "name": "tail whip",
+    "type": "normal",
+    "category": "",
+    "power": 0,
+    "accuracy": 100,
+    "pp": 30
+}, {
+    "name": "take down",
+    "type": "normal",
+    "category": "",
+    "power": 90,
+    "accuracy": 85,
+    "pp": 20
+}, {
+    "name": "teleport",
+    "type": "psychic",
+    "category": "",
+    "power": 0,
+    "accuracy": -1,
+    "pp": 20
+}, {
+    "name": "thrash",
+    "type": "normal",
+    "category": "",
+    "power": 90,
+    "accuracy": 100,
+    "pp": 20
+}, {
+    "name": "thunder",
+    "type": "electric",
+    "category": "",
+    "power": 120,
+    "accuracy": 70,
+    "pp": 10
+}, {
+    "name": "thunder punch",
+    "type": "electric",
+    "category": "",
+    "power": 75,
+    "accuracy": 100,
+    "pp": 15
+}, {
+    "name": "thunder shock",
+    "type": "electric",
+    "category": "",
+    "power": 40,
+    "accuracy": 100,
+    "pp": 30
+}, {
+    "name": "thunder wave",
+    "type": "electric",
+    "category": "",
+    "power": 0,
+    "accuracy": 100,
+    "pp": 20
+}, {
+    "name": "thunderbolt",
+    "type": "electric",
+    "category": "",
+    "power": 95,
+    "accuracy": 100,
+    "pp": 15
+}, {
+    "name": "toxic",
+    "type": "poison",
+    "category": "",
+    "power": 0,
+    "accuracy": 85,
+    "pp": 10
+}, {
+    "name": "transform",
+    "type": "normal",
+    "category": "",
+    "power": 0,
+    "accuracy": -1,
+    "pp": 10
+}, {
+    "name": "tri attack",
+    "type": "normal",
+    "category": "",
+    "power": 80,
+    "accuracy": 100,
+    "pp": 10
+}, {
+    "name": "twineedle",
+    "type": "bug",
+    "category": "",
+    "power": 25,
+    "accuracy": 100,
+    "pp": 20
+}, {
+    "name": "vice grip",
+    "type": "normal",
+    "category": "",
+    "power": 55,
+    "accuracy": 100,
+    "pp": 30
+}, {
+    "name": "vine whip",
+    "type": "grass",
+    "category": "",
+    "power": 35,
+    "accuracy": 100,
+    "pp": 10
+}, {
+    "name": "water gun",
+    "type": "water",
+    "category": "",
+    "power": 40,
+    "accuracy": 100,
+    "pp": 25
+}, {
+    "name": "waterfall",
+    "type": "water",
+    "category": "",
+    "power": 80,
+    "accuracy": 100,
+    "pp": 15
+}, {
+    "name": "whirlwind",
+    "type": "normal",
+    "category": "",
+    "power": 0,
+    "accuracy": 85,
+    "pp": 20
+}, {
+    "name": "wing attack",
+    "type": "flying",
+    "category": "",
+    "power": 35,
+    "accuracy": 100,
+    "pp": 35
+}, {
+    "name": "withdraw",
+    "type": "water",
+    "category": "",
+    "power": 0,
+    "accuracy": -1,
+    "pp": 40
+}, {
+    "name": "wrap",
+    "type": "normal",
+    "category": "",
+    "power": 15,
+    "accuracy": 85,
+    "pp": 20
 }]
 let pokemon = [{
     "name": "abra",
@@ -407,296 +1202,1166 @@ let pokemon = [{
     "def": 100,
     "sp": 125,
     "spe": 85
-},{
-    "name":"beedrill"
-},{
-    "name":"bellsprout"
-},{
-    "name":"blastoise"
-},{
-    "name":"bulbasaur"
-},{
-    "name":"butterfree"
-},{
-    "name":"caterpie"
-},{
-    "name":"chansey"
-},{
-    "name":"charizard"
-},{
-    "name":"charmander"
-},{
-    "name":"charmeleon"
-},{
-    "name":"clefable"
-},{
-    "name":"clefairy"
-},{
-    "name":"cloyster"
-},{
-    "name":"cubone"
-},{
-    "name":"dewgong"
-},{
-    "name":"diglett"
-},{
-    "name":"ditto"
-},{
-    "name":"dodrio"
-},{
-    "name":"doduo"
-},{
-    "name":"dragonair"
-},{
-    "name":"dragonite"
-},{
-    "name":"dratini"
-},{
-    "name":"drowzee"
-},{
-    "name":"dugtrio"
-},{
-    "name":"eevee"
-},{
-    "name":"ekans"
-},{
-    "name":"electabuzz"
-},{
-    "name":"electrode"
-},{
-    "name":"exeggcute"
-},{
-    "name":"exeggutor"
-},{
-    "name":"farfetch'd"
-},{
-    "name":"fearow"
-},{
-    "name":"flareon"
-},{
-    "name":"gastly"
-},{
-    "name":"gengar"
-},{
-    "name":"geodude"
-},{
-    "name":"gloom"
-},{
-    "name":"golbat"
-},{
-    "name":"goldeen"
-},{
-    "name":"golduck"
-},{
-    "name":"golem"
-},{
-    "name":"graveler"
-},{
-    "name":"grimer"
-},{
-    "name":"growlithe"
-},{
-    "name":"gyarados"
-},{
-    "name":"haunter"
-},{
-    "name":"hitmonchan"
-},{
-    "name":"hitmonlee"
-},{
-    "name":"horsea"
-},{
-    "name":"hypno"
-},{
-    "name":"ivysaur"
-},{
-    "name":"jigglypuff"
-},{
-    "name":"jolteon"
-},{
-    "name":"jynx"
-},{
-    "name":"kabuto"
-},{
-    "name":"kabutops"
-},{
-    "name":"kakuna"
-},{
-    "name":"kangaskhan"
-},{
-    "name":"kingler"
-},{
-    "name":"koffing"
-},{
-    "name":"krabby"
-},{
-    "name":"lapras"
-},{
-    "name":"lickitung"
-},{
-    "name":"machamp"
-},{
-    "name":"machoke"
-},{
-    "name":"machop"
-},{
-    "name":"magikarp"
-},{
-    "name":"magmar"
-},{
-    "name":"magnemite"
-},{
-    "name":"magneton"
-},{
-    "name":"mankey"
-},{
-    "name":"marowak"
-},{
-    "name":"meowth"
-},{
-    "name":"metapod"
-},{
-    "name":"mew"
-},{
-    "name":"mewtwo"
-},{
-    "name":"moltres"
-},{
-    "name":"mr. mime"
-},{
-    "name":"muk"
-},{
-    "name":"nidoking"
-},{
-    "name":"nidoqueen"
-},{
-    "name":"nidoran-f"
-},{
-    "name":"nidoran-m"
-},{
-    "name":"nidorina"
-},{
-    "name":"nidorino"
-},{
-    "name":"ninetales"
-},{
-    "name":"oddish"
-},{
-    "name":"omanyte"
-},{
-    "name":"omastar"
-},{
-    "name":"omastar"
-},{
-    "name":"onix"
-},{
-    "name":"paras"
-},{
-    "name":"parasect"
-},{
-    "name":"persian"
-},{
-    "name":"pidgeot"
-},{
-    "name":"pidgeotto"
-},{
-    "name":"pidgey"
-},{
-    "name":"pikachu"
-},{
-    "name":"pinsir"
-},{
-    "name":"poliwag"
-},{
-    "name":"poliwhirl"
-},{
-    "name":"poliwrath"
-},{
-    "name":"ponyta"
-},{
-    "name":"porygon"
-},{
-    "name":"primeape"
-},{
-    "name":"psyduck"
-},{
-    "name":"raichu"
-},{
-    "name":"rapidash"
-},{
-    "name":"raticate"
-},{
-    "name":"rattata"
-},{
-    "name":"rhydon"
-},{
-    "name":"rhyhorn"
-},{
-    "name":"sandshrew"
-},{
-    "name":"sandslash"
-},{
-    "name":"scyther"
-},{
-    "name":"seadra"
-},{
-    "name":"seaking"
-},{
-    "name":"seel"
-},{
-    "name":"shellder"
-},{
-    "name":"slowbro"
-},{
-    "name":"slowpoke"
-},{
-    "name":"snorlax"
-},{
-    "name":"spearow"
-},{
-    "name":"squirtle"
-},{
-    "name":"starmie"
-},{
-    "name":"staryu"
-},{
-    "name":"tangela"
-},{
-    "name":"tauros"
-},{
-    "name":"tentacool"
-},{
-    "name":"tentacruel"
-},{
-    "name":"vaporeon"
-},{
-    "name":"venomoth"
-},{
-    "name":"venonat"
-},{
-    "name":"venusaur"
-},{
-    "name":"victreebel"
-},{
-    "name":"vileplume"
-},{
-    "name":"voltorb"
-},{
-    "name":"vulpix"
-},{
-    "name":"wartortle"
-},{
-    "name":"weedle"
-},{
-    "name":"weepinbell"
-},{
-    "name":"weezing"
-},{
-    "name":"wigglytuff"
-},{
-    "name":"zapdos"
-},{
-    "name":"zubat"
+}, {
+    "name": "beedrill",
+    "type": ["bug", "poison"],
+    "hp": 65,
+    "atk": 80,
+    "def": 40,
+    "sp": 45,
+    "spe": 75
+}, {
+    "name": "bellsprout",
+    "type": ["grass", "poison"],
+    "hp": 50,
+    "atk": 75,
+    "def": 35,
+    "sp": 70,
+    "spe": 40
+}, {
+    "name": "blastoise",
+    "type": ["water"],
+    "hp": 79,
+    "atk": 83,
+    "def": 100,
+    "sp": 85,
+    "spe": 78
+}, {
+    "name": "bulbasaur",
+    "type": ["grass", "poison"],
+    "hp": 45,
+    "atk": 49,
+    "def": 49,
+    "sp": 65,
+    "spe": 45
+}, {
+    "name": "butterfree",
+    "type": ["bug", "flying"],
+    "hp": 60,
+    "atk": 45,
+    "def": 50,
+    "sp": 80,
+    "spe": 70
+}, {
+    "name": "caterpie",
+    "type": ["bug"],
+    "hp": 45,
+    "atk": 30,
+    "def": 35,
+    "sp": 20,
+    "spe": 45
+}, {
+    "name": "chansey",
+    "type": ["normal"],
+    "hp": 250,
+    "atk": 5,
+    "def": 5,
+    "sp": 105,
+    "spe": 50
+}, {
+    "name": "charizard",
+    "type": ["fire", "flying"],
+    "hp": 78,
+    "atk": 84,
+    "def": 78,
+    "sp": 85,
+    "spe": 100
+}, {
+    "name": "charmander",
+    "type": ["fire"],
+    "hp": 39,
+    "atk": 52,
+    "def": 43,
+    "sp": 50,
+    "spe": 65
+}, {
+    "name": "charmeleon",
+    "type": ["fire"],
+    "hp": 58,
+    "atk": 64,
+    "def": 58,
+    "sp": 65,
+    "spe": 80
+}, {
+    "name": "clefable",
+    "type": ["normal"],
+    "hp": 95,
+    "atk": 70,
+    "def": 73,
+    "sp": 85,
+    "spe": 60
+}, {
+    "name": "clefairy",
+    "type": ["normal"],
+    "hp": 70,
+    "atk": 45,
+    "def": 48,
+    "sp": 60,
+    "spe": 35
+}, {
+    "name": "cloyster",
+    "type": ["water", "ice"],
+    "hp": 50,
+    "atk": 95,
+    "def": 180,
+    "sp": 85,
+    "spe": 70
+}, {
+    "name": "cubone",
+    "type": ["ground"],
+    "hp": 50,
+    "atk": 50,
+    "def": 95,
+    "sp": 40,
+    "spe": 35
+}, {
+    "name": "dewgong",
+    "type": ["water", "ice"],
+    "hp": 90,
+    "atk": 70,
+    "def": 80,
+    "sp": 95,
+    "spe": 70
+}, {
+    "name": "diglett",
+    "type": ["ground"],
+    "hp": 10,
+    "atk": 55,
+    "def": 25,
+    "sp": 45,
+    "spe": 95
+}, {
+    "name": "ditto",
+    "type": ["normal"],
+    "hp": 48,
+    "atk": 48,
+    "def": 48,
+    "sp": 48,
+    "spe": 48
+}, {
+    "name": "dodrio",
+    "type": ["normal", "flying"],
+    "hp": 60,
+    "atk": 110,
+    "def": 70,
+    "sp": 60,
+    "spe": 100
+}, {
+    "name": "doduo",
+    "type": ["normal", "flying"],
+    "hp": 35,
+    "atk": 85,
+    "def": 45,
+    "sp": 35,
+    "spe": 75
+}, {
+    "name": "dragonair",
+    "type": ["dragon"],
+    "hp": 61,
+    "atk": 84,
+    "def": 65,
+    "sp": 70,
+    "spe": 70
+}, {
+    "name": "dragonite",
+    "type": ["dragon", "flying"],
+    "hp": 91,
+    "atk": 134,
+    "def": 95,
+    "sp": 100,
+    "spe": 80
+}, {
+    "name": "dratini",
+    "type": ["dragon"],
+    "hp": 41,
+    "atk": 64,
+    "def": 45,
+    "sp": 50,
+    "spe": 50
+}, {
+    "name": "drowzee",
+    "type": ["psychic"],
+    "hp": 60,
+    "atk": 48,
+    "def": 45,
+    "sp": 90,
+    "spe": 42
+}, {
+    "name": "dugtrio",
+    "type": ["ground"],
+    "hp": 35,
+    "atk": 80,
+    "def": 50,
+    "sp": 70,
+    "spe": 120
+}, {
+    "name": "eevee",
+    "type": ["normal"],
+    "hp": 55,
+    "atk": 55,
+    "def": 50,
+    "sp": 65,
+    "spe": 55
+}, {
+    "name": "ekans",
+    "type": ["poison"],
+    "hp": 35,
+    "atk": 60,
+    "def": 44,
+    "sp": 40,
+    "spe": 55
+}, {
+    "name": "electabuzz",
+    "type": ["electric"],
+    "hp": 65,
+    "atk": 83,
+    "def": 57,
+    "sp": 85,
+    "spe": 105
+}, {
+    "name": "electrode",
+    "type": ["electric"],
+    "hp": 60,
+    "atk": 50,
+    "def": 70,
+    "sp": 80,
+    "spe": 140
+}, {
+    "name": "exeggcute",
+    "type": ["grass", "psychic"],
+    "hp": 60,
+    "atk": 40,
+    "def": 80,
+    "sp": 60,
+    "spe": 40
+}, {
+    "name": "exeggutor",
+    "type": ["grass", "psychic"],
+    "hp": 95,
+    "atk": 95,
+    "def": 85,
+    "sp": 125,
+    "spe": 55
+}, {
+    "name": "farfetch'd",
+    "type": ["normal", "flying"],
+    "hp": 52,
+    "atk": 65,
+    "def": 55,
+    "sp": 58,
+    "spe": 60
+}, {
+    "name": "fearow",
+    "type": ["normal", "flying"],
+    "hp": 65,
+    "atk": 90,
+    "def": 65,
+    "sp": 61,
+    "spe": 100
+}, {
+    "name": "flareon",
+    "type": ["fire"],
+    "hp": 65,
+    "atk": 130,
+    "def": 60,
+    "sp": 110,
+    "spe": 65
+}, {
+    "name": "gastly",
+    "type": ["ghost", "poison"],
+    "hp": 30,
+    "atk": 35,
+    "def": 30,
+    "sp": 100,
+    "spe": 80
+}, {
+    "name": "gengar",
+    "type": ["ghost", "poison"],
+    "hp": 60,
+    "atk": 65,
+    "def": 60,
+    "sp": 130,
+    "spe": 110
+}, {
+    "name": "geodude",
+    "type": ["rock", "ground"],
+    "hp": 40,
+    "atk": 80,
+    "def": 100,
+    "sp": 30,
+    "spe": 20
+}, {
+    "name": "gloom",
+    "type": ["grass", "poison"],
+    "hp": 60,
+    "atk": 65,
+    "def": 70,
+    "sp": 85,
+    "spe": 40
+}, {
+    "name": "golbat",
+    "type": ["poison", "flying"],
+    "hp": 75,
+    "atk": 80,
+    "def": 70,
+    "sp": 75,
+    "spe": 90
+}, {
+    "name": "goldeen",
+    "type": ["water"],
+    "hp": 45,
+    "atk": 67,
+    "def": 60,
+    "sp": 50,
+    "spe": 63
+}, {
+    "name": "golduck",
+    "type": ["water"],
+    "hp": 80,
+    "atk": 82,
+    "def": 78,
+    "sp": 80,
+    "spe": 85
+}, {
+    "name": "golem",
+    "type": ["rock", "ground"],
+    "hp": 80,
+    "atk": 110,
+    "def": 130,
+    "sp": 55,
+    "spe": 45
+}, {
+    "name": "graveler",
+    "type": ["rock", "ground"],
+    "hp": 55,
+    "atk": 95,
+    "def": 115,
+    "sp": 45,
+    "spe": 35
+}, {
+    "name": "grimer",
+    "type": ["poison"],
+    "hp": 80,
+    "atk": 80,
+    "def": 50,
+    "sp": 40,
+    "spe": 25
+}, {
+    "name": "growlithe",
+    "type": ["fire"],
+    "hp": 55,
+    "atk": 70,
+    "def": 45,
+    "sp": 50,
+    "spe": 60
+}, {
+    "name": "gyarados",
+    "type": ["water", "flying"],
+    "hp": 95,
+    "atk": 125,
+    "def": 79,
+    "sp": 100,
+    "spe": 81
+}, {
+    "name": "haunter",
+    "type": ["ghost", "poison"],
+    "hp": 45,
+    "atk": 50,
+    "def": 45,
+    "sp": 115,
+    "spe": 95
+}, {
+    "name": "hitmonchan",
+    "type": ["fighting"],
+    "hp": 50,
+    "atk": 105,
+    "def": 79,
+    "sp": 35,
+    "spe": 76
+}, {
+    "name": "hitmonlee",
+    "type": ["fighting"],
+    "hp": 50,
+    "atk": 120,
+    "def": 53,
+    "sp": 35,
+    "spe": 87
+}, {
+    "name": "horsea",
+    "type": ["water"],
+    "hp": 30,
+    "atk": 40,
+    "def": 70,
+    "sp": 70,
+    "spe": 60
+}, {
+    "name": "hypno",
+    "type": ["psychic"],
+    "hp": 85,
+    "atk": 73,
+    "def": 70,
+    "sp": 115,
+    "spe": 67
+}, {
+    "name": "ivysaur",
+    "type": ["grass", "poison"],
+    "hp": 60,
+    "atk": 62,
+    "def": 63,
+    "sp": 80,
+    "spe": 60
+}, {
+    "name": "jigglypuff",
+    "type": ["normal"],
+    "hp": 115,
+    "atk": 45,
+    "def": 20,
+    "sp": 25,
+    "spe": 20
+}, {
+    "name": "jolteon",
+    "type": ["electric"],
+    "hp": 65,
+    "atk": 65,
+    "def": 60,
+    "sp": 110,
+    "spe": 130
+}, {
+    "name": "jynx",
+    "type": ["ice", "psychic"],
+    "hp": 65,
+    "atk": 50,
+    "def": 35,
+    "sp": 95,
+    "spe": 95
+}, {
+    "name": "kabuto",
+    "type": ["rock", "water"],
+    "hp": 30,
+    "atk": 80,
+    "def": 90,
+    "sp": 45,
+    "spe": 55
+}, {
+    "name": "kabutops",
+    "type": ["rock", "water"],
+    "hp": 60,
+    "atk": 115,
+    "def": 105,
+    "sp": 70,
+    "spe": 80
+}, {
+    "name": "kadabra",
+    "type": ["psychic"],
+    "hp": 40,
+    "atk": 35,
+    "def": 30,
+    "sp": 120,
+    "spe": 105
+}, {
+    "name": "kakuna",
+    "type": ["bug", "poison"],
+    "hp": 45,
+    "atk": 25,
+    "def": 50,
+    "sp": 25,
+    "spe": 35
+}, {
+    "name": "kangaskhan",
+    "type": ["normal"],
+    "hp": 105,
+    "atk": 95,
+    "def": 80,
+    "sp": 40,
+    "spe": 90
+}, {
+    "name": "kingler",
+    "type": ["water"],
+    "hp": 55,
+    "atk": 130,
+    "def": 115,
+    "sp": 50,
+    "spe": 75
+}, {
+    "name": "koffing",
+    "type": ["poison"],
+    "hp": 40,
+    "atk": 65,
+    "def": 95,
+    "sp": 60,
+    "spe": 35
+}, {
+    "name": "krabby",
+    "type": ["water"],
+    "hp": 30,
+    "atk": 105,
+    "def": 90,
+    "sp": 25,
+    "spe": 50
+}, {
+    "name": "lapras",
+    "type": ["water", "ice"],
+    "hp": 130,
+    "atk": 85,
+    "def": 80,
+    "sp": 95,
+    "spe": 60
+}, {
+    "name": "lickitung",
+    "type": ["normal"],
+    "hp": 90,
+    "atk": 55,
+    "def": 75,
+    "sp": 60,
+    "spe": 30
+}, {
+    "name": "machamp",
+    "type": ["fighting"],
+    "hp": 90,
+    "atk": 130,
+    "def": 80,
+    "sp": 65,
+    "spe": 55
+}, {
+    "name": "machoke",
+    "type": ["fighting"],
+    "hp": 80,
+    "atk": 100,
+    "def": 70,
+    "sp": 50,
+    "spe": 45
+}, {
+    "name": "machop",
+    "type": ["fighting"],
+    "hp": 70,
+    "atk": 80,
+    "def": 50,
+    "sp": 35,
+    "spe": 35
+}, {
+    "name": "magikarp",
+    "type": ["water"],
+    "hp": 20,
+    "atk": 10,
+    "def": 55,
+    "sp": 20,
+    "spe": 80
+}, {
+    "name": "magmar",
+    "type": ["fire"],
+    "hp": 65,
+    "atk": 95,
+    "def": 57,
+    "sp": 85,
+    "spe": 93
+}, {
+    "name": "magnemite",
+    "type": ["electric"],
+    "hp": 25,
+    "atk": 35,
+    "def": 70,
+    "sp": 95,
+    "spe": 45
+}, {
+    "name": "magneton",
+    "type": ["electric"],
+    "hp": 50,
+    "atk": 60,
+    "def": 95,
+    "sp": 120,
+    "spe": 70
+}, {
+    "name": "mankey",
+    "type": ["fighting"],
+    "hp": 40,
+    "atk": 80,
+    "def": 35,
+    "sp": 35,
+    "spe": 70
+}, {
+    "name": "marowak",
+    "type": ["ground"],
+    "hp": 60,
+    "atk": 80,
+    "def": 110,
+    "sp": 50,
+    "spe": 45
+}, {
+    "name": "meowth",
+    "type": ["normal"],
+    "hp": 40,
+    "atk": 45,
+    "def": 35,
+    "sp": 40,
+    "spe": 90
+}, {
+    "name": "metapod",
+    "type": ["bug"],
+    "hp": 50,
+    "atk": 20,
+    "def": 55,
+    "sp": 25,
+    "spe": 30
+}, {
+    "name": "mew",
+    "type": ["psychic"],
+    "hp": 100,
+    "atk": 100,
+    "def": 100,
+    "sp": 100,
+    "spe": 100
+}, {
+    "name": "mewtwo",
+    "type": ["psychic"],
+    "hp": 106,
+    "atk": 110,
+    "def": 90,
+    "sp": 154,
+    "spe": 130
+}, {
+    "name": "moltres",
+    "type": ["fire", "flying"],
+    "hp": 90,
+    "atk": 100,
+    "def": 90,
+    "sp": 125,
+    "spe": 90
+}, {
+    "name": "mr. mime",
+    "type": ["psychic"],
+    "hp": 40,
+    "atk": 45,
+    "def": 65,
+    "sp": 100,
+    "spe": 90
+}, {
+    "name": "muk",
+    "type": ["poison"],
+    "hp": 105,
+    "atk": 105,
+    "def": 75,
+    "sp": 65,
+    "spe": 50
+}, {
+    "name": "nidoking",
+    "type": ["poison", "ground"],
+    "hp": 81,
+    "atk": 92,
+    "def": 77,
+    "sp": 75,
+    "spe": 85
+}, {
+    "name": "nidoqueen",
+    "type": ["poison", "ground"],
+    "hp": 90,
+    "atk": 82,
+    "def": 87,
+    "sp": 75,
+    "spe": 76
+}, {
+    "name": "nidoran-f",
+    "type": ["poison"],
+    "hp": 55,
+    "atk": 47,
+    "def": 52,
+    "sp": 40,
+    "spe": 41
+}, {
+    "name": "nidoran-m",
+    "type": ["poison"],
+    "hp": 46,
+    "atk": 57,
+    "def": 40,
+    "sp": 40,
+    "spe": 50
+}, {
+    "name": "nidorina",
+    "type": ["poison"],
+    "hp": 70,
+    "atk": 62,
+    "def": 67,
+    "sp": 55,
+    "spe": 56
+}, {
+    "name": "nidorino",
+    "type": ["poison"],
+    "hp": 61,
+    "atk": 72,
+    "def": 57,
+    "sp": 55,
+    "spe": 65
+}, {
+    "name": "ninetales",
+    "type": ["fire"],
+    "hp": 73,
+    "atk": 76,
+    "def": 75,
+    "sp": 100,
+    "spe": 100
+}, {
+    "name": "oddish",
+    "type": ["grass", "poison"],
+    "hp": 45,
+    "atk": 50,
+    "def": 55,
+    "sp": 75,
+    "spe": 30
+}, {
+    "name": "omanyte",
+    "type": ["rock", "water"],
+    "hp": 35,
+    "atk": 40,
+    "def": 100,
+    "sp": 90,
+    "spe": 35
+}, {
+    "name": "omastar",
+    "type": ["rock", "water"],
+    "hp": 70,
+    "atk": 60,
+    "def": 125,
+    "sp": 115,
+    "spe": 55
+}, {
+    "name": "onix",
+    "type": ["rock", "ground"],
+    "hp": 35,
+    "atk": 45,
+    "def": 160,
+    "sp": 30,
+    "spe": 70
+}, {
+    "name": "paras",
+    "type": ["bug", "grass"],
+    "hp": 35,
+    "atk": 70,
+    "def": 55,
+    "sp": 55,
+    "spe": 25
+}, {
+    "name": "parasect",
+    "type": ["bug", "grass"],
+    "hp": 60,
+    "atk": 95,
+    "def": 80,
+    "sp": 80,
+    "spe": 30
+}, {
+    "name": "persian",
+    "type": ["normal"],
+    "hp": 65,
+    "atk": 70,
+    "def": 60,
+    "sp": 65,
+    "spe": 115
+}, {
+    "name": "pidgeot",
+    "type": ["normal", "flying"],
+    "hp": 83,
+    "atk": 80,
+    "def": 75,
+    "sp": 70,
+    "spe": 91
+}, {
+    "name": "pidgeotto",
+    "type": ["normal", "flying"],
+    "hp": 63,
+    "atk": 60,
+    "def": 55,
+    "sp": 50,
+    "spe": 71
+}, {
+    "name": "pidgey",
+    "type": ["normal", "flying"],
+    "hp": 40,
+    "atk": 45,
+    "def": 40,
+    "sp": 35,
+    "spe": 56
+}, {
+    "name": "pikachu",
+    "type": ["electric"],
+    "hp": 35,
+    "atk": 55,
+    "def": 30,
+    "sp": 50,
+    "spe": 90
+}, {
+    "name": "pinsir",
+    "type": ["bug"],
+    "hp": 65,
+    "atk": 125,
+    "def": 100,
+    "sp": 55,
+    "spe": 85
+}, {
+    "name": "poliwag",
+    "type": ["water"],
+    "hp": 40,
+    "atk": 50,
+    "def": 40,
+    "sp": 40,
+    "spe": 90
+}, {
+    "name": "poliwhirl",
+    "type": ["water"],
+    "hp": 65,
+    "atk": 65,
+    "def": 65,
+    "sp": 50,
+    "spe": 90
+}, {
+    "name": "poliwrath",
+    "type": ["water", "fighting"],
+    "hp": 90,
+    "atk": 85,
+    "def": 95,
+    "sp": 70,
+    "spe": 70
+}, {
+    "name": "ponyta",
+    "type": ["fire"],
+    "hp": 50,
+    "atk": 85,
+    "def": 55,
+    "sp": 65,
+    "spe": 90
+}, {
+    "name": "porygon",
+    "type": ["normal"],
+    "hp": 65,
+    "atk": 60,
+    "def": 70,
+    "sp": 75,
+    "spe": 40
+}, {
+    "name": "primeape",
+    "type": ["fighting"],
+    "hp": 65,
+    "atk": 105,
+    "def": 60,
+    "sp": 60,
+    "spe": 95
+}, {
+    "name": "psyduck",
+    "type": ["water"],
+    "hp": 50,
+    "atk": 52,
+    "def": 48,
+    "sp": 50,
+    "spe": 55
+}, {
+    "name": "raichu",
+    "type": ["electric"],
+    "hp": 60,
+    "atk": 90,
+    "def": 55,
+    "sp": 90,
+    "spe": 100
+}, {
+    "name": "rapidash",
+    "type": ["fire"],
+    "hp": 65,
+    "atk": 100,
+    "def": 70,
+    "sp": 80,
+    "spe": 105
+}, {
+    "name": "raticate",
+    "type": ["normal"],
+    "hp": 55,
+    "atk": 81,
+    "def": 60,
+    "sp": 50,
+    "spe": 97
+}, {
+    "name": "rattata",
+    "type": ["normal"],
+    "hp": 30,
+    "atk": 56,
+    "def": 35,
+    "sp": 25,
+    "spe": 72
+}, {
+    "name": "rhydon",
+    "type": ["ground", "rock"],
+    "hp": 105,
+    "atk": 130,
+    "def": 120,
+    "sp": 45,
+    "spe": 40
+}, {
+    "name": "rhyhorn",
+    "type": ["ground", "rock"],
+    "hp": 80,
+    "atk": 85,
+    "def": 95,
+    "sp": 30,
+    "spe": 25
+}, {
+    "name": "sandshrew",
+    "type": ["ground"],
+    "hp": 50,
+    "atk": 75,
+    "def": 85,
+    "sp": 30,
+    "spe": 40
+}, {
+    "name": "sandslash",
+    "type": ["ground"],
+    "hp": 75,
+    "atk": 100,
+    "def": 110,
+    "sp": 55,
+    "spe": 65
+}, {
+    "name": "scyther",
+    "type": ["bug", "flying"],
+    "hp": 70,
+    "atk": 110,
+    "def": 80,
+    "sp": 55,
+    "spe": 105
+}, {
+    "name": "seadra",
+    "type": ["water"],
+    "hp": 55,
+    "atk": 65,
+    "def": 95,
+    "sp": 95,
+    "spe": 85
+}, {
+    "name": "seaking",
+    "type": ["water"],
+    "hp": 80,
+    "atk": 92,
+    "def": 65,
+    "sp": 80,
+    "spe": 68
+}, {
+    "name": "seel",
+    "type": ["water"],
+    "hp": 65,
+    "atk": 45,
+    "def": 55,
+    "sp": 70,
+    "spe": 45
+}, {
+    "name": "shellder",
+    "type": ["water"],
+    "hp": 30,
+    "atk": 65,
+    "def": 100,
+    "sp": 45,
+    "spe": 40
+}, {
+    "name": "slowbro",
+    "type": ["water", "psychic"],
+    "hp": 95,
+    "atk": 75,
+    "def": 110,
+    "sp": 80,
+    "spe": 30
+}, {
+    "name": "slowpoke",
+    "type": ["water", "psychic"],
+    "hp": 90,
+    "atk": 65,
+    "def": 65,
+    "sp": 40,
+    "spe": 15
+}, {
+    "name": "snorlax",
+    "type": ["normal"],
+    "hp": 160,
+    "atk": 110,
+    "def": 65,
+    "sp": 65,
+    "spe": 30
+}, {
+    "name": "spearow",
+    "type": ["normal", "flying"],
+    "hp": 40,
+    "atk": 60,
+    "def": 30,
+    "sp": 31,
+    "spe": 70
+}, {
+    "name": "squirtle",
+    "type": ["water"],
+    "hp": 44,
+    "atk": 48,
+    "def": 65,
+    "sp": 50,
+    "spe": 43
+}, {
+    "name": "starmie",
+    "type": ["water", "psychic"],
+    "hp": 60,
+    "atk": 75,
+    "def": 85,
+    "sp": 100,
+    "spe": 115
+}, {
+    "name": "staryu",
+    "type": ["water"],
+    "hp": 30,
+    "atk": 45,
+    "def": 55,
+    "sp": 70,
+    "spe": 85
+}, {
+    "name": "tangela",
+    "type": ["grass"],
+    "hp": 65,
+    "atk": 55,
+    "def": 115,
+    "sp": 100,
+    "spe": 60
+}, {
+    "name": "tauros",
+    "type": ["normal"],
+    "hp": 75,
+    "atk": 100,
+    "def": 95,
+    "sp": 70,
+    "spe": 110
+}, {
+    "name": "tentacool",
+    "type": ["water", "poison"],
+    "hp": 40,
+    "atk": 40,
+    "def": 35,
+    "sp": 100,
+    "spe": 70
+}, {
+    "name": "tentacruel",
+    "type": ["water", "poison"],
+    "hp": 80,
+    "atk": 70,
+    "def": 65,
+    "sp": 120,
+    "spe": 100
+}, {
+    "name": "vaporeon",
+    "type": ["water"],
+    "hp": 130,
+    "atk": 65,
+    "def": 60,
+    "sp": 110,
+    "spe": 65
+}, {
+    "name": "venomoth",
+    "type": ["bug", "poison"],
+    "hp": 70,
+    "atk": 65,
+    "def": 60,
+    "sp": 90,
+    "spe": 90
+}, {
+    "name": "venonat",
+    "type": ["bug", "poison"],
+    "hp": 60,
+    "atk": 55,
+    "def": 50,
+    "sp": 40,
+    "spe": 45
+}, {
+    "name": "venusaur",
+    "type": ["grass", "poison"],
+    "hp": 80,
+    "atk": 82,
+    "def": 83,
+    "sp": 100,
+    "spe": 80
+}, {
+    "name": "victreebel",
+    "type": ["grass", "poison"],
+    "hp": 80,
+    "atk": 105,
+    "def": 65,
+    "sp": 100,
+    "spe": 70
+}, {
+    "name": "vileplume",
+    "type": ["grass", "poison"],
+    "hp": 75,
+    "atk": 80,
+    "def": 85,
+    "sp": 100,
+    "spe": 50
+}, {
+    "name": "voltorb",
+    "type": ["electric"],
+    "hp": 40,
+    "atk": 30,
+    "def": 50,
+    "sp": 55,
+    "spe": 100
+}, {
+    "name": "vulpix",
+    "type": ["fire"],
+    "hp": 38,
+    "atk": 41,
+    "def": 40,
+    "sp": 65,
+    "spe": 65
+}, {
+    "name": "wartortle",
+    "type": ["water"],
+    "hp": 59,
+    "atk": 63,
+    "def": 80,
+    "sp": 65,
+    "spe": 58
+}, {
+    "name": "weedle",
+    "type": ["bug", "poison"],
+    "hp": 40,
+    "atk": 35,
+    "def": 30,
+    "sp": 20,
+    "spe": 50
+}, {
+    "name": "weepinbell",
+    "type": ["grass", "poison"],
+    "hp": 65,
+    "atk": 90,
+    "def": 50,
+    "sp": 85,
+    "spe": 55
+}, {
+    "name": "weezing",
+    "type": ["poison"],
+    "hp": 65,
+    "atk": 90,
+    "def": 120,
+    "sp": 85,
+    "spe": 60
+}, {
+    "name": "wigglytuff",
+    "type": ["normal"],
+    "hp": 140,
+    "atk": 70,
+    "def": 45,
+    "sp": 50,
+    "spe": 45
+}, {
+    "name": "zapdos",
+    "type": ["electric", "flying"],
+    "hp": 90,
+    "atk": 90,
+    "def": 85,
+    "sp": 125,
+    "spe": 100
+}, {
+    "name": "zubat",
+    "type": ["poison", "flying"],
+    "hp": 40,
+    "atk": 45,
+    "def": 35,
+    "sp": 40,
+    "spe": 55
 }]
 let multiplier = {
     "bug": {
