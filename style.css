@@ -192,3 +192,10 @@ p {
     padding:5px;
     font-size: medium;
 }
+.hide{
+    display:none;
+}
+button.selected{
+    background-color: dodgerblue;
+    color:white;
+}
