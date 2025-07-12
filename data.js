@@ -284,7 +284,14 @@ let moves = [{
     "category": "",
     "power": 170,
     "accuracy": 100,
-    "pp": 5
+    "pp": 5,
+    "effect": function () {
+        getPkmn(true).hp = 0;
+        if (playerToMove == 0) document.getElementById("p1Pokemon").style.backgroundImage = "none";
+        else document.getElementById("p2Pokemon").style.backgroundImage = "none";
+        addMainText(capitalize(getPkmn(true).name) + " fainted!");
+        battleInfo[playerToMove].currentPokemon = -1;
+    }
 }, {
     "name": "fire blast",
     "type": "fire",

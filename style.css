@@ -221,3 +221,104 @@ button.selected {
     margin-bottom: 3px;
     display: inline-block;
 }
+
+.tooltip {
+    border-radius: 9px;
+    padding: 9px;
+    width: 500px;
+    background-color: rgba(0, 0, 0, 0.9);
+    color: white;
+
+    .tip-desc {
+        font-style: italic;
+        color: #ccc;
+    }
+
+    .tip-name {
+        font-weight: bold;
+        font-size: large;
+    }
+
+    .img-left {
+        width: 100px;
+    }
+
+    .container {
+        display: inline-block;
+        width: 270px;
+        vertical-align: top;
+    }
+
+    .type {
+        display: inline-block;
+        letter-spacing: 2px;
+        font-weight: bold;
+        position: absolute;
+
+        img {
+            width: 40px
+        }
+
+        .type-text {
+            display: inline-block;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            margin: auto 5px;
+            height: fit-content;
+        }
+    }
+
+    .stats {
+        display: inline-block;
+        width:150px;
+        border-right: solid 2px #333;
+        padding-right: 9px;
+        .stat {
+            .small {
+                color: #ccc;
+                font-weight: bold;
+            }
+
+            .number {
+                font-size: xx-large;
+                font-weight: bold;
+
+                .sub {
+                    font-size: medium;
+                    color: #ccc;
+                    font-weight: normal;
+                }
+            }
+        }
+    }
+
+    .moves {
+        display: inline-block;
+        width: 325px;
+        vertical-align: top;
+        margin-left:9px;
+        .move {
+            height:30px;
+            .move-name {
+                &.unknown{
+                font-style: italic;
+                color:#ccc
+            }
+                display: inline-block
+            }
+
+            .pp {
+                display: inline-block;
+                float: right;
+                font-size: large;
+                font-weight: bold;
+                .sub{
+                    color:#ccc;
+                    font-weight: normal;
+                    font-size: medium;
+                }
+            }
+        }
+    }
+}
