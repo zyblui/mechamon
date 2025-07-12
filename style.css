@@ -162,17 +162,21 @@ p {
     margin-top: 1em;
     font-family: "Segoe UI", sans-serif;
 }
-.decisionMove,.decisionSwitch{
-    height:40px;
-    font-family: "Segoe UI",sans-serif;
+
+.decisionMove,
+.decisionSwitch {
+    height: 40px;
+    font-family: "Segoe UI", sans-serif;
     font-size: large;
-    background-color: rgba(255,255,255,0.5);
-    margin:3px;
-    border:solid 3px transparent;
-    &:hover{
-        border:solid 3px gray
+    background-color: rgba(255, 255, 255, 0.5);
+    margin: 3px;
+    border: solid 3px transparent;
+
+    &:hover {
+        border: solid 3px gray
     }
 }
+
 .decisionMove {
     width: calc(25% - 6px)
 }
@@ -180,22 +184,40 @@ p {
 .decisionSwitch {
     width: calc(100% / 6 - 6px)
 }
-.main-text{
+
+.main-text {
     background-color: black;
-    color:white;
-    padding:10px;
+    color: white;
+    padding: 10px;
     font-size: large;
 }
-.small-text{
-    background-color: rgba(255,255,255,0.9);
-    color:gray;
-    padding:5px;
+
+.small-text {
+    background-color: rgba(255, 255, 255, 0.9);
+    color: gray;
+    padding: 5px 5px 5px 20px;
     font-size: medium;
 }
-.hide{
-    display:none;
+
+.hide {
+    display: none;
 }
-button.selected{
+
+button.selected {
     background-color: dodgerblue;
-    color:white;
+    color: white;
+}
+
+.tab-content:not(.tab-show) {
+    display: none;
+}
+
+.tab-selected {
+    border-bottom: solid 3px black
+}
+
+.turn-number {
+    border-bottom: solid 3px black;
+    margin-bottom: 3px;
+    display: inline-block;
 }

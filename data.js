@@ -792,10 +792,14 @@ let moves = [{
 }, {
     "name": "seismic toss",
     "type": "fighting",
-    "category": "",
+    "category": "physical",
     "power": 1,
     "accuracy": 100,
-    "pp": 20
+    "pp": 20,
+    "effect": function () {
+        getPkmn(false).hp -= Math.min(100, getPkmn(false).hp);
+        addSmallText("(" + capitalize(getPkmn(false).name) + " lost " + (Math.min(100, getPkmn(false).hp) / getPkmn(false).maxHp * 100).toFixed(0) + "% of its health!)")
+    }
 }, {
     "name": "self-destruct",
     "type": "normal",

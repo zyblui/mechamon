@@ -27,149 +27,161 @@
             <div class="percentage" id="p2Percentage">100%</div>
         </div>
         <div id="p2Pokemon"></div>
-        <div id="text"><div class="main-text">Player 2 would like to battle!</div></div>
+        <div id="text">
+            <div class="main-text">Player 2 would like to battle!</div>
+        </div>
     </div>
     <div id="decisionPanel">
         <table>
             <tr>
                 <th>Moves:</th>
                 <td><button class="decisionMove">Move #1</button><button class="decisionMove">Move #2</button><button
-                class="decisionMove">Move #3</button><button class="decisionMove">Move #4</button></td>
+                        class="decisionMove">Move #3</button><button class="decisionMove">Move #4</button></td>
             </tr>
             <tr>
                 <th>Switch to:</th>
                 <td><button class="decisionSwitch">Pokemon #1</button><button class="decisionSwitch">Pokemon
-                #2</button><button class="decisionSwitch">Pokemon #3</button><button class="decisionSwitch">Pokemon
-                #4</button><button class="decisionSwitch">Pokemon #5</button><button class="decisionSwitch">Pokemon
-                #6</button></div></td>
+                        #2</button><button class="decisionSwitch">Pokemon #3</button><button
+                        class="decisionSwitch">Pokemon
+                        #4</button><button class="decisionSwitch">Pokemon #5</button><button
+                        class="decisionSwitch">Pokemon
+                        #6</button>
+                </td>
             </tr>
         </table>
     </div>
     <div id="rightPanel">
-        <div class="wrap">
-            <p class="dim">Welcome to the world of Mechamon!</p>
-            <button id="startGame">Start Game</button>
+        <button data-for="setup" class="tab tab-selected">Setup</button>
+        <button data-for="record" class="tab">Record</button>
+        <div data-for="setup" class="tab-content tab-show">
+            <div class="wrap">
+                <p class="dim">Welcome to the world of Mechamon!</p>
+                <button id="startGame">Start Game</button>
+            </div>
+            Player 1:
+            <table id="p1Table">
+                <tr>
+                    <th>#</th>
+                    <th>Pokemon</th>
+                    <th>Move #1</th>
+                    <th>Move #2</th>
+                    <th>Move #3</th>
+                    <th>Move #4</th>
+                </tr>
+                <tr>
+                    <th>1</th>
+                    <td class="pokemon-select"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th>2</th>
+                    <td class="pokemon-select"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th>3</th>
+                    <td class="pokemon-select"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th>4</th>
+                    <td class="pokemon-select"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th>5</th>
+                    <td class="pokemon-select"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th>6</th>
+                    <td class="pokemon-select"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+            Player 2:
+            <table id="p2Table">
+                <tr>
+                    <th>#</th>
+                    <th>Pokemon</th>
+                    <th>Move #1</th>
+                    <th>Move #2</th>
+                    <th>Move #3</th>
+                    <th>Move #4</th>
+                </tr>
+                <tr>
+                    <th>1</th>
+                    <td class="pokemon-select"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th>2</th>
+                    <td class="pokemon-select"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th>3</th>
+                    <td class="pokemon-select"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th>4</th>
+                    <td class="pokemon-select"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th>5</th>
+                    <td class="pokemon-select"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th>6</th>
+                    <td class="pokemon-select"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+            <hr />
+            <div id="pokemonList">
+
+            </div>
         </div>
-        Player 1:
-        <table id="p1Table">
-            <tr>
-                <th>#</th>
-                <th>Pokemon</th>
-                <th>Move #1</th>
-                <th>Move #2</th>
-                <th>Move #3</th>
-                <th>Move #4</th>
-            </tr>
-            <tr>
-                <th>1</th>
-                <td class="pokemon-select"></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <th>2</th>
-                <td class="pokemon-select"></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <th>3</th>
-                <td class="pokemon-select"></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <th>4</th>
-                <td class="pokemon-select"></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <th>5</th>
-                <td class="pokemon-select"></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <th>6</th>
-                <td class="pokemon-select"></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-        </table>
-        Player 2:
-        <table id="p2Table">
-            <tr>
-                <th>#</th>
-                <th>Pokemon</th>
-                <th>Move #1</th>
-                <th>Move #2</th>
-                <th>Move #3</th>
-                <th>Move #4</th>
-            </tr>
-            <tr>
-                <th>1</th>
-                <td class="pokemon-select"></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <th>2</th>
-                <td class="pokemon-select"></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <th>3</th>
-                <td class="pokemon-select"></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <th>4</th>
-                <td class="pokemon-select"></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <th>5</th>
-                <td class="pokemon-select"></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <th>6</th>
-                <td class="pokemon-select"></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-        </table>
-        <hr />
-        <div id="pokemonList">
+        <div data-for="record" class="tab-content" id="record">
 
         </div>
     </div>
