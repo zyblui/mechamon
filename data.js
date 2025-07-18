@@ -11,35 +11,50 @@ let moves = [{
     "category": "physical",
     "power": 40,
     "acc": 100,
-    "pp": 30
+    "pp": 30,
+    "effect": function () {
+        modifyStats(false,"def",-1,1/3)
+    }
 }, {
     "name": "acid armor",
     "type": "poison",
     "category": "status",
     "power": 0,
     "acc": -1,
-    "pp": 40
+    "pp": 40,
+    "effect": function () {
+        modifyStats(true,"def",2,1)
+    }
 }, {
     "name": "agility",
     "type": "psychic",
     "category": "status",
     "power": 0,
     "acc": -1,
-    "pp": 30
+    "pp": 30,
+    "effect": function () {
+        modifyStats(true,"spe",2,1)
+    }
 }, {
     "name": "amnesia",
     "type": "psychic",
     "category": "status",
     "power": 0,
     "acc": -1,
-    "pp": 20
+    "pp": 20,
+    "effect": function () {
+        modifyStats(true,"sp",2,1)
+    }
 }, {
     "name": "aurora beam",
     "type": "ice",
     "category": "special",
     "power": 65,
     "acc": 100,
-    "pp": 20
+    "pp": 20,
+    "effect": function () {
+        modifyStats(false,"atk",-1,1/3)
+    }
 }, {
     "name": "barrage",
     "type": "normal",
@@ -53,7 +68,10 @@ let moves = [{
     "category": "",
     "power": 0,
     "accuracy": -1,
-    "pp": 30
+    "pp": 30,
+    "effect": function () {
+        modifyStats(true,"def",2,1)
+    }
 }, {
     "name": "bide",
     "type": "normal",
@@ -109,14 +127,20 @@ let moves = [{
     "category": "",
     "power": 20,
     "accuracy": 100,
-    "pp": 30
+    "pp": 30,
+    "effect": function () {
+        modifyStats(false,"spe",-1,1/3)
+    }
 }, {
     "name": "bubble beam",
     "type": "water",
     "category": "",
     "power": 65,
     "accuracy": 100,
-    "pp": 20
+    "pp": 20,
+    "effect": function () {
+        modifyStats(false,"spe",-1,1/3)
+    }
 }, {
     "name": "clamp",
     "type": "water",
@@ -134,7 +158,7 @@ let moves = [{
 }, {
     "name": "confuse ray",
     "type": "ghost",
-    "category": "",
+    "category": "status",
     "power": 0,
     "accuracy": 100,
     "pp": 10
@@ -151,11 +175,14 @@ let moves = [{
     "category": "",
     "power": 10,
     "accuracy": 100,
-    "pp": 35
+    "pp": 35,
+    "effect": function () {
+        modifyStats(false,"spe",-1,1/3)
+    }
 }, {
     "name": "conversion",
     "type": "normal",
-    "category": "",
+    "category": "status",
     "power": 0,
     "accuracy": -1,
     "pp": 30
@@ -186,7 +213,10 @@ let moves = [{
     "category": "",
     "power": 0,
     "accuracy": -1,
-    "pp": 40
+    "pp": 40,
+    "effect": function () {
+        modifyStats(true,"def",1,1)
+    }
 }, {
     "name": "dig",
     "type": "ground",

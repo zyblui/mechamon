@@ -103,6 +103,17 @@ body {
 
 .name {
     font-weight: bold;
+    display: inline;
+}
+
+.status {
+    display: inline;
+    & span.buff{
+        color:green;
+    }
+    & span.debuff{
+        color:red
+    }
 }
 
 .percentage {
@@ -240,7 +251,14 @@ button.selected {
     }
 
     .img-left {
-        width: 100px;
+        display: inline-block;
+        width: 40px;
+        height: 30px;
+        image-rendering: pixelated;
+        scale: 2.5;
+        transform-origin: left top;
+        margin-right: 60px;
+        margin-bottom: 45px;
     }
 
     .container {
@@ -271,9 +289,10 @@ button.selected {
 
     .stats {
         display: inline-block;
-        width:150px;
+        width: 150px;
         border-right: solid 2px #333;
         padding-right: 9px;
+
         .stat {
             .small {
                 color: #ccc;
@@ -297,14 +316,17 @@ button.selected {
         display: inline-block;
         width: 325px;
         vertical-align: top;
-        margin-left:9px;
+        margin-left: 9px;
+
         .move {
-            height:30px;
+            height: 30px;
+
             .move-name {
-                &.unknown{
-                font-style: italic;
-                color:#ccc
-            }
+                &.unknown {
+                    font-style: italic;
+                    color: #ccc
+                }
+
                 display: inline-block
             }
 
@@ -313,8 +335,9 @@ button.selected {
                 float: right;
                 font-size: large;
                 font-weight: bold;
-                .sub{
-                    color:#ccc;
+
+                .sub {
+                    color: #ccc;
                     font-weight: normal;
                     font-size: medium;
                 }
