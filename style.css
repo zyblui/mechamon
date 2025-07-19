@@ -108,11 +108,13 @@ body {
 
 .status {
     display: inline;
-    & span.buff{
-        color:green;
+
+    & span.buff {
+        color: green;
     }
-    & span.debuff{
-        color:red
+
+    & span.debuff {
+        color: red
     }
 }
 
@@ -344,4 +346,24 @@ button.selected {
             }
         }
     }
+}
+
+.ball {
+    background: url(pokemonicons-pokeball-sheet.png) no-repeat scroll 0 0;
+    width: 40px;
+    image-rendering: pixelated;
+    height: 30px;
+    display: inline-block;
+}
+
+#p1Balls {
+    position: absolute;
+    top: 30px;
+    right: calc(10% + 384px)
+}
+
+#p2Balls {
+    position: absolute;
+    bottom: 30px;
+    left: calc(10% + 384px)
 }

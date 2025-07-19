@@ -13,7 +13,7 @@ let moves = [{
     "acc": 100,
     "pp": 30,
     "effect": function () {
-        modifyStats(false, "def", -1, 1 / 3)
+        modifyStats(false, "def", -1, 1 / 3);
     }
 }, {
     "name": "acid armor",
@@ -23,7 +23,7 @@ let moves = [{
     "acc": -1,
     "pp": 40,
     "effect": function () {
-        modifyStats(true, "def", 2, 1)
+        modifyStats(true, "def", 2, 1);
     }
 }, {
     "name": "agility",
@@ -33,7 +33,7 @@ let moves = [{
     "acc": -1,
     "pp": 30,
     "effect": function () {
-        modifyStats(true, "spe", 2, 1)
+        modifyStats(true, "spe", 2, 1);
     }
 }, {
     "name": "amnesia",
@@ -43,7 +43,7 @@ let moves = [{
     "acc": -1,
     "pp": 20,
     "effect": function () {
-        modifyStats(true, "sp", 2, 1)
+        modifyStats(true, "sp", 2, 1);
     }
 }, {
     "name": "aurora beam",
@@ -53,7 +53,7 @@ let moves = [{
     "acc": 100,
     "pp": 20,
     "effect": function () {
-        modifyStats(false, "atk", -1, 1 / 3)
+        modifyStats(false, "atk", -1, 1 / 3);
     }
 }, {
     "name": "barrage",
@@ -70,7 +70,7 @@ let moves = [{
     "acc": -1,
     "pp": 30,
     "effect": function () {
-        modifyStats(true, "def", 2, 1)
+        modifyStats(true, "def", 2, 1);
     }
 }, {
     "name": "bide",
@@ -99,14 +99,20 @@ let moves = [{
     "category": "",
     "power": 120,
     "acc": 90,
-    "pp": 5
+    "pp": 5,
+    "effect": function () {
+        modifyStatus("frz", 0.1);
+    }
 }, {
     "name": "body slam",
     "type": "normal",
     "category": "",
     "power": 85,
     "acc": 100,
-    "pp": 15
+    "pp": 15,
+    "effect": function () {
+        if (!getStats(getPkmn(false).name).type.includes("normal")) modifyStatus("par", 0.3);
+    }
 }, {
     "name": "bone club",
     "type": "ground",
@@ -724,7 +730,10 @@ let moves = [{
     "category": "",
     "power": 90,
     "acc": 100,
-    "pp": 10
+    "pp": 10,
+    "effect": function () {
+        modifyStats(false, "sp", -1, 1 / 3);
+    }
 }, {
     "name": "psywave",
     "type": "psychic",
@@ -852,8 +861,8 @@ let moves = [{
     "power": 130,
     "acc": 100,
     "pp": 5,
-    "effect":function(){
-        getPkmn(true).hp=0
+    "effect": function () {
+        getPkmn(true).hp = 0;
     }
 }, {
     "name": "sharpen",

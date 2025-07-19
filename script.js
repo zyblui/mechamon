@@ -130,6 +130,7 @@ document.getElementById("startGame").addEventListener("click", function () {
             j.defStage = 0;
             j.spStage = 0;
             j.speStage = 0;
+            j.status = []
         }
     }
     nextTurn();
@@ -208,6 +209,7 @@ for (let i = 0; i < 4; i++) {
     document.getElementsByClassName("decisionMove")[i].addEventListener("click", function () {
         addMainText(capitalize(players[playerToMove].build[battleInfo[playerToMove].currentPokemon].name) + " used <strong>" + document.getElementsByClassName("decisionMove")[i].innerText + "</strong>!")
         for (let k of moves) if (capitalize(k.name) == document.getElementsByClassName("decisionMove")[i].innerText) {
+            let criticalHitRatioMultiplier = 1
             if (k.category != "status" && Math.random() > k.acc) {
                 addSmallText(capitalize(getPkmn(true).name) + "'s attack missed!")
                 break;
@@ -228,11 +230,17 @@ for (let i = 0; i < 4; i++) {
                         addSmallText("It's not very effective...");
                         break;
                     case 0:
-                        addSmallText("It doesn't affect ...");
+                        addSmallText("It doesn't affect " + capitalize(getPkmn(false).name) + "...");
                 }
                 getPkmn(false).hp -= Math.min(calculateDmg(k.power, getStats(getPkmn(true).name).atk, getStats(getPkmn(false).name).def, k.type, getStats(getPkmn(false).name).type), getPkmn(false).hp);
             }
             if (k.effect) k.effect();
+            if (k.category != "status") {
+                if (Math.random() < criticalHitRatioMultiplier * getPkmn(true).spe * 100 / 512) {
+                    getPkmn(false).hp -= Math.min(calculateDmg(k.power, getStats(getPkmn(true).name).atk, getStats(getPkmn(false).name).def, k.type, getStats(getPkmn(false).name).type), getPkmn(false).hp);
+                    addSmallText("A critical hit!");
+                }
+            }
             if (getPkmn(false).hp <= 0) {
                 getPkmn(false).hp = 0;
                 if (playerToMove == 0) document.getElementById("p2Pokemon").style.backgroundImage = "none";
@@ -294,7 +302,7 @@ function renderHP() {
     for (let i of properties) {
         if (battleInfo[0].currentPokemon != -1 && battleInfo[0].build[battleInfo[0].currentPokemon][i + "Stage"] != 0) {
             let span = document.createElement("span");
-            if (STAGE_MULTIPLIER[battleInfo[0].build[battleInfo[0].currentPokemon][i + "Stage"]] > 0) {
+            if (battleInfo[0].build[battleInfo[0].currentPokemon][i + "Stage"] > 0) {
                 span.classList.add("buff");
             } else {
                 span.classList.add("debuff");
@@ -304,7 +312,7 @@ function renderHP() {
         }
         if (battleInfo[1].currentPokemon != -1 && battleInfo[1].build[battleInfo[1].currentPokemon][i + "Stage"] != 0) {
             let span = document.createElement("span");
-            if (STAGE_MULTIPLIER[battleInfo[1].build[battleInfo[1].currentPokemon][i + "Stage"]] > 0) {
+            if (battleInfo[1].build[battleInfo[1].currentPokemon][i + "Stage"] > 0) {
                 span.classList.add("buff");
             } else {
                 span.classList.add("debuff");
@@ -353,5 +361,11 @@ function modifyStats(isSelf, stat, delta, prob) {
         else if (delta == -1) word = "fell";
         else word = "fell sharply"
         addSmallText(capitalize(getPkmn(isSelf).name) + "'s " + STAT_NAMES[stat] + " " + word + "!")
+    }
+}
+function modifyStatus(status, prob) {
+    let rand = Math.random();
+    if (rand < prob && !getPkmn(false).status.contains(status)) {
+        getPkmn(false).status.push(status)
     }
 }
