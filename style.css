@@ -98,7 +98,7 @@ body {
 .inner-bar {
     width: 300px;
     background-color: green;
-    height: 15px
+    height: 15px;
 }
 
 .name {
@@ -114,7 +114,31 @@ body {
     }
 
     & span.debuff {
-        color: red
+        color: red;
+    }
+
+    & span.tox {
+        color: #c040c8;
+    }
+
+    & span.psn {
+        color: #c040c8;
+    }
+
+    & span.brn {
+        color: #e05848;
+    }
+
+    & span.frz {
+        color: #009898;
+    }
+
+    & span.par {
+        color: #e8a800;
+    }
+
+    & span.slp {
+        color: #687060;
     }
 }
 

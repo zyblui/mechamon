@@ -173,6 +173,10 @@ function nextPlayer() {
     if (isNewTurn) {
         isNewTurn = false;
         playerToMove = (playerToMove == 0) ? 1 : 0;
+        if (getPkmn(true).status.includes("par") && Math.random() < 1 / 4) {
+            addSmallText(capitalize(getPkmn(true).name) + " is paralyzed! It cannot move!")
+            nextPlayer();
+        }
     } else {
         nextTurn();
     }
@@ -188,12 +192,20 @@ function nextTurn() {
     if (battleInfo[1].currentPokemon == -1 && battleInfo[0].currentPokemon == -1) playerToMove = Math.round(Math.random())
     else if (battleInfo[1].currentPokemon == -1) playerToMove = 1;
     else if (battleInfo[0].currentPokemon == -1) playerToMove = 0;
-    else if (getStats(battleInfo[0].build[battleInfo[0].currentPokemon].name).spe * STAGE_MULTIPLIER[battleInfo[0].build[battleInfo[0].currentPokemon].speStage] > getStats(battleInfo[1].build[battleInfo[1].currentPokemon].name).spe * STAGE_MULTIPLIER[battleInfo[1].build[battleInfo[1].currentPokemon].speStage]) {
-        playerToMove = 0
-    } else if (getStats(battleInfo[0].build[battleInfo[0].currentPokemon].name).spe * STAGE_MULTIPLIER[battleInfo[0].build[battleInfo[0].currentPokemon].speStage] < getStats(battleInfo[1].build[battleInfo[1].currentPokemon].name).spe * STAGE_MULTIPLIER[battleInfo[1].build[battleInfo[1].currentPokemon].speStage]) {
-        playerToMove = 1
-    } else {
-        playerToMove = Math.round(Math.random());
+    else {
+        let p1Spe = getStats(battleInfo[0].build[battleInfo[0].currentPokemon].name).spe * STAGE_MULTIPLIER[battleInfo[0].build[battleInfo[0].currentPokemon].speStage] * ((battleInfo[0].build[battleInfo[0].currentPokemon].status.includes("par")) ? 0.25 : 1)
+        let p2Spe = getStats(battleInfo[1].build[battleInfo[1].currentPokemon].name).spe * STAGE_MULTIPLIER[battleInfo[1].build[battleInfo[1].currentPokemon].speStage] * ((battleInfo[1].build[battleInfo[1].currentPokemon].status.includes("par")) ? 0.25 : 1)
+        if (p1Spe > p2Spe) {
+            playerToMove = 0;
+        } else if (p1Spe < p2Spe) {
+            playerToMove = 1;
+        } else {
+            playerToMove = Math.round(Math.random());
+        }
+    }
+    if (getPkmn(true).status.includes("par") && Math.random() < 1 / 4) {
+        addSmallText(capitalize(getPkmn(true).name) + " is paralyzed! It cannot move!");
+        nextPlayer();
     }
 }
 function getStats(name) {
@@ -209,13 +221,16 @@ for (let i = 0; i < 4; i++) {
     document.getElementsByClassName("decisionMove")[i].addEventListener("click", function () {
         addMainText(capitalize(players[playerToMove].build[battleInfo[playerToMove].currentPokemon].name) + " used <strong>" + document.getElementsByClassName("decisionMove")[i].innerText + "</strong>!")
         for (let k of moves) if (capitalize(k.name) == document.getElementsByClassName("decisionMove")[i].innerText) {
-            let criticalHitRatioMultiplier = 1
-            if (k.category != "status" && Math.random() > k.acc) {
+            let criticalHitRatioMultiplier = 1;
+            if (k.category != "status" && Math.random() > k.acc / 100) {
                 addSmallText(capitalize(getPkmn(true).name) + "'s attack missed!")
                 break;
             }
+            let dmg = 0;
+            if (k.category == "physical") dmg = calculateDmg(k.power, getStats(getPkmn(true).name).atk, getStats(getPkmn(false).name).def, k.type, getStats(getPkmn(false).name).type);
+            else dmg = calculateDmg(k.power, getStats(getPkmn(true).name).sp, getStats(getPkmn(false).name).sp, k.type, getStats(getPkmn(false).name).type);
             if (k.category != "status") {
-                addSmallText("(" + capitalize(getPkmn(false).name) + " lost " + (Math.min(calculateDmg(k.power, getStats(getPkmn(true).name).atk, getStats(getPkmn(false).name).def, k.type, getStats(getPkmn(false).name).type), getPkmn(false).hp) / getPkmn(false).maxHp * 100).toFixed(0) + "% of its health!)");
+                addSmallText("(" + capitalize(getPkmn(false).name) + " lost " + (Math.min(dmg, getPkmn(false).hp) / getPkmn(false).maxHp * 100).toFixed(0) + "% of its health!)");
                 switch (calculateEffectiveness(k.type, getStats(getPkmn(false).name).type)) {
                     case 4:
                         addSmallText("It's super effective!");
@@ -232,12 +247,12 @@ for (let i = 0; i < 4; i++) {
                     case 0:
                         addSmallText("It doesn't affect " + capitalize(getPkmn(false).name) + "...");
                 }
-                getPkmn(false).hp -= Math.min(calculateDmg(k.power, getStats(getPkmn(true).name).atk, getStats(getPkmn(false).name).def, k.type, getStats(getPkmn(false).name).type), getPkmn(false).hp);
+                getPkmn(false).hp -= Math.min(dmg, getPkmn(false).hp);
             }
             if (k.effect) k.effect();
             if (k.category != "status") {
                 if (Math.random() < criticalHitRatioMultiplier * getPkmn(true).spe * 100 / 512) {
-                    getPkmn(false).hp -= Math.min(calculateDmg(k.power, getStats(getPkmn(true).name).atk, getStats(getPkmn(false).name).def, k.type, getStats(getPkmn(false).name).type), getPkmn(false).hp);
+                    getPkmn(false).hp -= Math.min(dmg, getPkmn(false).hp);
                     addSmallText("A critical hit!");
                 }
             }
@@ -321,6 +336,19 @@ function renderHP() {
             document.getElementById("p2Status").appendChild(span);
         }
     }
+    let status = ["par", "tox", "psn", "slp", "frz", "brn"]
+    if (battleInfo[0].currentPokemon != -1) for (let i of battleInfo[0].build[battleInfo[0].currentPokemon].status) {
+        let span = document.createElement("span");
+        span.innerText = "[" + i.toUpperCase() + "]";
+        span.classList.add(i);
+        document.getElementById("p1Status").appendChild(span);
+    }
+    if (battleInfo[1].currentPokemon != -1) for (let i of battleInfo[1].build[battleInfo[1].currentPokemon].status) {
+        let span = document.createElement("span");
+        span.innerText = "[" + i.toUpperCase() + "]";
+        span.classList.add(i);
+        document.getElementById("p2Status").appendChild(span);
+    }
 }
 function renderTable() {
     for (let i = 0; i < 6; i++) {
@@ -365,7 +393,7 @@ function modifyStats(isSelf, stat, delta, prob) {
 }
 function modifyStatus(status, prob) {
     let rand = Math.random();
-    if (rand < prob && !getPkmn(false).status.contains(status)) {
+    if (rand < prob && !getPkmn(false).status.includes(status)) {
         getPkmn(false).status.push(status)
     }
 }

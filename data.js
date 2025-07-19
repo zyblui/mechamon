@@ -317,7 +317,10 @@ let moves = [{
     "category": "",
     "power": 40,
     "acc": 100,
-    "pp": 25
+    "pp": 25,
+    "effect": function () {
+        modifyStatus("brn", 0.1);
+    }
 }, {
     "name": "explosion",
     "type": "normal",
@@ -338,14 +341,20 @@ let moves = [{
     "category": "",
     "power": 120,
     "acc": 85,
-    "pp": 5
+    "pp": 5,
+    "effect": function () {
+        modifyStatus("brn", 0.3);
+    }
 }, {
     "name": "fire punch",
     "type": "fire",
     "category": "",
     "power": 75,
     "acc": 100,
-    "pp": 15
+    "pp": 15,
+    "effect": function () {
+        modifyStatus("brn", 0.1);
+    }
 }, {
     "name": "fire spin",
     "type": "fire",
@@ -366,7 +375,10 @@ let moves = [{
     "category": "",
     "power": 95,
     "acc": 100,
-    "pp": 15
+    "pp": 15,
+    "effect": function () {
+        modifyStatus("brn", 0.1);
+    }
 }, {
     "name": "flash",
     "type": "normal",
@@ -405,10 +417,13 @@ let moves = [{
 }, {
     "name": "glare",
     "type": "normal",
-    "category": "",
+    "category": "status",
     "power": 0,
     "acc": 75,
-    "pp": 30
+    "pp": 30,
+    "effect": function () {
+        modifyStatus("par", 1);
+    }
 }, {
     "name": "growl",
     "type": "normal",
@@ -569,7 +584,10 @@ let moves = [{
     "category": "",
     "power": 20,
     "acc": 100,
-    "pp": 30
+    "pp": 30,
+    "effect": function () {
+        modifyStatus("par", 0.3);
+    }
 }, {
     "name": "light screen",
     "type": "psychic",
@@ -790,7 +808,7 @@ let moves = [{
 }, {
     "name": "rest",
     "type": "psychic",
-    "category": "",
+    "category": "status",
     "power": 0,
     "acc": -1,
     "pp": 10
@@ -937,10 +955,14 @@ let moves = [{
 }, {
     "name": "soft-boiled",
     "type": "normal",
-    "category": "",
+    "category": "status",
     "power": 0,
     "acc": -1,
-    "pp": 10
+    "pp": 10,
+    "effect": function () {
+        let hpLost = getPkmn(true).maxHp - getPkmn(true).hp;
+        if (hpLost != 255 && hpLost != 511) getPkmn(true).hp += Math.min(getPkmn(true).maxHp / 2, hpLost);
+    }
 }, {
     "name": "solar beam",
     "type": "grass",
@@ -1010,7 +1032,10 @@ let moves = [{
     "category": "",
     "power": 0,
     "acc": 75,
-    "pp": 30
+    "pp": 30,
+    "effect": function () {
+        modifyStatus("par", 1);
+    }
 }, {
     "name": "submission",
     "type": "fighting",
@@ -1076,7 +1101,10 @@ let moves = [{
     "category": "",
     "power": 0,
     "acc": 100,
-    "pp": 30
+    "pp": 30,
+    "effect": function () {
+        modifyStats(false, "def", -1, 1);
+    }
 }, {
     "name": "take down",
     "type": "normal",
@@ -1101,38 +1129,53 @@ let moves = [{
 }, {
     "name": "thunder",
     "type": "electric",
-    "category": "",
+    "category": "special",
     "power": 120,
     "acc": 70,
-    "pp": 10
+    "pp": 10,
+    "effect": function () {
+        modifyStatus("par", 0.1);
+    }
 }, {
     "name": "thunder punch",
     "type": "electric",
-    "category": "",
+    "category": "special",
     "power": 75,
     "acc": 100,
-    "pp": 15
+    "pp": 15,
+    "effect": function () {
+        modifyStatus("par", 0.1);
+    }
 }, {
     "name": "thunder shock",
     "type": "electric",
-    "category": "",
+    "category": "special",
     "power": 40,
     "acc": 100,
-    "pp": 30
+    "pp": 30,
+    "effect": function () {
+        modifyStatus("par", 0.1);
+    }
 }, {
     "name": "thunder wave",
     "type": "electric",
-    "category": "",
+    "category": "status",
     "power": 0,
     "acc": 100,
-    "pp": 20
+    "pp": 20,
+    "effect": function () {
+        modifyStatus("par", 1);
+    }
 }, {
     "name": "thunderbolt",
     "type": "electric",
-    "category": "",
+    "category": "special",
     "power": 95,
     "acc": 100,
-    "pp": 15
+    "pp": 15,
+    "effect": function () {
+        modifyStatus("par", 0.1);
+    }
 }, {
     "name": "toxic",
     "type": "poison",
