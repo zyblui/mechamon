@@ -114,7 +114,6 @@ function refreshDecision() {
 }
 let turn = 0, playerToMove = 0, battleInfo = [];
 document.getElementById("startGame").addEventListener("click", function () {
-    nextTurn();
     battleInfo = JSON.parse(JSON.stringify(players));
     battleInfo[0].currentPokemon = 0;
     battleInfo[1].currentPokemon = 0;
@@ -133,6 +132,7 @@ document.getElementById("startGame").addEventListener("click", function () {
             j.speStage = 0;
         }
     }
+    nextTurn();
     refreshDecision();
 })
 function addMainText(str) {
@@ -163,18 +163,37 @@ for (let i = 0; i < 6; i++) {
         battleInfo[playerToMove].currentPokemon = i;
         render();
         renderHP();
-        playerToMove = (playerToMove == 0) ? 1 : 0;
-        if (playerToMove == 0) nextTurn();
+        nextPlayer();
         refreshDecision();
     })
 }
+let isNewTurn = false;
+function nextPlayer() {
+    if (isNewTurn) {
+        isNewTurn = false;
+        playerToMove = (playerToMove == 0) ? 1 : 0;
+    } else {
+        nextTurn();
+    }
+}
 function nextTurn() {
     turn++;
+    isNewTurn = true;
     document.getElementById("turnNumber").innerText = "Turn " + turn;
     let h2 = document.createElement("h2");
     h2.classList.add("turn-number");
     h2.innerText = "Turn " + turn;
-    document.getElementById("record").appendChild(h2)
+    document.getElementById("record").appendChild(h2);
+    if (battleInfo[1].currentPokemon == -1 && battleInfo[0].currentPokemon == -1) playerToMove = Math.round(Math.random())
+    else if (battleInfo[1].currentPokemon == -1) playerToMove = 1;
+    else if (battleInfo[0].currentPokemon == -1) playerToMove = 0;
+    else if (getStats(battleInfo[0].build[battleInfo[0].currentPokemon].name).spe * STAGE_MULTIPLIER[battleInfo[0].build[battleInfo[0].currentPokemon].speStage] > getStats(battleInfo[1].build[battleInfo[1].currentPokemon].name).spe * STAGE_MULTIPLIER[battleInfo[1].build[battleInfo[1].currentPokemon].speStage]) {
+        playerToMove = 0
+    } else if (getStats(battleInfo[0].build[battleInfo[0].currentPokemon].name).spe * STAGE_MULTIPLIER[battleInfo[0].build[battleInfo[0].currentPokemon].speStage] < getStats(battleInfo[1].build[battleInfo[1].currentPokemon].name).spe * STAGE_MULTIPLIER[battleInfo[1].build[battleInfo[1].currentPokemon].speStage]) {
+        playerToMove = 1
+    } else {
+        playerToMove = Math.round(Math.random());
+    }
 }
 function getStats(name) {
     for (let i of pokemon) {
@@ -188,42 +207,50 @@ function getPkmn(isSelf) {
 for (let i = 0; i < 4; i++) {
     document.getElementsByClassName("decisionMove")[i].addEventListener("click", function () {
         addMainText(capitalize(players[playerToMove].build[battleInfo[playerToMove].currentPokemon].name) + " used <strong>" + document.getElementsByClassName("decisionMove")[i].innerText + "</strong>!")
-        for (let k of moves) {
-            if (capitalize(k.name) == document.getElementsByClassName("decisionMove")[i].innerText) {
-                if (k.category != "status") {
-                    addSmallText("(" + capitalize(getPkmn(false).name) + " lost " + (Math.min(calculateDmg(k.power, getStats(getPkmn(true).name).atk, getStats(getPkmn(false).name).def, k.type, getStats(getPkmn(false).name).type), getPkmn(false).hp) / getPkmn(false).maxHp * 100).toFixed(0) + "% of its health!)");
-                    switch (calculateEffectiveness(k.type, getStats(getPkmn(false).name).type)) {
-                        case 4:
-                            addSmallText("It's super effective!")
-                            break;
-                        case 2:
-                            addSmallText("It's super effective!")
-                            break;
-                        case 0.5:
-                            addSmallText("It's not very effective...")
-                            break;
-                        case 0.25:
-                            addSmallText("It's not very effective...")
-                            break;
-                        case 0:
-                            addSmallText("It doesn't affect ...")
-                    }
-                    getPkmn(false).hp -= Math.min(calculateDmg(k.power, getStats(getPkmn(true).name).atk, getStats(getPkmn(false).name).def, k.type, getStats(getPkmn(false).name).type), getPkmn(false).hp);
-                }
-                if (k.effect) k.effect();
-                if (getPkmn(false).hp <= 0) {
-                    getPkmn(false).hp = 0;
-                    if (playerToMove == 0) document.getElementById("p2Pokemon").style.backgroundImage = "none";
-                    else document.getElementById("p1Pokemon").style.backgroundImage = "none";
-                    addMainText(capitalize(getPkmn(false).name) + " fainted!");
-                    battleInfo[(playerToMove == 0) ? 1 : 0].currentPokemon = -1;
-                }
+        for (let k of moves) if (capitalize(k.name) == document.getElementsByClassName("decisionMove")[i].innerText) {
+            if (k.category != "status" && Math.random() > k.acc) {
+                addSmallText(capitalize(getPkmn(true).name) + "'s attack missed!")
                 break;
             }
+            if (k.category != "status") {
+                addSmallText("(" + capitalize(getPkmn(false).name) + " lost " + (Math.min(calculateDmg(k.power, getStats(getPkmn(true).name).atk, getStats(getPkmn(false).name).def, k.type, getStats(getPkmn(false).name).type), getPkmn(false).hp) / getPkmn(false).maxHp * 100).toFixed(0) + "% of its health!)");
+                switch (calculateEffectiveness(k.type, getStats(getPkmn(false).name).type)) {
+                    case 4:
+                        addSmallText("It's super effective!");
+                        break;
+                    case 2:
+                        addSmallText("It's super effective!");
+                        break;
+                    case 0.5:
+                        addSmallText("It's not very effective...");
+                        break;
+                    case 0.25:
+                        addSmallText("It's not very effective...");
+                        break;
+                    case 0:
+                        addSmallText("It doesn't affect ...");
+                }
+                getPkmn(false).hp -= Math.min(calculateDmg(k.power, getStats(getPkmn(true).name).atk, getStats(getPkmn(false).name).def, k.type, getStats(getPkmn(false).name).type), getPkmn(false).hp);
+            }
+            if (k.effect) k.effect();
+            if (getPkmn(false).hp <= 0) {
+                getPkmn(false).hp = 0;
+                if (playerToMove == 0) document.getElementById("p2Pokemon").style.backgroundImage = "none";
+                else document.getElementById("p1Pokemon").style.backgroundImage = "none";
+                addMainText(capitalize(getPkmn(false).name) + " fainted!");
+                battleInfo[(playerToMove == 0) ? 1 : 0].currentPokemon = -1;
+            }
+            if (getPkmn(true).hp <= 0) {
+                getPkmn(true).hp = 0;
+                if (playerToMove == 1) document.getElementById("p2Pokemon").style.backgroundImage = "none";
+                else document.getElementById("p1Pokemon").style.backgroundImage = "none";
+                addMainText(capitalize(getPkmn(true).name) + " fainted!");
+                battleInfo[playerToMove].currentPokemon = -1;
+            }
+            break;
         }
         renderHP();
-        playerToMove = (playerToMove == 0) ? 1 : 0;
-        if (playerToMove == 0) nextTurn();
+        nextPlayer()
         refreshDecision();
     })
 }
@@ -265,7 +292,7 @@ function renderHP() {
     document.getElementById("p2Status").innerHTML = "";
     let properties = ["atk", "def", "sp", "spe"];
     for (let i of properties) {
-        if (battleInfo[0].build[battleInfo[0].currentPokemon][i + "Stage"] != 0) {
+        if (battleInfo[0].currentPokemon != -1 && battleInfo[0].build[battleInfo[0].currentPokemon][i + "Stage"] != 0) {
             let span = document.createElement("span");
             if (STAGE_MULTIPLIER[battleInfo[0].build[battleInfo[0].currentPokemon][i + "Stage"]] > 0) {
                 span.classList.add("buff");
@@ -275,7 +302,7 @@ function renderHP() {
             span.innerText = "[" + capitalize(i) + " x" + Number(STAGE_MULTIPLIER[battleInfo[0].build[battleInfo[0].currentPokemon][i + "Stage"]].toFixed(2)) + "]"
             document.getElementById("p1Status").appendChild(span);
         }
-        if (battleInfo[1].build[battleInfo[1].currentPokemon][i + "Stage"] != 0) {
+        if (battleInfo[1].currentPokemon != -1 && battleInfo[1].build[battleInfo[1].currentPokemon][i + "Stage"] != 0) {
             let span = document.createElement("span");
             if (STAGE_MULTIPLIER[battleInfo[1].build[battleInfo[1].currentPokemon][i + "Stage"]] > 0) {
                 span.classList.add("buff");
@@ -307,7 +334,7 @@ for (let i of document.getElementsByClassName("tab")) {
         document.querySelector(".tab.tab-selected").classList.remove("tab-selected");
         i.classList.add("tab-selected");
         document.querySelector(".tab-content.tab-show").classList.remove("tab-show");
-        document.querySelector(".tab-content[data-for='" + i.dataset.for + "']").classList.add("tab-show")
+        document.querySelector(".tab-content[data-for='" + i.dataset.for + "']").classList.add("tab-show");
     })
 }
 const STAT_NAMES = {
