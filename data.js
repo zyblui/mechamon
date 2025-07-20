@@ -65,7 +65,7 @@ let moves = [{
 }, {
     "name": "barrier",
     "type": "psychic",
-    "category": "",
+    "category": "status",
     "power": 0,
     "acc": -1,
     "pp": 30,
@@ -96,7 +96,7 @@ let moves = [{
 }, {
     "name": "blizzard",
     "type": "ice",
-    "category": "",
+    "category": "special",
     "power": 120,
     "acc": 90,
     "pp": 5,
@@ -106,7 +106,7 @@ let moves = [{
 }, {
     "name": "body slam",
     "type": "normal",
-    "category": "",
+    "category": "physical",
     "power": 85,
     "acc": 100,
     "pp": 15,
@@ -140,7 +140,7 @@ let moves = [{
 }, {
     "name": "bubble beam",
     "type": "water",
-    "category": "",
+    "category": "special",
     "power": 65,
     "acc": 100,
     "pp": 20,
@@ -178,7 +178,7 @@ let moves = [{
 }, {
     "name": "constrict",
     "type": "normal",
-    "category": "",
+    "category": "physical",
     "power": 10,
     "acc": 100,
     "pp": 35,
@@ -216,7 +216,7 @@ let moves = [{
 }, {
     "name": "defense curl",
     "type": "normal",
-    "category": "",
+    "category": "status",
     "power": 0,
     "acc": -1,
     "pp": 40,
@@ -275,7 +275,7 @@ let moves = [{
 }, {
     "name": "dragon rage",
     "type": "dragon",
-    "category": "",
+    "category": "special",
     "power": 1,
     "acc": 100,
     "pp": 10,
@@ -314,7 +314,7 @@ let moves = [{
 }, {
     "name": "ember",
     "type": "fire",
-    "category": "",
+    "category": "special",
     "power": 40,
     "acc": 100,
     "pp": 25,
@@ -324,21 +324,21 @@ let moves = [{
 }, {
     "name": "explosion",
     "type": "normal",
-    "category": "",
+    "category": "physical",
     "power": 170,
     "acc": 100,
     "pp": 5,
     "effect": function () {
         getPkmn(true).hp = 0;
-        if (playerToMove == 0) document.getElementById("p1Pokemon").style.backgroundImage = "none";
+        /*if (playerToMove == 0) document.getElementById("p1Pokemon").style.backgroundImage = "none";
         else document.getElementById("p2Pokemon").style.backgroundImage = "none";
         addMainText(capitalize(getPkmn(true).name) + " fainted!");
-        battleInfo[playerToMove].currentPokemon = -1;
+        battleInfo[playerToMove].currentPokemon = -1;*/
     }
 }, {
     "name": "fire blast",
     "type": "fire",
-    "category": "",
+    "category": "special",
     "power": 120,
     "acc": 85,
     "pp": 5,
@@ -348,7 +348,7 @@ let moves = [{
 }, {
     "name": "fire punch",
     "type": "fire",
-    "category": "",
+    "category": "special",
     "power": 75,
     "acc": 100,
     "pp": 15,
@@ -358,7 +358,7 @@ let moves = [{
 }, {
     "name": "fire spin",
     "type": "fire",
-    "category": "",
+    "category": "special",
     "power": 15,
     "acc": 70,
     "pp": 15
@@ -372,7 +372,7 @@ let moves = [{
 }, {
     "name": "flamethrower",
     "type": "fire",
-    "category": "",
+    "category": "special",
     "power": 95,
     "acc": 100,
     "pp": 15,
@@ -518,10 +518,13 @@ let moves = [{
 }, {
     "name": "hypnosis",
     "type": "psychic",
-    "category": "",
+    "category": "status",
     "power": 0,
     "acc": 60,
-    "pp": 20
+    "pp": 20,
+    "effect": function () {
+        putToSleep(false, Math.ceil(Math.random() * 7))
+    }
 }, {
     "name": "ice beam",
     "type": "ice",
@@ -581,7 +584,7 @@ let moves = [{
 }, {
     "name": "lick",
     "type": "ghost",
-    "category": "",
+    "category": "physical",
     "power": 20,
     "acc": 100,
     "pp": 30,
@@ -598,10 +601,13 @@ let moves = [{
 }, {
     "name": "lovely kiss",
     "type": "normal",
-    "category": "",
+    "category": "status",
     "power": 0,
     "acc": 75,
-    "pp": 10
+    "pp": 10,
+    "effect": function () {
+        putToSleep(false, Math.ceil(Math.random() * 7))
+    }
 }, {
     "name": "low kick",
     "type": "fighting",
@@ -710,24 +716,33 @@ let moves = [{
 }, {
     "name": "poison gas",
     "type": "poison",
-    "category": "",
+    "category": "status",
     "power": 0,
     "acc": 55,
-    "pp": 40
+    "pp": 40,
+    "effect": function () {
+        modifyStatus("psn", 1);
+    }
 }, {
     "name": "poison powder",
     "type": "poison",
-    "category": "",
+    "category": "status",
     "power": 0,
     "acc": 75,
-    "pp": 35
+    "pp": 35,
+    "effect": function () {
+        modifyStatus("psn", 1);
+    }
 }, {
     "name": "poison sting",
     "type": "poison",
-    "category": "",
+    "category": "physical",
     "power": 15,
     "acc": 100,
-    "pp": 35
+    "pp": 35,
+    "effect": function () {
+        modifyStatus("psn", 0.2);
+    }
 }, {
     "name": "pound",
     "type": "normal",
@@ -745,7 +760,7 @@ let moves = [{
 }, {
     "name": "psychic",
     "type": "psychic",
-    "category": "",
+    "category": "special",
     "power": 90,
     "acc": 100,
     "pp": 10,
@@ -796,7 +811,10 @@ let moves = [{
     "pp": 20,
     "effect": function () {
         let hpLost = getPkmn(true).maxHp - getPkmn(true).hp;
-        if (hpLost != 255 && hpLost != 511) getPkmn(true).hp += Math.min(getPkmn(true).maxHp / 2, hpLost);
+        if (hpLost != 255 && hpLost != 511) {
+            getPkmn(true).hp += Math.min(getPkmn(true).maxHp / 2, hpLost);
+            addSmallText(capitalize(getPkmn(true).name) + " had its HP restored.")
+        }
     }
 }, {
     "name": "reflect",
@@ -811,7 +829,15 @@ let moves = [{
     "category": "status",
     "power": 0,
     "acc": -1,
-    "pp": 10
+    "pp": 10,
+    "effect": function () {
+        let hpLost = getPkmn(true).maxHp - getPkmn(true).hp;
+        if (hpLost != 255 && hpLost != 511) {
+            getPkmn(true).hp = getPkmn(true).maxHp;
+            addSmallText(capitalize(getPkmn(true).name) + " had its HP restored.")
+            putToSleep(true, 2);
+        }
+    }
 }, {
     "name": "roar",
     "type": "normal",
@@ -895,7 +921,10 @@ let moves = [{
     "category": "",
     "power": 0,
     "acc": 55,
-    "pp": 15
+    "pp": 15,
+    "effect": function () {
+        putToSleep(false, Math.ceil(Math.random() * 7))
+    }
 }, {
     "name": "skull bash",
     "type": "normal",
@@ -927,24 +956,33 @@ let moves = [{
 }, {
     "name": "sleep powder",
     "type": "grass",
-    "category": "",
+    "category": "status",
     "power": 0,
     "acc": 75,
-    "pp": 15
+    "pp": 15,
+    "effect": function () {
+        putToSleep(false, Math.ceil(Math.random() * 7))
+    }
 }, {
     "name": "sludge",
     "type": "poison",
-    "category": "",
+    "category": "physical",
     "power": 65,
     "acc": 100,
-    "pp": 20
+    "pp": 20,
+    "effect": function () {
+        modifyStatus("psn", 0.4);
+    }
 }, {
     "name": "smog",
     "type": "poison",
-    "category": "",
+    "category": "physical",
     "power": 20,
     "acc": 70,
-    "pp": 20
+    "pp": 20,
+    "effect": function () {
+        modifyStatus("psn", 0.3);
+    }
 }, {
     "name": "smokescreen",
     "type": "normal",
@@ -994,10 +1032,13 @@ let moves = [{
 }, {
     "name": "spore",
     "type": "grass",
-    "category": "",
+    "category": "status",
     "power": 0,
     "acc": 100,
-    "pp": 15
+    "pp": 15,
+    "effect": function () {
+        putToSleep(false, Math.ceil(Math.random() * 7))
+    }
 }, {
     "name": "stomp",
     "type": "normal",
@@ -1182,7 +1223,10 @@ let moves = [{
     "category": "",
     "power": 0,
     "acc": 85,
-    "pp": 10
+    "pp": 10,
+    "effect": function () {
+        modifyStatus("tox", 1);
+    }
 }, {
     "name": "transform",
     "type": "normal",

@@ -46,10 +46,10 @@ document.getElementById("p2Pokemon").style.backgroundImage = "url('front/" + pla
 document.getElementById("p1Name").innerText = capitalize(players[0].build[0].name);
 document.getElementById("p2Name").innerText = capitalize(players[1].build[0].name);
 function render() {
-    document.getElementById("p1Pokemon").style.backgroundImage = "url('back/" + players[0].build[battleInfo[0].currentPokemon].name + ".png')";
-    document.getElementById("p2Pokemon").style.backgroundImage = "url('front/" + players[1].build[battleInfo[1].currentPokemon].name + ".png')";
-    document.getElementById("p1Name").innerText = capitalize(players[0].build[battleInfo[0].currentPokemon].name);
-    document.getElementById("p2Name").innerText = capitalize(players[1].build[battleInfo[1].currentPokemon].name);
+    if (battleInfo[0].currentPokemon != -1) document.getElementById("p1Pokemon").style.backgroundImage = "url('back/" + players[0].build[battleInfo[0].currentPokemon].name + ".png')";
+    if (battleInfo[1].currentPokemon != -1) document.getElementById("p2Pokemon").style.backgroundImage = "url('front/" + players[1].build[battleInfo[1].currentPokemon].name + ".png')";
+    if (battleInfo[0].currentPokemon != -1) document.getElementById("p1Name").innerText = capitalize(players[0].build[battleInfo[0].currentPokemon].name);
+    if (battleInfo[1].currentPokemon != -1) document.getElementById("p2Name").innerText = capitalize(players[1].build[battleInfo[1].currentPokemon].name);
 }
 function capitalize(str) {
     let temp = str.split(" ");
@@ -130,7 +130,8 @@ document.getElementById("startGame").addEventListener("click", function () {
             j.defStage = 0;
             j.spStage = 0;
             j.speStage = 0;
-            j.status = []
+            j.status = "";
+            j.sleepTurns = 0;
         }
     }
     nextTurn();
@@ -170,18 +171,33 @@ for (let i = 0; i < 6; i++) {
 }
 let isNewTurn = false;
 function nextPlayer() {
+    if (getPkmn(true)?.status == "psn") getPkmn(true).hp -= Math.min(getPkmn(true).hp / 16, getPkmn(true).hp);
+    else if (getPkmn(true)?.status == "tox") getPkmn(true).hp -= Math.min(getPkmn(true).hp / 8, getPkmn(true).hp);
+    judgeHP();
     if (isNewTurn) {
         isNewTurn = false;
         playerToMove = (playerToMove == 0) ? 1 : 0;
-        if (getPkmn(true).status.includes("par") && Math.random() < 1 / 4) {
-            addSmallText(capitalize(getPkmn(true).name) + " is paralyzed! It cannot move!")
-            nextPlayer();
-        }
     } else {
         nextTurn();
     }
+    if (getPkmn(true)?.status == "par" && Math.random() < 1 / 4) {
+        addMainText(capitalize(getPkmn(true).name) + " is paralyzed! It can't move!")
+        nextPlayer();
+    } else if (getPkmn(true)?.status == "slp") {
+        getPkmn(true).sleepTurns--;
+        if (getPkmn(true).sleepTurns > 0) {
+            addMainText(capitalize(getPkmn(true).name) + " is fast asleep.");
+        } else if (getPkmn(true).sleepTurns == 0) {
+            addMainText(capitalize(getPkmn(true).name) + " woke up!");
+            getPkmn(true).status = "";
+        }
+        nextPlayer();
+    }
 }
 function nextTurn() {
+    if (getPkmn(true)?.status == "brn") getPkmn(true).hp -= Math.min(getPkmn(true).hp / 16, getPkmn(true).hp);
+    if (getPkmn(false)?.status == "brn") getPkmn(false).hp -= Math.min(getPkmn(false).hp / 16, getPkmn(false).hp);
+    judgeHP();
     turn++;
     isNewTurn = true;
     document.getElementById("turnNumber").innerText = "Turn " + turn;
@@ -193,8 +209,8 @@ function nextTurn() {
     else if (battleInfo[1].currentPokemon == -1) playerToMove = 1;
     else if (battleInfo[0].currentPokemon == -1) playerToMove = 0;
     else {
-        let p1Spe = getStats(battleInfo[0].build[battleInfo[0].currentPokemon].name).spe * STAGE_MULTIPLIER[battleInfo[0].build[battleInfo[0].currentPokemon].speStage] * ((battleInfo[0].build[battleInfo[0].currentPokemon].status.includes("par")) ? 0.25 : 1)
-        let p2Spe = getStats(battleInfo[1].build[battleInfo[1].currentPokemon].name).spe * STAGE_MULTIPLIER[battleInfo[1].build[battleInfo[1].currentPokemon].speStage] * ((battleInfo[1].build[battleInfo[1].currentPokemon].status.includes("par")) ? 0.25 : 1)
+        let p1Spe = getStats(battleInfo[0].build[battleInfo[0].currentPokemon].name).spe * STAGE_MULTIPLIER[battleInfo[0].build[battleInfo[0].currentPokemon].speStage] * ((battleInfo[0].build[battleInfo[0].currentPokemon].status == "par") ? 0.25 : 1)
+        let p2Spe = getStats(battleInfo[1].build[battleInfo[1].currentPokemon].name).spe * STAGE_MULTIPLIER[battleInfo[1].build[battleInfo[1].currentPokemon].speStage] * ((battleInfo[1].build[battleInfo[1].currentPokemon].status == "par") ? 0.25 : 1)
         if (p1Spe > p2Spe) {
             playerToMove = 0;
         } else if (p1Spe < p2Spe) {
@@ -202,10 +218,6 @@ function nextTurn() {
         } else {
             playerToMove = Math.round(Math.random());
         }
-    }
-    if (getPkmn(true).status.includes("par") && Math.random() < 1 / 4) {
-        addSmallText(capitalize(getPkmn(true).name) + " is paralyzed! It cannot move!");
-        nextPlayer();
     }
 }
 function getStats(name) {
@@ -226,11 +238,10 @@ for (let i = 0; i < 4; i++) {
                 addSmallText(capitalize(getPkmn(true).name) + "'s attack missed!")
                 break;
             }
-            let dmg = 0;
+            let dmg = 0, totalDmg = 0;
             if (k.category == "physical") dmg = calculateDmg(k.power, getStats(getPkmn(true).name).atk, getStats(getPkmn(false).name).def, k.type, getStats(getPkmn(false).name).type);
             else dmg = calculateDmg(k.power, getStats(getPkmn(true).name).sp, getStats(getPkmn(false).name).sp, k.type, getStats(getPkmn(false).name).type);
             if (k.category != "status") {
-                addSmallText("(" + capitalize(getPkmn(false).name) + " lost " + (Math.min(dmg, getPkmn(false).hp) / getPkmn(false).maxHp * 100).toFixed(0) + "% of its health!)");
                 switch (calculateEffectiveness(k.type, getStats(getPkmn(false).name).type)) {
                     case 4:
                         addSmallText("It's super effective!");
@@ -247,35 +258,44 @@ for (let i = 0; i < 4; i++) {
                     case 0:
                         addSmallText("It doesn't affect " + capitalize(getPkmn(false).name) + "...");
                 }
+                totalDmg += Math.min(dmg, getPkmn(false).hp)
                 getPkmn(false).hp -= Math.min(dmg, getPkmn(false).hp);
             }
             if (k.effect) k.effect();
             if (k.category != "status") {
-                if (Math.random() < criticalHitRatioMultiplier * getPkmn(true).spe * 100 / 512) {
+                if (Math.random() < criticalHitRatioMultiplier * getStats(getPkmn(true).name).spe / 512) {
+                    totalDmg += Math.min(dmg, getPkmn(false).hp);
                     getPkmn(false).hp -= Math.min(dmg, getPkmn(false).hp);
                     addSmallText("A critical hit!");
                 }
+                addSmallText("(" + capitalize(getPkmn(false).name) + " lost " + (totalDmg / getPkmn(false).maxHp * 100).toFixed(0) + "% of its health!)");
             }
-            if (getPkmn(false).hp <= 0) {
-                getPkmn(false).hp = 0;
-                if (playerToMove == 0) document.getElementById("p2Pokemon").style.backgroundImage = "none";
-                else document.getElementById("p1Pokemon").style.backgroundImage = "none";
-                addMainText(capitalize(getPkmn(false).name) + " fainted!");
-                battleInfo[(playerToMove == 0) ? 1 : 0].currentPokemon = -1;
-            }
-            if (getPkmn(true).hp <= 0) {
-                getPkmn(true).hp = 0;
-                if (playerToMove == 1) document.getElementById("p2Pokemon").style.backgroundImage = "none";
-                else document.getElementById("p1Pokemon").style.backgroundImage = "none";
-                addMainText(capitalize(getPkmn(true).name) + " fainted!");
-                battleInfo[playerToMove].currentPokemon = -1;
-            }
+            judgeHP();
             break;
         }
         renderHP();
-        nextPlayer()
+        if (getPkmn(true)) {
+            nextPlayer();
+        }
         refreshDecision();
     })
+}
+function judgeHP() {
+    if (getPkmn(false)?.hp <= 0) {
+        getPkmn(false).hp = 0;
+        if (playerToMove == 0) document.getElementById("p2Pokemon").style.backgroundImage = "none";
+        else document.getElementById("p1Pokemon").style.backgroundImage = "none";
+        addMainText(capitalize(getPkmn(false).name) + " fainted!");
+        battleInfo[(playerToMove == 0) ? 1 : 0].currentPokemon = -1;
+
+    }
+    if (getPkmn(true)?.hp <= 0) {
+        getPkmn(true).hp = 0;
+        if (playerToMove == 1) document.getElementById("p2Pokemon").style.backgroundImage = "none";
+        else document.getElementById("p1Pokemon").style.backgroundImage = "none";
+        addMainText(capitalize(getPkmn(true).name) + " fainted!");
+        battleInfo[playerToMove].currentPokemon = -1;
+    }
 }
 const STAGE_MULTIPLIER = {
     "-6": 2 / 8,
@@ -337,16 +357,16 @@ function renderHP() {
         }
     }
     let status = ["par", "tox", "psn", "slp", "frz", "brn"]
-    if (battleInfo[0].currentPokemon != -1) for (let i of battleInfo[0].build[battleInfo[0].currentPokemon].status) {
+    if (battleInfo[0].currentPokemon != -1 && battleInfo[0].build[battleInfo[0].currentPokemon].status) {
         let span = document.createElement("span");
-        span.innerText = "[" + i.toUpperCase() + "]";
-        span.classList.add(i);
+        span.innerText = "[" + battleInfo[0].build[battleInfo[0].currentPokemon].status.toUpperCase() + "]";
+        span.classList.add(battleInfo[0].build[battleInfo[0].currentPokemon].status);
         document.getElementById("p1Status").appendChild(span);
     }
-    if (battleInfo[1].currentPokemon != -1) for (let i of battleInfo[1].build[battleInfo[1].currentPokemon].status) {
+    if (battleInfo[1].currentPokemon != -1 && battleInfo[1].build[battleInfo[1].currentPokemon].status) {
         let span = document.createElement("span");
-        span.innerText = "[" + i.toUpperCase() + "]";
-        span.classList.add(i);
+        span.innerText = "[" + battleInfo[1].build[battleInfo[1].currentPokemon].status.toUpperCase() + "]";
+        span.classList.add(battleInfo[1].build[battleInfo[1].currentPokemon].status);
         document.getElementById("p2Status").appendChild(span);
     }
 }
@@ -393,7 +413,19 @@ function modifyStats(isSelf, stat, delta, prob) {
 }
 function modifyStatus(status, prob) {
     let rand = Math.random();
-    if (rand < prob && !getPkmn(false).status.includes(status)) {
-        getPkmn(false).status.push(status)
+    if (rand < prob) {
+        if (getPkmn(false).status == status) {
+            if (status == "par") addSmallText(capitalize(getPkmn(false).name) + " is already paralyzed!");
+            return;
+        }
+        getPkmn(false).status = status;
+        if (status == "par") {
+            addSmallText(capitalize(getPkmn(false).name) + " is paralyzed! It may be unable to move!");
+        }
     }
+}
+function putToSleep(isSelf, turns) {
+    getPkmn(isSelf).status = "slp";
+    getPkmn(isSelf).sleepTurns = turns;
+    addSmallText(capitalize(getPkmn(isSelf).name) + " fell asleep!");
 }
