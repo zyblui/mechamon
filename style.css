@@ -54,7 +54,8 @@ body {
     top: 0;
     width: calc(40% - 10px);
     height: 100%;
-    padding-left: 10px
+    padding-left: 10px;
+    overflow-y: auto;
 }
 
 #p1Pokemon,
@@ -86,7 +87,7 @@ body {
 #p2Gauge {
     position: absolute;
     top: 0;
-    right: calc(10% + 42px)
+    right: calc(10% + 42px);
 }
 
 .outer-bar {
@@ -97,8 +98,20 @@ body {
 
 .inner-bar {
     width: 300px;
-    background-color: green;
     height: 15px;
+    background-color: green;
+
+    &.green {
+        background-color: green;
+    }
+
+    &.yellow {
+        background-color: gold;
+    }
+
+    &.red {
+        background-color: red;
+    }
 }
 
 .name {
@@ -152,7 +165,7 @@ td {
     border: solid 2px transparent;
 }
 
-.pokemon-select {
+.select {
     &:hover {
         border: solid 2px rgba(30, 144, 255, 0.5);
         background-color: rgba(30, 144, 255, 0.2);
@@ -169,11 +182,11 @@ table {
     width: 100%;
 }
 
-#pokemonList {
+.list {
     display: none;
 
     &.show {
-        display: block
+        display: block;
     }
 }
 
@@ -210,16 +223,16 @@ p {
     border: solid 3px transparent;
 
     &:hover {
-        border: solid 3px gray
+        border: solid 3px gray;
     }
 }
 
 .decisionMove {
-    width: calc(25% - 6px)
+    width: calc(25% - 6px);
 }
 
 .decisionSwitch {
-    width: calc(100% / 6 - 6px)
+    width: calc(100% / 6 - 6px);
 }
 
 .main-text {

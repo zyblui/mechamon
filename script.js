@@ -54,12 +54,12 @@ function render() {
 function capitalize(str) {
     let temp = str.split(" ");
     for (let i = 0; i < temp.length; i++) {
-        temp[i] = temp[i][0].toUpperCase() + temp[i].slice(1)
+        temp[i] = temp[i][0].toUpperCase() + temp[i].slice(1);
     }
     temp = temp.join(" ");
     temp = temp.split("-");
     for (let i = 0; i < temp.length; i++) {
-        temp[i] = temp[i][0].toUpperCase() + temp[i].slice(1)
+        temp[i] = temp[i][0].toUpperCase() + temp[i].slice(1);
     }
     temp = temp.join("-");
     return temp;
@@ -70,14 +70,34 @@ for (let i of pokemon) {
     div.innerHTML = capitalize(i.name);
     div.addEventListener("click", function () {
         document.querySelector(".pokemon-select.selected").innerText = capitalize(i.name);
+        players[Number(document.querySelector(".pokemon-select.selected").dataset.player) - 1].build[Number(document.querySelector(".pokemon-select.selected").dataset.no) - 1].name = i.name;
     })
     document.getElementById("pokemonList").appendChild(div);
 }
+for (let i of moves) {
+    let div = document.createElement("div");
+    div.classList.add("listButton");
+    div.innerHTML = capitalize(i.name);
+    div.addEventListener("click", function () {
+        document.querySelector(".move-select.selected").innerText = capitalize(i.name);
+        players[Number(document.querySelector(".move-select.selected").dataset.player) - 1].build[Number(document.querySelector(".move-select.selected").dataset.no) - 1].moves[Number(document.querySelector(".move-select.selected").dataset.moveNo) - 1] = i.name;
+    })
+    document.getElementById("movesList").appendChild(div);
+}
 for (let i of document.getElementsByClassName("pokemon-select")) {
     i.addEventListener("click", function () {
-        document.querySelector(".pokemon-select.selected")?.classList.remove("selected");
+        document.querySelector(".select.selected")?.classList.remove("selected");
         i.classList.add("selected");
-        document.getElementById("pokemonList").classList.add("show")
+        document.querySelector(".list.show")?.classList.remove("show");
+        document.getElementById("pokemonList").classList.add("show");
+    })
+}
+for (let i of document.getElementsByClassName("move-select")) {
+    i.addEventListener("click", function () {
+        document.querySelector(".select.selected")?.classList.remove("selected");
+        i.classList.add("selected");
+        document.querySelector(".list.show")?.classList.remove("show");
+        document.getElementById("movesList").classList.add("show");
     })
 }
 function calculateDmg(power, atk, def, attackType, defenseType) {
@@ -323,13 +343,16 @@ function renderHP() {
     } else {
         document.getElementById("p2Gauge").classList.remove("hide");
     }
-    if (battleInfo[0].currentPokemon != -1) {
-        document.getElementById("p1Bar").style.width = battleInfo[0].build[battleInfo[0].currentPokemon].hp / battleInfo[0].build[battleInfo[0].currentPokemon].maxHp * 100 + "%";
-        document.getElementById("p1Percentage").innerText = (battleInfo[0].build[battleInfo[0].currentPokemon].hp / battleInfo[0].build[battleInfo[0].currentPokemon].maxHp * 100).toFixed(0) + "%";
-    }
-    if (battleInfo[1].currentPokemon != -1) {
-        document.getElementById("p2Bar").style.width = battleInfo[1].build[battleInfo[1].currentPokemon].hp / battleInfo[1].build[battleInfo[1].currentPokemon].maxHp * 100 + "%"
-        document.getElementById("p2Percentage").innerText = (battleInfo[1].build[battleInfo[1].currentPokemon].hp / battleInfo[1].build[battleInfo[1].currentPokemon].maxHp * 100).toFixed(0) + "%";
+    for (let i of [0, 1]) {
+        if (battleInfo[i].currentPokemon != -1) {
+            let percentage = battleInfo[i].build[battleInfo[i].currentPokemon].hp / battleInfo[i].build[battleInfo[i].currentPokemon].maxHp * 100;
+            document.getElementById(`p${i + 1}Bar`).style.width = percentage + "%";
+            document.getElementById(`p${i + 1}Percentage`).innerText = percentage.toFixed(0) + "%";
+            document.getElementById(`p${i + 1}Bar`).classList.remove("green", "yellow", "red");
+            if (percentage >= 50) document.getElementById(`p${i + 1}Bar`).classList.add("green");
+            else if (percentage >= 20) document.getElementById(`p${i + 1}Bar`).classList.add("yellow");
+            else document.getElementById(`p${i + 1}Bar`).classList.add("red");
+        }
     }
     document.getElementById("p1Status").innerHTML = "";
     document.getElementById("p2Status").innerHTML = "";

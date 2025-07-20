@@ -183,7 +183,7 @@ let moves = [{
     "acc": 100,
     "pp": 35,
     "effect": function () {
-        modifyStats(false, "spe", -1, 1 / 3)
+        modifyStats(false, "spe", -1, 1 / 3);
     }
 }, {
     "name": "conversion",
