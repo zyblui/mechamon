@@ -75,7 +75,7 @@ let moves = [{
 }, {
     "name": "bide",
     "type": "normal",
-    "category": "",
+    "category": "physical",
     "power": 0,
     "acc": -1,
     "pp": 10
@@ -89,7 +89,7 @@ let moves = [{
 }, {
     "name": "bite",
     "type": "normal",
-    "category": "",
+    "category": "physical",
     "power": 60,
     "acc": 100,
     "pp": 25
@@ -167,14 +167,20 @@ let moves = [{
     "category": "status",
     "power": 0,
     "acc": 100,
-    "pp": 10
+    "pp": 10,
+    "effect": function () {
+        addTempEffect(false, "confused", 1 + Math.ceil(Math.random() * 4), 1);
+    }
 }, {
     "name": "confusion",
     "type": "psychic",
-    "category": "",
+    "category": "special",
     "power": 50,
     "acc": 100,
-    "pp": 25
+    "pp": 25,
+    "effect": function () {
+        addTempEffect(false, "confused", 1 + Math.ceil(Math.random() * 4), 0.1);
+    }
 }, {
     "name": "constrict",
     "type": "normal",
@@ -300,7 +306,7 @@ let moves = [{
 }, {
     "name": "earthquake",
     "type": "ground",
-    "category": "",
+    "category": "physical",
     "power": 100,
     "acc": 100,
     "pp": 10
@@ -753,10 +759,13 @@ let moves = [{
 }, {
     "name": "psybeam",
     "type": "psychic",
-    "category": "",
+    "category": "special",
     "power": 65,
     "acc": 100,
-    "pp": 20
+    "pp": 20,
+    "effect": function () {
+        addTempEffect(false, "confused", 1 + Math.ceil(Math.random() * 4), 0.1);
+    }
 }, {
     "name": "psychic",
     "type": "psychic",
@@ -848,35 +857,35 @@ let moves = [{
 }, {
     "name": "rock slide",
     "type": "rock",
-    "category": "",
+    "category": "physical",
     "power": 75,
     "acc": 90,
     "pp": 10
 }, {
     "name": "rock throw",
     "type": "rock",
-    "category": "",
+    "category": "physical",
     "power": 50,
     "acc": 65,
     "pp": 15
 }, {
     "name": "rolling kick",
     "type": "fighting",
-    "category": "",
+    "category": "physical",
     "power": 60,
     "acc": 85,
     "pp": 15
 }, {
     "name": "sand attack",
     "type": "normal",
-    "category": "",
+    "category": "status",
     "power": 0,
     "acc": 100,
     "pp": 15
 }, {
     "name": "scratch",
     "type": "normal",
-    "category": "",
+    "category": "physical",
     "power": 40,
     "acc": 100,
     "pp": 35
@@ -1087,7 +1096,7 @@ let moves = [{
 }, {
     "name": "substitute",
     "type": "normal",
-    "category": "",
+    "category": "status",
     "power": 0,
     "acc": -1,
     "pp": 10
@@ -1097,14 +1106,20 @@ let moves = [{
     "category": "",
     "power": 1,
     "acc": 90,
-    "pp": 10
+    "pp": 10,
+    "effect": function () {
+        getPkmn(false).hp /= 2;
+    }
 }, {
     "name": "supersonic",
     "type": "normal",
-    "category": "",
+    "category": "status",
     "power": 0,
     "acc": 55,
-    "pp": 20
+    "pp": 20,
+    "effect": function () {
+        addTempEffect(false, "confused", 1 + Math.ceil(Math.random() * 4), 1);
+    }
 }, {
     "name": "surf",
     "type": "water",

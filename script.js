@@ -106,6 +106,7 @@ function calculateDmg(power, atk, def, attackType, defenseType) {
 }
 function calculateEffectiveness(attackType, defenseType) {
     let effectiveness = 1;
+    if (!attackType) return effectiveness;
     for (let i of defenseType) {
         effectiveness *= multiplier[attackType][i]
     }
@@ -151,6 +152,9 @@ document.getElementById("startGame").addEventListener("click", function () {
             j.spStage = 0;
             j.speStage = 0;
             j.status = "";
+            j.tempEffect = {
+                "confused": 0
+            }
             j.sleepTurns = 0;
         }
     }
@@ -208,10 +212,17 @@ function nextPlayer() {
         if (getPkmn(true).sleepTurns > 0) {
             addMainText(capitalize(getPkmn(true).name) + " is fast asleep.");
         } else if (getPkmn(true).sleepTurns == 0) {
-            addMainText(capitalize(getPkmn(true).name) + " woke up!");
+            addSmallText(capitalize(getPkmn(true).name) + " woke up!");
             getPkmn(true).status = "";
         }
         nextPlayer();
+    } else if (getPkmn(true)?.tempEffect.confused > 0) {
+        addSmallText(capitalize(getPkmn(true).name) + " is confused!")
+        if (Math.random() < 0.5) {
+            getPkmn(true).hp -= calculateDmg(40, getStats(getPkmn(true).name).atk, getStats(getPkmn(true).name).def, "", getStats(getPkmn(true).name).type)
+            addMainText("It hurt itself in confusion!");
+        }
+        getPkmn(true).tempEffect.confused--;
     }
 }
 function nextTurn() {
@@ -379,19 +390,24 @@ function renderHP() {
             document.getElementById("p2Status").appendChild(span);
         }
     }
-    let status = ["par", "tox", "psn", "slp", "frz", "brn"]
-    if (battleInfo[0].currentPokemon != -1 && battleInfo[0].build[battleInfo[0].currentPokemon].status) {
-        let span = document.createElement("span");
-        span.innerText = "[" + battleInfo[0].build[battleInfo[0].currentPokemon].status.toUpperCase() + "]";
-        span.classList.add(battleInfo[0].build[battleInfo[0].currentPokemon].status);
-        document.getElementById("p1Status").appendChild(span);
+    //let status = ["par", "tox", "psn", "slp", "frz", "brn"]
+    for (let i of [0, 1]) if (battleInfo[i].currentPokemon != -1) {
+        if (battleInfo[i].build[battleInfo[i].currentPokemon].status) {
+            let span = document.createElement("span");
+            span.innerText = "[" + battleInfo[i].build[battleInfo[i].currentPokemon].status.toUpperCase() + "]";
+            span.classList.add(battleInfo[i].build[battleInfo[i].currentPokemon].status);
+            document.getElementById(`p${i + 1}Status`).appendChild(span);
+        }
+        for (let j in battleInfo[i].build[battleInfo[i].currentPokemon].tempEffect) {
+            if (battleInfo[i].build[battleInfo[i].currentPokemon].tempEffect[j]) {
+                let span = document.createElement("span");
+                span.innerText = "[" + capitalize(j) + "]";
+                span.classList.add("debuff");
+                document.getElementById(`p${i + 1}Status`).appendChild(span);
+            }
+        }
     }
-    if (battleInfo[1].currentPokemon != -1 && battleInfo[1].build[battleInfo[1].currentPokemon].status) {
-        let span = document.createElement("span");
-        span.innerText = "[" + battleInfo[1].build[battleInfo[1].currentPokemon].status.toUpperCase() + "]";
-        span.classList.add(battleInfo[1].build[battleInfo[1].currentPokemon].status);
-        document.getElementById("p2Status").appendChild(span);
-    }
+
 }
 function renderTable() {
     for (let i = 0; i < 6; i++) {
@@ -451,4 +467,10 @@ function putToSleep(isSelf, turns) {
     getPkmn(isSelf).status = "slp";
     getPkmn(isSelf).sleepTurns = turns;
     addSmallText(capitalize(getPkmn(isSelf).name) + " fell asleep!");
+}
+function addTempEffect(isSelf, effect, turns, prob) {
+    if (Math.random() < prob) {
+        getPkmn(isSelf).tempEffect[effect] = turns;
+        if (effect == "confused") addSmallText(capitalize(getPkmn(false).name) + " became confused!")
+    }
 }
