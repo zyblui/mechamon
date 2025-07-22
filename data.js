@@ -904,8 +904,8 @@ let moves = [{
     "acc": 100,
     "pp": 20,
     "effect": function () {
-        getPkmn(false).hp -= Math.min(100, getPkmn(false).hp);
         addSmallText("(" + capitalize(getPkmn(false).name) + " lost " + (Math.min(100, getPkmn(false).hp) / getPkmn(false).maxHp * 100).toFixed(0) + "% of its health!)")
+        getPkmn(false).hp -= Math.min(100, getPkmn(false).hp);
     }
 }, {
     "name": "self-destruct",
@@ -2151,7 +2151,11 @@ let pokemon = [{
     "atk": 55,
     "def": 30,
     "sp": 50,
-    "spe": 90
+    "spe": 90,
+    "moves": ["agility", "bide", "body slam", "double-edge", "double team", "flash", "fly", "growl", "light screen", "mega kick",
+        "mega punch", "mimic", "pay day", "quick attack", "rage", "reflect", "rest", "seismic toss", "skull bash", "slam",
+        "submission", "substitute", "surf", "swift", "tail whip", "take down", "thunder", "thunderbolt", "thunder shock",
+        "thunder wave", "toxic"]
 }, {
     "name": "pinsir",
     "type": ["bug"],
