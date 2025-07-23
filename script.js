@@ -308,7 +308,7 @@ for (let i = 0; i < 4; i++) document.getElementsByClassName("decisionMove")[i].a
                 case 0:
                     addSmallText("It doesn't affect " + capitalize(getPkmn(false).name) + "...");
             }
-            totalDmg += Math.min(dmg, getPkmn(false).hp)
+            totalDmg += Math.min(dmg, getPkmn(false).hp);
             getPkmn(false).hp -= Math.min(dmg, getPkmn(false).hp);
 
             if (Math.random() < criticalHitRatioMultiplier * getStats(getPkmn(true).name).spe / 512) {
@@ -319,7 +319,7 @@ for (let i = 0; i < 4; i++) document.getElementsByClassName("decisionMove")[i].a
             addSmallText("(" + capitalize(getPkmn(false).name) + " lost " + (totalDmg / getPkmn(false).maxHp * 100).toFixed(0) + "% of its health!)");
         }
         let effect;
-        if (k.effect) effect = k.effect();
+        if (k.effect) effect = k.effect({ totalDmg: totalDmg });
         judgeHP();
         renderHP();
         if (getPkmn(true)) {
@@ -333,6 +333,13 @@ for (let i = 0; i < 4; i++) document.getElementsByClassName("decisionMove")[i].a
         break;
     }
 })
+function repeatAttack(dmg, count) {
+    for (let i = 0; i < count; i++) {
+        getPkmn(false).hp -= Math.min(dmg, getPkmn(false).hp);
+        addSmallText("(" + capitalize(getPkmn(false).name) + " lost " + (totalDmg / getPkmn(false).maxHp * 100).toFixed(0) + "% of its health!)");
+    }
+    addSmallText("The Pokemon was hit " + (count + 1) + " times!")
+}
 function judgeHP() {
     if (getPkmn(false)?.hp <= 0) {
         getPkmn(false).hp = 0;

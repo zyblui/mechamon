@@ -4,7 +4,10 @@ let moves = [{
     "category": "special",
     "power": 20,
     "acc": 100,
-    "pp": 20
+    "pp": 20,
+    "effect": function (e) {
+        getPkmn(true).hp += Math.min(e.totalDmg / 2, getPkmn(true).maxHp - getPkmn(true).hp);
+    }
 }, {
     "name": "acid",
     "type": "poison",
@@ -58,10 +61,17 @@ let moves = [{
 }, {
     "name": "barrage",
     "type": "normal",
-    "category": "",
+    "category": "physical",
     "power": 15,
     "acc": 85,
-    "pp": 20
+    "pp": 20,
+    "effect": function (e) {
+        let num = Math.random();
+        if (num < 3 / 8) repeatAttack(e.totalDmg, 1);
+        else if (num < 6 / 8) repeatAttack(e.totalDmg, 2);
+        else if (num < 7 / 8) repeatAttack(e.totalDmg, 3);
+        else repeatAttack(e.totalDmg, 4);
+    }
 }, {
     "name": "barrier",
     "type": "psychic",
@@ -129,14 +139,17 @@ let moves = [{
 }, {
     "name": "bonemerang",
     "type": "ground",
-    "category": "",
+    "category": "physical",
     "power": 50,
     "acc": 90,
-    "pp": 10
+    "pp": 10,
+    "effect": function (e) {
+        repeatAttack(e.totalDmg, 1);
+    }
 }, {
     "name": "bubble",
     "type": "water",
-    "category": "",
+    "category": "special",
     "power": 20,
     "acc": 100,
     "pp": 30,
@@ -163,10 +176,17 @@ let moves = [{
 }, {
     "name": "comet punch",
     "type": "normal",
-    "category": "",
+    "category": "physical",
     "power": 18,
     "acc": 85,
-    "pp": 15
+    "pp": 15,
+    "effect": function (e) {
+        let num = Math.random();
+        if (num < 3 / 8) repeatAttack(e.totalDmg, 1);
+        else if (num < 6 / 8) repeatAttack(e.totalDmg, 2);
+        else if (num < 7 / 8) repeatAttack(e.totalDmg, 3);
+        else repeatAttack(e.totalDmg, 4);
+    }
 }, {
     "name": "confuse ray",
     "type": "ghost",
@@ -259,28 +279,38 @@ let moves = [{
 }, {
     "name": "double kick",
     "type": "fighting",
-    "category": "",
+    "category": "physical",
     "power": 30,
     "acc": 100,
-    "pp": 30
+    "pp": 30,
+    "effect": function (e) {
+        repeatAttack(e.totalDmg, 1);
+    }
 }, {
     "name": "double slap",
     "type": "normal",
-    "category": "",
+    "category": "physical",
     "power": 15,
     "acc": 85,
-    "pp": 10
+    "pp": 10,
+    "effect": function (e) {
+        let num = Math.random();
+        if (num < 3 / 8) repeatAttack(e.totalDmg, 1);
+        else if (num < 6 / 8) repeatAttack(e.totalDmg, 2);
+        else if (num < 7 / 8) repeatAttack(e.totalDmg, 3);
+        else repeatAttack(e.totalDmg, 4);
+    }
 }, {
     "name": "double team",
     "type": "normal",
-    "category": "",
+    "category": "status",
     "power": 0,
     "acc": -1,
     "pp": 15
 }, {
     "name": "double-edge",
     "type": "normal",
-    "category": "",
+    "category": "physical",
     "power": 100,
     "acc": 100,
     "pp": 15
@@ -411,17 +441,31 @@ let moves = [{
 }, {
     "name": "fury attack",
     "type": "normal",
-    "category": "",
+    "category": "physical",
     "power": 15,
     "acc": 85,
-    "pp": 20
+    "pp": 20,
+    "effect": function (e) {
+        let num = Math.random();
+        if (num < 3 / 8) repeatAttack(e.totalDmg, 1);
+        else if (num < 6 / 8) repeatAttack(e.totalDmg, 2);
+        else if (num < 7 / 8) repeatAttack(e.totalDmg, 3);
+        else repeatAttack(e.totalDmg, 4);
+    }
 }, {
     "name": "fury swipes",
     "type": "normal",
-    "category": "",
+    "category": "physical",
     "power": 18,
     "acc": 80,
-    "pp": 15
+    "pp": 15,
+    "effect": function (e) {
+        let num = Math.random();
+        if (num < 3 / 8) repeatAttack(e.totalDmg, 1);
+        else if (num < 6 / 8) repeatAttack(e.totalDmg, 2);
+        else if (num < 7 / 8) repeatAttack(e.totalDmg, 3);
+        else repeatAttack(e.totalDmg, 4);
+    }
 }, {
     "name": "glare",
     "type": "normal",
@@ -698,10 +742,13 @@ let moves = [{
 }, {
     "name": "night shade",
     "type": "ghost",
-    "category": "",
+    "category": "physical",
     "power": 1,
     "acc": 100,
-    "pp": 15
+    "pp": 15,
+    "effect": function () {
+        getPkmn(false).hp -= Math.min(100, getPkmn(false).hp);
+    }
 }, {
     "name": "pay day",
     "type": "normal",
@@ -726,10 +773,17 @@ let moves = [{
 }, {
     "name": "pin missile",
     "type": "bug",
-    "category": "",
+    "category": "physical",
     "power": 14,
     "acc": 85,
-    "pp": 20
+    "pp": 20,
+    "effect": function (e) {
+        let num = Math.random();
+        if (num < 3 / 8) repeatAttack(e.totalDmg, 1);
+        else if (num < 6 / 8) repeatAttack(e.totalDmg, 2);
+        else if (num < 7 / 8) repeatAttack(e.totalDmg, 3);
+        else repeatAttack(e.totalDmg, 4);
+    }
 }, {
     "name": "poison gas",
     "type": "poison",
@@ -1050,10 +1104,17 @@ let moves = [{
 }, {
     "name": "spike cannon",
     "type": "normal",
-    "category": "",
+    "category": "physical",
     "power": 20,
     "acc": 100,
-    "pp": 15
+    "pp": 15,
+    "effect": function (e) {
+        let num = Math.random();
+        if (num < 3 / 8) repeatAttack(e.totalDmg, 1);
+        else if (num < 6 / 8) repeatAttack(e.totalDmg, 2);
+        else if (num < 7 / 8) repeatAttack(e.totalDmg, 3);
+        else repeatAttack(e.totalDmg, 4);
+    }
 }, {
     "name": "splash",
     "type": "normal",
@@ -1282,10 +1343,14 @@ let moves = [{
 }, {
     "name": "twineedle",
     "type": "bug",
-    "category": "",
+    "category": "physical",
     "power": 25,
     "acc": 100,
-    "pp": 20
+    "pp": 20,
+    "effect": function (e) {
+        repeatAttack(e.totalDmg, 1);
+        modifyStatus("psn", 0.2);
+    }
 }, {
     "name": "vice grip",
     "type": "normal",
@@ -1331,14 +1396,17 @@ let moves = [{
 }, {
     "name": "withdraw",
     "type": "water",
-    "category": "",
+    "category": "status",
     "power": 0,
     "acc": -1,
-    "pp": 40
+    "pp": 40,
+    "effect": function () {
+        modifyStats(true, "def", 1, 1)
+    }
 }, {
     "name": "wrap",
     "type": "normal",
-    "category": "",
+    "category": "physical",
     "power": 15,
     "acc": 85,
     "pp": 20
