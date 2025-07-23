@@ -279,59 +279,60 @@ function getPkmn(isSelf) {
     if (isSelf) return battleInfo[playerToMove].build[battleInfo[playerToMove].currentPokemon];
     else return battleInfo[(playerToMove == 0) ? 1 : 0].build[battleInfo[(playerToMove == 0) ? 1 : 0].currentPokemon];
 }
-for (let i = 0; i < 4; i++) {
-    document.getElementsByClassName("decisionMove")[i].addEventListener("click", function () {
-        addMainText(capitalize(players[playerToMove].build[battleInfo[playerToMove].currentPokemon].name) + " used <strong>" +
-            capitalize(document.getElementsByClassName("decisionMove")[i].dataset.for) + "</strong>!");
-        for (let k of moves) if (k.name == document.getElementsByClassName("decisionMove")[i].dataset.for) {
-            let criticalHitRatioMultiplier = 1;
-            if (k.category != "status" && Math.random() > k.acc / 100) {
-                addSmallText(capitalize(getPkmn(true).name) + "'s attack missed!")
-                break;
-            }
-            let dmg = 0, totalDmg = 0;
-            if (k.category == "physical") dmg = calculateDmg(k.power, getStats(getPkmn(true).name).atk, getStats(getPkmn(false).name).def, k.type, getStats(getPkmn(false).name).type);
-            else dmg = calculateDmg(k.power, getStats(getPkmn(true).name).sp, getStats(getPkmn(false).name).sp, k.type, getStats(getPkmn(false).name).type);
-            if (k.category != "status") {
-                switch (calculateEffectiveness(k.type, getStats(getPkmn(false).name).type)) {
-                    case 4:
-                        addSmallText("It's super effective!");
-                        break;
-                    case 2:
-                        addSmallText("It's super effective!");
-                        break;
-                    case 0.5:
-                        addSmallText("It's not very effective...");
-                        break;
-                    case 0.25:
-                        addSmallText("It's not very effective...");
-                        break;
-                    case 0:
-                        addSmallText("It doesn't affect " + capitalize(getPkmn(false).name) + "...");
-                }
-                totalDmg += Math.min(dmg, getPkmn(false).hp)
-                getPkmn(false).hp -= Math.min(dmg, getPkmn(false).hp);
-            }
-            if (k.effect) k.effect();
-            if (k.category != "status") {
-                if (Math.random() < criticalHitRatioMultiplier * getStats(getPkmn(true).name).spe / 512) {
-                    totalDmg += Math.min(dmg, getPkmn(false).hp);
-                    getPkmn(false).hp -= Math.min(dmg, getPkmn(false).hp);
-                    addSmallText("A critical hit!");
-                }
-                addSmallText("(" + capitalize(getPkmn(false).name) + " lost " + (totalDmg / getPkmn(false).maxHp * 100).toFixed(0) + "% of its health!)");
-            }
-            judgeHP();
+for (let i = 0; i < 4; i++) document.getElementsByClassName("decisionMove")[i].addEventListener("click", function () {
+    addMainText(capitalize(players[playerToMove].build[battleInfo[playerToMove].currentPokemon].name) + " used <strong>" +
+        capitalize(document.getElementsByClassName("decisionMove")[i].dataset.for) + "</strong>!");
+    for (let k of moves) if (k.name == document.getElementsByClassName("decisionMove")[i].dataset.for) {
+        let criticalHitRatioMultiplier = 1, isFlinch = false;
+        if (k.category != "status" && Math.random() > k.acc / 100) {
+            addSmallText(capitalize(getPkmn(true).name) + "'s attack missed!");
             break;
         }
+        let dmg = 0, totalDmg = 0;
+        if (k.category == "physical") dmg = calculateDmg(k.power, getStats(getPkmn(true).name).atk, getStats(getPkmn(false).name).def, k.type, getStats(getPkmn(false).name).type);
+        else dmg = calculateDmg(k.power, getStats(getPkmn(true).name).sp, getStats(getPkmn(false).name).sp, k.type, getStats(getPkmn(false).name).type);
+        if (k.category != "status") {
+            switch (calculateEffectiveness(k.type, getStats(getPkmn(false).name).type)) {
+                case 4:
+                    addSmallText("It's super effective!");
+                    break;
+                case 2:
+                    addSmallText("It's super effective!");
+                    break;
+                case 0.5:
+                    addSmallText("It's not very effective...");
+                    break;
+                case 0.25:
+                    addSmallText("It's not very effective...");
+                    break;
+                case 0:
+                    addSmallText("It doesn't affect " + capitalize(getPkmn(false).name) + "...");
+            }
+            totalDmg += Math.min(dmg, getPkmn(false).hp)
+            getPkmn(false).hp -= Math.min(dmg, getPkmn(false).hp);
+
+            if (Math.random() < criticalHitRatioMultiplier * getStats(getPkmn(true).name).spe / 512) {
+                totalDmg += Math.min(dmg, getPkmn(false).hp);
+                getPkmn(false).hp -= Math.min(dmg, getPkmn(false).hp);
+                addSmallText("A critical hit!");
+            }
+            addSmallText("(" + capitalize(getPkmn(false).name) + " lost " + (totalDmg / getPkmn(false).maxHp * 100).toFixed(0) + "% of its health!)");
+        }
+        let effect;
+        if (k.effect) effect = k.effect();
+        judgeHP();
         renderHP();
-        if (getPkmn(true)){
+        if (getPkmn(true)) {
             getPkmn(true).moves[Object.keys(getPkmn(true).moves)[i]]--;
-            nextPlayer();
+            if (effect?.flinch) {
+                nextTurn();
+            }
+            else nextPlayer();
         }
         refreshDecision();
-    })
-}
+        break;
+    }
+})
 function judgeHP() {
     if (getPkmn(false)?.hp <= 0) {
         getPkmn(false).hp = 0;

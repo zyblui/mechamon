@@ -92,7 +92,10 @@ let moves = [{
     "category": "physical",
     "power": 60,
     "acc": 100,
-    "pp": 25
+    "pp": 25,
+    "effect": function () {
+        if (Math.random() < 0.1) return { flinch: true }
+    }
 }, {
     "name": "blizzard",
     "type": "ice",
@@ -116,10 +119,13 @@ let moves = [{
 }, {
     "name": "bone club",
     "type": "ground",
-    "category": "",
+    "category": "physical",
     "power": 65,
     "acc": 85,
-    "pp": 20
+    "pp": 20,
+    "effect": function () {
+        if (Math.random() < 0.1) return { flinch: true }
+    }
 }, {
     "name": "bonemerang",
     "type": "ground",
@@ -135,7 +141,7 @@ let moves = [{
     "acc": 100,
     "pp": 30,
     "effect": function () {
-        modifyStats(false, "spe", -1, 1 / 3)
+        modifyStats(false, "spe", -1, 1 / 3);
     }
 }, {
     "name": "bubble beam",
@@ -336,10 +342,6 @@ let moves = [{
     "pp": 5,
     "effect": function () {
         getPkmn(true).hp = 0;
-        /*if (playerToMove == 0) document.getElementById("p1Pokemon").style.backgroundImage = "none";
-        else document.getElementById("p2Pokemon").style.backgroundImage = "none";
-        addMainText(capitalize(getPkmn(true).name) + " fainted!");
-        battleInfo[playerToMove].currentPokemon = -1;*/
     }
 }, {
     "name": "fire blast",
@@ -475,10 +477,13 @@ let moves = [{
 }, {
     "name": "headbutt",
     "type": "normal",
-    "category": "",
+    "category": "physical",
     "power": 70,
     "acc": 100,
-    "pp": 15
+    "pp": 15,
+    "effect": function () {
+        if (Math.random() < 0.3) return { flinch: true }
+    }
 }, {
     "name": "high jump kick",
     "type": "fighting",
@@ -517,10 +522,13 @@ let moves = [{
 }, {
     "name": "hyper fang",
     "type": "normal",
-    "category": "",
+    "category": "physical",
     "power": 80,
     "acc": 90,
-    "pp": 15
+    "pp": 15,
+    "effect": function () {
+        if (Math.random() < 0.1) return { flinch: true }
+    }
 }, {
     "name": "hypnosis",
     "type": "psychic",
@@ -617,10 +625,13 @@ let moves = [{
 }, {
     "name": "low kick",
     "type": "fighting",
-    "category": "",
+    "category": "physical",
     "power": 50,
     "acc": 90,
-    "pp": 20
+    "pp": 20,
+    "effect": function () {
+        if (Math.random() < 0.3) return { flinch: true }
+    }
 }, {
     "name": "meditate",
     "type": "psychic",
@@ -860,7 +871,10 @@ let moves = [{
     "category": "physical",
     "power": 75,
     "acc": 90,
-    "pp": 10
+    "pp": 10,
+    "effect": function () {
+
+    }
 }, {
     "name": "rock throw",
     "type": "rock",
@@ -874,7 +888,10 @@ let moves = [{
     "category": "physical",
     "power": 60,
     "acc": 85,
-    "pp": 15
+    "pp": 15,
+    "effect": function () {
+        if (Math.random() < 0.3) return { flinch: true }
+    }
 }, {
     "name": "sand attack",
     "type": "normal",
@@ -892,10 +909,13 @@ let moves = [{
 }, {
     "name": "screech",
     "type": "normal",
-    "category": "",
+    "category": "status",
     "power": 0,
     "acc": 85,
-    "pp": 40
+    "pp": 40,
+    "effect": function () {
+        modifyStats(false, "def", -2, 1)
+    }
 }, {
     "name": "seismic toss",
     "type": "fighting",
@@ -920,10 +940,13 @@ let moves = [{
 }, {
     "name": "sharpen",
     "type": "normal",
-    "category": "",
+    "category": "status",
     "power": 0,
     "acc": -1,
-    "pp": 30
+    "pp": 30,
+    "effect": function () {
+        modifyStats(true, "atk", 1, 1);
+    }
 }, {
     "name": "sing",
     "type": "normal",
@@ -1103,7 +1126,7 @@ let moves = [{
 }, {
     "name": "super fang",
     "type": "normal",
-    "category": "",
+    "category": "physical",
     "power": 1,
     "acc": 90,
     "pp": 10,
