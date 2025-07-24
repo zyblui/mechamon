@@ -234,10 +234,13 @@ let moves = [{
 }, {
     "name": "crabhammer",
     "type": "water",
-    "category": "",
+    "category": "special",
     "power": 90,
     "acc": 85,
-    "pp": 10
+    "pp": 10,
+    "preEffect": function () {
+        return { isHighCritRatio: true }
+    }
 }, {
     "name": "cut",
     "type": "normal",
@@ -313,7 +316,10 @@ let moves = [{
     "category": "physical",
     "power": 100,
     "acc": 100,
-    "pp": 15
+    "pp": 15,
+    "effect": function (e) {
+        getPkmn(true).hp -= Math.min(e.totalDmg / 4, getPkmn(true).hp);
+    }
 }, {
     "name": "dragon rage",
     "type": "dragon",
@@ -607,10 +613,13 @@ let moves = [{
 }, {
     "name": "karate chop",
     "type": "normal",
-    "category": "",
+    "category": "physical",
     "power": 50,
     "acc": 100,
-    "pp": 25
+    "pp": 25,
+    "preEffect": function () {
+        return { isHighCritRatio: true }
+    }
 }, {
     "name": "kinesis",
     "type": "psychic",
@@ -865,10 +874,13 @@ let moves = [{
 }, {
     "name": "razor leaf",
     "type": "grass",
-    "category": "",
+    "category": "special",
     "power": 55,
     "acc": 95,
-    "pp": 25
+    "pp": 25,
+    "preEffect": function () {
+        return { isHighCritRatio: true }
+    }
 }, {
     "name": "razor wind",
     "type": "normal",
@@ -1028,17 +1040,20 @@ let moves = [{
 }, {
     "name": "slam",
     "type": "normal",
-    "category": "",
+    "category": "physical",
     "power": 80,
     "acc": 75,
     "pp": 20
 }, {
     "name": "slash",
     "type": "normal",
-    "category": "",
+    "category": "physical",
     "power": 70,
     "acc": 100,
-    "pp": 20
+    "pp": 20,
+    "preEffect": function () {
+        return { isHighCritRatio: true }
+    }
 }, {
     "name": "sleep powder",
     "type": "grass",
@@ -1156,14 +1171,17 @@ let moves = [{
 }, {
     "name": "struggle",
     "type": "normal",
-    "category": "",
+    "category": "physical",
     "power": 50,
     "acc": 100,
-    "pp": 10
+    "pp": 10,
+    "effect": function (e) {
+        getPkmn(true).hp -= Math.min(e.totalDmg / 4, getPkmn(true).hp);
+    }
 }, {
     "name": "stun spore",
     "type": "grass",
-    "category": "",
+    "category": "status",
     "power": 0,
     "acc": 75,
     "pp": 30,
@@ -1173,10 +1191,13 @@ let moves = [{
 }, {
     "name": "submission",
     "type": "fighting",
-    "category": "",
+    "category": "physical",
     "power": 80,
     "acc": 80,
-    "pp": 25
+    "pp": 25,
+    "effect": function (e) {
+        getPkmn(true).hp -= Math.min(e.totalDmg / 4, getPkmn(true).hp);
+    }
 }, {
     "name": "substitute",
     "type": "normal",
@@ -1238,7 +1259,7 @@ let moves = [{
 }, {
     "name": "tail whip",
     "type": "normal",
-    "category": "",
+    "category": "status",
     "power": 0,
     "acc": 100,
     "pp": 30,
@@ -1248,10 +1269,13 @@ let moves = [{
 }, {
     "name": "take down",
     "type": "normal",
-    "category": "",
+    "category": "physical",
     "power": 90,
     "acc": 85,
-    "pp": 20
+    "pp": 20,
+    "effect": function (e) {
+        getPkmn(true).hp -= Math.min(e.totalDmg / 4, getPkmn(true).hp);
+    }
 }, {
     "name": "teleport",
     "type": "psychic",

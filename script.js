@@ -310,7 +310,9 @@ for (let i = 0; i < 4; i++) document.getElementsByClassName("decisionMove")[i].a
             }
             totalDmg += Math.min(dmg, getPkmn(false).hp);
             getPkmn(false).hp -= Math.min(dmg, getPkmn(false).hp);
-
+            let preEffect;
+            if (k.preEffect) preEffect = k.preEffect();
+            if (preEffect.isHighCritRatio) criticalHitRatioMultiplier = 8;
             if (Math.random() < criticalHitRatioMultiplier * getStats(getPkmn(true).name).spe / 512) {
                 totalDmg += Math.min(dmg, getPkmn(false).hp);
                 getPkmn(false).hp -= Math.min(dmg, getPkmn(false).hp);
