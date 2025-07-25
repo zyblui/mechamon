@@ -309,7 +309,10 @@ let moves = [{
     "category": "status",
     "power": 0,
     "acc": -1,
-    "pp": 15
+    "pp": 15,
+    "effect":function(){
+        modifyStats(true,"eva",1,1)
+    }
 }, {
     "name": "double-edge",
     "type": "normal",
@@ -429,10 +432,14 @@ let moves = [{
 }, {
     "name": "flash",
     "type": "normal",
-    "category": "",
+    "category": "status",
     "power": 0,
     "acc": 70,
-    "pp": 20
+    "pp": 20,
+    "effect":function(){
+        modifyStats(false,"acc",1,1);
+        //An increase in Accuracy decreases the stages.
+    }
 }, {
     "name": "fly",
     "type": "flying",
@@ -523,10 +530,15 @@ let moves = [{
 }, {
     "name": "haze",
     "type": "ice",
-    "category": "",
+    "category": "status",
     "power": 0,
     "acc": -1,
-    "pp": 30
+    "pp": 30,
+    "effect": function () {
+        for (let i of [true, false]) for (let j of ["atkStage", "defStage", "spStage", "speStage", "accStage", "evaStage"]) getPkmn(i)[j] = 0;
+        getPkmn(false).status = "";
+        if (getPkmn(true).status == "tox") getPkmn(true).status = "psn";
+    }
 }, {
     "name": "headbutt",
     "type": "normal",
@@ -629,7 +641,11 @@ let moves = [{
     "category": "",
     "power": 0,
     "acc": 80,
-    "pp": 15
+    "pp": 15,
+    "effect": function () {
+        modifyStats(false, "acc", 1, 1);
+        //An increase in Accuracy decreases the stages.
+    }
 }, {
     "name": "leech life",
     "type": "bug",
@@ -733,10 +749,13 @@ let moves = [{
 }, {
     "name": "minimize",
     "type": "normal",
-    "category": "",
+    "category": "status",
     "power": 0,
     "acc": -1,
-    "pp": 20
+    "pp": 20,
+    "effect":function(){
+        modifyStats(true,"eva",1,1)
+    }
 }, {
     "name": "mirror move",
     "type": "flying",
@@ -856,10 +875,13 @@ let moves = [{
 }, {
     "name": "psywave",
     "type": "psychic",
-    "category": "",
+    "category": "special",
     "power": 1,
     "acc": 80,
-    "pp": 15
+    "pp": 15,
+    "effect": function () {
+        getPkmn(false).hp -= Math.min(Math.ceil(Math.random() * 149), getPkmn(false).maxHp)
+    }
 }, {
     "name": "quick attack",
     "type": "normal",
@@ -970,7 +992,11 @@ let moves = [{
     "category": "status",
     "power": 0,
     "acc": 100,
-    "pp": 15
+    "pp": 15,
+    "effect": function () {
+        modifyStats(false, "acc", 1, 1);
+        //An increase in Accuracy decreases the stages.
+    }
 }, {
     "name": "scratch",
     "type": "normal",
@@ -1027,7 +1053,7 @@ let moves = [{
     "acc": 55,
     "pp": 15,
     "effect": function () {
-        putToSleep(false, Math.ceil(Math.random() * 7))
+        putToSleep(false, Math.ceil(Math.random() * 7));
     }
 }, {
     "name": "skull bash",
@@ -1099,10 +1125,14 @@ let moves = [{
 }, {
     "name": "smokescreen",
     "type": "normal",
-    "category": "",
+    "category": "status",
     "power": 0,
     "acc": 100,
-    "pp": 20
+    "pp": 20,
+    "effect": function () {
+        modifyStats(false, "acc", 1, 1);
+        //An increase in Accuracy decreases the stages.
+    }
 }, {
     "name": "soft-boiled",
     "type": "normal",

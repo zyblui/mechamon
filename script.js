@@ -162,6 +162,8 @@ document.getElementById("startGame").addEventListener("click", function () {
             j.defStage = 0;
             j.spStage = 0;
             j.speStage = 0;
+            j.accStage = 0;
+            j.evaStage = 0
             j.status = "";
             j.charge = {
                 move: "",
@@ -344,13 +346,13 @@ for (let i = 0; i < 4; i++) document.getElementsByClassName("decisionMove")[i].a
     addMainText(capitalize(players[playerToMove].build[battleInfo[playerToMove].currentPokemon].name) + " used <strong>" +
         capitalize(document.getElementsByClassName("decisionMove")[i].dataset.for) + "</strong>!");
     for (let k of moves) if (k.name == document.getElementsByClassName("decisionMove")[i].dataset.for) {
-        if (k.category != "status" && Math.random() > k.acc / 100) {
+        if (k.category != "status" && Math.random() > k.acc * ACC_STAGE_MULTIPLIER[getPkmn(true).accStage] *
+            ACC_STAGE_MULTIPLIER[getPkmn(false).evaStage] / 100) {
             addSmallText(capitalize(getPkmn(true).name) + "'s attack missed!");
             break;
         }
         if (k.preDmgEffect) k.preDmgEffect();
         if (getPkmn(true).charge.turns > 0) {
-            //getPkmn(true).charge.turns--;
             nextPlayer();
             refreshDecision();
             break;
@@ -404,6 +406,21 @@ const STAGE_MULTIPLIER = {
     "5": 7 / 2,
     "6": 8 / 2
 }
+const ACC_STAGE_MULTIPLIER = {
+    "-6": 9 / 3,
+    "-5": 8 / 3,
+    "-4": 7 / 3,
+    "-3": 6 / 3,
+    "-2": 5 / 3,
+    "-1": 4 / 3,
+    "0": 1,
+    "1": 3 / 4,
+    "2": 3 / 5,
+    "3": 3 / 6,
+    "4": 3 / 7,
+    "5": 3 / 8,
+    "6": 3 / 9
+}
 function renderHP() {
     if (battleInfo[0].currentPokemon == -1) {
         document.getElementById("p1Gauge").classList.add("hide");
@@ -451,7 +468,6 @@ function renderHP() {
             document.getElementById("p2Status").appendChild(span);
         }
     }
-    //let status = ["par", "tox", "psn", "slp", "frz", "brn"]
     for (let i of [0, 1]) if (battleInfo[i].currentPokemon != -1) {
         if (battleInfo[i].build[battleInfo[i].currentPokemon].status) {
             let span = document.createElement("span");
