@@ -238,7 +238,7 @@ let moves = [{
     "power": 90,
     "acc": 85,
     "pp": 10,
-    "preEffect": function () {
+    "preCritEffect": function () {
         return { isHighCritRatio: true }
     }
 }, {
@@ -334,14 +334,17 @@ let moves = [{
 }, {
     "name": "dream eater",
     "type": "psychic",
-    "category": "",
+    "category": "special",
     "power": 100,
     "acc": 100,
-    "pp": 15
+    "pp": 15,
+    "effect": function (e) {
+        if (getPkmn(false).status == "slp") getPkmn(true).hp += Math.min(e.totalDmg / 2, getPkmn(true).maxHp - getPkmn(true).hp);
+    }
 }, {
     "name": "drill peck",
     "type": "flying",
-    "category": "",
+    "category": "physical",
     "power": 80,
     "acc": 100,
     "pp": 20
@@ -617,7 +620,7 @@ let moves = [{
     "power": 50,
     "acc": 100,
     "pp": 25,
-    "preEffect": function () {
+    "preCritEffect": function () {
         return { isHighCritRatio: true }
     }
 }, {
@@ -878,16 +881,19 @@ let moves = [{
     "power": 55,
     "acc": 95,
     "pp": 25,
-    "preEffect": function () {
+    "preCritEffect": function () {
         return { isHighCritRatio: true }
     }
 }, {
     "name": "razor wind",
     "type": "normal",
-    "category": "",
+    "category": "physical",
     "power": 80,
     "acc": 75,
-    "pp": 10
+    "pp": 10,
+    "preDmgEffect": function () {
+        charge("razor wind", 1);
+    }
 }, {
     "name": "recover",
     "type": "normal",
@@ -1026,17 +1032,23 @@ let moves = [{
 }, {
     "name": "skull bash",
     "type": "normal",
-    "category": "",
+    "category": "physical",
     "power": 100,
     "acc": 100,
-    "pp": 15
+    "pp": 15,
+    "preDmgEffect": function () {
+        charge("skull bash", 1);
+    }
 }, {
     "name": "sky attack",
     "type": "flying",
-    "category": "",
+    "category": "physical",
     "power": 140,
     "acc": 90,
-    "pp": 5
+    "pp": 5,
+    "preDmgEffect": function () {
+        charge("sky attack", 1);
+    }
 }, {
     "name": "slam",
     "type": "normal",
@@ -1051,7 +1063,7 @@ let moves = [{
     "power": 70,
     "acc": 100,
     "pp": 20,
-    "preEffect": function () {
+    "preCritEffect": function () {
         return { isHighCritRatio: true }
     }
 }, {
@@ -1105,10 +1117,13 @@ let moves = [{
 }, {
     "name": "solar beam",
     "type": "grass",
-    "category": "",
+    "category": "special",
     "power": 120,
     "acc": 100,
-    "pp": 10
+    "pp": 10,
+    "preDmgEffect": function () {
+        charge("solar beam", 1);
+    }
 }, {
     "name": "sonic boom",
     "type": "normal",

@@ -1,0 +1,40 @@
+You are challenged by [Trainer]!
+[Trainer]前来挑战了！
+
+[Trainer] sent out [Pokemon]!
+[Trainer]派出了[Pokemon]！
+
+Go! [Pokemon]!
+上吧！[Pokemon]！
+
+(The opposing) [Pokemon] used [Move]!
+(对手的)[Pokemon]使出了[Move]！
+
+It's super effective!
+效果绝佳！
+
+[Pokemon] fainted!
+[Pokemon]倒下了！
+
+[Trainer] was defeated!
+战胜了[Trainer]！
+
+Wild [Pokemon] appears!
+野生的[Pokemon]出现了！
+
+[Pokemon]'s [Stat] fell!
+[Pokemon]的[Stat]降低了！
+
+[Trainer]使用了[Item]！
+
+Gotcha! [Pokemon] was caught!
+太好了！捉到[Pokemon]了！
+
+[Pokemon]受到了灼伤的伤害！
+
+It's not very effective...
+好像效果不好……
+
+但是，什么也没有发生……
+
+顺利逃走了！

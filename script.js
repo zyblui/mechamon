@@ -163,6 +163,10 @@ document.getElementById("startGame").addEventListener("click", function () {
             j.spStage = 0;
             j.speStage = 0;
             j.status = "";
+            j.charge = {
+                move: "",
+                turns: 0
+            }
             j.tempEffect = {
                 "confused": 0
             }
@@ -221,6 +225,14 @@ function nextPlayer() {
     if (getPkmn(true)?.status == "par" && Math.random() < 1 / 4) {
         addMainText(capitalize(getPkmn(true).name) + " is paralyzed! It can't move!")
         nextPlayer();
+    } else if (getPkmn(true)?.charge.turns > 0) {
+        getPkmn(true).charge.turns--;
+        if (getPkmn(true).charge.move && getPkmn(true).charge.turns == 0) {
+            attack(getPkmn(true).charge.move);
+            getPkmn(true).charge.move = "";
+        } else {
+            nextPlayer();
+        }
     } else if (getPkmn(true)?.status == "slp") {
         getPkmn(true).sleepTurns--;
         if (getPkmn(true).sleepTurns > 0) {
@@ -279,15 +291,9 @@ function getPkmn(isSelf) {
     if (isSelf) return battleInfo[playerToMove].build[battleInfo[playerToMove].currentPokemon];
     else return battleInfo[(playerToMove == 0) ? 1 : 0].build[battleInfo[(playerToMove == 0) ? 1 : 0].currentPokemon];
 }
-for (let i = 0; i < 4; i++) document.getElementsByClassName("decisionMove")[i].addEventListener("click", function () {
-    addMainText(capitalize(players[playerToMove].build[battleInfo[playerToMove].currentPokemon].name) + " used <strong>" +
-        capitalize(document.getElementsByClassName("decisionMove")[i].dataset.for) + "</strong>!");
-    for (let k of moves) if (k.name == document.getElementsByClassName("decisionMove")[i].dataset.for) {
-        let criticalHitRatioMultiplier = 1, isFlinch = false;
-        if (k.category != "status" && Math.random() > k.acc / 100) {
-            addSmallText(capitalize(getPkmn(true).name) + "'s attack missed!");
-            break;
-        }
+function attack(move) {
+    for (let k of moves) if (k.name == move) {
+        let criticalHitRatioMultiplier = 1;
         let dmg = 0, totalDmg = 0;
         if (k.category == "physical") dmg = calculateDmg(k.power, getStats(getPkmn(true).name).atk, getStats(getPkmn(false).name).def, k.type, getStats(getPkmn(false).name).type);
         else dmg = calculateDmg(k.power, getStats(getPkmn(true).name).sp, getStats(getPkmn(false).name).sp, k.type, getStats(getPkmn(false).name).type);
@@ -310,9 +316,9 @@ for (let i = 0; i < 4; i++) document.getElementsByClassName("decisionMove")[i].a
             }
             totalDmg += Math.min(dmg, getPkmn(false).hp);
             getPkmn(false).hp -= Math.min(dmg, getPkmn(false).hp);
-            let preEffect;
-            if (k.preEffect) preEffect = k.preEffect();
-            if (preEffect.isHighCritRatio) criticalHitRatioMultiplier = 8;
+            let preCritEffect;
+            if (k.preCritEffect) preCritEffect = k.preCritEffect();
+            if (preCritEffect?.isHighCritRatio) criticalHitRatioMultiplier = 8;
             if (Math.random() < criticalHitRatioMultiplier * getStats(getPkmn(true).name).spe / 512) {
                 totalDmg += Math.min(dmg, getPkmn(false).hp);
                 getPkmn(false).hp -= Math.min(dmg, getPkmn(false).hp);
@@ -325,16 +331,40 @@ for (let i = 0; i < 4; i++) document.getElementsByClassName("decisionMove")[i].a
         judgeHP();
         renderHP();
         if (getPkmn(true)) {
-            getPkmn(true).moves[Object.keys(getPkmn(true).moves)[i]]--;
+            getPkmn(true).moves[move]--;
             if (effect?.flinch) {
                 nextTurn();
             }
             else nextPlayer();
         }
         refreshDecision();
+    }
+}
+for (let i = 0; i < 4; i++) document.getElementsByClassName("decisionMove")[i].addEventListener("click", function () {
+    addMainText(capitalize(players[playerToMove].build[battleInfo[playerToMove].currentPokemon].name) + " used <strong>" +
+        capitalize(document.getElementsByClassName("decisionMove")[i].dataset.for) + "</strong>!");
+    for (let k of moves) if (k.name == document.getElementsByClassName("decisionMove")[i].dataset.for) {
+        if (k.category != "status" && Math.random() > k.acc / 100) {
+            addSmallText(capitalize(getPkmn(true).name) + "'s attack missed!");
+            break;
+        }
+        if (k.preDmgEffect) k.preDmgEffect();
+        if (getPkmn(true).charge.turns > 0) {
+            //getPkmn(true).charge.turns--;
+            nextPlayer();
+            refreshDecision();
+            break;
+        }
+        attack(k.name);
         break;
     }
 })
+function charge(move, turns) {
+    getPkmn(true).charge = {
+        move: move,
+        turns: turns
+    }
+}
 function repeatAttack(dmg, count) {
     for (let i = 0; i < count; i++) {
         getPkmn(false).hp -= Math.min(dmg, getPkmn(false).hp);
