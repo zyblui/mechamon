@@ -513,7 +513,9 @@ const STAT_NAMES = {
     "def": "Defense",
     "atk": "Attack",
     "sp": "Special",
-    "spe": "Speed"
+    "spe": "Speed",
+    "eva": "Evasion",
+    "acc": "Accuracy"
 }
 function modifyStats(isSelf, stat, delta, prob) {
     let rand = Math.random();

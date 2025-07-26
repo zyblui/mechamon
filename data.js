@@ -310,8 +310,8 @@ let moves = [{
     "power": 0,
     "acc": -1,
     "pp": 15,
-    "effect":function(){
-        modifyStats(true,"eva",1,1)
+    "effect": function () {
+        modifyStats(true, "eva", 1, 1)
     }
 }, {
     "name": "double-edge",
@@ -415,10 +415,15 @@ let moves = [{
 }, {
     "name": "fissure",
     "type": "ground",
-    "category": "",
+    "category": "physical",
     "power": 0,
     "acc": 30,
-    "pp": 5
+    "pp": 5,
+    "effect": function () {
+        if (getStats(getPkmn(false).name).spe <= getStats(getPkmn(true).name).spe) {
+            getPkmn(false).hp = 0;
+        }
+    }
 }, {
     "name": "flamethrower",
     "type": "fire",
@@ -436,8 +441,8 @@ let moves = [{
     "power": 0,
     "acc": 70,
     "pp": 20,
-    "effect":function(){
-        modifyStats(false,"acc",1,1);
+    "effect": function () {
+        modifyStats(false, "acc", 1, 1);
         //An increase in Accuracy decreases the stages.
     }
 }, {
@@ -495,24 +500,35 @@ let moves = [{
 }, {
     "name": "growl",
     "type": "normal",
-    "category": "",
+    "category": "status",
     "power": 0,
     "acc": 100,
-    "pp": 40
+    "pp": 40,
+    "effect": function () {
+        modifyStats(false, "def", -1, 1);
+    }
 }, {
     "name": "growth",
     "type": "normal",
-    "category": "",
+    "category": "status",
     "power": 0,
     "acc": -1,
-    "pp": 40
+    "pp": 40,
+    "effect": function () {
+        modifyStats(true, "sp", 1, 1);
+    }
 }, {
     "name": "guillotine",
     "type": "normal",
-    "category": "",
+    "category": "physical",
     "power": 0,
     "acc": 30,
-    "pp": 5
+    "pp": 5,
+    "effect": function () {
+        if (getStats(getPkmn(false).name).spe <= getStats(getPkmn(true).name).spe) {
+            getPkmn(false).hp = 0;
+        }
+    }
 }, {
     "name": "gust",
     "type": "normal",
@@ -523,10 +539,13 @@ let moves = [{
 }, {
     "name": "harden",
     "type": "normal",
-    "category": "",
+    "category": "status",
     "power": 0,
     "acc": -1,
-    "pp": 30
+    "pp": 30,
+    "effect": function () {
+        modifyStats(true, "def", 1, 1);
+    }
 }, {
     "name": "haze",
     "type": "ice",
@@ -566,10 +585,15 @@ let moves = [{
 }, {
     "name": "horn drill",
     "type": "normal",
-    "category": "",
+    "category": "physical",
     "power": 0,
     "acc": 30,
-    "pp": 5
+    "pp": 5,
+    "effect": function () {
+        if (getStats(getPkmn(false).name).spe <= getStats(getPkmn(true).name).spe) {
+            getPkmn(false).hp = 0;
+        }
+    }
 }, {
     "name": "hydro pump",
     "type": "water",
@@ -607,17 +631,23 @@ let moves = [{
 }, {
     "name": "ice beam",
     "type": "ice",
-    "category": "",
+    "category": "special",
     "power": 95,
     "acc": 100,
-    "pp": 10
+    "pp": 10,
+    "effect": function () {
+        modifyStatus("frz", 0.1);
+    }
 }, {
     "name": "ice punch",
     "type": "ice",
-    "category": "",
+    "category": "special",
     "power": 75,
     "acc": 100,
-    "pp": 15
+    "pp": 15,
+    "effect": function () {
+        modifyStatus("frz", 0.1);
+    }
 }, {
     "name": "jump kick",
     "type": "fighting",
@@ -649,10 +679,13 @@ let moves = [{
 }, {
     "name": "leech life",
     "type": "bug",
-    "category": "",
+    "category": "physical",
     "power": 20,
     "acc": 100,
-    "pp": 15
+    "pp": 15,
+    "effect": function (e) {
+        getPkmn(true).hp += Math.min(e.totalDmg / 2, getPkmn(true).maxHp - getPkmn(true).hp);
+    }
 }, {
     "name": "leech seed",
     "type": "grass",
@@ -663,10 +696,13 @@ let moves = [{
 }, {
     "name": "leer",
     "type": "normal",
-    "category": "",
+    "category": "status",
     "power": 0,
     "acc": 100,
-    "pp": 30
+    "pp": 30,
+    "effect": function () {
+        modifyStats(false, "def", -1, 1);
+    }
 }, {
     "name": "lick",
     "type": "ghost",
@@ -692,7 +728,7 @@ let moves = [{
     "acc": 75,
     "pp": 10,
     "effect": function () {
-        putToSleep(false, Math.ceil(Math.random() * 7))
+        putToSleep(false, Math.ceil(Math.random() * 7));
     }
 }, {
     "name": "low kick",
@@ -707,38 +743,52 @@ let moves = [{
 }, {
     "name": "meditate",
     "type": "psychic",
-    "category": "",
+    "category": "status",
     "power": 0,
     "acc": -1,
-    "pp": 40
+    "pp": 40,
+    "effect": function () {
+        modifyStats(true, "atk", 1, 1);
+    }
 }, {
     "name": "mega drain",
     "type": "grass",
-    "category": "",
+    "category": "special",
     "power": 40,
     "acc": 100,
-    "pp": 10
+    "pp": 10,
+    "effect": function (e) {
+        getPkmn(true).hp += Math.min(e.totalDmg / 2, getPkmn(true).maxHp - getPkmn(true).hp);
+    }
 }, {
     "name": "mega kick",
     "type": "normal",
-    "category": "",
+    "category": "physical",
     "power": 120,
     "acc": 75,
     "pp": 5
 }, {
     "name": "mega punch",
     "type": "normal",
-    "category": "",
+    "category": "physical",
     "power": 80,
     "acc": 85,
     "pp": 20
 }, {
     "name": "metronome",
     "type": "normal",
-    "category": "",
+    "category": "status",
     "power": 0,
     "acc": -1,
-    "pp": 10
+    "pp": 10,
+    "effect": function () {
+        while (true) {
+            if (moves[Math.floor(Math.random() * moves.length)].name != "metronome" && moves[Math.floor(Math.random() * moves.length)].name != "struggle") {
+                attack(moves[Math.floor(Math.random() * moves.length)].name)
+                break;
+            }
+        }
+    }
 }, {
     "name": "mimic",
     "type": "normal",
@@ -753,8 +803,8 @@ let moves = [{
     "power": 0,
     "acc": -1,
     "pp": 20,
-    "effect":function(){
-        modifyStats(true,"eva",1,1)
+    "effect": function () {
+        modifyStats(true, "eva", 1, 1);
     }
 }, {
     "name": "mirror move",
@@ -955,20 +1005,19 @@ let moves = [{
 }, {
     "name": "roar",
     "type": "normal",
-    "category": "",
+    "category": "status",
     "power": 0,
     "acc": 100,
     "pp": 20
+    //No competitive use.
 }, {
     "name": "rock slide",
     "type": "rock",
     "category": "physical",
     "power": 75,
     "acc": 90,
-    "pp": 10,
-    "effect": function () {
-
-    }
+    "pp": 10
+    //No additional effect.
 }, {
     "name": "rock throw",
     "type": "rock",
@@ -976,6 +1025,7 @@ let moves = [{
     "power": 50,
     "acc": 65,
     "pp": 15
+    //No additional effect.
 }, {
     "name": "rolling kick",
     "type": "fighting",
@@ -1004,6 +1054,7 @@ let moves = [{
     "power": 40,
     "acc": 100,
     "pp": 35
+    //No additional effect.
 }, {
     "name": "screech",
     "type": "normal",
@@ -1082,6 +1133,7 @@ let moves = [{
     "power": 80,
     "acc": 75,
     "pp": 20
+    //No additional effect.
 }, {
     "name": "slash",
     "type": "normal",
@@ -1157,10 +1209,14 @@ let moves = [{
 }, {
     "name": "sonic boom",
     "type": "normal",
-    "category": "",
+    "category": "physical",
     "power": 1,
     "acc": 90,
-    "pp": 20
+    "pp": 20,
+    "effect": function () {
+        getPkmn(false).hp -= Math.min(40, getPkmn(false).hp);
+        addSmallText("(" + capitalize(getPkmn(false).name) + " lost " + (Math.min(40, getPkmn(false).hp) / getPkmn(false).maxHp * 100).toFixed(0) + "% of its health!)")
+    }
 }, {
     "name": "spike cannon",
     "type": "normal",
@@ -1178,10 +1234,11 @@ let moves = [{
 }, {
     "name": "splash",
     "type": "normal",
-    "category": "",
+    "category": "status",
     "power": 0,
     "acc": -1,
     "pp": 40
+    //No competitive use.
 }, {
     "name": "spore",
     "type": "grass",
@@ -1195,24 +1252,31 @@ let moves = [{
 }, {
     "name": "stomp",
     "type": "normal",
-    "category": "",
+    "category": "physical",
     "power": 65,
     "acc": 100,
-    "pp": 20
+    "pp": 20,
+    "effect": function () {
+        if (Math.random() < 0.3) return { flinch: true }
+    }
 }, {
     "name": "strength",
     "type": "normal",
-    "category": "",
+    "category": "physical",
     "power": 80,
     "acc": 100,
     "pp": 15
+    //No additional effect.
 }, {
     "name": "string shot",
     "type": "bug",
-    "category": "",
+    "category": "status",
     "power": 0,
     "acc": 95,
-    "pp": 40
+    "pp": 40,
+    "effect": function () {
+        modifyStats(false, "spe", -1, 1);
+    }
 }, {
     "name": "struggle",
     "type": "normal",
@@ -1273,10 +1337,11 @@ let moves = [{
 }, {
     "name": "surf",
     "type": "water",
-    "category": "",
+    "category": "special",
     "power": 95,
     "acc": 100,
     "pp": 15
+    //No additional effect.
 }, {
     "name": "swift",
     "type": "normal",
@@ -1297,10 +1362,11 @@ let moves = [{
 }, {
     "name": "tackle",
     "type": "normal",
-    "category": "",
+    "category": "physical",
     "power": 35,
     "acc": 95,
     "pp": 35
+    //No additional effect.
 }, {
     "name": "tail whip",
     "type": "normal",
@@ -1324,10 +1390,11 @@ let moves = [{
 }, {
     "name": "teleport",
     "type": "psychic",
-    "category": "",
+    "category": "status",
     "power": 0,
     "acc": -1,
     "pp": 20
+    //No competitive use.
 }, {
     "name": "thrash",
     "type": "normal",
@@ -1405,10 +1472,11 @@ let moves = [{
 }, {
     "name": "tri attack",
     "type": "normal",
-    "category": "",
+    "category": "physical",
     "power": 80,
     "acc": 100,
     "pp": 10
+    //No additional effect.
 }, {
     "name": "twineedle",
     "type": "bug",
@@ -1423,45 +1491,51 @@ let moves = [{
 }, {
     "name": "vice grip",
     "type": "normal",
-    "category": "",
+    "category": "physical",
     "power": 55,
     "acc": 100,
     "pp": 30
+    //No additional effect.
 }, {
     "name": "vine whip",
     "type": "grass",
-    "category": "",
+    "category": "special",
     "power": 35,
     "acc": 100,
     "pp": 10
+    //No additional effect.
 }, {
     "name": "water gun",
     "type": "water",
-    "category": "",
+    "category": "special",
     "power": 40,
     "acc": 100,
     "pp": 25
+    //No additional effect.
 }, {
     "name": "waterfall",
     "type": "water",
-    "category": "",
+    "category": "special",
     "power": 80,
     "acc": 100,
     "pp": 15
+    //No additional effect.
 }, {
     "name": "whirlwind",
     "type": "normal",
-    "category": "",
+    "category": "status",
     "power": 0,
     "acc": 85,
     "pp": 20
+    //No competitive use.
 }, {
     "name": "wing attack",
     "type": "flying",
-    "category": "",
+    "category": "physical",
     "power": 35,
     "acc": 100,
     "pp": 35
+    //No additional effect.
 }, {
     "name": "withdraw",
     "type": "water",
@@ -1470,7 +1544,7 @@ let moves = [{
     "acc": -1,
     "pp": 40,
     "effect": function () {
-        modifyStats(true, "def", 1, 1)
+        modifyStats(true, "def", 1, 1);
     }
 }, {
     "name": "wrap",
