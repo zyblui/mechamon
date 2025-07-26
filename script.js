@@ -50,6 +50,21 @@ function setUncontrollable(move, turns) {
         move: move,
         turns: turns
     }
+    /*for (let i = 1; i < turns; i++) {
+        setDelay(true, function () {
+            getPkmn(true).mustPass = true;
+            attack(move);
+        }, i)
+    }
+    setDelay(true, function () {
+        getPkmn(true).mustPass = false;
+    }, turns)*/
+}
+function setDelay(isSelf, func, turns) {
+    getPkmn(isSelf).delay.push({
+        "effect": func,
+        "turns": turns
+    })
 }
 function render() {
     if (battleInfo[0].currentPokemon != -1) document.getElementById("p1Pokemon").style.backgroundImage = "url('back/" + players[0].build[battleInfo[0].currentPokemon].name + ".png')";
@@ -120,7 +135,7 @@ function calculateEffectiveness(attackType, defenseType) {
     return effectiveness;
 }
 function refreshDecision() {
-    if (battleInfo[playerToMove].currentPokemon != -1) {
+    if (battleInfo[playerToMove].currentPokemon != -1 && getPkmn(true).uncontrollable.turns == 0 && (!getPkmn(false) || getPkmn(false).uncontrollable.turns == 0)) {
         for (let i = 0; i < 4; i++) {
             if (Object.values(getPkmn(true).moves)[i] <= 0 || (getPkmn(true).uncontrollable.move && getPkmn(true).uncontrollable
                 .move != Object.keys(getPkmn(true).moves)[i])) document.getElementsByClassName("decisionMove")[i].disabled =
@@ -136,6 +151,13 @@ function refreshDecision() {
             div.appendChild(span);
             document.getElementsByClassName("decisionMove")[i].appendChild(div)
             document.getElementsByClassName("decisionMove")[i].dataset.for = Object.keys(getPkmn(true).moves)[i];
+        }
+    } else if (battleInfo[playerToMove].currentPokemon != -1) {
+        document.getElementsByClassName("decisionMove")[0].disabled = "";
+        document.getElementsByClassName("decisionMove")[0].innerText = "Pass";
+        for (let i = 1; i < 4; i++) {
+            document.getElementsByClassName("decisionMove")[i].disabled = "disabled";
+            document.getElementsByClassName("decisionMove")[i].innerText = "-"
         }
     } else {
         for (let i = 0; i < 4; i++) {
@@ -180,11 +202,12 @@ document.getElementById("startGame").addEventListener("click", function () {
             j.uncontrollable = {
                 move: "",
                 turns: 0,
-                isCrit:false
+                isCrit: false
             }
             j.tempEffect = {
                 "confused": 0
             }
+            j.delay = []
             j.sleepTurns = 0;
             let json = {};
             for (let k of j.moves) for (let l of moves) if (l.name == k) json[k] = l.pp;
@@ -236,6 +259,14 @@ function nextPlayer() {
         playerToMove = (playerToMove == 0) ? 1 : 0;
     } else {
         nextTurn();
+    }
+    for (let i = 0; i < getPkmn(true).delay.length; i++) {
+        if (getPkmn(true).delay[i].turns > 0) getPkmn(true).delay[i].turns--;
+        else {
+            getPkmn(true).delay[i].effect();
+            getPkmn(true).delay.splice(i, 1);
+            i--;
+        }
     }
     if (getPkmn(true)?.status == "par" && Math.random() < 1 / 4) {
         addMainText(capitalize(getPkmn(true).name) + " is paralyzed! It can't move!")
@@ -343,6 +374,7 @@ function attack(move) {
             let preCritEffect;
             if (k.preCritEffect) preCritEffect = k.preCritEffect();
             if (preCritEffect?.isHighCritRatio) criticalHitRatioMultiplier = 8;
+            if (arguments[1]?.forceCrit) criticalHitRatioMultiplier = Infinity;
             if (Math.random() < criticalHitRatioMultiplier * getStats(getPkmn(true).name).spe / 512) {
                 totalDmg += Math.min(dmg, getPkmn(false).hp);
                 getPkmn(false).hp -= Math.min(dmg, getPkmn(false).hp);
@@ -365,6 +397,16 @@ function attack(move) {
     }
 }
 for (let i = 0; i < 4; i++) document.getElementsByClassName("decisionMove")[i].addEventListener("click", function () {
+    /*if (getPkmn(true).mustPass) {
+
+        nextPlayer();
+        return;
+    }*/
+    if (getPkmn(true).uncontrollable.turns > 0) {
+        attack(getPkmn(true).uncontrollable.move);
+    } else if (getPkmn(false).uncontrollable.turns > 0) {
+        nextPlayer();
+    }
     addMainText(capitalize(players[playerToMove].build[battleInfo[playerToMove].currentPokemon].name) + " used <strong>" +
         capitalize(document.getElementsByClassName("decisionMove")[i].dataset.for) + "</strong>!");
     for (let k of moves) if (k.name == document.getElementsByClassName("decisionMove")[i].dataset.for) {
