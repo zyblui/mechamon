@@ -854,24 +854,36 @@ let moves = [{
 }, {
     "name": "pay day",
     "type": "normal",
-    "category": "",
+    "category": "physical",
     "power": 40,
     "acc": 100,
     "pp": 20
+    //No additional effect.
 }, {
     "name": "peck",
     "type": "flying",
-    "category": "",
+    "category": "physical",
     "power": 35,
     "acc": 100,
     "pp": 35
+    //No additional effect.
 }, {
     "name": "petal dance",
     "type": "grass",
-    "category": "",
+    "category": "special",
     "power": 70,
     "acc": 100,
-    "pp": 20
+    "pp": 20,
+    "effect": function () {
+        if (Math.random() < 0.5) {
+            setUncontrollable("petal dance", 2);
+            addTempEffect(true,"confused",Infinity,1)
+        }
+        else {
+            setUncontrollable("petal dance", 3)
+        }
+
+    }
 }, {
     "name": "pin missile",
     "type": "bug",

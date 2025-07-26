@@ -242,6 +242,9 @@ for (let i = 0; i < 6; i++) {
     document.getElementsByClassName("decisionSwitch")[i].addEventListener("click", function () {
         if (battleInfo[playerToMove].currentPokemon != -1) addMainText(capitalize(getPkmn(true).name) + ", come back!");
         addMainText("Go! <strong>" + document.getElementsByClassName("decisionSwitch")[i].innerText + "</strong>!");
+        for (let j in getPkmn(true).tempEffect) {
+            getPkmn(true).tempEffect[j] = 0;
+        }
         battleInfo[playerToMove].currentPokemon = i;
         render();
         renderHP();
@@ -260,7 +263,7 @@ function nextPlayer() {
     } else {
         nextTurn();
     }
-    for (let i = 0; i < getPkmn(true).delay.length; i++) {
+    if (getPkmn(true)) for (let i = 0; i < getPkmn(true).delay.length; i++) {
         if (getPkmn(true).delay[i].turns > 0) getPkmn(true).delay[i].turns--;
         else {
             getPkmn(true).delay[i].effect();
