@@ -92,10 +92,17 @@ let moves = [{
 }, {
     "name": "bind",
     "type": "normal",
-    "category": "",
+    "category": "physical",
     "power": 15,
     "acc": 75,
-    "pp": 20
+    "pp": 20,
+    "effect": function (e) {
+        let num = Math.random();
+        if (num < 3 / 8) setUncontrollable("bind", 1);
+        else if (num < 6 / 8) setUncontrollable("bind", 2);
+        else if (num < 7 / 8) setUncontrollable("bind", 3);
+        else setUncontrollable("bind", 4);
+    }
 }, {
     "name": "bite",
     "type": "normal",
@@ -169,10 +176,17 @@ let moves = [{
 }, {
     "name": "clamp",
     "type": "water",
-    "category": "",
+    "category": "special",
     "power": 35,
     "acc": 75,
-    "pp": 10
+    "pp": 10,
+    "effect": function (e) {
+        let num = Math.random();
+        if (num < 3 / 8) setUncontrollable("clamp", 1);
+        else if (num < 6 / 8) setUncontrollable("clamp", 2);
+        else if (num < 7 / 8) setUncontrollable("clamp", 3);
+        else setUncontrollable("clamp", 4);
+    }
 }, {
     "name": "comet punch",
     "type": "normal",
@@ -411,7 +425,14 @@ let moves = [{
     "category": "special",
     "power": 15,
     "acc": 70,
-    "pp": 15
+    "pp": 15,
+    "effect": function (e) {
+        let num = Math.random();
+        if (num < 3 / 8) setUncontrollable("fire spin", 1);
+        else if (num < 6 / 8) setUncontrollable("fire spin", 2);
+        else if (num < 7 / 8) setUncontrollable("fire spin", 3);
+        else setUncontrollable("fire spin", 4);
+    }
 }, {
     "name": "fissure",
     "type": "ground",
@@ -1552,7 +1573,14 @@ let moves = [{
     "category": "physical",
     "power": 15,
     "acc": 85,
-    "pp": 20
+    "pp": 20,
+    "effect": function (e) {
+        let num = Math.random();
+        if (num < 3 / 8) setUncontrollable("wrap", 1);
+        else if (num < 6 / 8) setUncontrollable("wrap", 2);
+        else if (num < 7 / 8) setUncontrollable("wrap", 3);
+        else setUncontrollable("wrap", 4);
+    }
 }]
 let pokemon = [{
     "name": "abra",

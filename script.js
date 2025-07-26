@@ -45,6 +45,12 @@ document.getElementById("p1Pokemon").style.backgroundImage = "url('back/" + play
 document.getElementById("p2Pokemon").style.backgroundImage = "url('front/" + players[1].build[0].name + ".png')";
 document.getElementById("p1Name").innerText = capitalize(players[0].build[0].name);
 document.getElementById("p2Name").innerText = capitalize(players[1].build[0].name);
+function setUncontrollable(move, turns) {
+    getPkmn(true).uncontrollable = {
+        move: move,
+        turns: turns
+    }
+}
 function render() {
     if (battleInfo[0].currentPokemon != -1) document.getElementById("p1Pokemon").style.backgroundImage = "url('back/" + players[0].build[battleInfo[0].currentPokemon].name + ".png')";
     if (battleInfo[1].currentPokemon != -1) document.getElementById("p2Pokemon").style.backgroundImage = "url('front/" + players[1].build[battleInfo[1].currentPokemon].name + ".png')";
@@ -116,16 +122,18 @@ function calculateEffectiveness(attackType, defenseType) {
 function refreshDecision() {
     if (battleInfo[playerToMove].currentPokemon != -1) {
         for (let i = 0; i < 4; i++) {
-            if (Object.values(getPkmn(true).moves)[i] <= 0) document.getElementsByClassName("decisionMove")[i].disabled = "disabled";
+            if (Object.values(getPkmn(true).moves)[i] <= 0 || (getPkmn(true).uncontrollable.move && getPkmn(true).uncontrollable
+                .move != Object.keys(getPkmn(true).moves)[i])) document.getElementsByClassName("decisionMove")[i].disabled =
+                    "disabled";
             else document.getElementsByClassName("decisionMove")[i].disabled = "";
             document.getElementsByClassName("decisionMove")[i].innerHTML = capitalize(Object.keys(getPkmn(true).moves)[i]);
             let div = document.createElement("div");
             div.classList.add("pp");
             div.innerHTML = Object.values(getPkmn(true).moves)[i];
-            let span = document.createElement("span")
+            let span = document.createElement("span");
             span.classList.add("sub");
-            span.innerText = "/" + getMoveStats(Object.keys(getPkmn(true).moves)[i]).pp
-            div.appendChild(span)
+            span.innerText = "/" + getMoveStats(Object.keys(getPkmn(true).moves)[i]).pp;
+            div.appendChild(span);
             document.getElementsByClassName("decisionMove")[i].appendChild(div)
             document.getElementsByClassName("decisionMove")[i].dataset.for = Object.keys(getPkmn(true).moves)[i];
         }
@@ -135,7 +143,7 @@ function refreshDecision() {
         }
     }
     for (let i = 0; i < 6; i++) {
-        document.getElementsByClassName("decisionSwitch")[i].innerText = capitalize(players[playerToMove].build[i].name)
+        document.getElementsByClassName("decisionSwitch")[i].innerText = capitalize(players[playerToMove].build[i].name);
         document.getElementsByClassName("decisionSwitch")[i].classList.remove("selected");
         if (battleInfo[playerToMove].build[i].hp == 0) document.getElementsByClassName("decisionSwitch")[i].disabled = "disabled";
         else if (battleInfo[playerToMove].currentPokemon == i) {
@@ -168,6 +176,11 @@ document.getElementById("startGame").addEventListener("click", function () {
             j.charge = {
                 move: "",
                 turns: 0
+            }
+            j.uncontrollable = {
+                move: "",
+                turns: 0,
+                isCrit:false
             }
             j.tempEffect = {
                 "confused": 0
@@ -235,6 +248,15 @@ function nextPlayer() {
         } else {
             nextPlayer();
         }
+    } else if (getPkmn(true)?.uncontrollable.turns > 0) {
+        getPkmn(true).uncontrollable.turns--;
+        if (getPkmn(true).uncontrollable.move && getPkmn(true).uncontrollable.turns == 0) {
+            //attack(getPkmn(true).uncontrollable.move);
+            getPkmn(true).uncontrollable.move = "";
+        }/* else {
+            attack(getPkmn(true).uncontrollable.move);
+            nextPlayer();
+        }*/
     } else if (getPkmn(true)?.status == "slp") {
         getPkmn(true).sleepTurns--;
         if (getPkmn(true).sleepTurns > 0) {
