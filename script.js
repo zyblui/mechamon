@@ -193,7 +193,8 @@ document.getElementById("startGame").addEventListener("click", function () {
             j.spStage = 0;
             j.speStage = 0;
             j.accStage = 0;
-            j.evaStage = 0
+            j.evaStage = 0;
+            j.critProbMultiplier = 1
             j.status = "";
             j.charge = {
                 move: "",
@@ -217,6 +218,8 @@ document.getElementById("startGame").addEventListener("click", function () {
                 turns: 0
             }
             j.substituteHp = 0;
+            j.dmgTaken = [];
+            j.lastDmgTakenType = "";
             let json = {};
             for (let k of j.moves) for (let l of moves) if (l.name == k) json[k] = l.pp;
             j.moves = json;
@@ -329,7 +332,7 @@ function nextPlayer() {
     } else if (getPkmn(true)?.tempEffect.confused > 0) {
         addSmallText(capitalize(getPkmn(true).name) + " is confused!")
         if (Math.random() < 0.5) {
-            getPkmn(true).hp -= calculateDmg(40, getStats(getPkmn(true).name).atk, getDefense(true, false), "",
+            getPkmn(true).hp -= calculateDmg(40, getStats(getPkmn(true).name).atk, getDefense(true, true), "",
                 getType(true))
             addMainText("It hurt itself in confusion!");
         }
@@ -339,6 +342,10 @@ function nextPlayer() {
 function getDefense(isSelf, isCrit) {
     if (isCrit) return getStats(getPkmn(isSelf).name).def;
     else return getStats(getPkmn(isSelf).name).def * ((getPkmn(isSelf).tempEffect.reflect) ? 2 : 1);
+}
+function getSp(isSelf,isCrit){
+    if (isCrit) return getStats(getPkmn(isSelf).name).sp;
+    else return getStats(getPkmn(isSelf).name).sp * ((getPkmn(isSelf).tempEffect["light screen"]) ? 2 : 1);
 }
 function nextTurn() {
     if (getPkmn(true)?.status == "brn") getPkmn(true).hp -= Math.min(getPkmn(true).hp / 16, getPkmn(true).hp);
@@ -391,12 +398,12 @@ function attack(move) {
         if (k.preCritEffect) preCritEffect = k.preCritEffect();
         if (preCritEffect?.isHighCritRatio) criticalHitRatioMultiplier = 8;
         if (arguments[1]?.forceCrit) criticalHitRatioMultiplier = Infinity;
-        let isCrit = (Math.random() < criticalHitRatioMultiplier * getStats(getPkmn(true).name).spe / 512);
+        let isCrit = (Math.random() < criticalHitRatioMultiplier * getPkmn(true).critProbMultiplier * getStats(getPkmn(true).name)
+            .spe / 512);
         let dmg = 0, totalDmg = 0;
         if (k.category == "physical") dmg = calculateDmg(k.power, getStats(getPkmn(true).name).atk, getDefense(false, isCrit),
             k.type, getType(false));
-        else dmg = calculateDmg(k.power, getStats(getPkmn(true).name).sp, getStats(getPkmn(false).name).sp, k.type,
-            getType(false));
+        else dmg = calculateDmg(k.power, getSp(true,isCrit), getSp(false,isCrit), k.type, getType(false));
         if (k.category != "status") {
             switch (calculateEffectiveness(k.type, getType(false))) {
                 case 4:
@@ -418,6 +425,8 @@ function attack(move) {
                 addSmallText("A critical hit!");
             }
             addSmallText("(" + capitalize(getPkmn(false).name) + " lost " + (totalDmg / getPkmn(false).maxHp * 100).toFixed(0) + "% of its health!)");
+            getPkmn(false).dmgTaken.push(totalDmg)
+            getPkmn(false).lastDmgTakenType = k.type;
         }
         let effect;
         if (k.effect) effect = k.effect({ totalDmg: totalDmg });
@@ -486,7 +495,6 @@ function judgeHP() {
         else document.getElementById("p1Pokemon").style.backgroundImage = "none";
         addMainText(capitalize(getPkmn(false).name) + " fainted!");
         battleInfo[(playerToMove == 0) ? 1 : 0].currentPokemon = -1;
-
     }
     if (getPkmn(true)?.hp <= 0) {
         getPkmn(true).hp = 0;
@@ -644,6 +652,8 @@ function modifyStatus(status, prob) {
         getPkmn(false).status = status;
         if (status == "par") {
             addSmallText(capitalize(getPkmn(false).name) + " is paralyzed! It may be unable to move!");
+        } else if (status == "frz") {
+            addSmallText(capitalize(getPkmn(false).name) + " is frozen solid!");
         }
     }
 }
@@ -655,6 +665,7 @@ function putToSleep(isSelf, turns) {
 function addTempEffect(isSelf, effect, turns, prob) {
     if (Math.random() < prob) {
         getPkmn(isSelf).tempEffect[effect] = turns;
-        if (effect == "confused") addSmallText(capitalize(getPkmn(false).name) + " became confused!")
+        if (effect == "confused") addSmallText(capitalize(getPkmn(false).name) + " became confused!");
+        else if (effect == "reflect" || effect == "light screen") addSmallText(capitalize(getPkmn(false).name) + " gained armor!");
     }
 }

@@ -88,7 +88,19 @@ let moves = [{
     "category": "physical",
     "power": 0,
     "acc": Infinity,
-    "pp": 10
+    "pp": 10,
+    "preDmgEffect": function () {
+        getPkmn(true).dmgTaken = [];
+        if (Math.random() < 0.5) charge("bide", 2);
+        else charge("bide", 3);
+    },
+    "effect": function () {
+        let sum = 0;
+        for (let i of getPkmn(true).dmgTaken) {
+            sum += i;
+        }
+        getPkmn(false).hp -= Math.min(sum * 2, getPkmn(false).maxHp);
+    }
 }, {
     "name": "bind",
     "type": "normal",
@@ -244,10 +256,15 @@ let moves = [{
 }, {
     "name": "counter",
     "type": "fighting",
-    "category": "",
+    "category": "physical",
     "power": 1,
     "acc": 100,
-    "pp": 20
+    "pp": 20,
+    "effect": function () {
+        if (getPkmn(true).lastDmgTakenType == "normal" || getPkmn(true).lastDmgTakenType == "fighting") {
+            getPkmn(false).hp -= Math.min(getPkmn(true).dmgTaken[getPkmn(true).dmgTaken.length - 1], getPkmn(false).maxHp);
+        }
+    }
 }, {
     "name": "crabhammer",
     "type": "water",
@@ -505,7 +522,10 @@ let moves = [{
     "category": "status",
     "power": 0,
     "acc": Infinity,
-    "pp": 30
+    "pp": 30,
+    "effect": function () {
+        getPkmn(true).critProbMultiplier = 1 / 4;
+    }
 }, {
     "name": "fury attack",
     "type": "normal",
@@ -781,7 +801,10 @@ let moves = [{
     "category": "status",
     "power": 0,
     "acc": Infinity,
-    "pp": 30
+    "pp": 30,
+    "effect": function () {
+        addTempEffect(true, "light screen", Infinity, 1);
+    }
 }, {
     "name": "lovely kiss",
     "type": "normal",
