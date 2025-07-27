@@ -138,8 +138,8 @@ function refreshDecision() {
     if (battleInfo[playerToMove].currentPokemon != -1 && getPkmn(true).uncontrollable.turns == 0 && (!getPkmn(false) || getPkmn(false).uncontrollable.turns == 0)) {
         for (let i = 0; i < 4; i++) {
             if (Object.values(getPkmn(true).moves)[i] <= 0 || (getPkmn(true).uncontrollable.move && getPkmn(true).uncontrollable
-                .move != Object.keys(getPkmn(true).moves)[i])) document.getElementsByClassName("decisionMove")[i].disabled =
-                    "disabled";
+                .move != Object.keys(getPkmn(true).moves)[i]) || (getPkmn(true).disable.move == Object.keys(getPkmn(true)
+                    .moves)[i])) document.getElementsByClassName("decisionMove")[i].disabled = "disabled";//?
             else document.getElementsByClassName("decisionMove")[i].disabled = "";
             document.getElementsByClassName("decisionMove")[i].innerHTML = capitalize(Object.keys(getPkmn(true).moves)[i]);
             let div = document.createElement("div");
@@ -209,6 +209,12 @@ document.getElementById("startGame").addEventListener("click", function () {
             }
             j.delay = []
             j.sleepTurns = 0;
+            j.tempType = [];
+            j.disable = {
+                move: "",
+                turns: 0
+            }
+            
             let json = {};
             for (let k of j.moves) for (let l of moves) if (l.name == k) json[k] = l.pp;
             j.moves = json;
@@ -242,8 +248,16 @@ for (let i = 0; i < 6; i++) {
     document.getElementsByClassName("decisionSwitch")[i].addEventListener("click", function () {
         if (battleInfo[playerToMove].currentPokemon != -1) addMainText(capitalize(getPkmn(true).name) + ", come back!");
         addMainText("Go! <strong>" + document.getElementsByClassName("decisionSwitch")[i].innerText + "</strong>!");
-        for (let j in getPkmn(true).tempEffect) {
-            getPkmn(true).tempEffect[j] = 0;
+        if (getPkmn(true)) {
+            for (let j in getPkmn(true).tempEffect) {
+                getPkmn(true).tempEffect[j] = 0;
+            }
+            getPkmn(true).tempType = [];
+            getPkmn(true).uncontrollable = {
+                move: "",
+                turns: 0,
+                isCrit: false
+            }
         }
         battleInfo[playerToMove].currentPokemon = i;
         render();
@@ -263,12 +277,18 @@ function nextPlayer() {
     } else {
         nextTurn();
     }
-    if (getPkmn(true)) for (let i = 0; i < getPkmn(true).delay.length; i++) {
-        if (getPkmn(true).delay[i].turns > 0) getPkmn(true).delay[i].turns--;
+    if (getPkmn(true)) {
+        for (let i = 0; i < getPkmn(true).delay.length; i++) {
+            if (getPkmn(true).delay[i].turns > 0) getPkmn(true).delay[i].turns--;
+            else {
+                getPkmn(true).delay[i].effect();
+                getPkmn(true).delay.splice(i, 1);
+                i--;
+            }
+        }
+        if (getPkmn(true).disable.turns > 0) getPkmn(true).delay[i].turns--;
         else {
-            getPkmn(true).delay[i].effect();
-            getPkmn(true).delay.splice(i, 1);
-            i--;
+            getPkmn(true).disable.move = "";
         }
     }
     if (getPkmn(true)?.status == "par" && Math.random() < 1 / 4) {
@@ -303,12 +323,14 @@ function nextPlayer() {
     } else if (getPkmn(true)?.tempEffect.confused > 0) {
         addSmallText(capitalize(getPkmn(true).name) + " is confused!")
         if (Math.random() < 0.5) {
-            getPkmn(true).hp -= calculateDmg(40, getStats(getPkmn(true).name).atk, getStats(getPkmn(true).name).def, "", getStats(getPkmn(true).name).type)
+            getPkmn(true).hp -= calculateDmg(40, getStats(getPkmn(true).name).atk, getStats(getPkmn(true).name).def, "",
+                getType(true))
             addMainText("It hurt itself in confusion!");
         }
         getPkmn(true).tempEffect.confused--;
     }
 }
+
 function nextTurn() {
     if (getPkmn(true)?.status == "brn") getPkmn(true).hp -= Math.min(getPkmn(true).hp / 16, getPkmn(true).hp);
     if (getPkmn(false)?.status == "brn") getPkmn(false).hp -= Math.min(getPkmn(false).hp / 16, getPkmn(false).hp);
@@ -349,14 +371,20 @@ function getPkmn(isSelf) {
     if (isSelf) return battleInfo[playerToMove].build[battleInfo[playerToMove].currentPokemon];
     else return battleInfo[(playerToMove == 0) ? 1 : 0].build[battleInfo[(playerToMove == 0) ? 1 : 0].currentPokemon];
 }
+function getType(isSelf) {
+    if (getPkmn(isSelf).tempType.length) return getPkmn(isSelf).tempType;
+    else return getStats(getPkmn(isSelf).name).type;
+}
 function attack(move) {
     for (let k of moves) if (k.name == move) {
         let criticalHitRatioMultiplier = 1;
         let dmg = 0, totalDmg = 0;
-        if (k.category == "physical") dmg = calculateDmg(k.power, getStats(getPkmn(true).name).atk, getStats(getPkmn(false).name).def, k.type, getStats(getPkmn(false).name).type);
-        else dmg = calculateDmg(k.power, getStats(getPkmn(true).name).sp, getStats(getPkmn(false).name).sp, k.type, getStats(getPkmn(false).name).type);
+        if (k.category == "physical") dmg = calculateDmg(k.power, getStats(getPkmn(true).name).atk, getStats(getPkmn(false).name)
+            .def, k.type, getType(false));
+        else dmg = calculateDmg(k.power, getStats(getPkmn(true).name).sp, getStats(getPkmn(false).name).sp, k.type,
+            getType(false));
         if (k.category != "status") {
-            switch (calculateEffectiveness(k.type, getStats(getPkmn(false).name).type)) {
+            switch (calculateEffectiveness(k.type, getType(false))) {
                 case 4:
                     addSmallText("It's super effective!");
                     break;

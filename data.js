@@ -131,7 +131,7 @@ let moves = [{
     "acc": 100,
     "pp": 15,
     "effect": function () {
-        if (!getStats(getPkmn(false).name).type.includes("normal")) modifyStatus("par", 0.3);
+        if (!getType(false).includes("normal")) modifyStatus("par", 0.3);
     }
 }, {
     "name": "bone club",
@@ -237,7 +237,10 @@ let moves = [{
     "category": "status",
     "power": 0,
     "acc": -1,
-    "pp": 30
+    "pp": 30,
+    "effect": function () {
+        getPkmn(true).tempType = getStats(getPkmn(false).name).type;
+    }
 }, {
     "name": "counter",
     "type": "fighting",
@@ -282,10 +285,20 @@ let moves = [{
 }, {
     "name": "disable",
     "type": "normal",
-    "category": "",
+    "category": "status",
     "power": 0,
     "acc": 55,
-    "pp": 20
+    "pp": 20,
+    "effect": function () {
+        let arr = [];
+        for (let i in getPkmn(false).moves) {
+            if (getPkmn(false).moves[i] > 0) arr.push(i);
+        }
+        getPkmn(false).disable = {
+            move: arr[Math.floor(Math.random() * arr.length)],
+            turns: Math.floor(Math.random() * 7)
+        }
+    }
 }, {
     "name": "dizzy punch",
     "type": "normal",
@@ -476,7 +489,7 @@ let moves = [{
 }, {
     "name": "focus energy",
     "type": "normal",
-    "category": "",
+    "category": "status",
     "power": 0,
     "acc": -1,
     "pp": 30
@@ -877,7 +890,7 @@ let moves = [{
     "effect": function () {
         if (Math.random() < 0.5) {
             setUncontrollable("petal dance", 2);
-            addTempEffect(true,"confused",Infinity,1)
+            addTempEffect(true, "confused", Infinity, 1)
         }
         else {
             setUncontrollable("petal dance", 3)
