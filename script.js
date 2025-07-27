@@ -205,7 +205,8 @@ document.getElementById("startGame").addEventListener("click", function () {
                 isCrit: false
             }
             j.tempEffect = {
-                "confused": 0
+                "confused": 0,
+                "semiInvulnerable": 0
             }
             j.delay = []
             j.sleepTurns = 0;
@@ -214,7 +215,7 @@ document.getElementById("startGame").addEventListener("click", function () {
                 move: "",
                 turns: 0
             }
-            
+            j.substituteHp = 0;
             let json = {};
             for (let k of j.moves) for (let l of moves) if (l.name == k) json[k] = l.pp;
             j.moves = json;
@@ -446,12 +447,14 @@ for (let i = 0; i < 4; i++) document.getElementsByClassName("decisionMove")[i].a
             addSmallText(capitalize(getPkmn(true).name) + "'s attack missed!");
             break;
         }
-        if (k.preDmgEffect) k.preDmgEffect();
+        let preDmgEffect = {};
+        if (k.preDmgEffect) preDmgEffect = k.preDmgEffect();
         if (getPkmn(true).charge.turns > 0) {
             nextPlayer();
             refreshDecision();
             break;
         }
+        if (getPkmn(false).tempEffect.semiInvulnerable > 0 && !preDmgEffect.nullifySemiInvulnerable) break;
         attack(k.name);
         break;
     }

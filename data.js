@@ -23,7 +23,7 @@ let moves = [{
     "type": "poison",
     "category": "status",
     "power": 0,
-    "acc": -1,
+    "acc": Infinity,
     "pp": 40,
     "effect": function () {
         modifyStats(true, "def", 2, 1);
@@ -33,7 +33,7 @@ let moves = [{
     "type": "psychic",
     "category": "status",
     "power": 0,
-    "acc": -1,
+    "acc": Infinity,
     "pp": 30,
     "effect": function () {
         modifyStats(true, "spe", 2, 1);
@@ -43,7 +43,7 @@ let moves = [{
     "type": "psychic",
     "category": "status",
     "power": 0,
-    "acc": -1,
+    "acc": Infinity,
     "pp": 20,
     "effect": function () {
         modifyStats(true, "sp", 2, 1);
@@ -77,7 +77,7 @@ let moves = [{
     "type": "psychic",
     "category": "status",
     "power": 0,
-    "acc": -1,
+    "acc": Infinity,
     "pp": 30,
     "effect": function () {
         modifyStats(true, "def", 2, 1);
@@ -87,7 +87,7 @@ let moves = [{
     "type": "normal",
     "category": "physical",
     "power": 0,
-    "acc": -1,
+    "acc": Infinity,
     "pp": 10
 }, {
     "name": "bind",
@@ -236,7 +236,7 @@ let moves = [{
     "type": "normal",
     "category": "status",
     "power": 0,
-    "acc": -1,
+    "acc": Infinity,
     "pp": 30,
     "effect": function () {
         getPkmn(true).tempType = getStats(getPkmn(false).name).type;
@@ -261,16 +261,17 @@ let moves = [{
 }, {
     "name": "cut",
     "type": "normal",
-    "category": "",
+    "category": "physical",
     "power": 50,
     "acc": 95,
     "pp": 30
+    //No additional effect.
 }, {
     "name": "defense curl",
     "type": "normal",
     "category": "status",
     "power": 0,
-    "acc": -1,
+    "acc": Infinity,
     "pp": 40,
     "effect": function () {
         modifyStats(true, "def", 1, 1);
@@ -278,10 +279,14 @@ let moves = [{
 }, {
     "name": "dig",
     "type": "ground",
-    "category": "",
+    "category": "physical",
     "power": 100,
     "acc": 100,
-    "pp": 10
+    "pp": 10,
+    "preDmgEffect": function () {
+        charge("dig", 1);
+        addTempEffect(true, "semiInvulnerable", 1, 1);
+    }
 }, {
     "name": "disable",
     "type": "normal",
@@ -335,7 +340,7 @@ let moves = [{
     "type": "normal",
     "category": "status",
     "power": 0,
-    "acc": -1,
+    "acc": Infinity,
     "pp": 15,
     "effect": function () {
         modifyStats(true, "eva", 1, 1)
@@ -378,6 +383,7 @@ let moves = [{
     "power": 80,
     "acc": 100,
     "pp": 20
+    //No additional effect.
 }, {
     "name": "earthquake",
     "type": "ground",
@@ -385,13 +391,15 @@ let moves = [{
     "power": 100,
     "acc": 100,
     "pp": 10
+    //No additional effect.
 }, {
     "name": "egg bomb",
     "type": "normal",
-    "category": "",
+    "category": "physical",
     "power": 100,
     "acc": 75,
     "pp": 10
+    //No additional effect.
 }, {
     "name": "ember",
     "type": "fire",
@@ -482,16 +490,20 @@ let moves = [{
 }, {
     "name": "fly",
     "type": "flying",
-    "category": "",
+    "category": "physical",
     "power": 70,
     "acc": 95,
-    "pp": 15
+    "pp": 15,
+    "preDmgEffect": function () {
+        charge("fly", 1);
+        addTempEffect(true, "semiInvulnerable", 1, 1);
+    }
 }, {
     "name": "focus energy",
     "type": "normal",
     "category": "status",
     "power": 0,
-    "acc": -1,
+    "acc": Infinity,
     "pp": 30
 }, {
     "name": "fury attack",
@@ -546,7 +558,7 @@ let moves = [{
     "type": "normal",
     "category": "status",
     "power": 0,
-    "acc": -1,
+    "acc": Infinity,
     "pp": 40,
     "effect": function () {
         modifyStats(true, "sp", 1, 1);
@@ -575,7 +587,7 @@ let moves = [{
     "type": "normal",
     "category": "status",
     "power": 0,
-    "acc": -1,
+    "acc": Infinity,
     "pp": 30,
     "effect": function () {
         modifyStats(true, "def", 1, 1);
@@ -585,7 +597,7 @@ let moves = [{
     "type": "ice",
     "category": "status",
     "power": 0,
-    "acc": -1,
+    "acc": Infinity,
     "pp": 30,
     "effect": function () {
         for (let i of [true, false]) for (let j of ["atkStage", "defStage", "spStage", "speStage", "accStage", "evaStage"]) getPkmn(i)[j] = 0;
@@ -752,7 +764,7 @@ let moves = [{
     "type": "psychic",
     "category": "",
     "power": 0,
-    "acc": -1,
+    "acc": Infinity,
     "pp": 30
 }, {
     "name": "lovely kiss",
@@ -779,7 +791,7 @@ let moves = [{
     "type": "psychic",
     "category": "status",
     "power": 0,
-    "acc": -1,
+    "acc": Infinity,
     "pp": 40,
     "effect": function () {
         modifyStats(true, "atk", 1, 1);
@@ -813,7 +825,7 @@ let moves = [{
     "type": "normal",
     "category": "status",
     "power": 0,
-    "acc": -1,
+    "acc": Infinity,
     "pp": 10,
     "effect": function () {
         while (true) {
@@ -835,7 +847,7 @@ let moves = [{
     "type": "normal",
     "category": "status",
     "power": 0,
-    "acc": -1,
+    "acc": Infinity,
     "pp": 20,
     "effect": function () {
         modifyStats(true, "eva", 1, 1);
@@ -845,14 +857,14 @@ let moves = [{
     "type": "flying",
     "category": "",
     "power": 0,
-    "acc": -1,
+    "acc": Infinity,
     "pp": 20
 }, {
     "name": "mist",
     "type": "ice",
     "category": "",
     "power": 0,
-    "acc": -1,
+    "acc": Infinity,
     "pp": 30
 }, {
     "name": "night shade",
@@ -944,10 +956,11 @@ let moves = [{
 }, {
     "name": "pound",
     "type": "normal",
-    "category": "",
+    "category": "physical",
     "power": 40,
     "acc": 100,
     "pp": 35
+    //No additional effect.
 }, {
     "name": "psybeam",
     "type": "psychic",
@@ -1017,7 +1030,7 @@ let moves = [{
     "type": "normal",
     "category": "status",
     "power": 0,
-    "acc": -1,
+    "acc": Infinity,
     "pp": 20,
     "effect": function () {
         let hpLost = getPkmn(true).maxHp - getPkmn(true).hp;
@@ -1031,14 +1044,14 @@ let moves = [{
     "type": "psychic",
     "category": "",
     "power": 0,
-    "acc": -1,
+    "acc": Infinity,
     "pp": 20
 }, {
     "name": "rest",
     "type": "psychic",
     "category": "status",
     "power": 0,
-    "acc": -1,
+    "acc": Infinity,
     "pp": 10,
     "effect": function () {
         let hpLost = getPkmn(true).maxHp - getPkmn(true).hp;
@@ -1137,7 +1150,7 @@ let moves = [{
     "type": "normal",
     "category": "status",
     "power": 0,
-    "acc": -1,
+    "acc": Infinity,
     "pp": 30,
     "effect": function () {
         modifyStats(true, "atk", 1, 1);
@@ -1236,7 +1249,7 @@ let moves = [{
     "type": "normal",
     "category": "status",
     "power": 0,
-    "acc": -1,
+    "acc": Infinity,
     "pp": 10,
     "effect": function () {
         let hpLost = getPkmn(true).maxHp - getPkmn(true).hp;
@@ -1282,7 +1295,7 @@ let moves = [{
     "type": "normal",
     "category": "status",
     "power": 0,
-    "acc": -1,
+    "acc": Infinity,
     "pp": 40
     //No competitive use.
 }, {
@@ -1358,8 +1371,15 @@ let moves = [{
     "type": "normal",
     "category": "status",
     "power": 0,
-    "acc": -1,
-    "pp": 10
+    "acc": Infinity,
+    "pp": 10,
+    "effect": function () {
+        if (getPkmn(true).hp >= getPkmn(true).maxHp / 4) {
+            addSmallText(capitalize(getPkmn(true).name) + " put in a substitute!")
+            getPkmn(true).hp -= getPkmn(true).maxHp / 4;
+            getPkmn(true).substituteHp = getPkmn(true).maxHp / 4;
+        }
+    }
 }, {
     "name": "super fang",
     "type": "normal",
@@ -1391,16 +1411,19 @@ let moves = [{
 }, {
     "name": "swift",
     "type": "normal",
-    "category": "",
+    "category": "physical",
     "power": 60,
-    "acc": -1,
-    "pp": 20
+    "acc": Infinity,
+    "pp": 20,
+    "preDmgEffect": function () {
+        return { nullifySemiInvulnerable: true };
+    }
 }, {
     "name": "swords dance",
     "type": "normal",
     "category": "status",
     "power": 0,
-    "acc": -1,
+    "acc": Infinity,
     "pp": 30,
     "effect": function () {
         modifyStats(true, "atk", 2, 1)
@@ -1438,7 +1461,7 @@ let moves = [{
     "type": "psychic",
     "category": "status",
     "power": 0,
-    "acc": -1,
+    "acc": Infinity,
     "pp": 20
     //No competitive use.
 }, {
@@ -1513,7 +1536,7 @@ let moves = [{
     "type": "normal",
     "category": "",
     "power": 0,
-    "acc": -1,
+    "acc": Infinity,
     "pp": 10
 }, {
     "name": "tri attack",
@@ -1587,7 +1610,7 @@ let moves = [{
     "type": "water",
     "category": "status",
     "power": 0,
-    "acc": -1,
+    "acc": Infinity,
     "pp": 40,
     "effect": function () {
         modifyStats(true, "def", 1, 1);
