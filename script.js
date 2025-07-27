@@ -206,7 +206,8 @@ document.getElementById("startGame").addEventListener("click", function () {
             }
             j.tempEffect = {
                 "confused": 0,
-                "semiInvulnerable": 0
+                "semiInvulnerable": 0,
+                "rage": 0
             }
             j.delay = []
             j.sleepTurns = 0;
@@ -445,6 +446,7 @@ for (let i = 0; i < 4; i++) document.getElementsByClassName("decisionMove")[i].a
         if (k.category != "status" && Math.random() > k.acc * ACC_STAGE_MULTIPLIER[getPkmn(true).accStage] *
             ACC_STAGE_MULTIPLIER[getPkmn(false).evaStage] / 100) {
             addSmallText(capitalize(getPkmn(true).name) + "'s attack missed!");
+            if(k.missEffect) k.missEffect();
             break;
         }
         let preDmgEffect = {};
@@ -456,6 +458,7 @@ for (let i = 0; i < 4; i++) document.getElementsByClassName("decisionMove")[i].a
         }
         if (getPkmn(false).tempEffect.semiInvulnerable > 0 && !preDmgEffect.nullifySemiInvulnerable) break;
         attack(k.name);
+        if (getPkmn(false).tempEffect.rage > 0) modifyStats(false, "atk", 1, 1);
         break;
     }
 })
@@ -470,7 +473,7 @@ function repeatAttack(dmg, count) {
         getPkmn(false).hp -= Math.min(dmg, getPkmn(false).hp);
         addSmallText("(" + capitalize(getPkmn(false).name) + " lost " + (totalDmg / getPkmn(false).maxHp * 100).toFixed(0) + "% of its health!)");
     }
-    addSmallText("The Pokemon was hit " + (count + 1) + " times!")
+    addSmallText("The Pokémon was hit " + (count + 1) + " times!")
 }
 function judgeHP() {
     if (getPkmn(false)?.hp <= 0) {

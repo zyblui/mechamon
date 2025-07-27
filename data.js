@@ -617,17 +617,21 @@ let moves = [{
 }, {
     "name": "high jump kick",
     "type": "fighting",
-    "category": "",
+    "category": "physical",
     "power": 85,
     "acc": 90,
-    "pp": 20
+    "pp": 20,
+    "missEffect": function () {
+        getPkmn(true).hp -= 1;
+    }
 }, {
     "name": "horn attack",
     "type": "normal",
-    "category": "",
+    "category": "physical",
     "power": 65,
     "acc": 100,
     "pp": 25
+    //No additional effect.
 }, {
     "name": "horn drill",
     "type": "normal",
@@ -647,6 +651,7 @@ let moves = [{
     "power": 120,
     "acc": 80,
     "pp": 5
+    //No additional effect.
 }, {
     "name": "hyper beam",
     "type": "normal",
@@ -697,10 +702,13 @@ let moves = [{
 }, {
     "name": "jump kick",
     "type": "fighting",
-    "category": "",
+    "category": "physical",
     "power": 70,
     "acc": 95,
-    "pp": 25
+    "pp": 25,
+    "missEffect": function () {
+        getPkmn(true).hp -= 1;
+    }
 }, {
     "name": "karate chop",
     "type": "normal",
@@ -735,7 +743,7 @@ let moves = [{
 }, {
     "name": "leech seed",
     "type": "grass",
-    "category": "",
+    "category": "status",
     "power": 0,
     "acc": 90,
     "pp": 10
@@ -762,7 +770,7 @@ let moves = [{
 }, {
     "name": "light screen",
     "type": "psychic",
-    "category": "",
+    "category": "status",
     "power": 0,
     "acc": Infinity,
     "pp": 30
@@ -813,6 +821,7 @@ let moves = [{
     "power": 120,
     "acc": 75,
     "pp": 5
+    //No additional effect.
 }, {
     "name": "mega punch",
     "type": "normal",
@@ -820,6 +829,7 @@ let moves = [{
     "power": 80,
     "acc": 85,
     "pp": 20
+    //No additional effect.
 }, {
     "name": "metronome",
     "type": "normal",
@@ -902,12 +912,15 @@ let moves = [{
     "effect": function () {
         if (Math.random() < 0.5) {
             setUncontrollable("petal dance", 2);
-            addTempEffect(true, "confused", Infinity, 1)
-        }
-        else {
+            setDelay(true, function () {
+                addTempEffect(true, "confused", Infinity, 1)
+            }, 2)
+        } else {
             setUncontrollable("petal dance", 3)
+            setDelay(true, function () {
+                addTempEffect(true, "confused", Infinity, 1)
+            }, 3)
         }
-
     }
 }, {
     "name": "pin missile",
@@ -994,17 +1007,21 @@ let moves = [{
 }, {
     "name": "quick attack",
     "type": "normal",
-    "category": "",
+    "category": "physical",
     "power": 40,
     "acc": 100,
     "pp": 30
 }, {
     "name": "rage",
     "type": "normal",
-    "category": "",
+    "category": "physical",
     "power": 20,
     "acc": 100,
-    "pp": 20
+    "pp": 20,
+    "effect": function () {
+        addTempEffect(true, "rage", Infinity, 1)
+        setUncontrollable("rage", Infinity);
+    }
 }, {
     "name": "razor leaf",
     "type": "grass",
@@ -1467,10 +1484,23 @@ let moves = [{
 }, {
     "name": "thrash",
     "type": "normal",
-    "category": "",
+    "category": "physical",
     "power": 90,
     "acc": 100,
-    "pp": 20
+    "pp": 20,
+    "effect": function () {
+        if (Math.random() < 0.5) {
+            setUncontrollable("thrash", 2);
+            setDelay(true, function () {
+                addTempEffect(true, "confused", Infinity, 1)
+            }, 2)
+        } else {
+            setUncontrollable("thrash", 3)
+            setDelay(true, function () {
+                addTempEffect(true, "confused", Infinity, 1)
+            }, 3)
+        }
+    }
 }, {
     "name": "thunder",
     "type": "electric",
@@ -1524,7 +1554,7 @@ let moves = [{
 }, {
     "name": "toxic",
     "type": "poison",
-    "category": "",
+    "category": "status",
     "power": 0,
     "acc": 85,
     "pp": 10,
