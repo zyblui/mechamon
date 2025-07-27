@@ -307,10 +307,11 @@ let moves = [{
 }, {
     "name": "dizzy punch",
     "type": "normal",
-    "category": "",
+    "category": "physical",
     "power": 70,
     "acc": 100,
     "pp": 10
+    //No additional effect.
 }, {
     "name": "double kick",
     "type": "fighting",
@@ -578,10 +579,11 @@ let moves = [{
 }, {
     "name": "gust",
     "type": "normal",
-    "category": "",
+    "category": "physical",
     "power": 40,
     "acc": 100,
     "pp": 35
+    //No additional effect.
 }, {
     "name": "harden",
     "type": "normal",
@@ -647,7 +649,7 @@ let moves = [{
 }, {
     "name": "hydro pump",
     "type": "water",
-    "category": "",
+    "category": "special",
     "power": 120,
     "acc": 80,
     "pp": 5
@@ -655,10 +657,13 @@ let moves = [{
 }, {
     "name": "hyper beam",
     "type": "normal",
-    "category": "",
+    "category": "physical",
     "power": 150,
     "acc": 90,
-    "pp": 5
+    "pp": 5,
+    "effect": function () {
+        charge("", 1);
+    }
 }, {
     "name": "hyper fang",
     "type": "normal",
@@ -746,7 +751,10 @@ let moves = [{
     "category": "status",
     "power": 0,
     "acc": 90,
-    "pp": 10
+    "pp": 10,
+    "effect": function () {
+        if (!getType(false).includes("grass")) addTempEffect(false, "leech seed", Infinity, 1);
+    }
 }, {
     "name": "leer",
     "type": "normal",
@@ -1059,10 +1067,13 @@ let moves = [{
 }, {
     "name": "reflect",
     "type": "psychic",
-    "category": "",
+    "category": "status",
     "power": 0,
     "acc": Infinity,
-    "pp": 20
+    "pp": 20,
+    "effect": function () {
+        addTempEffect(true, "reflect", Infinity, 1);
+    }
 }, {
     "name": "rest",
     "type": "psychic",

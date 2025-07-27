@@ -272,6 +272,10 @@ let isNewTurn = false;
 function nextPlayer() {
     if (getPkmn(true)?.status == "psn") getPkmn(true).hp -= Math.min(getPkmn(true).hp / 16, getPkmn(true).hp);
     else if (getPkmn(true)?.status == "tox") getPkmn(true).hp -= Math.min(getPkmn(true).hp / 8, getPkmn(true).hp);
+    if (getPkmn(true)?.tempEffect["leech seed"] > 0) {
+        if (getPkmn(true).status == "tox") getPkmn(true).hp -= Math.min(getPkmn(true).hp / 8, getPkmn(true).hp);
+        else getPkmn(true).hp -= Math.min(getPkmn(true).hp / 16, getPkmn(true).hp);
+    }
     judgeHP();
     if (isNewTurn) {
         isNewTurn = false;
@@ -298,7 +302,7 @@ function nextPlayer() {
         nextPlayer();
     } else if (getPkmn(true)?.charge.turns > 0) {
         getPkmn(true).charge.turns--;
-        if (getPkmn(true).charge.move && getPkmn(true).charge.turns == 0) {
+        if (getPkmn(true).charge.move && getPkmn(true).charge.turns == 0 && getPkmn(true).charge.move) {
             attack(getPkmn(true).charge.move);
             getPkmn(true).charge.move = "";
         } else {
@@ -325,14 +329,17 @@ function nextPlayer() {
     } else if (getPkmn(true)?.tempEffect.confused > 0) {
         addSmallText(capitalize(getPkmn(true).name) + " is confused!")
         if (Math.random() < 0.5) {
-            getPkmn(true).hp -= calculateDmg(40, getStats(getPkmn(true).name).atk, getStats(getPkmn(true).name).def, "",
+            getPkmn(true).hp -= calculateDmg(40, getStats(getPkmn(true).name).atk, getDefense(true, false), "",
                 getType(true))
             addMainText("It hurt itself in confusion!");
         }
         getPkmn(true).tempEffect.confused--;
     }
 }
-
+function getDefense(isSelf, isCrit) {
+    if (isCrit) return getStats(getPkmn(isSelf).name).def;
+    else return getStats(getPkmn(isSelf).name).def * ((getPkmn(isSelf).tempEffect.reflect) ? 2 : 1);
+}
 function nextTurn() {
     if (getPkmn(true)?.status == "brn") getPkmn(true).hp -= Math.min(getPkmn(true).hp / 16, getPkmn(true).hp);
     if (getPkmn(false)?.status == "brn") getPkmn(false).hp -= Math.min(getPkmn(false).hp / 16, getPkmn(false).hp);
@@ -380,22 +387,23 @@ function getType(isSelf) {
 function attack(move) {
     for (let k of moves) if (k.name == move) {
         let criticalHitRatioMultiplier = 1;
+        let preCritEffect;
+        if (k.preCritEffect) preCritEffect = k.preCritEffect();
+        if (preCritEffect?.isHighCritRatio) criticalHitRatioMultiplier = 8;
+        if (arguments[1]?.forceCrit) criticalHitRatioMultiplier = Infinity;
+        let isCrit = (Math.random() < criticalHitRatioMultiplier * getStats(getPkmn(true).name).spe / 512);
         let dmg = 0, totalDmg = 0;
-        if (k.category == "physical") dmg = calculateDmg(k.power, getStats(getPkmn(true).name).atk, getStats(getPkmn(false).name)
-            .def, k.type, getType(false));
+        if (k.category == "physical") dmg = calculateDmg(k.power, getStats(getPkmn(true).name).atk, getDefense(false, isCrit),
+            k.type, getType(false));
         else dmg = calculateDmg(k.power, getStats(getPkmn(true).name).sp, getStats(getPkmn(false).name).sp, k.type,
             getType(false));
         if (k.category != "status") {
             switch (calculateEffectiveness(k.type, getType(false))) {
                 case 4:
-                    addSmallText("It's super effective!");
-                    break;
                 case 2:
                     addSmallText("It's super effective!");
                     break;
                 case 0.5:
-                    addSmallText("It's not very effective...");
-                    break;
                 case 0.25:
                     addSmallText("It's not very effective...");
                     break;
@@ -404,11 +412,7 @@ function attack(move) {
             }
             totalDmg += Math.min(dmg, getPkmn(false).hp);
             getPkmn(false).hp -= Math.min(dmg, getPkmn(false).hp);
-            let preCritEffect;
-            if (k.preCritEffect) preCritEffect = k.preCritEffect();
-            if (preCritEffect?.isHighCritRatio) criticalHitRatioMultiplier = 8;
-            if (arguments[1]?.forceCrit) criticalHitRatioMultiplier = Infinity;
-            if (Math.random() < criticalHitRatioMultiplier * getStats(getPkmn(true).name).spe / 512) {
+            if (isCrit) {
                 totalDmg += Math.min(dmg, getPkmn(false).hp);
                 getPkmn(false).hp -= Math.min(dmg, getPkmn(false).hp);
                 addSmallText("A critical hit!");
@@ -446,7 +450,7 @@ for (let i = 0; i < 4; i++) document.getElementsByClassName("decisionMove")[i].a
         if (k.category != "status" && Math.random() > k.acc * ACC_STAGE_MULTIPLIER[getPkmn(true).accStage] *
             ACC_STAGE_MULTIPLIER[getPkmn(false).evaStage] / 100) {
             addSmallText(capitalize(getPkmn(true).name) + "'s attack missed!");
-            if(k.missEffect) k.missEffect();
+            if (k.missEffect) k.missEffect();
             break;
         }
         let preDmgEffect = {};
