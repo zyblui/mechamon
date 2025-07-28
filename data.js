@@ -879,10 +879,14 @@ let moves = [{
 }, {
     "name": "mimic",
     "type": "normal",
-    "category": "",
+    "category": "status",
     "power": 0,
     "acc": 100,
-    "pp": 10
+    "pp": 10,
+    "effect": function () {
+        getPkmn(true).mimicMove = Object.keys(getPkmn(false).moves)[Math.floor(Object.keys(getPkmn(false).moves).length * Math
+            .random())].name;
+    }
 }, {
     "name": "minimize",
     "type": "normal",
@@ -896,17 +900,23 @@ let moves = [{
 }, {
     "name": "mirror move",
     "type": "flying",
-    "category": "",
+    "category": "status",
     "power": 0,
     "acc": Infinity,
-    "pp": 20
+    "pp": 20,
+    "effect": function () {
+        attack(getPkmn(false).lastMoveUsed);
+    }
 }, {
     "name": "mist",
     "type": "ice",
-    "category": "",
+    "category": "status",
     "power": 0,
     "acc": Infinity,
-    "pp": 30
+    "pp": 30,
+    "effect": function () {
+        addTempEffect(true, "mist", Infinity, 1);
+    }
 }, {
     "name": "night shade",
     "type": "ghost",
@@ -1598,10 +1608,20 @@ let moves = [{
 }, {
     "name": "transform",
     "type": "normal",
-    "category": "",
+    "category": "status",
     "power": 0,
     "acc": Infinity,
-    "pp": 10
+    "pp": 10,
+    "effect": function () {
+        getPkmn(true).transformPkmn = getPkmn(false).name;
+        for (let i of ["atkStage", "defStage", "spStage ", "speStage", "accStage", "evaStage"]) {
+            getPkmn(true)[i] = getPkmn(false)[i];
+        }
+        getPkmn(true).moves = JSON.parse(JSON.stringify(getPkmn(false).moves));
+        for (let i in getPkmn(true).moves) {
+            getPkmn(true).moves[i].pp = 5;
+        }
+    }
 }, {
     "name": "tri attack",
     "type": "normal",
