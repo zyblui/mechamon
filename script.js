@@ -282,15 +282,20 @@ for (let i = 0; i < 6; i++) {
 }
 let isNewTurn = false;
 function dealDmg(isSelf, dmg) {
-    if (getPkmn(isSelf).substituteHp > 0) getPkmn(isSelf).substituteHp -= Math.min(dmg, getPkmn(isSelf).substituteHp);
-    else getPkmn(isSelf).hp -= Math.min(dmg, getPkmn(isSelf).hp);
+    if (arguments[2]?.opposingSubstitute && getPkmn(!isSelf).substituteHp > 0) {
+        getPkmn(!isSelf).substituteHp -= Math.min(dmg, getPkmn(!isSelf).substituteHp);
+    } else if (getPkmn(isSelf).substituteHp > 0 && !arguments[2]?.ignoreSubstitute) getPkmn(isSelf).substituteHp -= Math.min(dmg, getPkmn(isSelf).substituteHp);
+    else {
+        getPkmn(isSelf).hp -= Math.min(dmg, getPkmn(isSelf).hp);
+        addSmallText("(" + capitalize(getPkmn(isSelf).name) + " lost " + (dmg / getPkmn(isSelf).maxHp * 100).toFixed(0) + "% of its health!)")
+    }
 }
 function nextPlayer() {
-    if (getPkmn(true)?.status == "psn") getPkmn(true).hp -= Math.min(getPkmn(true).hp / 16, getPkmn(true).hp);
-    else if (getPkmn(true)?.status == "tox") getPkmn(true).hp -= Math.min(getPkmn(true).hp / 8, getPkmn(true).hp);
+    if (getPkmn(true)?.status == "psn") dealDmg(true, getPkmn(true).hp / 16, { ignoreSubstitute: true })
+    else if (getPkmn(true)?.status == "tox") dealDmg(true, getPkmn(true).hp / 8, { ignoreSubstitute: true });
     if (getPkmn(true)?.tempEffect["leech seed"] > 0) {
-        if (getPkmn(true).status == "tox") getPkmn(true).hp -= Math.min(getPkmn(true).hp / 8, getPkmn(true).hp);
-        else getPkmn(true).hp -= Math.min(getPkmn(true).hp / 16, getPkmn(true).hp);
+        if (getPkmn(true).status == "tox") dealDmg(true, getPkmn(true).hp / 8, { ignoreSubstitute: true })
+        else dealDmg(true, getPkmn(true).hp / 16, { ignoreSubstitute: true })
     }
     judgeHP();
     if (isNewTurn) {
@@ -341,8 +346,8 @@ function nextPlayer() {
     } else if (getPkmn(true)?.tempEffect.confused > 0) {
         addSmallText(capitalize(getPkmn(true).name) + " is confused!")
         if (Math.random() < 0.5) {
-            getPkmn(true).hp -= calculateDmg(40, getStats(getPkmn(true).name).atk, getDefense(true, true), "",
-                getType(true))
+            dealDmg(true, calculateDmg(40, getStats(getPkmn(true).name).atk, getDefense(true, true), "",
+                getType(true)), { opposingSubstitute: true });
             addMainText("It hurt itself in confusion!");
         }
         getPkmn(true).tempEffect.confused--;
@@ -357,8 +362,8 @@ function getSp(isSelf, isCrit) {
     else return getStats(getPkmn(isSelf).name).sp * ((getPkmn(isSelf).tempEffect["light screen"]) ? 2 : 1);
 }
 function nextTurn() {
-    if (getPkmn(true)?.status == "brn") getPkmn(true).hp -= Math.min(getPkmn(true).hp / 16, getPkmn(true).hp);
-    if (getPkmn(false)?.status == "brn") getPkmn(false).hp -= Math.min(getPkmn(false).hp / 16, getPkmn(false).hp);
+    if (getPkmn(true)?.status == "brn") dealDmg(true, getPkmn(true).maxHp / 16, { ignoreSubstitute: true });
+    if (getPkmn(false)?.status == "brn") dealDmg(false, getPkmn(false).maxHp / 16, { ignoreSubstitute: true });
     judgeHP();
     turn++;
     isNewTurn = true;
@@ -427,14 +432,12 @@ function attack(move) {
                     addSmallText("It doesn't affect " + capitalize(getPkmn(false).name) + "...");
             }
             totalDmg += Math.min(dmg, getPkmn(false).hp);
-            dealDmg(false, dmg);
             if (isCrit) {
                 totalDmg += Math.min(dmg, getPkmn(false).hp);
-                dealDmg(false, dmg);
                 addSmallText("A critical hit!");
             }
-            addSmallText("(" + capitalize(getPkmn(false).name) + " lost " + (totalDmg / getPkmn(false).maxHp * 100).toFixed(0) + "% of its health!)");
-            getPkmn(false).dmgTaken.push(totalDmg)
+            dealDmg(false, totalDmg);
+            getPkmn(false).dmgTaken.push(totalDmg);
             getPkmn(false).lastDmgTakenType = k.type;
         }
         let effect;
@@ -498,9 +501,8 @@ function charge(move, turns) {
 function repeatAttack(dmg, count) {
     for (let i = 0; i < count; i++) {
         dealDmg(false, dmg);
-        addSmallText("(" + capitalize(getPkmn(false).name) + " lost " + (dmg / getPkmn(false).maxHp * 100).toFixed(0) + "% of its health!)");
     }
-    addSmallText("The Pokémon was hit " + (count + 1) + " times!")
+    addSmallText("The Pokémon was hit " + (count + 1) + " times!");
 }
 function judgeHP() {
     if (getPkmn(false)?.hp <= 0) {
