@@ -281,6 +281,10 @@ for (let i = 0; i < 6; i++) {
     })
 }
 let isNewTurn = false;
+function dealDmg(isSelf, dmg) {
+    if (getPkmn(isSelf).substituteHp > 0) getPkmn(isSelf).substituteHp -= Math.min(dmg, getPkmn(isSelf).substituteHp);
+    else getPkmn(isSelf).hp -= Math.min(dmg, getPkmn(isSelf).hp);
+}
 function nextPlayer() {
     if (getPkmn(true)?.status == "psn") getPkmn(true).hp -= Math.min(getPkmn(true).hp / 16, getPkmn(true).hp);
     else if (getPkmn(true)?.status == "tox") getPkmn(true).hp -= Math.min(getPkmn(true).hp / 8, getPkmn(true).hp);
@@ -310,7 +314,7 @@ function nextPlayer() {
         }
     }
     if (getPkmn(true)?.status == "par" && Math.random() < 1 / 4) {
-        addMainText(capitalize(getPkmn(true).name) + " is paralyzed! It can't move!")
+        addMainText(capitalize(getPkmn(true).name) + " is paralyzed! It can't move!");
         nextPlayer();
     } else if (getPkmn(true)?.charge.turns > 0) {
         getPkmn(true).charge.turns--;
@@ -323,12 +327,8 @@ function nextPlayer() {
     } else if (getPkmn(true)?.uncontrollable.turns > 0) {
         getPkmn(true).uncontrollable.turns--;
         if (getPkmn(true).uncontrollable.move && getPkmn(true).uncontrollable.turns == 0) {
-            //attack(getPkmn(true).uncontrollable.move);
             getPkmn(true).uncontrollable.move = "";
-        }/* else {
-            attack(getPkmn(true).uncontrollable.move);
-            nextPlayer();
-        }*/
+        }
     } else if (getPkmn(true)?.status == "slp") {
         getPkmn(true).sleepTurns--;
         if (getPkmn(true).sleepTurns > 0) {
@@ -427,10 +427,10 @@ function attack(move) {
                     addSmallText("It doesn't affect " + capitalize(getPkmn(false).name) + "...");
             }
             totalDmg += Math.min(dmg, getPkmn(false).hp);
-            getPkmn(false).hp -= Math.min(dmg, getPkmn(false).hp);
+            dealDmg(false, dmg);
             if (isCrit) {
                 totalDmg += Math.min(dmg, getPkmn(false).hp);
-                getPkmn(false).hp -= Math.min(dmg, getPkmn(false).hp);
+                dealDmg(false, dmg);
                 addSmallText("A critical hit!");
             }
             addSmallText("(" + capitalize(getPkmn(false).name) + " lost " + (totalDmg / getPkmn(false).maxHp * 100).toFixed(0) + "% of its health!)");
@@ -497,8 +497,8 @@ function charge(move, turns) {
 }
 function repeatAttack(dmg, count) {
     for (let i = 0; i < count; i++) {
-        getPkmn(false).hp -= Math.min(dmg, getPkmn(false).hp);
-        addSmallText("(" + capitalize(getPkmn(false).name) + " lost " + (totalDmg / getPkmn(false).maxHp * 100).toFixed(0) + "% of its health!)");
+        dealDmg(false, dmg);
+        addSmallText("(" + capitalize(getPkmn(false).name) + " lost " + (dmg / getPkmn(false).maxHp * 100).toFixed(0) + "% of its health!)");
     }
     addSmallText("The Pokémon was hit " + (count + 1) + " times!")
 }
