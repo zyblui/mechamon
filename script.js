@@ -50,15 +50,6 @@ function setUncontrollable(move, turns) {
         move: move,
         turns: turns
     }
-    /*for (let i = 1; i < turns; i++) {
-        setDelay(true, function () {
-            getPkmn(true).mustPass = true;
-            attack(move);
-        }, i)
-    }
-    setDelay(true, function () {
-        getPkmn(true).mustPass = false;
-    }, turns)*/
 }
 function setDelay(isSelf, func, turns) {
     getPkmn(isSelf).delay.push({
@@ -286,7 +277,8 @@ function dealDmg(isSelf, dmg) {
         getPkmn(!isSelf).substituteHp -= Math.min(dmg, getPkmn(!isSelf).substituteHp);
     } else if (getPkmn(isSelf).substituteHp > 0 && !arguments[2]?.ignoreSubstitute) getPkmn(isSelf).substituteHp -= Math.min(dmg, getPkmn(isSelf).substituteHp);
     else {
-        getPkmn(isSelf).hp -= Math.min(dmg, getPkmn(isSelf).hp);
+        dmg = Math.min(dmg, getPkmn(isSelf).hp);
+        getPkmn(isSelf).hp -= dmg;
         addSmallText("(" + capitalize(getPkmn(isSelf).name) + " lost " + (dmg / getPkmn(isSelf).maxHp * 100).toFixed(0) + "% of its health!)")
     }
 }
