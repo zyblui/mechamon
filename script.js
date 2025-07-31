@@ -66,12 +66,12 @@ function render() {
 function capitalize(str) {
     let temp = str.split(" ");
     for (let i = 0; i < temp.length; i++) {
-        temp[i] = temp[i][0].toUpperCase() + temp[i].slice(1);
+        if (temp[i].length) temp[i] = temp[i][0].toUpperCase() + temp[i].slice(1);
     }
     temp = temp.join(" ");
     temp = temp.split("-");
     for (let i = 0; i < temp.length; i++) {
-        temp[i] = temp[i][0].toUpperCase() + temp[i].slice(1);
+        if (temp[i].length) temp[i] = temp[i][0].toUpperCase() + temp[i].slice(1);
     }
     temp = temp.join("-");
     return temp;
@@ -81,8 +81,16 @@ for (let i of pokemon) {
     div.classList.add("listButton");
     div.innerHTML = capitalize(i.name);
     div.addEventListener("click", function () {
-        document.querySelector(".pokemon-select.selected").innerText = capitalize(i.name);
+        //document.querySelector(".pokemon-select.selected").innerText = capitalize(i.name);
         players[Number(document.querySelector(".pokemon-select.selected").dataset.player) - 1].build[Number(document.querySelector(".pokemon-select.selected").dataset.no) - 1].name = i.name;
+        for (let j = 0; j < 4; j++) {
+            if (!i.moves.includes(players[Number(document.querySelector(".pokemon-select.selected").dataset.player) - 1].build[Number(document.querySelector(".pokemon-select.selected").dataset.no) - 1].moves[j])) {
+                players[Number(document.querySelector(".pokemon-select.selected").dataset.player) - 1].build[Number(document.querySelector(".pokemon-select.selected").dataset.no) - 1].moves[j] = "";
+            }
+        }
+        renderTable();
+        document.getElementById("pokemonList").classList.remove("show");
+        document.getElementById("setupTable").classList.add("show");
     });
     document.getElementById("pokemonList").appendChild(div);
 }
@@ -94,14 +102,17 @@ for (let i of moves) {
         document.querySelector(".move-select.selected").innerText = capitalize(i.name);
         players[Number(document.querySelector(".move-select.selected").dataset.player) - 1].build[Number(document.querySelector(
             ".move-select.selected").dataset.no) - 1].moves[Number(document.querySelector(".move-select.selected").dataset.moveNo) - 1] = i.name;
+        document.getElementById("movesList").classList.remove("show");
+        document.getElementById("setupTable").classList.add("show");
     });
-    document.getElementById("movesList").appendChild(div);
+    div.dataset.for = i.name;
+    document.getElementById("movesListInner").appendChild(div);
 }
 for (let i of document.getElementsByClassName("pokemon-select")) {
     i.addEventListener("click", function () {
         document.querySelector(".select.selected")?.classList.remove("selected");
         i.classList.add("selected");
-        document.querySelector(".list.show")?.classList.remove("show");
+        document.querySelector(".list.show").classList.remove("show");
         document.getElementById("pokemonList").classList.add("show");
     });
 }
@@ -109,10 +120,27 @@ for (let i of document.getElementsByClassName("move-select")) {
     i.addEventListener("click", function () {
         document.querySelector(".select.selected")?.classList.remove("selected");
         i.classList.add("selected");
-        document.querySelector(".list.show")?.classList.remove("show");
+        document.querySelector(".list.show").classList.remove("show");
+        for (let j of document.getElementById("movesListInner").children) {
+            if (getStats(players[Number(document.querySelector(".move-select.selected").dataset.player) - 1].build[Number(document
+                .querySelector(".move-select.selected").dataset.no) - 1].name).moves.includes(j.dataset.for)) {
+                j.classList.remove("hide");
+            } else j.classList.add("hide");
+        }
         document.getElementById("movesList").classList.add("show");
     });
 }
+document.getElementById("clearMove").addEventListener("click", function () {
+    players[Number(document.querySelector(".move-select.selected").dataset.player) - 1].build[Number(document.querySelector(
+        ".move-select.selected").dataset.no) - 1].moves[Number(document.querySelector(".move-select.selected").dataset.moveNo) - 1] = "";
+    renderTable();
+    document.getElementById("movesList").classList.remove("show");
+    document.getElementById("setupTable").classList.add("show");
+})
+for (let i of document.querySelectorAll(".back")) i.addEventListener("click", function () {
+    document.querySelector(".list.show").classList.remove("show");
+    document.getElementById("setupTable").classList.add("show");
+})
 function calculateDmg(power, atk, def, attackType, defenseType) {
     let effectiveness = calculateEffectiveness(attackType, defenseType);
     return Math.max(effectiveness * (power + atk - def), 0);
@@ -128,11 +156,17 @@ function calculateEffectiveness(attackType, defenseType) {
 function refreshDecision() {
     if (battleInfo[playerToMove].currentPokemon != -1 && getPkmn(true).uncontrollable.turns == 0 && (!getPkmn(false) || getPkmn(false).uncontrollable.turns == 0)) {
         for (let i = 0; i < 4; i++) {
+            if (!Object.keys(getPkmn(true).moves)[i]) {
+                document.getElementsByClassName("decisionMove")[i].innerHTML = "(Empty)";
+                document.getElementsByClassName("decisionMove")[i].disabled = "disabled";
+                continue;
+            }
             if (Object.values(getPkmn(true).moves)[i] <= 0 || (getPkmn(true).uncontrollable.move && getPkmn(true).uncontrollable
                 .move != Object.keys(getPkmn(true).moves)[i]) || (getPkmn(true).disable.move == Object.keys(getPkmn(true)
-                    .moves)[i])) document.getElementsByClassName("decisionMove")[i].disabled = "disabled";//?
+                    .moves)[i])) document.getElementsByClassName("decisionMove")[i].disabled = "disabled";
             else document.getElementsByClassName("decisionMove")[i].disabled = "";
-            if (Object.keys(getPkmn(true).moves)[i] == "mimic" && getPkmn(true).mimicMove) document.getElementsByClassName("decisionMove")[i].innerHTML = capitalize(getPkmn(true).mimicMove);
+            if (Object.keys(getPkmn(true).moves)[i] == "mimic" && getPkmn(true).mimicMove) document
+                .getElementsByClassName("decisionMove")[i].innerHTML = capitalize(getPkmn(true).mimicMove);
             else document.getElementsByClassName("decisionMove")[i].innerHTML = capitalize(Object.keys(getPkmn(true).moves)[i]);
             let div = document.createElement("div");
             div.classList.add("pp");
@@ -225,6 +259,7 @@ document.getElementById("startGame").addEventListener("click", function () {
         }
     }
     nextTurn();
+    render();
     refreshDecision();
 });
 function addMainText(str) {
@@ -611,13 +646,21 @@ function renderTable() {
     for (let i = 0; i < 6; i++) {
         document.querySelectorAll("#p1Table tr")[i + 1].children[1].innerText = capitalize(players[0].build[i].name);
         for (let j = 0; j < 4; j++) {
-            document.querySelectorAll("#p1Table tr")[i + 1].children[j + 2].innerText = capitalize(players[0].build[i].moves[j]);
+            if (players[0].build[i].moves[j]) {
+                document.querySelectorAll("#p1Table tr")[i + 1].children[j + 2].innerText = capitalize(players[0].build[i].moves[j]);
+            } else {
+                document.querySelectorAll("#p1Table tr")[i + 1].children[j + 2].innerText = "(Empty)"
+            }
         }
     }
     for (let i = 0; i < 6; i++) {
         document.querySelectorAll("#p2Table tr")[i + 1].children[1].innerText = capitalize(players[1].build[i].name);
         for (let j = 0; j < 4; j++) {
-            document.querySelectorAll("#p2Table tr")[i + 1].children[j + 2].innerText = capitalize(players[1].build[i].moves[j]);
+            if (players[1].build[i].moves[j]) {
+                document.querySelectorAll("#p2Table tr")[i + 1].children[j + 2].innerText = capitalize(players[1].build[i].moves[j]);
+            } else {
+                document.querySelectorAll("#p2Table tr")[i + 1].children[j + 2].innerText = "(Empty)"
+            }
         }
     }
 }

@@ -77,134 +77,143 @@
         <button data-for="setup" class="tab tab-selected">Setup</button>
         <button data-for="record" class="tab">Record</button>
         <div data-for="setup" class="tab-content tab-show">
-            <div class="wrap">
-                <p class="dim">Welcome to the world of Mechamon!</p>
-                <button id="startGame">Start Game</button>
+            <div class="list show" id="setupTable">
+                <div class="wrap">
+                    <p class="dim">Welcome to the world of Mechamon!</p>
+                    <button id="startGame" class="right-button">Start Game</button>
+                </div>
+                Player 1:
+                <table id="p1Table">
+                    <tr>
+                        <th>#</th>
+                        <th>Pokémon</th>
+                        <th>Move #1</th>
+                        <th>Move #2</th>
+                        <th>Move #3</th>
+                        <th>Move #4</th>
+                    </tr>
+                    <tr>
+                        <th>1</th>
+                        <td class="select pokemon-select" data-player="1" data-no="1"></td>
+                        <td class="select move-select" data-player="1" data-no="1" data-move-no="1"></td>
+                        <td class="select move-select" data-player="1" data-no="1" data-move-no="2"></td>
+                        <td class="select move-select" data-player="1" data-no="1" data-move-no="3"></td>
+                        <td class="select move-select" data-player="1" data-no="1" data-move-no="4"></td>
+                    </tr>
+                    <tr>
+                        <th>2</th>
+                        <td class="select pokemon-select" data-player="1" data-no="2"></td>
+                        <td class="select move-select" data-player="1" data-no="2" data-move-no="1"></td>
+                        <td class="select move-select" data-player="1" data-no="2" data-move-no="2"></td>
+                        <td class="select move-select" data-player="1" data-no="2" data-move-no="3"></td>
+                        <td class="select move-select" data-player="1" data-no="2" data-move-no="4"></td>
+                    </tr>
+                    <tr>
+                        <th>3</th>
+                        <td class="select pokemon-select" data-player="1" data-no="3"></td>
+                        <td class="select move-select" data-player="1" data-no="3" data-move-no="1"></td>
+                        <td class="select move-select" data-player="1" data-no="3" data-move-no="2"></td>
+                        <td class="select move-select" data-player="1" data-no="3" data-move-no="3"></td>
+                        <td class="select move-select" data-player="1" data-no="3" data-move-no="4"></td>
+                    </tr>
+                    <tr>
+                        <th>4</th>
+                        <td class="select pokemon-select" data-player="1" data-no="4"></td>
+                        <td class="select move-select" data-player="1" data-no="4" data-move-no="1"></td>
+                        <td class="select move-select" data-player="1" data-no="4" data-move-no="2"></td>
+                        <td class="select move-select" data-player="1" data-no="4" data-move-no="3"></td>
+                        <td class="select move-select" data-player="1" data-no="4" data-move-no="4"></td>
+                    </tr>
+                    <tr>
+                        <th>5</th>
+                        <td class="select pokemon-select" data-player="1" data-no="5"></td>
+                        <td class="select move-select" data-player="1" data-no="5" data-move-no="1"></td>
+                        <td class="select move-select" data-player="1" data-no="5" data-move-no="2"></td>
+                        <td class="select move-select" data-player="1" data-no="5" data-move-no="3"></td>
+                        <td class="select move-select" data-player="1" data-no="5" data-move-no="4"></td>
+                    </tr>
+                    <tr>
+                        <th>6</th>
+                        <td class="select pokemon-select" data-player="1" data-no="6"></td>
+                        <td class="select move-select" data-player="1" data-no="6" data-move-no="1"></td>
+                        <td class="select move-select" data-player="1" data-no="6" data-move-no="2"></td>
+                        <td class="select move-select" data-player="1" data-no="6" data-move-no="3"></td>
+                        <td class="select move-select" data-player="1" data-no="6" data-move-no="4"></td>
+                    </tr>
+                </table>
+                Player 2:
+                <table id="p2Table">
+                    <tr>
+                        <th>#</th>
+                        <th>Pokémon</th>
+                        <th>Move #1</th>
+                        <th>Move #2</th>
+                        <th>Move #3</th>
+                        <th>Move #4</th>
+                    </tr>
+                    <tr>
+                        <th>1</th>
+                        <td class="select pokemon-select" data-player="2" data-no="1"></td>
+                        <td class="select move-select" data-player="2" data-no="1" data-move-no="1"></td>
+                        <td class="select move-select" data-player="2" data-no="1" data-move-no="2"></td>
+                        <td class="select move-select" data-player="2" data-no="1" data-move-no="3"></td>
+                        <td class="select move-select" data-player="2" data-no="1" data-move-no="4"></td>
+                    </tr>
+                    <tr>
+                        <th>2</th>
+                        <td class="select pokemon-select" data-player="2" data-no="2"></td>
+                        <td class="select move-select" data-player="2" data-no="2" data-move-no="1"></td>
+                        <td class="select move-select" data-player="2" data-no="2" data-move-no="2"></td>
+                        <td class="select move-select" data-player="2" data-no="2" data-move-no="3"></td>
+                        <td class="select move-select" data-player="2" data-no="2" data-move-no="4"></td>
+                    </tr>
+                    <tr>
+                        <th>3</th>
+                        <td class="select pokemon-select" data-player="2" data-no="3"></td>
+                        <td class="select move-select" data-player="2" data-no="3" data-move-no="1"></td>
+                        <td class="select move-select" data-player="2" data-no="3" data-move-no="2"></td>
+                        <td class="select move-select" data-player="2" data-no="3" data-move-no="3"></td>
+                        <td class="select move-select" data-player="2" data-no="3" data-move-no="4"></td>
+                    </tr>
+                    <tr>
+                        <th>4</th>
+                        <td class="select pokemon-select" data-player="2" data-no="4"></td>
+                        <td class="select move-select" data-player="2" data-no="4" data-move-no="1"></td>
+                        <td class="select move-select" data-player="2" data-no="4" data-move-no="2"></td>
+                        <td class="select move-select" data-player="2" data-no="4" data-move-no="3"></td>
+                        <td class="select move-select" data-player="2" data-no="4" data-move-no="4"></td>
+                    </tr>
+                    <tr>
+                        <th>5</th>
+                        <td class="select pokemon-select" data-player="2" data-no="5"></td>
+                        <td class="select move-select" data-player="2" data-no="5" data-move-no="1"></td>
+                        <td class="select move-select" data-player="2" data-no="5" data-move-no="2"></td>
+                        <td class="select move-select" data-player="2" data-no="5" data-move-no="3"></td>
+                        <td class="select move-select" data-player="2" data-no="5" data-move-no="4"></td>
+                    </tr>
+                    <tr>
+                        <th>6</th>
+                        <td class="select pokemon-select" data-player="2" data-no="6"></td>
+                        <td class="select move-select" data-player="2" data-no="6" data-move-no="1"></td>
+                        <td class="select move-select" data-player="2" data-no="6" data-move-no="2"></td>
+                        <td class="select move-select" data-player="2" data-no="6" data-move-no="3"></td>
+                        <td class="select move-select" data-player="2" data-no="6" data-move-no="4"></td>
+                    </tr>
+                </table>
             </div>
-            Player 1:
-            <table id="p1Table">
-                <tr>
-                    <th>#</th>
-                    <th>Pokémon</th>
-                    <th>Move #1</th>
-                    <th>Move #2</th>
-                    <th>Move #3</th>
-                    <th>Move #4</th>
-                </tr>
-                <tr>
-                    <th>1</th>
-                    <td class="select pokemon-select" data-player="1" data-no="1"></td>
-                    <td class="select move-select" data-player="1" data-no="1" data-move-no="1"></td>
-                    <td class="select move-select" data-player="1" data-no="1" data-move-no="2"></td>
-                    <td class="select move-select" data-player="1" data-no="1" data-move-no="3"></td>
-                    <td class="select move-select" data-player="1" data-no="1" data-move-no="4"></td>
-                </tr>
-                <tr>
-                    <th>2</th>
-                    <td class="select pokemon-select" data-player="1" data-no="2"></td>
-                    <td class="select move-select" data-player="1" data-no="2" data-move-no="1"></td>
-                    <td class="select move-select" data-player="1" data-no="2" data-move-no="2"></td>
-                    <td class="select move-select" data-player="1" data-no="2" data-move-no="3"></td>
-                    <td class="select move-select" data-player="1" data-no="2" data-move-no="4"></td>
-                </tr>
-                <tr>
-                    <th>3</th>
-                    <td class="select pokemon-select" data-player="1" data-no="3"></td>
-                    <td class="select move-select" data-player="1" data-no="3" data-move-no="1"></td>
-                    <td class="select move-select" data-player="1" data-no="3" data-move-no="2"></td>
-                    <td class="select move-select" data-player="1" data-no="3" data-move-no="3"></td>
-                    <td class="select move-select" data-player="1" data-no="3" data-move-no="4"></td>
-                </tr>
-                <tr>
-                    <th>4</th>
-                    <td class="select pokemon-select" data-player="1" data-no="4"></td>
-                    <td class="select move-select" data-player="1" data-no="4" data-move-no="1"></td>
-                    <td class="select move-select" data-player="1" data-no="4" data-move-no="2"></td>
-                    <td class="select move-select" data-player="1" data-no="4" data-move-no="3"></td>
-                    <td class="select move-select" data-player="1" data-no="4" data-move-no="4"></td>
-                </tr>
-                <tr>
-                    <th>5</th>
-                    <td class="select pokemon-select" data-player="1" data-no="5"></td>
-                    <td class="select move-select" data-player="1" data-no="5" data-move-no="1"></td>
-                    <td class="select move-select" data-player="1" data-no="5" data-move-no="2"></td>
-                    <td class="select move-select" data-player="1" data-no="5" data-move-no="3"></td>
-                    <td class="select move-select" data-player="1" data-no="5" data-move-no="4"></td>
-                </tr>
-                <tr>
-                    <th>6</th>
-                    <td class="select pokemon-select" data-player="1" data-no="6"></td>
-                    <td class="select move-select" data-player="1" data-no="6" data-move-no="1"></td>
-                    <td class="select move-select" data-player="1" data-no="6" data-move-no="2"></td>
-                    <td class="select move-select" data-player="1" data-no="6" data-move-no="3"></td>
-                    <td class="select move-select" data-player="1" data-no="6" data-move-no="4"></td>
-                </tr>
-            </table>
-            Player 2:
-            <table id="p2Table">
-                <tr>
-                    <th>#</th>
-                    <th>Pokémon</th>
-                    <th>Move #1</th>
-                    <th>Move #2</th>
-                    <th>Move #3</th>
-                    <th>Move #4</th>
-                </tr>
-                <tr>
-                    <th>1</th>
-                    <td class="select pokemon-select" data-player="2" data-no="1"></td>
-                    <td class="select move-select" data-player="2" data-no="1" data-move-no="1"></td>
-                    <td class="select move-select" data-player="2" data-no="1" data-move-no="2"></td>
-                    <td class="select move-select" data-player="2" data-no="1" data-move-no="3"></td>
-                    <td class="select move-select" data-player="2" data-no="1" data-move-no="4"></td>
-                </tr>
-                <tr>
-                    <th>2</th>
-                    <td class="select pokemon-select" data-player="2" data-no="2"></td>
-                    <td class="select move-select" data-player="2" data-no="2" data-move-no="1"></td>
-                    <td class="select move-select" data-player="2" data-no="2" data-move-no="2"></td>
-                    <td class="select move-select" data-player="2" data-no="2" data-move-no="3"></td>
-                    <td class="select move-select" data-player="2" data-no="2" data-move-no="4"></td>
-                </tr>
-                <tr>
-                    <th>3</th>
-                    <td class="select pokemon-select" data-player="2" data-no="3"></td>
-                    <td class="select move-select" data-player="2" data-no="3" data-move-no="1"></td>
-                    <td class="select move-select" data-player="2" data-no="3" data-move-no="2"></td>
-                    <td class="select move-select" data-player="2" data-no="3" data-move-no="3"></td>
-                    <td class="select move-select" data-player="2" data-no="3" data-move-no="4"></td>
-                </tr>
-                <tr>
-                    <th>4</th>
-                    <td class="select pokemon-select" data-player="2" data-no="4"></td>
-                    <td class="select move-select" data-player="2" data-no="4" data-move-no="1"></td>
-                    <td class="select move-select" data-player="2" data-no="4" data-move-no="2"></td>
-                    <td class="select move-select" data-player="2" data-no="4" data-move-no="3"></td>
-                    <td class="select move-select" data-player="2" data-no="4" data-move-no="4"></td>
-                </tr>
-                <tr>
-                    <th>5</th>
-                    <td class="select pokemon-select" data-player="2" data-no="5"></td>
-                    <td class="select move-select" data-player="2" data-no="5" data-move-no="1"></td>
-                    <td class="select move-select" data-player="2" data-no="5" data-move-no="2"></td>
-                    <td class="select move-select" data-player="2" data-no="5" data-move-no="3"></td>
-                    <td class="select move-select" data-player="2" data-no="5" data-move-no="4"></td>
-                </tr>
-                <tr>
-                    <th>6</th>
-                    <td class="select pokemon-select" data-player="2" data-no="6"></td>
-                    <td class="select move-select" data-player="2" data-no="6" data-move-no="1"></td>
-                    <td class="select move-select" data-player="2" data-no="6" data-move-no="2"></td>
-                    <td class="select move-select" data-player="2" data-no="6" data-move-no="3"></td>
-                    <td class="select move-select" data-player="2" data-no="6" data-move-no="4"></td>
-                </tr>
-            </table>
-            <hr />
             <div class="list" id="pokemonList">
-
+                <div class="wrap">
+                    <button class="back">Back</button>
+                    <p class="dim">Select a Pokémon...</p>
+                </div>
             </div>
             <div class="list" id="movesList">
-
+                <div class="wrap">
+                    <button class="back">Back</button>
+                    <p class="dim">Select a move...</p>
+                    <button id="clearMove" class="right-button">Clear</button>
+                </div>
+                <div id="movesListInner"></div>
             </div>
         </div>
         <div data-for="record" class="tab-content" id="record">
