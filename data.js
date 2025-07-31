@@ -1718,7 +1718,8 @@ let pokemon = [{
     "atk": 20,
     "def": 15,
     "sp": 105,
-    "spe": 90
+    "spe": 90,
+    "moves": ["bide", "body slam", "counter", "double-edge", "double team", "flash", "mega kick", "mega punch", "metronome", "mimic", "psychic", "psywave", "rage", "reflect", "rest", "seismic toss", "skull bash", "submission", "substitute", "take down", "teleport", "thunder wave", "toxic", "tri attack"]
 }, {
     "name": "aerodactyl",
     "type": ["rock", "flying"],
@@ -1726,7 +1727,8 @@ let pokemon = [{
     "atk": 105,
     "def": 65,
     "sp": 60,
-    "spe": 130
+    "spe": 130,
+    "moves": ["agility", "bide", "bite", "double-edge", "double team", "dragon rage", "fire blast", "fly", "hyper beam", "mimic", "rage", "razor wind", "reflect", "rest", "sky attack", "substitute", "supersonic", "swift", "take down", "toxic", "whirlwind", "wing attack"]
 }, {
     "name": "alakazam",
     "type": ["psychic"],
@@ -1734,7 +1736,8 @@ let pokemon = [{
     "atk": 50,
     "def": 45,
     "sp": 135,
-    "spe": 120
+    "spe": 120,
+    "moves": ["bide", "body slam", "confusion", "counter", "dig", "disable", "double-edge", "double team", "flash", "hyper beam", "kinesis", "mega kick", "mega punch", "metronome", "mimic", "psybeam", "psychic", "psywave", "rage", "recover", "reflect", "rest", "seismic toss", "skull bash", "submission", "substitute", "take down", "teleport", "thunder wave", "toxic", "tri attack"]
 }, {
     "name": "arbok",
     "type": ["poison"],
@@ -1742,7 +1745,8 @@ let pokemon = [{
     "atk": 85,
     "def": 69,
     "sp": 65,
-    "spe": 80
+    "spe": 80,
+    "moves": ["acid", "bide", "bite", "body slam", "dig", "double-edge", "double team", "earthquake", "fissure", "glare", "hyper beam", "leer", "mega drain", "mimic", "poison sting", "rage", "rest", "rock slide", "screech", "skull bash", "strength", "substitute", "take down", "toxic", "wrap"]
 }, {
     "name": "arcanine",
     "type": ["fire"],
@@ -1750,7 +1754,8 @@ let pokemon = [{
     "atk": 110,
     "def": 80,
     "sp": 80,
-    "spe": 95
+    "spe": 95,
+    "moves": ["agility", "bide", "bite", "body slam", "dig", "double-edge", "double team", "dragon rage", "ember", "fire blast", "flamethrower", "hyper beam", "leer", "mimic", "rage", "reflect", "rest", "roar", "skull bash", "substitute", "swift", "take down", "teleport", "toxic"]
 }, {
     "name": "articuno",
     "type": ["ice", "flying"],
@@ -1758,7 +1763,8 @@ let pokemon = [{
     "atk": 85,
     "def": 100,
     "sp": 125,
-    "spe": 85
+    "spe": 85,
+    "moves": ["agility", "bide", "blizzard", "bubble beam", "double-edge", "double team", "fly", "hyper beam", "ice beam", "mimic", "mist", "peck", "rage", "razor wind", "reflect", "rest", "sky attack", "substitute", "swift", "take down", "toxic", "water gun", "whirlwind"]
 }, {
     "name": "beedrill",
     "type": ["bug", "poison"],
@@ -1766,7 +1772,8 @@ let pokemon = [{
     "atk": 80,
     "def": 40,
     "sp": 45,
-    "spe": 75
+    "spe": 75,
+    "moves": ["agility", "bide", "cut", "double-edge", "double team", "focus energy", "fury attack", "harden", "hyper beam", "mega drain", "mimic", "pin missile", "poison sting", "rage", "reflect", "rest", "skull bash", "string shot", "substitute", "swift", "swords dance", "take down", "toxic", "twineedle"]
 }, {
     "name": "bellsprout",
     "type": ["grass", "poison"],
@@ -1774,7 +1781,8 @@ let pokemon = [{
     "atk": 75,
     "def": 35,
     "sp": 70,
-    "spe": 40
+    "spe": 40,
+    "moves": ["acid", "bide", "cut", "double-edge", "double team", "growth", "mega drain", "mimic", "poison powder", "rage", "razor leaf", "reflect", "rest", "slam", "sleep powder", "solar beam", "stun spore", "substitute", "swords dance", "take down", "toxic", "vine whip", "wrap"]
 }, {
     "name": "blastoise",
     "type": ["water"],
@@ -1782,7 +1790,8 @@ let pokemon = [{
     "atk": 83,
     "def": 100,
     "sp": 85,
-    "spe": 78
+    "spe": 78,
+    "moves": ["bide", "bite", "blizzard", "body slam", "bubble", "bubble beam", "counter", "dig", "double-edge", "double team", "earthquake", "fissure", "hydro pump", "hyper beam", "ice beam", "mega kick", "mega punch", "mimic", "rage", "reflect", "rest", "seismic toss", "skull bash", "strength", "submission", "substitute", "surf", "tackle", "tail whip", "take down", "toxic", "water gun", "withdraw"]
 }, {
     "name": "bulbasaur",
     "type": ["grass", "poison"],
@@ -1790,7 +1799,8 @@ let pokemon = [{
     "atk": 49,
     "def": 49,
     "sp": 65,
-    "spe": 45
+    "spe": 45,
+    "moves": ["bide", "body slam", "cut", "double-edge", "double team", "growl", "growth", "leech seed", "mega drain", "mimic", "poison powder", "rage", "razor leaf", "reflect", "rest", "sleep powder", "solar beam", "substitute", "swords dance", "tackle", "take down", "toxic", "vine whip"]
 }, {
     "name": "butterfree",
     "type": ["bug", "flying"],
@@ -1798,7 +1808,8 @@ let pokemon = [{
     "atk": 45,
     "def": 50,
     "sp": 80,
-    "spe": 70
+    "spe": 70,
+    "moves": ["bide", "confusion", "double-edge", "double team", "flash", "gust", "harden", "hyper beam", "mega drain", "mimic", "poison powder", "psybeam", "psychic", "psywave", "rage", "razor wind", "reflect", "rest", "sleep powder", "solar beam", "string shot", "stun spore", "substitute", "supersonic", "swift", "tackle", "take down", "teleport", "toxic", "whirlwind"]
 }, {
     "name": "caterpie",
     "type": ["bug"],
@@ -1806,7 +1817,8 @@ let pokemon = [{
     "atk": 30,
     "def": 35,
     "sp": 20,
-    "spe": 45
+    "spe": 45,
+    "moves": ["string shot", "tackle"]
 }, {
     "name": "chansey",
     "type": ["normal"],
@@ -1814,7 +1826,8 @@ let pokemon = [{
     "atk": 5,
     "def": 5,
     "sp": 105,
-    "spe": 50
+    "spe": 50,
+    "moves": ["bide", "blizzard", "body slam", "bubble beam", "counter", "defense curl", "double-edge", "double slap", "double team", "egg bomb", "fire blast", "flash", "growl", "hyper beam", "ice beam", "light screen", "mega kick", "mega punch", "metronome", "mimic", "minimize", "pound", "psychic", "psywave", "rage", "reflect", "rest", "seismic toss", "sing", "skull bash", "soft-boiled", "solar beam", "strength", "submission", "substitute", "tail whip", "take down", "teleport", "thunder", "thunderbolt", "thunder wave", "toxic", "tri attack", "water gun"]
 }, {
     "name": "charizard",
     "type": ["fire", "flying"],
@@ -1822,7 +1835,8 @@ let pokemon = [{
     "atk": 84,
     "def": 78,
     "sp": 85,
-    "spe": 100
+    "spe": 100,
+    "moves": ["bide", "body slam", "counter", "cut", "dig", "double-edge", "double team", "dragon rage", "earthquake", "ember", "fire blast", "fire spin", "fissure", "flamethrower", "fly", "growl", "hyper beam", "leer", "mega kick", "mega punch", "mimic", "rage", "reflect", "rest", "scratch", "seismic toss", "skull bash", "slash", "strength", "submission", "substitute", "swift", "swords dance", "take down", "toxic"]
 }, {
     "name": "charmander",
     "type": ["fire"],
@@ -1830,7 +1844,8 @@ let pokemon = [{
     "atk": 52,
     "def": 43,
     "sp": 50,
-    "spe": 65
+    "spe": 65,
+    "moves": ["bide", "body slam", "counter", "cut", "dig", "double-edge", "double team", "dragon rage", "ember", "fire blast", "fire spin", "flamethrower", "growl", "leer", "mega kick", "mega punch", "mimic", "rage", "reflect", "rest", "scratch", "seismic toss", "skull bash", "slash", "strength", "submission", "substitute", "swift", "swords dance", "take down", "toxic"]
 }, {
     "name": "charmeleon",
     "type": ["fire"],
@@ -1838,7 +1853,8 @@ let pokemon = [{
     "atk": 64,
     "def": 58,
     "sp": 65,
-    "spe": 80
+    "spe": 80,
+    "moves": ["bide", "body slam", "counter", "cut", "dig", "double-edge", "double team", "dragon rage", "ember", "fire blast", "fire spin", "flamethrower", "growl", "leer", "mega kick", "mega punch", "mimic", "rage", "reflect", "rest", "scratch", "seismic toss", "skull bash", "slash", "strength", "submission", "substitute", "swift", "swords dance", "take down", "toxic"]
 }, {
     "name": "clefable",
     "type": ["normal"],
@@ -1846,7 +1862,8 @@ let pokemon = [{
     "atk": 70,
     "def": 73,
     "sp": 85,
-    "spe": 60
+    "spe": 60,
+    "moves": ["bide", "blizzard", "body slam", "bubble beam", "counter", "defense curl", "double-edge", "double slap", "double team", "fire blast", "flash", "growl", "hyper beam", "ice beam", "light screen", "mega kick", "mega punch", "metronome", "mimic", "minimize", "pound", "psychic", "psywave", "rage", "reflect", "rest", "seismic toss", "sing", "skull bash", "solar beam", "strength", "submission", "substitute", "take down", "teleport", "thunder", "thunderbolt", "thunder wave", "toxic", "tri attack", "water gun"]
 }, {
     "name": "clefairy",
     "type": ["normal"],
@@ -1854,7 +1871,8 @@ let pokemon = [{
     "atk": 45,
     "def": 48,
     "sp": 60,
-    "spe": 35
+    "spe": 35,
+    "moves": ["bide", "blizzard", "body slam", "bubble beam", "counter", "defense curl", "double-edge", "double slap", "double team", "fire blast", "flash", "growl", "ice beam", "light screen", "mega kick", "mega punch", "metronome", "mimic", "minimize", "pound", "psychic", "psywave", "rage", "reflect", "rest", "seismic toss", "sing", "skull bash", "solar beam", "strength", "submission", "substitute", "take down", "teleport", "thunder", "thunderbolt", "thunder wave", "toxic", "tri attack", "water gun"]
 }, {
     "name": "cloyster",
     "type": ["water", "ice"],
@@ -1862,7 +1880,8 @@ let pokemon = [{
     "atk": 95,
     "def": 180,
     "sp": 85,
-    "spe": 70
+    "spe": 70,
+    "moves": ["aurora beam", "bide", "blizzard", "bubble beam", "clamp", "double-edge", "double team", "explosion", "hyper beam", "ice beam", "leer", "mimic", "rage", "reflect", "rest", "self-destruct", "spike cannon", "substitute", "supersonic", "surf", "swift", "tackle", "take down", "teleport", "toxic", "tri attack", "water gun", "withdraw"]
 }, {
     "name": "cubone",
     "type": ["ground"],
@@ -1870,7 +1889,8 @@ let pokemon = [{
     "atk": 50,
     "def": 95,
     "sp": 40,
-    "spe": 35
+    "spe": 35,
+    "moves": ["bide", "blizzard", "body slam", "bone club", "bonemerang", "bubble beam", "counter", "dig", "double-edge", "double team", "earthquake", "fire blast", "fissure", "focus energy", "growl", "headbutt", "ice beam", "leer", "mega kick", "mega punch", "mimic", "rage", "rest", "seismic toss", "skull bash", "strength", "submission", "substitute", "tail whip", "take down", "thrash", "toxic", "water gun"]
 }, {
     "name": "dewgong",
     "type": ["water", "ice"],
@@ -1878,7 +1898,8 @@ let pokemon = [{
     "atk": 70,
     "def": 80,
     "sp": 95,
-    "spe": 70
+    "spe": 70,
+    "moves": ["aurora beam", "bide", "blizzard", "body slam", "bubble beam", "double-edge", "double team", "growl", "headbutt", "horn drill", "hyper beam", "ice beam", "mimic", "pay day", "rage", "rest", "skull bash", "strength", "substitute", "surf", "take down", "toxic", "water gun"]
 }, {
     "name": "diglett",
     "type": ["ground"],
@@ -1886,7 +1907,8 @@ let pokemon = [{
     "atk": 55,
     "def": 25,
     "sp": 45,
-    "spe": 95
+    "spe": 95,
+    "moves": ["bide", "body slam", "cut", "dig", "double-edge", "double team", "earthquake", "fissure", "growl", "mimic", "rage", "rest", "rock slide", "sand attack", "scratch", "slash", "substitute", "take down", "toxic"]
 }, {
     "name": "ditto",
     "type": ["normal"],
@@ -1894,7 +1916,8 @@ let pokemon = [{
     "atk": 48,
     "def": 48,
     "sp": 48,
-    "spe": 48
+    "spe": 48,
+    "moves": ["transform"]
 }, {
     "name": "dodrio",
     "type": ["normal", "flying"],
@@ -1902,7 +1925,8 @@ let pokemon = [{
     "atk": 110,
     "def": 70,
     "sp": 60,
-    "spe": 100
+    "spe": 100,
+    "moves": ["agility", "bide", "body slam", "double-edge", "double team", "drill peck", "fly", "fury attack", "growl", "hyper beam", "mimic", "peck", "rage", "reflect", "rest", "skull bash", "sky attack", "substitute", "take down", "toxic", "tri attack", "whirlwind"]
 }, {
     "name": "doduo",
     "type": ["normal", "flying"],
@@ -1910,7 +1934,8 @@ let pokemon = [{
     "atk": 85,
     "def": 45,
     "sp": 35,
-    "spe": 75
+    "spe": 75,
+    "moves": ["agility", "bide", "body slam", "double-edge", "double team", "drill peck", "fly", "fury attack", "growl", "mimic", "peck", "rage", "reflect", "rest", "skull bash", "sky attack", "substitute", "take down", "toxic", "tri attack", "whirlwind"]
 }, {
     "name": "dragonair",
     "type": ["dragon"],
@@ -1918,7 +1943,8 @@ let pokemon = [{
     "atk": 84,
     "def": 65,
     "sp": 70,
-    "spe": 70
+    "spe": 70,
+    "moves": ["agility", "bide", "blizzard", "body slam", "bubble beam", "double-edge", "double team", "dragon rage", "fire blast", "horn drill", "hyper beam", "ice beam", "leer", "mimic", "rage", "reflect", "rest", "skull bash", "slam", "substitute", "surf", "swift", "take down", "thunder", "thunderbolt", "thunder wave", "toxic", "water gun", "wrap"]
 }, {
     "name": "dragonite",
     "type": ["dragon", "flying"],
@@ -1926,7 +1952,8 @@ let pokemon = [{
     "atk": 134,
     "def": 95,
     "sp": 100,
-    "spe": 80
+    "spe": 80,
+    "moves": ["agility", "bide", "blizzard", "body slam", "bubble beam", "double-edge", "double team", "dragon rage", "fire blast", "horn drill", "hyper beam", "ice beam", "leer", "mimic", "rage", "razor wind", "reflect", "rest", "skull bash", "slam", "strength", "substitute", "surf", "swift", "take down", "thunder", "thunderbolt", "thunder wave", "toxic", "water gun", "wrap"]
 }, {
     "name": "dratini",
     "type": ["dragon"],
@@ -1934,7 +1961,8 @@ let pokemon = [{
     "atk": 64,
     "def": 45,
     "sp": 50,
-    "spe": 50
+    "spe": 50,
+    "moves": ["agility", "bide", "blizzard", "body slam", "bubble beam", "double-edge", "double team", "dragon rage", "fire blast", "hyper beam", "ice beam", "leer", "mimic", "rage", "reflect", "rest", "skull bash", "slam", "substitute", "surf", "swift", "take down", "thunder", "thunderbolt", "thunder wave", "toxic", "water gun", "wrap"]
 }, {
     "name": "drowzee",
     "type": ["psychic"],
@@ -1942,7 +1970,8 @@ let pokemon = [{
     "atk": 48,
     "def": 45,
     "sp": 90,
-    "spe": 42
+    "spe": 42,
+    "moves": ["bide", "body slam", "confusion", "counter", "disable", "double-edge", "double team", "dream eater", "flash", "headbutt", "hypnosis", "meditate", "mega kick", "mega punch", "metronome", "mimic", "poison gas", "pound", "psychic", "psywave", "rage", "reflect", "rest", "seismic toss", "skull bash", "submission", "substitute", "take down", "teleport", "thunder wave", "toxic", "tri attack"]
 }, {
     "name": "dugtrio",
     "type": ["ground"],
@@ -1950,7 +1979,8 @@ let pokemon = [{
     "atk": 80,
     "def": 50,
     "sp": 70,
-    "spe": 120
+    "spe": 120,
+    "moves": ["bide", "body slam", "cut", "dig", "double-edge", "double team", "earthquake", "fissure", "growl", "hyper beam", "mimic", "rage", "rest", "rock slide", "sand attack", "scratch", "slash", "substitute", "take down", "toxic"]
 }, {
     "name": "eevee",
     "type": ["normal"],
@@ -1958,7 +1988,8 @@ let pokemon = [{
     "atk": 55,
     "def": 50,
     "sp": 65,
-    "spe": 55
+    "spe": 55,
+    "moves": ["bide", "bite", "body slam", "double-edge", "double team", "focus energy", "growl", "mimic", "quick attack", "rage", "reflect", "rest", "sand attack", "skull bash", "substitute", "swift", "tackle", "tail whip", "take down", "toxic"]
 }, {
     "name": "ekans",
     "type": ["poison"],
@@ -1966,7 +1997,8 @@ let pokemon = [{
     "atk": 60,
     "def": 44,
     "sp": 40,
-    "spe": 55
+    "spe": 55,
+    "moves": ["acid", "bide", "bite", "body slam", "dig", "double-edge", "double team", "earthquake", "fissure", "glare", "leer", "mega drain", "mimic", "poison sting", "rage", "rest", "rock slide", "screech", "skull bash", "strength", "substitute", "take down", "toxic", "wrap"]
 }, {
     "name": "electabuzz",
     "type": ["electric"],
@@ -1974,7 +2006,8 @@ let pokemon = [{
     "atk": 83,
     "def": 57,
     "sp": 85,
-    "spe": 105
+    "spe": 105,
+    "moves": ["bide", "body slam", "counter", "double-edge", "double team", "flash", "hyper beam", "leer", "light screen", "mega kick", "mega punch", "metronome", "mimic", "psychic", "psywave", "quick attack", "rage", "reflect", "rest", "screech", "seismic toss", "skull bash", "strength", "submission", "substitute", "swift", "take down", "teleport", "thunder", "thunderbolt", "thunder punch", "thunder shock", "thunder wave", "toxic"]
 }, {
     "name": "electrode",
     "type": ["electric"],
@@ -1982,7 +2015,8 @@ let pokemon = [{
     "atk": 50,
     "def": 70,
     "sp": 80,
-    "spe": 140
+    "spe": 140,
+    "moves": ["bide", "double team", "explosion", "flash", "hyper beam", "light screen", "mimic", "rage", "reflect", "rest", "screech", "self-destruct", "skull bash", "sonic boom", "substitute", "swift", "tackle", "take down", "teleport", "thunder", "thunderbolt", "thunder wave", "toxic"]
 }, {
     "name": "exeggcute",
     "type": ["grass", "psychic"],
@@ -1990,7 +2024,8 @@ let pokemon = [{
     "atk": 40,
     "def": 80,
     "sp": 60,
-    "spe": 40
+    "spe": 40,
+    "moves": ["barrage", "bide", "double-edge", "double team", "egg bomb", "explosion", "hypnosis", "leech seed", "mimic", "poison powder", "psychic", "psywave", "rage", "reflect", "rest", "self-destruct", "sleep powder", "solar beam", "stun spore", "substitute", "take down", "teleport", "toxic"]
 }, {
     "name": "exeggutor",
     "type": ["grass", "psychic"],
@@ -1998,7 +2033,8 @@ let pokemon = [{
     "atk": 95,
     "def": 85,
     "sp": 125,
-    "spe": 55
+    "spe": 55,
+    "moves": ["barrage", "bide", "double-edge", "double team", "egg bomb", "explosion", "hyper beam", "hypnosis", "leech seed", "mega drain", "mimic", "poison powder", "psychic", "psywave", "rage", "reflect", "rest", "self-destruct", "sleep powder", "solar beam", "stomp", "strength", "stun spore", "substitute", "take down", "teleport", "toxic"]
 }, {
     "name": "farfetch'd",
     "type": ["normal", "flying"],
@@ -2006,7 +2042,8 @@ let pokemon = [{
     "atk": 65,
     "def": 55,
     "sp": 58,
-    "spe": 60
+    "spe": 60,
+    "moves": ["agility", "bide", "body slam", "cut", "double-edge", "double team", "fly", "fury attack", "leer", "mimic", "peck", "rage", "razor wind", "reflect", "rest", "sand attack", "skull bash", "slash", "substitute", "swift", "swords dance", "take down", "toxic", "whirlwind"]
 }, {
     "name": "fearow",
     "type": ["normal", "flying"],
@@ -2014,7 +2051,8 @@ let pokemon = [{
     "atk": 90,
     "def": 65,
     "sp": 61,
-    "spe": 100
+    "spe": 100,
+    "moves": ["agility", "bide", "double-edge", "double team", "drill peck", "fly", "fury attack", "growl", "hyper beam", "leer", "mimic", "mirror move", "pay day", "peck", "rage", "razor wind", "rest", "sky attack", "substitute", "swift", "take down", "toxic", "whirlwind"]
 }, {
     "name": "flareon",
     "type": ["fire"],
@@ -2022,7 +2060,8 @@ let pokemon = [{
     "atk": 130,
     "def": 60,
     "sp": 110,
-    "spe": 65
+    "spe": 65,
+    "moves": ["bide", "bite", "body slam", "double-edge", "double team", "ember", "fire blast", "fire spin", "flamethrower", "focus energy", "growl", "hyper beam", "leer", "mimic", "quick attack", "rage", "reflect", "rest", "sand attack", "skull bash", "smog", "substitute", "swift", "tackle", "tail whip", "take down", "toxic"]
 }, {
     "name": "gastly",
     "type": ["ghost", "poison"],
@@ -2030,7 +2069,8 @@ let pokemon = [{
     "atk": 35,
     "def": 30,
     "sp": 100,
-    "spe": 80
+    "spe": 80,
+    "moves": ["bide", "confuse ray", "double team", "dream eater", "explosion", "hypnosis", "lick", "mega drain", "mimic", "night shade", "psychic", "psywave", "rage", "rest", "self-destruct", "substitute", "thunder", "thunderbolt", "toxic"]
 }, {
     "name": "gengar",
     "type": ["ghost", "poison"],
@@ -2038,7 +2078,8 @@ let pokemon = [{
     "atk": 65,
     "def": 60,
     "sp": 130,
-    "spe": 110
+    "spe": 110,
+    "moves": ["bide", "body slam", "confuse ray", "counter", "double-edge", "double team", "dream eater", "explosion", "hyper beam", "hypnosis", "lick", "mega drain", "mega kick", "mega punch", "metronome", "mimic", "night shade", "psychic", "psywave", "rage", "rest", "seismic toss", "self-destruct", "skull bash", "strength", "submission", "substitute", "take down", "thunder", "thunderbolt", "toxic"]
 }, {
     "name": "geodude",
     "type": ["rock", "ground"],
@@ -2046,7 +2087,8 @@ let pokemon = [{
     "atk": 80,
     "def": 100,
     "sp": 30,
-    "spe": 20
+    "spe": 20,
+    "moves": ["bide", "body slam", "counter", "defense curl", "dig", "double-edge", "double team", "earthquake", "explosion", "fire blast", "fissure", "harden", "mega punch", "metronome", "mimic", "rage", "rest", "rock slide", "rock throw", "seismic toss", "self-destruct", "strength", "submission", "substitute", "tackle", "take down", "toxic"]
 }, {
     "name": "gloom",
     "type": ["grass", "poison"],
@@ -2054,7 +2096,8 @@ let pokemon = [{
     "atk": 65,
     "def": 70,
     "sp": 85,
-    "spe": 40
+    "spe": 40,
+    "moves": ["absorb", "acid", "bide", "cut", "double-edge", "double team", "mega drain", "mimic", "petal dance", "poison powder", "rage", "reflect", "rest", "sleep powder", "solar beam", "stun spore", "substitute", "swords dance", "take down", "toxic"]
 }, {
     "name": "golbat",
     "type": ["poison", "flying"],
@@ -2062,7 +2105,8 @@ let pokemon = [{
     "atk": 80,
     "def": 70,
     "sp": 75,
-    "spe": 90
+    "spe": 90,
+    "moves": ["bide", "bite", "confuse ray", "double-edge", "double team", "haze", "hyper beam", "leech life", "mega drain", "mimic", "rage", "razor wind", "rest", "screech", "substitute", "supersonic", "swift", "take down", "toxic", "whirlwind", "wing attack"]
 }, {
     "name": "goldeen",
     "type": ["water"],
@@ -2070,7 +2114,8 @@ let pokemon = [{
     "atk": 67,
     "def": 60,
     "sp": 50,
-    "spe": 63
+    "spe": 63,
+    "moves": ["agility", "bide", "blizzard", "bubble beam", "double-edge", "double team", "fury attack", "horn attack", "horn drill", "ice beam", "mimic", "peck", "rage", "rest", "skull bash", "substitute", "supersonic", "surf", "swift", "tail whip", "take down", "toxic", "waterfall", "water gun"]
 }, {
     "name": "golduck",
     "type": ["water"],
@@ -2078,7 +2123,8 @@ let pokemon = [{
     "atk": 82,
     "def": 78,
     "sp": 80,
-    "spe": 85
+    "spe": 85,
+    "moves": ["amnesia", "bide", "blizzard", "body slam", "bubble beam", "confusion", "counter", "dig", "disable", "double-edge", "double team", "fury swipes", "hydro pump", "hyper beam", "ice beam", "mega kick", "mega punch", "mimic", "pay day", "rage", "rest", "scratch", "seismic toss", "skull bash", "strength", "submission", "substitute", "surf", "swift", "tail whip", "take down", "toxic", "water gun"]
 }, {
     "name": "golem",
     "type": ["rock", "ground"],
@@ -2086,7 +2132,8 @@ let pokemon = [{
     "atk": 110,
     "def": 130,
     "sp": 55,
-    "spe": 45
+    "spe": 45,
+    "moves": ["bide", "body slam", "counter", "defense curl", "dig", "double-edge", "double team", "earthquake", "explosion", "fire blast", "fissure", "harden", "hyper beam", "mega kick", "mega punch", "metronome", "mimic", "rage", "rest", "rock slide", "rock throw", "seismic toss", "self-destruct", "strength", "submission", "substitute", "tackle", "take down", "toxic"]
 }, {
     "name": "graveler",
     "type": ["rock", "ground"],
@@ -2094,7 +2141,8 @@ let pokemon = [{
     "atk": 95,
     "def": 115,
     "sp": 45,
-    "spe": 35
+    "spe": 35,
+    "moves": ["bide", "body slam", "counter", "defense curl", "dig", "double-edge", "double team", "earthquake", "explosion", "fire blast", "fissure", "harden", "mega punch", "metronome", "mimic", "rage", "rest", "rock slide", "rock throw", "seismic toss", "self-destruct", "strength", "submission", "substitute", "tackle", "take down", "toxic"]
 }, {
     "name": "grimer",
     "type": ["poison"],
@@ -2102,7 +2150,8 @@ let pokemon = [{
     "atk": 80,
     "def": 50,
     "sp": 40,
-    "spe": 25
+    "spe": 25,
+    "moves": ["acid armor", "bide", "body slam", "disable", "double team", "explosion", "fire blast", "harden", "mega drain", "mimic", "minimize", "poison gas", "pound", "rage", "rest", "screech", "self-destruct", "sludge", "substitute", "thunder", "thunderbolt", "toxic"]
 }, {
     "name": "growlithe",
     "type": ["fire"],
@@ -2110,7 +2159,8 @@ let pokemon = [{
     "atk": 70,
     "def": 45,
     "sp": 50,
-    "spe": 60
+    "spe": 60,
+    "moves": ["agility", "bide", "bite", "body slam", "dig", "double-edge", "double team", "dragon rage", "ember", "fire blast", "flamethrower", "leer", "mimic", "rage", "reflect", "rest", "roar", "skull bash", "substitute", "swift", "take down", "toxic"]
 }, {
     "name": "gyarados",
     "type": ["water", "flying"],
@@ -2118,7 +2168,8 @@ let pokemon = [{
     "atk": 125,
     "def": 79,
     "sp": 100,
-    "spe": 81
+    "spe": 81,
+    "moves": ["bide", "bite", "blizzard", "body slam", "bubble beam", "double-edge", "double team", "dragon rage", "fire blast", "hydro pump", "hyper beam", "ice beam", "leer", "mimic", "rage", "reflect", "rest", "skull bash", "splash", "strength", "substitute", "surf", "tackle", "take down", "thunder", "thunderbolt", "toxic", "water gun"]
 }, {
     "name": "haunter",
     "type": ["ghost", "poison"],
@@ -2126,7 +2177,8 @@ let pokemon = [{
     "atk": 50,
     "def": 45,
     "sp": 115,
-    "spe": 95
+    "spe": 95,
+    "moves": ["bide", "confuse ray", "double team", "dream eater", "explosion", "hypnosis", "lick", "mega drain", "mimic", "night shade", "psychic", "psywave", "rage", "rest", "self-destruct", "substitute", "thunder", "thunderbolt", "toxic"]
 }, {
     "name": "hitmonchan",
     "type": ["fighting"],
@@ -2134,7 +2186,8 @@ let pokemon = [{
     "atk": 105,
     "def": 79,
     "sp": 35,
-    "spe": 76
+    "spe": 76,
+    "moves": ["agility", "bide", "body slam", "comet punch", "counter", "double-edge", "double team", "fire punch", "ice punch", "mega kick", "mega punch", "metronome", "mimic", "rage", "rest", "seismic toss", "skull bash", "strength", "submission", "substitute", "swift", "take down", "thunder punch", "toxic"]
 }, {
     "name": "hitmonlee",
     "type": ["fighting"],
@@ -2142,7 +2195,8 @@ let pokemon = [{
     "atk": 120,
     "def": 53,
     "sp": 35,
-    "spe": 87
+    "spe": 87,
+    "moves": ["bide", "body slam", "counter", "double-edge", "double kick", "double team", "focus energy", "high jump kick", "jump kick", "meditate", "mega kick", "mega punch", "metronome", "mimic", "rage", "rest", "rolling kick", "seismic toss", "skull bash", "strength", "submission", "substitute", "swift", "take down", "toxic"]
 }, {
     "name": "horsea",
     "type": ["water"],
@@ -2150,7 +2204,8 @@ let pokemon = [{
     "atk": 40,
     "def": 70,
     "sp": 70,
-    "spe": 60
+    "spe": 60,
+    "moves": ["agility", "bide", "blizzard", "bubble", "bubble beam", "double-edge", "double team", "hydro pump", "ice beam", "leer", "mimic", "rage", "rest", "skull bash", "smokescreen", "substitute", "surf", "swift", "take down", "toxic", "water gun"]
 }, {
     "name": "hypno",
     "type": ["psychic"],
@@ -2158,7 +2213,8 @@ let pokemon = [{
     "atk": 73,
     "def": 70,
     "sp": 115,
-    "spe": 67
+    "spe": 67,
+    "moves": ["bide", "body slam", "confusion", "counter", "disable", "double-edge", "double team", "dream eater", "flash", "headbutt", "hyper beam", "hypnosis", "meditate", "mega kick", "mega punch", "metronome", "mimic", "poison gas", "pound", "psychic", "psywave", "rage", "reflect", "rest", "seismic toss", "skull bash", "submission", "substitute", "take down", "teleport", "thunder wave", "toxic", "tri attack"]
 }, {
     "name": "ivysaur",
     "type": ["grass", "poison"],
@@ -2166,7 +2222,8 @@ let pokemon = [{
     "atk": 62,
     "def": 63,
     "sp": 80,
-    "spe": 60
+    "spe": 60,
+    "moves": ["bide", "body slam", "cut", "double-edge", "double team", "growl", "growth", "leech seed", "mega drain", "mimic", "poison powder", "rage", "razor leaf", "reflect", "rest", "sleep powder", "solar beam", "substitute", "swords dance", "tackle", "take down", "toxic", "vine whip"]
 }, {
     "name": "jigglypuff",
     "type": ["normal"],
@@ -2174,7 +2231,8 @@ let pokemon = [{
     "atk": 45,
     "def": 20,
     "sp": 25,
-    "spe": 20
+    "spe": 20,
+    "moves": ["bide", "blizzard", "body slam", "bubble beam", "counter", "defense curl", "disable", "double-edge", "double slap", "double team", "fire blast", "flash", "ice beam", "mega kick", "mega punch", "mimic", "pound", "psychic", "psywave", "rage", "reflect", "rest", "seismic toss", "sing", "skull bash", "solar beam", "strength", "submission", "substitute", "take down", "teleport", "thunder", "thunderbolt", "thunder wave", "toxic", "tri attack", "water gun"]
 }, {
     "name": "jolteon",
     "type": ["electric"],
@@ -2182,7 +2240,8 @@ let pokemon = [{
     "atk": 65,
     "def": 60,
     "sp": 110,
-    "spe": 130
+    "spe": 130,
+    "moves": ["agility", "bide", "bite", "body slam", "double-edge", "double kick", "double team", "flash", "focus energy", "growl", "hyper beam", "mimic", "pin missile", "quick attack", "rage", "reflect", "rest", "sand attack", "skull bash", "substitute", "swift", "tackle", "tail whip", "take down", "thunder", "thunderbolt", "thunder shock", "thunder wave", "toxic"]
 }, {
     "name": "jynx",
     "type": ["ice", "psychic"],
@@ -2190,7 +2249,8 @@ let pokemon = [{
     "atk": 50,
     "def": 35,
     "sp": 95,
-    "spe": 95
+    "spe": 95,
+    "moves": ["bide", "blizzard", "body slam", "bubble beam", "counter", "double-edge", "double slap", "double team", "hyper beam", "ice beam", "ice punch", "lick", "lovely kiss", "mega kick", "mega punch", "metronome", "mimic", "pound", "psychic", "psywave", "rage", "reflect", "rest", "seismic toss", "skull bash", "submission", "substitute", "take down", "teleport", "thrash", "toxic", "water gun"]
 }, {
     "name": "kabuto",
     "type": ["rock", "water"],
@@ -2198,7 +2258,8 @@ let pokemon = [{
     "atk": 80,
     "def": 90,
     "sp": 45,
-    "spe": 55
+    "spe": 55,
+    "moves": ["absorb", "bide", "blizzard", "body slam", "bubble beam", "double-edge", "double team", "harden", "hydro pump", "ice beam", "leer", "mimic", "rage", "reflect", "rest", "scratch", "slash", "substitute", "surf", "take down", "toxic", "water gun"]
 }, {
     "name": "kabutops",
     "type": ["rock", "water"],
@@ -2206,7 +2267,8 @@ let pokemon = [{
     "atk": 115,
     "def": 105,
     "sp": 70,
-    "spe": 80
+    "spe": 80,
+    "moves": ["absorb", "bide", "blizzard", "body slam", "bubble beam", "cut", "double-edge", "double team", "harden", "hydro pump", "hyper beam", "ice beam", "leer", "mega kick", "mimic", "rage", "razor wind", "reflect", "rest", "scratch", "seismic toss", "skull bash", "slash", "submission", "substitute", "surf", "swords dance", "take down", "toxic", "water gun"]
 }, {
     "name": "kadabra",
     "type": ["psychic"],
@@ -2214,7 +2276,8 @@ let pokemon = [{
     "atk": 35,
     "def": 30,
     "sp": 120,
-    "spe": 105
+    "spe": 105,
+    "moves": ["bide", "body slam", "confusion", "counter", "dig", "disable", "double-edge", "double team", "flash", "kinesis", "mega kick", "mega punch", "metronome", "mimic", "psybeam", "psychic", "psywave", "rage", "recover", "reflect", "rest", "seismic toss", "skull bash", "submission", "substitute", "take down", "teleport", "thunder wave", "toxic", "tri attack"]
 }, {
     "name": "kakuna",
     "type": ["bug", "poison"],
@@ -2222,7 +2285,8 @@ let pokemon = [{
     "atk": 25,
     "def": 50,
     "sp": 25,
-    "spe": 35
+    "spe": 35,
+    "moves": ["harden", "poison sting", "string shot"]
 }, {
     "name": "kangaskhan",
     "type": ["normal"],
@@ -2230,7 +2294,8 @@ let pokemon = [{
     "atk": 95,
     "def": 80,
     "sp": 40,
-    "spe": 90
+    "spe": 90,
+    "moves": ["bide", "bite", "blizzard", "body slam", "bubble beam", "comet punch", "counter", "dizzy punch", "double-edge", "double team", "earthquake", "fire blast", "fissure", "hyper beam", "ice beam", "leer", "mega kick", "mega punch", "mimic", "rage", "rest", "rock slide", "seismic toss", "skull bash", "strength", "submission", "substitute", "surf", "tail whip", "take down", "thunder", "thunderbolt", "toxic", "water gun"]
 }, {
     "name": "kingler",
     "type": ["water"],
@@ -2238,7 +2303,8 @@ let pokemon = [{
     "atk": 130,
     "def": 115,
     "sp": 50,
-    "spe": 75
+    "spe": 75,
+    "moves": ["bide", "blizzard", "body slam", "bubble", "bubble beam", "crabhammer", "cut", "double-edge", "double team", "guillotine", "harden", "hyper beam", "ice beam", "leer", "mimic", "rage", "rest", "stomp", "strength", "substitute", "surf", "swords dance", "take down", "toxic", "vice grip", "water gun"]
 }, {
     "name": "koffing",
     "type": ["poison"],
@@ -2246,7 +2312,8 @@ let pokemon = [{
     "atk": 65,
     "def": 95,
     "sp": 60,
-    "spe": 35
+    "spe": 35,
+    "moves": ["bide", "double team", "explosion", "fire blast", "haze", "mimic", "rage", "rest", "self-destruct", "sludge", "smog", "smokescreen", "substitute", "tackle", "thunder", "thunderbolt", "toxic"]
 }, {
     "name": "krabby",
     "type": ["water"],
@@ -2254,7 +2321,8 @@ let pokemon = [{
     "atk": 105,
     "def": 90,
     "sp": 25,
-    "spe": 50
+    "spe": 50,
+    "moves": ["bide", "blizzard", "body slam", "bubble", "bubble beam", "crabhammer", "cut", "double-edge", "double team", "guillotine", "harden", "ice beam", "leer", "mimic", "rage", "rest", "stomp", "strength", "substitute", "surf", "swords dance", "take down", "toxic", "vice grip", "water gun"]
 }, {
     "name": "lapras",
     "type": ["water", "ice"],
@@ -2262,7 +2330,8 @@ let pokemon = [{
     "atk": 85,
     "def": 80,
     "sp": 95,
-    "spe": 60
+    "spe": 60,
+    "moves": ["bide", "blizzard", "body slam", "bubble beam", "confuse ray", "double-edge", "double team", "dragon rage", "growl", "horn drill", "hydro pump", "hyper beam", "ice beam", "mimic", "mist", "psychic", "psywave", "rage", "reflect", "rest", "sing", "skull bash", "solar beam", "strength", "substitute", "surf", "take down", "thunder", "thunderbolt", "toxic", "water gun"]
 }, {
     "name": "lickitung",
     "type": ["normal"],
@@ -2270,7 +2339,8 @@ let pokemon = [{
     "atk": 55,
     "def": 75,
     "sp": 60,
-    "spe": 30
+    "spe": 30,
+    "moves": ["bide", "blizzard", "body slam", "bubble beam", "counter", "cut", "defense curl", "disable", "double-edge", "double team", "earthquake", "fire blast", "fissure", "hyper beam", "ice beam", "mega kick", "mega punch", "mimic", "rage", "rest", "screech", "seismic toss", "skull bash", "slam", "stomp", "strength", "submission", "substitute", "supersonic", "surf", "swords dance", "take down", "thunder", "thunderbolt", "toxic", "water gun", "wrap"]
 }, {
     "name": "machamp",
     "type": ["fighting"],
@@ -2278,7 +2348,8 @@ let pokemon = [{
     "atk": 130,
     "def": 80,
     "sp": 65,
-    "spe": 55
+    "spe": 55,
+    "moves": ["bide", "body slam", "counter", "dig", "double-edge", "double team", "earthquake", "fire blast", "fissure", "focus energy", "hyper beam", "karate chop", "leer", "low kick", "mega kick", "mega punch", "metronome", "mimic", "rage", "rest", "rock slide", "seismic toss", "skull bash", "strength", "submission", "substitute", "take down", "toxic"]
 }, {
     "name": "machoke",
     "type": ["fighting"],
@@ -2286,7 +2357,8 @@ let pokemon = [{
     "atk": 100,
     "def": 70,
     "sp": 50,
-    "spe": 45
+    "spe": 45,
+    "moves": ["bide", "body slam", "counter", "dig", "double-edge", "double team", "earthquake", "fire blast", "fissure", "focus energy", "karate chop", "leer", "low kick", "mega kick", "mega punch", "metronome", "mimic", "rage", "rest", "rock slide", "seismic toss", "skull bash", "strength", "submission", "substitute", "take down", "toxic"]
 }, {
     "name": "machop",
     "type": ["fighting"],
@@ -2294,7 +2366,8 @@ let pokemon = [{
     "atk": 80,
     "def": 50,
     "sp": 35,
-    "spe": 35
+    "spe": 35,
+    "moves": ["bide", "body slam", "counter", "dig", "double-edge", "double team", "earthquake", "fire blast", "fissure", "focus energy", "karate chop", "leer", "low kick", "mega kick", "mega punch", "metronome", "mimic", "rage", "rest", "rock slide", "seismic toss", "skull bash", "strength", "submission", "substitute", "take down", "toxic"]
 }, {
     "name": "magikarp",
     "type": ["water"],
@@ -2302,7 +2375,8 @@ let pokemon = [{
     "atk": 10,
     "def": 55,
     "sp": 20,
-    "spe": 80
+    "spe": 80,
+    "moves": ["dragon rage", "splash", "tackle"]
 }, {
     "name": "magmar",
     "type": ["fire"],
@@ -2310,7 +2384,8 @@ let pokemon = [{
     "atk": 95,
     "def": 57,
     "sp": 85,
-    "spe": 93
+    "spe": 93,
+    "moves": ["bide", "body slam", "confuse ray", "counter", "double-edge", "double team", "ember", "fire blast", "fire punch", "flamethrower", "hyper beam", "leer", "mega kick", "mega punch", "metronome", "mimic", "psychic", "psywave", "rage", "rest", "seismic toss", "skull bash", "smog", "smokescreen", "strength", "submission", "substitute", "take down", "teleport", "toxic"]
 }, {
     "name": "magnemite",
     "type": ["electric"],
@@ -2318,7 +2393,8 @@ let pokemon = [{
     "atk": 35,
     "def": 70,
     "sp": 95,
-    "spe": 45
+    "spe": 45,
+    "moves": ["bide", "double-edge", "double team", "flash", "mimic", "rage", "reflect", "rest", "screech", "sonic boom", "substitute", "supersonic", "swift", "tackle", "take down", "teleport", "thunder", "thunderbolt", "thunder shock", "thunder wave", "toxic"]
 }, {
     "name": "magneton",
     "type": ["electric"],
@@ -2326,7 +2402,8 @@ let pokemon = [{
     "atk": 60,
     "def": 95,
     "sp": 120,
-    "spe": 70
+    "spe": 70,
+    "moves": ["bide", "double-edge", "double team", "flash", "hyper beam", "mimic", "rage", "reflect", "rest", "screech", "sonic boom", "substitute", "supersonic", "swift", "tackle", "take down", "teleport", "thunder", "thunderbolt", "thunder shock", "thunder wave", "toxic"]
 }, {
     "name": "mankey",
     "type": ["fighting"],
@@ -2334,7 +2411,8 @@ let pokemon = [{
     "atk": 80,
     "def": 35,
     "sp": 35,
-    "spe": 70
+    "spe": 70,
+    "moves": ["bide", "body slam", "counter", "dig", "double-edge", "double team", "focus energy", "fury swipes", "karate chop", "leer", "low kick", "mega kick", "mega punch", "metronome", "mimic", "pay day", "rage", "rest", "rock slide", "scratch", "screech", "seismic toss", "skull bash", "strength", "submission", "substitute", "swift", "take down", "thrash", "thunder", "thunderbolt", "toxic"]
 }, {
     "name": "marowak",
     "type": ["ground"],
@@ -2342,7 +2420,8 @@ let pokemon = [{
     "atk": 80,
     "def": 110,
     "sp": 50,
-    "spe": 45
+    "spe": 45,
+    "moves": ["bide", "blizzard", "body slam", "bone club", "bonemerang", "bubble beam", "counter", "dig", "double-edge", "double team", "earthquake", "fire blast", "fissure", "focus energy", "growl", "headbutt", "hyper beam", "ice beam", "leer", "mega kick", "mega punch", "mimic", "rage", "rest", "seismic toss", "skull bash", "strength", "submission", "substitute", "tail whip", "take down", "thrash", "toxic", "water gun"]
 }, {
     "name": "meowth",
     "type": ["normal"],
@@ -2350,7 +2429,8 @@ let pokemon = [{
     "atk": 45,
     "def": 35,
     "sp": 40,
-    "spe": 90
+    "spe": 90,
+    "moves": ["bide", "bite", "body slam", "bubble beam", "double-edge", "double team", "fury swipes", "growl", "mimic", "pay day", "rage", "rest", "scratch", "screech", "skull bash", "slash", "substitute", "swift", "take down", "thunder", "thunderbolt", "toxic", "water gun"]
 }, {
     "name": "metapod",
     "type": ["bug"],
@@ -2358,7 +2438,8 @@ let pokemon = [{
     "atk": 20,
     "def": 55,
     "sp": 25,
-    "spe": 30
+    "spe": 30,
+    "moves": ["harden", "string shot", "tackle"]
 }, {
     "name": "mew",
     "type": ["psychic"],
@@ -2366,7 +2447,8 @@ let pokemon = [{
     "atk": 100,
     "def": 100,
     "sp": 100,
-    "spe": 100
+    "spe": 100,
+    "moves": ["bide", "blizzard", "body slam", "bubble beam", "counter", "cut", "dig", "double-edge", "double team", "dragon rage", "dream eater", "earthquake", "egg bomb", "explosion", "fire blast", "fissure", "flash", "fly", "horn drill", "hyper beam", "ice beam", "mega drain", "mega kick", "mega punch", "metronome", "mimic", "pay day", "pound", "psychic", "psywave", "rage", "razor wind", "reflect", "rest", "rock slide", "seismic toss", "self-destruct", "skull bash", "sky attack", "soft-boiled", "solar beam", "strength", "submission", "substitute", "surf", "swift", "swords dance", "take down", "teleport", "thunder", "thunderbolt", "thunder wave", "toxic", "transform", "tri attack", "water gun", "whirlwind"]
 }, {
     "name": "mewtwo",
     "type": ["psychic"],
@@ -2374,7 +2456,8 @@ let pokemon = [{
     "atk": 110,
     "def": 90,
     "sp": 154,
-    "spe": 130
+    "spe": 130,
+    "moves": ["amnesia", "barrier", "bide", "blizzard", "body slam", "bubble beam", "counter", "double-edge", "double team", "fire blast", "flash", "hyper beam", "ice beam", "mega kick", "mega punch", "metronome", "mimic", "mist", "pay day", "psychic", "psywave", "rage", "recover", "reflect", "rest", "seismic toss", "self-destruct", "skull bash", "solar beam", "strength", "submission", "substitute", "swift", "take down", "teleport", "thunder", "thunderbolt", "thunder wave", "toxic", "tri attack", "water gun"]
 }, {
     "name": "moltres",
     "type": ["fire", "flying"],
@@ -2382,7 +2465,8 @@ let pokemon = [{
     "atk": 100,
     "def": 90,
     "sp": 125,
-    "spe": 90
+    "spe": 90,
+    "moves": ["agility", "bide", "double-edge", "double team", "fire blast", "fire spin", "fly", "hyper beam", "leer", "mimic", "peck", "rage", "razor wind", "reflect", "rest", "sky attack", "substitute", "swift", "take down", "toxic", "whirlwind"]
 }, {
     "name": "mr. mime",
     "type": ["psychic"],
@@ -2390,7 +2474,8 @@ let pokemon = [{
     "atk": 45,
     "def": 65,
     "sp": 100,
-    "spe": 90
+    "spe": 90,
+    "moves": ["barrier", "bide", "body slam", "confusion", "counter", "double-edge", "double slap", "double team", "flash", "hyper beam", "light screen", "meditate", "mega kick", "mega punch", "metronome", "mimic", "psychic", "psywave", "rage", "reflect", "rest", "seismic toss", "skull bash", "solar beam", "submission", "substitute", "take down", "teleport", "thunder", "thunderbolt", "thunder wave", "toxic"]
 }, {
     "name": "muk",
     "type": ["poison"],
@@ -2398,7 +2483,8 @@ let pokemon = [{
     "atk": 105,
     "def": 75,
     "sp": 65,
-    "spe": 50
+    "spe": 50,
+    "moves": ["acid armor", "bide", "body slam", "disable", "double team", "explosion", "fire blast", "harden", "hyper beam", "mega drain", "mimic", "minimize", "poison gas", "pound", "rage", "rest", "screech", "self-destruct", "sludge", "substitute", "thunder", "thunderbolt", "toxic"]
 }, {
     "name": "nidoking",
     "type": ["poison", "ground"],
@@ -2406,7 +2492,8 @@ let pokemon = [{
     "atk": 92,
     "def": 77,
     "sp": 75,
-    "spe": 85
+    "spe": 85,
+    "moves": ["bide", "blizzard", "body slam", "bubble beam", "counter", "double-edge", "double kick", "double team", "earthquake", "fire blast", "fissure", "focus energy", "fury attack", "horn attack", "horn drill", "hyper beam", "ice beam", "leer", "mega kick", "mega punch", "mimic", "pay day", "poison sting", "rage", "reflect", "rest", "rock slide", "seismic toss", "skull bash", "strength", "submission", "substitute", "surf", "tackle", "take down", "thrash", "thunder", "thunderbolt", "toxic", "water gun"]
 }, {
     "name": "nidoqueen",
     "type": ["poison", "ground"],
@@ -2414,7 +2501,8 @@ let pokemon = [{
     "atk": 82,
     "def": 87,
     "sp": 75,
-    "spe": 76
+    "spe": 76,
+    "moves": ["bide", "bite", "blizzard", "body slam", "bubble beam", "counter", "double-edge", "double kick", "double team", "earthquake", "fire blast", "fissure", "fury swipes", "growl", "horn drill", "hyper beam", "ice beam", "mega kick", "mega punch", "mimic", "pay day", "poison sting", "rage", "reflect", "rest", "rock slide", "scratch", "seismic toss", "skull bash", "strength", "submission", "substitute", "surf", "tackle", "tail whip", "take down", "thunder", "thunderbolt", "toxic", "water gun"]
 }, {
     "name": "nidoran-f",
     "type": ["poison"],
@@ -2422,7 +2510,8 @@ let pokemon = [{
     "atk": 47,
     "def": 52,
     "sp": 40,
-    "spe": 41
+    "spe": 41,
+    "moves": ["bide", "bite", "blizzard", "body slam", "double-edge", "double kick", "double team", "fury swipes", "growl", "mimic", "poison sting", "rage", "reflect", "rest", "scratch", "skull bash", "substitute", "tackle", "tail whip", "take down", "thunder", "thunderbolt", "toxic"]
 }, {
     "name": "nidoran-m",
     "type": ["poison"],
@@ -2430,7 +2519,8 @@ let pokemon = [{
     "atk": 57,
     "def": 40,
     "sp": 40,
-    "spe": 50
+    "spe": 50,
+    "moves": ["bide", "blizzard", "body slam", "double-edge", "double kick", "double team", "focus energy", "fury attack", "horn attack", "horn drill", "leer", "mimic", "poison sting", "rage", "reflect", "rest", "skull bash", "substitute", "tackle", "take down", "thunder", "thunderbolt", "toxic"]
 }, {
     "name": "nidorina",
     "type": ["poison"],
@@ -2438,7 +2528,8 @@ let pokemon = [{
     "atk": 62,
     "def": 67,
     "sp": 55,
-    "spe": 56
+    "spe": 56,
+    "moves": ["bide", "bite", "blizzard", "body slam", "bubble beam", "double-edge", "double kick", "double team", "fury swipes", "growl", "horn drill", "ice beam", "mimic", "poison sting", "rage", "reflect", "rest", "scratch", "skull bash", "substitute", "tackle", "tail whip", "take down", "thunder", "thunderbolt", "toxic", "water gun"]
 }, {
     "name": "nidorino",
     "type": ["poison"],
@@ -2446,7 +2537,8 @@ let pokemon = [{
     "atk": 72,
     "def": 57,
     "sp": 55,
-    "spe": 65
+    "spe": 65,
+    "moves": ["bide", "blizzard", "body slam", "bubble beam", "double-edge", "double kick", "double team", "focus energy", "fury attack", "horn attack", "horn drill", "ice beam", "leer", "mimic", "poison sting", "rage", "reflect", "rest", "skull bash", "substitute", "tackle", "take down", "thunder", "thunderbolt", "toxic", "water gun"]
 }, {
     "name": "ninetales",
     "type": ["fire"],
@@ -2454,7 +2546,8 @@ let pokemon = [{
     "atk": 76,
     "def": 75,
     "sp": 100,
-    "spe": 100
+    "spe": 100,
+    "moves": ["bide", "body slam", "confuse ray", "dig", "double-edge", "double team", "ember", "fire blast", "fire spin", "flamethrower", "hyper beam", "mimic", "quick attack", "rage", "reflect", "rest", "roar", "skull bash", "substitute", "swift", "tail whip", "take down", "toxic"]
 }, {
     "name": "oddish",
     "type": ["grass", "poison"],
@@ -2462,7 +2555,8 @@ let pokemon = [{
     "atk": 50,
     "def": 55,
     "sp": 75,
-    "spe": 30
+    "spe": 30,
+    "moves": ["absorb", "acid", "bide", "cut", "double-edge", "double team", "mega drain", "mimic", "petal dance", "poison powder", "rage", "reflect", "rest", "sleep powder", "solar beam", "stun spore", "substitute", "swords dance", "take down", "toxic"]
 }, {
     "name": "omanyte",
     "type": ["rock", "water"],
@@ -2470,7 +2564,8 @@ let pokemon = [{
     "atk": 40,
     "def": 100,
     "sp": 90,
-    "spe": 35
+    "spe": 35,
+    "moves": ["bide", "blizzard", "body slam", "bubble beam", "double-edge", "double team", "horn attack", "hydro pump", "ice beam", "leer", "mimic", "rage", "reflect", "rest", "spike cannon", "substitute", "surf", "take down", "toxic", "water gun", "withdraw"]
 }, {
     "name": "omastar",
     "type": ["rock", "water"],
@@ -2478,7 +2573,8 @@ let pokemon = [{
     "atk": 60,
     "def": 125,
     "sp": 115,
-    "spe": 55
+    "spe": 55,
+    "moves": ["bide", "blizzard", "body slam", "bubble beam", "double-edge", "double team", "horn attack", "horn drill", "hydro pump", "hyper beam", "ice beam", "leer", "mimic", "rage", "reflect", "rest", "seismic toss", "skull bash", "spike cannon", "submission", "substitute", "surf", "take down", "toxic", "water gun", "withdraw"]
 }, {
     "name": "onix",
     "type": ["rock", "ground"],
@@ -2486,7 +2582,8 @@ let pokemon = [{
     "atk": 45,
     "def": 160,
     "sp": 30,
-    "spe": 70
+    "spe": 70,
+    "moves": ["bide", "bind", "body slam", "dig", "double-edge", "double team", "earthquake", "explosion", "fissure", "harden", "mimic", "rage", "rest", "rock slide", "rock throw", "screech", "self-destruct", "skull bash", "slam", "strength", "substitute", "tackle", "take down", "toxic"]
 }, {
     "name": "paras",
     "type": ["bug", "grass"],
@@ -2494,7 +2591,8 @@ let pokemon = [{
     "atk": 70,
     "def": 55,
     "sp": 55,
-    "spe": 25
+    "spe": 25,
+    "moves": ["bide", "body slam", "cut", "dig", "double-edge", "double team", "growth", "leech life", "mega drain", "mimic", "rage", "reflect", "rest", "scratch", "skull bash", "slash", "solar beam", "spore", "stun spore", "substitute", "swords dance", "take down", "toxic"]
 }, {
     "name": "parasect",
     "type": ["bug", "grass"],
@@ -2502,7 +2600,8 @@ let pokemon = [{
     "atk": 95,
     "def": 80,
     "sp": 80,
-    "spe": 30
+    "spe": 30,
+    "moves": ["bide", "body slam", "cut", "dig", "double-edge", "double team", "growth", "hyper beam", "leech life", "mega drain", "mimic", "rage", "reflect", "rest", "scratch", "skull bash", "slash", "solar beam", "spore", "stun spore", "substitute", "swords dance", "take down", "toxic"]
 }, {
     "name": "persian",
     "type": ["normal"],
@@ -2510,7 +2609,8 @@ let pokemon = [{
     "atk": 70,
     "def": 60,
     "sp": 65,
-    "spe": 115
+    "spe": 115,
+    "moves": ["bide", "bite", "body slam", "bubble beam", "double-edge", "double team", "fury swipes", "growl", "hyper beam", "mimic", "pay day", "rage", "rest", "scratch", "screech", "skull bash", "slash", "substitute", "swift", "take down", "thunder", "thunderbolt", "toxic", "water gun"]
 }, {
     "name": "pidgeot",
     "type": ["normal", "flying"],
@@ -2518,7 +2618,8 @@ let pokemon = [{
     "atk": 80,
     "def": 75,
     "sp": 70,
-    "spe": 91
+    "spe": 91,
+    "moves": ["agility", "bide", "double-edge", "double team", "fly", "gust", "hyper beam", "mimic", "mirror move", "quick attack", "rage", "razor wind", "reflect", "rest", "sand attack", "sky attack", "substitute", "swift", "take down", "toxic", "whirlwind", "wing attack"]
 }, {
     "name": "pidgeotto",
     "type": ["normal", "flying"],
@@ -2526,7 +2627,8 @@ let pokemon = [{
     "atk": 60,
     "def": 55,
     "sp": 50,
-    "spe": 71
+    "spe": 71,
+    "moves": ["agility", "bide", "double-edge", "double team", "fly", "gust", "mimic", "mirror move", "quick attack", "rage", "razor wind", "reflect", "rest", "sand attack", "sky attack", "substitute", "swift", "take down", "toxic", "whirlwind", "wing attack"]
 }, {
     "name": "pidgey",
     "type": ["normal", "flying"],
@@ -2534,7 +2636,8 @@ let pokemon = [{
     "atk": 45,
     "def": 40,
     "sp": 35,
-    "spe": 56
+    "spe": 56,
+    "moves": ["agility", "bide", "double-edge", "double team", "fly", "gust", "mimic", "mirror move", "quick attack", "rage", "razor wind", "reflect", "rest", "sand attack", "sky attack", "substitute", "swift", "take down", "toxic", "whirlwind", "wing attack"]
 }, {
     "name": "pikachu",
     "type": ["electric"],
@@ -2554,7 +2657,8 @@ let pokemon = [{
     "atk": 125,
     "def": 100,
     "sp": 55,
-    "spe": 85
+    "spe": 85,
+    "moves": ["bide", "bind", "body slam", "cut", "double-edge", "double team", "focus energy", "guillotine", "harden", "hyper beam", "mimic", "rage", "rest", "seismic toss", "slash", "strength", "submission", "substitute", "swords dance", "take down", "toxic", "vice grip"]
 }, {
     "name": "poliwag",
     "type": ["water"],
@@ -2562,7 +2666,8 @@ let pokemon = [{
     "atk": 50,
     "def": 40,
     "sp": 40,
-    "spe": 90
+    "spe": 90,
+    "moves": ["amnesia", "bide", "blizzard", "body slam", "bubble", "bubble beam", "double-edge", "double slap", "double team", "hydro pump", "hypnosis", "ice beam", "mimic", "psychic", "psywave", "rage", "rest", "skull bash", "substitute", "surf", "take down", "toxic", "water gun"]
 }, {
     "name": "poliwhirl",
     "type": ["water"],
@@ -2570,7 +2675,8 @@ let pokemon = [{
     "atk": 65,
     "def": 65,
     "sp": 50,
-    "spe": 90
+    "spe": 90,
+    "moves": ["amnesia", "bide", "blizzard", "body slam", "bubble", "bubble beam", "counter", "double-edge", "double slap", "double team", "earthquake", "fissure", "hydro pump", "hypnosis", "ice beam", "mega kick", "mega punch", "metronome", "mimic", "psychic", "psywave", "rage", "rest", "seismic toss", "skull bash", "strength", "submission", "substitute", "surf", "take down", "toxic", "water gun"]
 }, {
     "name": "poliwrath",
     "type": ["water", "fighting"],
@@ -2578,7 +2684,8 @@ let pokemon = [{
     "atk": 85,
     "def": 95,
     "sp": 70,
-    "spe": 70
+    "spe": 70,
+    "moves": ["amnesia", "bide", "blizzard", "body slam", "bubble", "bubble beam", "counter", "double-edge", "double slap", "double team", "earthquake", "fissure", "hydro pump", "hyper beam", "hypnosis", "ice beam", "mega kick", "mega punch", "metronome", "mimic", "psychic", "psywave", "rage", "rest", "seismic toss", "skull bash", "strength", "submission", "substitute", "surf", "take down", "toxic", "water gun"]
 }, {
     "name": "ponyta",
     "type": ["fire"],
@@ -2586,7 +2693,8 @@ let pokemon = [{
     "atk": 85,
     "def": 55,
     "sp": 65,
-    "spe": 90
+    "spe": 90,
+    "moves": ["agility", "bide", "body slam", "double-edge", "double team", "ember", "fire blast", "fire spin", "growl", "horn drill", "mimic", "rage", "reflect", "rest", "skull bash", "stomp", "substitute", "swift", "tail whip", "take down", "toxic"]
 }, {
     "name": "porygon",
     "type": ["normal"],
@@ -2594,7 +2702,8 @@ let pokemon = [{
     "atk": 60,
     "def": 70,
     "sp": 75,
-    "spe": 40
+    "spe": 40,
+    "moves": ["agility", "bide", "blizzard", "conversion", "double-edge", "double team", "flash", "hyper beam", "ice beam", "mimic", "psybeam", "psychic", "psywave", "rage", "recover", "reflect", "rest", "sharpen", "skull bash", "substitute", "swift", "tackle", "take down", "teleport", "thunder", "thunderbolt", "thunder wave", "toxic", "tri attack"]
 }, {
     "name": "primeape",
     "type": ["fighting"],
@@ -2602,7 +2711,8 @@ let pokemon = [{
     "atk": 105,
     "def": 60,
     "sp": 60,
-    "spe": 95
+    "spe": 95,
+    "moves": ["bide", "body slam", "counter", "dig", "double-edge", "double team", "focus energy", "fury swipes", "hyper beam", "karate chop", "leer", "low kick", "mega kick", "mega punch", "metronome", "mimic", "pay day", "rage", "rest", "rock slide", "scratch", "screech", "seismic toss", "skull bash", "strength", "submission", "substitute", "swift", "take down", "thrash", "thunder", "thunderbolt", "toxic"]
 }, {
     "name": "psyduck",
     "type": ["water"],
@@ -2610,7 +2720,8 @@ let pokemon = [{
     "atk": 52,
     "def": 48,
     "sp": 50,
-    "spe": 55
+    "spe": 55,
+    "moves": ["amnesia", "bide", "blizzard", "body slam", "bubble beam", "confusion", "counter", "dig", "disable", "double-edge", "double team", "fury swipes", "hydro pump", "ice beam", "mega kick", "mega punch", "mimic", "pay day", "rage", "rest", "scratch", "seismic toss", "skull bash", "strength", "submission", "substitute", "surf", "swift", "tail whip", "take down", "toxic", "water gun"]
 }, {
     "name": "raichu",
     "type": ["electric"],
@@ -2618,7 +2729,8 @@ let pokemon = [{
     "atk": 90,
     "def": 55,
     "sp": 90,
-    "spe": 100
+    "spe": 100,
+    "moves": ["agility", "bide", "body slam", "double-edge", "double team", "flash", "fly", "growl", "hyper beam", "light screen", "mega kick", "mega punch", "mimic", "pay day", "quick attack", "rage", "reflect", "rest", "seismic toss", "skull bash", "slam", "submission", "substitute", "surf", "swift", "tail whip", "take down", "thunder", "thunderbolt", "thunder shock", "thunder wave", "toxic"]
 }, {
     "name": "rapidash",
     "type": ["fire"],
@@ -2626,7 +2738,8 @@ let pokemon = [{
     "atk": 100,
     "def": 70,
     "sp": 80,
-    "spe": 105
+    "spe": 105,
+    "moves": ["agility", "bide", "body slam", "double-edge", "double team", "ember", "fire blast", "fire spin", "growl", "horn drill", "hyper beam", "mimic", "pay day", "rage", "reflect", "rest", "skull bash", "stomp", "substitute", "swift", "tail whip", "take down", "toxic"]
 }, {
     "name": "raticate",
     "type": ["normal"],
@@ -2634,7 +2747,8 @@ let pokemon = [{
     "atk": 81,
     "def": 60,
     "sp": 50,
-    "spe": 97
+    "spe": 97,
+    "moves": ["bide", "blizzard", "body slam", "bubble beam", "dig", "double-edge", "double team", "focus energy", "hyper beam", "hyper fang", "ice beam", "mimic", "quick attack", "rage", "rest", "skull bash", "substitute", "super fang", "swift", "tackle", "tail whip", "take down", "thunder", "thunderbolt", "toxic", "water gun"]
 }, {
     "name": "rattata",
     "type": ["normal"],
@@ -2642,7 +2756,8 @@ let pokemon = [{
     "atk": 56,
     "def": 35,
     "sp": 25,
-    "spe": 72
+    "spe": 72,
+    "moves": ["bide", "blizzard", "body slam", "bubble beam", "dig", "double-edge", "double team", "focus energy", "hyper fang", "mimic", "quick attack", "rage", "rest", "skull bash", "substitute", "super fang", "swift", "tackle", "tail whip", "take down", "thunder", "thunderbolt", "toxic", "water gun"]
 }, {
     "name": "rhydon",
     "type": ["ground", "rock"],
@@ -2650,7 +2765,8 @@ let pokemon = [{
     "atk": 130,
     "def": 120,
     "sp": 45,
-    "spe": 40
+    "spe": 40,
+    "moves": ["bide", "blizzard", "body slam", "bubble beam", "counter", "dig", "double-edge", "double team", "earthquake", "fire blast", "fissure", "fury attack", "horn attack", "horn drill", "hyper beam", "ice beam", "leer", "mega kick", "mega punch", "mimic", "pay day", "rage", "rest", "rock slide", "seismic toss", "skull bash", "stomp", "strength", "submission", "substitute", "surf", "tail whip", "take down", "thunder", "thunderbolt", "toxic", "water gun"]
 }, {
     "name": "rhyhorn",
     "type": ["ground", "rock"],
@@ -2658,7 +2774,8 @@ let pokemon = [{
     "atk": 85,
     "def": 95,
     "sp": 30,
-    "spe": 25
+    "spe": 25,
+    "moves": ["bide", "body slam", "dig", "double-edge", "double team", "earthquake", "fire blast", "fissure", "fury attack", "horn attack", "horn drill", "leer", "mimic", "rage", "rest", "rock slide", "skull bash", "stomp", "strength", "substitute", "tail whip", "take down", "thunder", "thunderbolt", "toxic"]
 }, {
     "name": "sandshrew",
     "type": ["ground"],
@@ -2666,7 +2783,8 @@ let pokemon = [{
     "atk": 75,
     "def": 85,
     "sp": 30,
-    "spe": 40
+    "spe": 40,
+    "moves": ["bide", "body slam", "cut", "dig", "double-edge", "double team", "earthquake", "fissure", "fury swipes", "mimic", "poison sting", "rage", "rest", "rock slide", "sand attack", "scratch", "seismic toss", "skull bash", "slash", "strength", "submission", "substitute", "swift", "swords dance", "take down", "toxic"]
 }, {
     "name": "sandslash",
     "type": ["ground"],
@@ -2674,7 +2792,8 @@ let pokemon = [{
     "atk": 100,
     "def": 110,
     "sp": 55,
-    "spe": 65
+    "spe": 65,
+    "moves": ["bide", "body slam", "cut", "dig", "double-edge", "double team", "earthquake", "fissure", "fury swipes", "hyper beam", "mimic", "poison sting", "rage", "rest", "rock slide", "sand attack", "scratch", "seismic toss", "skull bash", "slash", "strength", "submission", "substitute", "swift", "swords dance", "take down", "toxic"]
 }, {
     "name": "scyther",
     "type": ["bug", "flying"],
@@ -2682,7 +2801,8 @@ let pokemon = [{
     "atk": 110,
     "def": 80,
     "sp": 55,
-    "spe": 105
+    "spe": 105,
+    "moves": ["agility", "bide", "cut", "double-edge", "double team", "focus energy", "hyper beam", "leer", "mimic", "quick attack", "rage", "rest", "skull bash", "slash", "substitute", "swift", "swords dance", "take down", "toxic", "wing attack"]
 }, {
     "name": "seadra",
     "type": ["water"],
@@ -2690,7 +2810,8 @@ let pokemon = [{
     "atk": 65,
     "def": 95,
     "sp": 95,
-    "spe": 85
+    "spe": 85,
+    "moves": ["agility", "bide", "blizzard", "bubble", "bubble beam", "double-edge", "double team", "hydro pump", "hyper beam", "ice beam", "leer", "mimic", "rage", "rest", "skull bash", "smokescreen", "substitute", "surf", "swift", "take down", "toxic", "water gun"]
 }, {
     "name": "seaking",
     "type": ["water"],
@@ -2698,7 +2819,8 @@ let pokemon = [{
     "atk": 92,
     "def": 65,
     "sp": 80,
-    "spe": 68
+    "spe": 68,
+    "moves": ["agility", "bide", "blizzard", "bubble beam", "double-edge", "double team", "fury attack", "horn attack", "horn drill", "hyper beam", "ice beam", "mimic", "peck", "rage", "rest", "skull bash", "substitute", "supersonic", "surf", "swift", "tail whip", "take down", "toxic", "waterfall", "water gun"]
 }, {
     "name": "seel",
     "type": ["water"],
@@ -2706,7 +2828,8 @@ let pokemon = [{
     "atk": 45,
     "def": 55,
     "sp": 70,
-    "spe": 45
+    "spe": 45,
+    "moves": ["aurora beam", "bide", "blizzard", "body slam", "bubble beam", "double-edge", "double team", "growl", "headbutt", "horn drill", "ice beam", "mimic", "pay day", "rage", "rest", "skull bash", "strength", "substitute", "surf", "take down", "toxic", "water gun"]
 }, {
     "name": "shellder",
     "type": ["water"],
@@ -2714,7 +2837,8 @@ let pokemon = [{
     "atk": 65,
     "def": 100,
     "sp": 45,
-    "spe": 40
+    "spe": 40,
+    "moves": ["aurora beam", "bide", "blizzard", "bubble beam", "clamp", "double-edge", "double team", "explosion", "ice beam", "leer", "mimic", "rage", "reflect", "rest", "self-destruct", "substitute", "supersonic", "surf", "swift", "tackle", "take down", "teleport", "toxic", "tri attack", "water gun", "withdraw"]
 }, {
     "name": "slowbro",
     "type": ["water", "psychic"],
@@ -2722,7 +2846,8 @@ let pokemon = [{
     "atk": 75,
     "def": 110,
     "sp": 80,
-    "spe": 30
+    "spe": 30,
+    "moves": ["amnesia", "bide", "blizzard", "body slam", "bubble beam", "confusion", "counter", "dig", "disable", "double-edge", "double team", "earthquake", "fire blast", "fissure", "flash", "growl", "headbutt", "hyper beam", "ice beam", "mega kick", "mega punch", "mimic", "pay day", "psychic", "psywave", "rage", "reflect", "rest", "seismic toss", "skull bash", "strength", "submission", "substitute", "surf", "swift", "take down", "teleport", "thunder wave", "toxic", "tri attack", "water gun", "withdraw"]
 }, {
     "name": "slowpoke",
     "type": ["water", "psychic"],
@@ -2730,7 +2855,8 @@ let pokemon = [{
     "atk": 65,
     "def": 65,
     "sp": 40,
-    "spe": 15
+    "spe": 15,
+    "moves": ["amnesia", "bide", "blizzard", "body slam", "bubble beam", "confusion", "dig", "disable", "double-edge", "double team", "earthquake", "fire blast", "fissure", "flash", "growl", "headbutt", "ice beam", "mimic", "pay day", "psychic", "psywave", "rage", "reflect", "rest", "skull bash", "strength", "substitute", "surf", "swift", "take down", "teleport", "thunder wave", "toxic", "tri attack", "water gun"]
 }, {
     "name": "snorlax",
     "type": ["normal"],
@@ -2738,7 +2864,8 @@ let pokemon = [{
     "atk": 110,
     "def": 65,
     "sp": 65,
-    "spe": 30
+    "spe": 30,
+    "moves": ["amnesia", "bide", "blizzard", "body slam", "bubble beam", "counter", "double-edge", "double team", "earthquake", "fire blast", "fissure", "harden", "headbutt", "hyper beam", "ice beam", "mega kick", "mega punch", "metronome", "mimic", "pay day", "psychic", "psywave", "rage", "reflect", "rest", "rock slide", "seismic toss", "self-destruct", "skull bash", "solar beam", "strength", "submission", "substitute", "surf", "take down", "thunder", "thunderbolt", "toxic", "water gun"]
 }, {
     "name": "spearow",
     "type": ["normal", "flying"],
@@ -2746,7 +2873,8 @@ let pokemon = [{
     "atk": 60,
     "def": 30,
     "sp": 31,
-    "spe": 70
+    "spe": 70,
+    "moves": ["agility", "bide", "double-edge", "double team", "drill peck", "fly", "fury attack", "growl", "leer", "mimic", "mirror move", "peck", "rage", "razor wind", "rest", "sky attack", "substitute", "swift", "take down", "toxic", "whirlwind"]
 }, {
     "name": "squirtle",
     "type": ["water"],
@@ -2754,7 +2882,8 @@ let pokemon = [{
     "atk": 48,
     "def": 65,
     "sp": 50,
-    "spe": 43
+    "spe": 43,
+    "moves": ["bide", "bite", "blizzard", "body slam", "bubble", "bubble beam", "counter", "dig", "double-edge", "double team", "hydro pump", "ice beam", "mega kick", "mega punch", "mimic", "rage", "reflect", "rest", "seismic toss", "skull bash", "strength", "submission", "substitute", "surf", "tackle", "tail whip", "take down", "toxic", "water gun", "withdraw"]
 }, {
     "name": "starmie",
     "type": ["water", "psychic"],
@@ -2762,7 +2891,8 @@ let pokemon = [{
     "atk": 75,
     "def": 85,
     "sp": 100,
-    "spe": 115
+    "spe": 115,
+    "moves": ["bide", "blizzard", "bubble beam", "double-edge", "double team", "flash", "harden", "hydro pump", "hyper beam", "ice beam", "light screen", "mimic", "minimize", "psychic", "psywave", "rage", "recover", "reflect", "rest", "skull bash", "substitute", "surf", "swift", "tackle", "take down", "teleport", "thunder", "thunderbolt", "thunder wave", "toxic", "tri attack", "water gun"]
 }, {
     "name": "staryu",
     "type": ["water"],
@@ -2770,7 +2900,8 @@ let pokemon = [{
     "atk": 45,
     "def": 55,
     "sp": 70,
-    "spe": 85
+    "spe": 85,
+    "moves": ["bide", "blizzard", "bubble beam", "double-edge", "double team", "flash", "harden", "hydro pump", "ice beam", "light screen", "mimic", "minimize", "psychic", "psywave", "rage", "recover", "reflect", "rest", "skull bash", "substitute", "surf", "swift", "tackle", "take down", "teleport", "thunder", "thunderbolt", "thunder wave", "toxic", "tri attack", "water gun"]
 }, {
     "name": "tangela",
     "type": ["grass"],
@@ -2778,7 +2909,8 @@ let pokemon = [{
     "atk": 55,
     "def": 115,
     "sp": 100,
-    "spe": 60
+    "spe": 60,
+    "moves": ["absorb", "bide", "bind", "body slam", "constrict", "cut", "double-edge", "double team", "growth", "hyper beam", "mega drain", "mimic", "poison powder", "rage", "rest", "skull bash", "slam", "sleep powder", "solar beam", "stun spore", "substitute", "swords dance", "take down", "toxic", "vine whip"]
 }, {
     "name": "tauros",
     "type": ["normal"],
@@ -2786,7 +2918,8 @@ let pokemon = [{
     "atk": 100,
     "def": 95,
     "sp": 70,
-    "spe": 110
+    "spe": 110,
+    "moves": ["bide", "blizzard", "body slam", "double-edge", "double team", "earthquake", "fire blast", "fissure", "horn drill", "hyper beam", "ice beam", "leer", "mimic", "rage", "rest", "skull bash", "stomp", "strength", "substitute", "tackle", "tail whip", "take down", "thunder", "thunderbolt", "toxic"]
 }, {
     "name": "tentacool",
     "type": ["water", "poison"],
@@ -2794,7 +2927,8 @@ let pokemon = [{
     "atk": 40,
     "def": 35,
     "sp": 100,
-    "spe": 70
+    "spe": 70,
+    "moves": ["acid", "barrier", "bide", "blizzard", "bubble beam", "constrict", "cut", "double-edge", "double team", "hydro pump", "ice beam", "mega drain", "mimic", "poison sting", "rage", "reflect", "rest", "screech", "skull bash", "substitute", "supersonic", "surf", "swords dance", "take down", "toxic", "water gun", "wrap"]
 }, {
     "name": "tentacruel",
     "type": ["water", "poison"],
@@ -2802,7 +2936,8 @@ let pokemon = [{
     "atk": 70,
     "def": 65,
     "sp": 120,
-    "spe": 100
+    "spe": 100,
+    "moves": ["acid", "barrier", "bide", "blizzard", "bubble beam", "constrict", "cut", "double-edge", "double team", "hydro pump", "hyper beam", "ice beam", "mega drain", "mimic", "poison sting", "rage", "reflect", "rest", "screech", "skull bash", "substitute", "supersonic", "surf", "swords dance", "take down", "toxic", "water gun", "wrap"]
 }, {
     "name": "vaporeon",
     "type": ["water"],
@@ -2810,7 +2945,8 @@ let pokemon = [{
     "atk": 65,
     "def": 60,
     "sp": 110,
-    "spe": 65
+    "spe": 65,
+    "moves": ["acid armor", "aurora beam", "bide", "bite", "blizzard", "body slam", "bubble beam", "double-edge", "double team", "focus energy", "growl", "haze", "hydro pump", "hyper beam", "ice beam", "mimic", "mist", "quick attack", "rage", "reflect", "rest", "sand attack", "skull bash", "substitute", "surf", "swift", "tackle", "tail whip", "take down", "toxic", "water gun"]
 }, {
     "name": "venomoth",
     "type": ["bug", "poison"],
@@ -2818,7 +2954,8 @@ let pokemon = [{
     "atk": 65,
     "def": 60,
     "sp": 90,
-    "spe": 90
+    "spe": 90,
+    "moves": ["bide", "confusion", "disable", "double-edge", "double team", "flash", "hyper beam", "leech life", "mega drain", "mimic", "poison powder", "psybeam", "psychic", "psywave", "rage", "razor wind", "reflect", "rest", "sleep powder", "solar beam", "stun spore", "substitute", "supersonic", "swift", "tackle", "take down", "teleport", "toxic", "whirlwind"]
 }, {
     "name": "venonat",
     "type": ["bug", "poison"],
@@ -2826,7 +2963,8 @@ let pokemon = [{
     "atk": 55,
     "def": 50,
     "sp": 40,
-    "spe": 45
+    "spe": 45,
+    "moves": ["bide", "confusion", "disable", "double-edge", "double team", "flash", "leech life", "mega drain", "mimic", "poison powder", "psybeam", "psychic", "psywave", "rage", "reflect", "rest", "sleep powder", "solar beam", "stun spore", "substitute", "supersonic", "tackle", "take down", "toxic"]
 }, {
     "name": "venusaur",
     "type": ["grass", "poison"],
@@ -2834,7 +2972,8 @@ let pokemon = [{
     "atk": 82,
     "def": 83,
     "sp": 100,
-    "spe": 80
+    "spe": 80,
+    "moves": ["bide", "body slam", "cut", "double-edge", "double team", "growl", "growth", "hyper beam", "leech seed", "mega drain", "mimic", "poison powder", "rage", "razor leaf", "reflect", "rest", "sleep powder", "solar beam", "substitute", "swords dance", "tackle", "take down", "toxic", "vine whip"]
 }, {
     "name": "victreebel",
     "type": ["grass", "poison"],
@@ -2842,7 +2981,8 @@ let pokemon = [{
     "atk": 105,
     "def": 65,
     "sp": 100,
-    "spe": 70
+    "spe": 70,
+    "moves": ["acid", "bide", "body slam", "cut", "double-edge", "double team", "growth", "hyper beam", "mega drain", "mimic", "poison powder", "rage", "razor leaf", "reflect", "rest", "slam", "sleep powder", "solar beam", "stun spore", "substitute", "swords dance", "take down", "toxic", "vine whip", "wrap"]
 }, {
     "name": "vileplume",
     "type": ["grass", "poison"],
@@ -2850,7 +2990,8 @@ let pokemon = [{
     "atk": 80,
     "def": 85,
     "sp": 100,
-    "spe": 50
+    "spe": 50,
+    "moves": ["absorb", "acid", "bide", "body slam", "cut", "double-edge", "double team", "hyper beam", "mega drain", "mimic", "petal dance", "poison powder", "rage", "reflect", "rest", "sleep powder", "solar beam", "stun spore", "substitute", "swords dance", "take down", "toxic"]
 }, {
     "name": "voltorb",
     "type": ["electric"],
@@ -2858,7 +2999,8 @@ let pokemon = [{
     "atk": 30,
     "def": 50,
     "sp": 55,
-    "spe": 100
+    "spe": 100,
+    "moves": ["bide", "double team", "explosion", "flash", "light screen", "mimic", "rage", "reflect", "rest", "screech", "self-destruct", "sonic boom", "substitute", "swift", "tackle", "take down", "teleport", "thunder", "thunderbolt", "thunder wave", "toxic"]
 }, {
     "name": "vulpix",
     "type": ["fire"],
@@ -2866,7 +3008,8 @@ let pokemon = [{
     "atk": 41,
     "def": 40,
     "sp": 65,
-    "spe": 65
+    "spe": 65,
+    "moves": ["bide", "body slam", "confuse ray", "dig", "double-edge", "double team", "ember", "fire blast", "fire spin", "flamethrower", "mimic", "quick attack", "rage", "reflect", "rest", "roar", "skull bash", "substitute", "swift", "tail whip", "take down", "toxic"]
 }, {
     "name": "wartortle",
     "type": ["water"],
@@ -2874,7 +3017,8 @@ let pokemon = [{
     "atk": 63,
     "def": 80,
     "sp": 65,
-    "spe": 58
+    "spe": 58,
+    "moves": ["bide", "bite", "blizzard", "body slam", "bubble", "bubble beam", "counter", "dig", "double-edge", "double team", "hydro pump", "ice beam", "mega kick", "mega punch", "mimic", "rage", "reflect", "rest", "seismic toss", "skull bash", "strength", "submission", "substitute", "surf", "tackle", "tail whip", "take down", "toxic", "water gun", "withdraw"]
 }, {
     "name": "weedle",
     "type": ["bug", "poison"],
@@ -2882,7 +3026,8 @@ let pokemon = [{
     "atk": 35,
     "def": 30,
     "sp": 20,
-    "spe": 50
+    "spe": 50,
+    "moves": ["poison sting", "string shot"]
 }, {
     "name": "weepinbell",
     "type": ["grass", "poison"],
@@ -2890,7 +3035,8 @@ let pokemon = [{
     "atk": 90,
     "def": 50,
     "sp": 85,
-    "spe": 55
+    "spe": 55,
+    "moves": ["acid", "bide", "cut", "double-edge", "double team", "growth", "mega drain", "mimic", "poison powder", "rage", "razor leaf", "reflect", "rest", "slam", "sleep powder", "solar beam", "stun spore", "substitute", "swords dance", "take down", "toxic", "vine whip", "wrap"]
 }, {
     "name": "weezing",
     "type": ["poison"],
@@ -2898,7 +3044,8 @@ let pokemon = [{
     "atk": 90,
     "def": 120,
     "sp": 85,
-    "spe": 60
+    "spe": 60,
+    "moves": ["bide", "double team", "explosion", "fire blast", "haze", "hyper beam", "mimic", "rage", "rest", "self-destruct", "sludge", "smog", "smokescreen", "substitute", "tackle", "thunder", "thunderbolt", "toxic"]
 }, {
     "name": "wigglytuff",
     "type": ["normal"],
@@ -2906,7 +3053,8 @@ let pokemon = [{
     "atk": 70,
     "def": 45,
     "sp": 50,
-    "spe": 45
+    "spe": 45,
+    "moves": ["bide", "blizzard", "body slam", "bubble beam", "counter", "defense curl", "disable", "double-edge", "double slap", "double team", "fire blast", "flash", "hyper beam", "ice beam", "mega kick", "mega punch", "mimic", "pound", "psychic", "psywave", "rage", "reflect", "rest", "seismic toss", "sing", "skull bash", "solar beam", "strength", "submission", "substitute", "take down", "teleport", "thunder", "thunderbolt", "thunder wave", "toxic", "tri attack", "water gun"]
 }, {
     "name": "zapdos",
     "type": ["electric", "flying"],
@@ -2914,7 +3062,8 @@ let pokemon = [{
     "atk": 90,
     "def": 85,
     "sp": 125,
-    "spe": 100
+    "spe": 100,
+    "moves": ["agility", "bide", "double-edge", "double team", "drill peck", "flash", "fly", "hyper beam", "light screen", "mimic", "rage", "razor wind", "reflect", "rest", "sky attack", "substitute", "swift", "take down", "thunder", "thunderbolt", "thunder shock", "thunder wave", "toxic", "whirlwind"]
 }, {
     "name": "zubat",
     "type": ["poison", "flying"],
@@ -2922,7 +3071,8 @@ let pokemon = [{
     "atk": 45,
     "def": 35,
     "sp": 40,
-    "spe": 55
+    "spe": 55,
+    "moves": ["bide", "bite", "confuse ray", "double-edge", "double team", "haze", "leech life", "mega drain", "mimic", "rage", "razor wind", "rest", "substitute", "supersonic", "swift", "take down", "toxic", "whirlwind", "wing attack"]
 }]
 let translation = {
     "en": {
