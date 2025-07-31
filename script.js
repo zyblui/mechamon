@@ -40,7 +40,7 @@ let players = [{
         "name": "slowbro",
         "moves": ["thunder wave", "amnesia", "surf", "rest"]
     }]
-}]
+}];
 document.getElementById("p1Pokemon").style.backgroundImage = "url('back/" + players[0].build[0].name + ".png')";
 document.getElementById("p2Pokemon").style.backgroundImage = "url('front/" + players[1].build[0].name + ".png')";
 document.getElementById("p1Name").innerText = capitalize(players[0].build[0].name);
@@ -49,13 +49,13 @@ function setUncontrollable(move, turns) {
     getPkmn(true).uncontrollable = {
         move: move,
         turns: turns
-    }
+    };
 }
 function setDelay(isSelf, func, turns) {
     getPkmn(isSelf).delay.push({
         "effect": func,
         "turns": turns
-    })
+    });
 }
 function render() {
     if (battleInfo[0].currentPokemon != -1) document.getElementById("p1Pokemon").style.backgroundImage = "url('back/" + players[0].build[battleInfo[0].currentPokemon].name + ".png')";
@@ -83,7 +83,7 @@ for (let i of pokemon) {
     div.addEventListener("click", function () {
         document.querySelector(".pokemon-select.selected").innerText = capitalize(i.name);
         players[Number(document.querySelector(".pokemon-select.selected").dataset.player) - 1].build[Number(document.querySelector(".pokemon-select.selected").dataset.no) - 1].name = i.name;
-    })
+    });
     document.getElementById("pokemonList").appendChild(div);
 }
 for (let i of moves) {
@@ -94,7 +94,7 @@ for (let i of moves) {
         document.querySelector(".move-select.selected").innerText = capitalize(i.name);
         players[Number(document.querySelector(".move-select.selected").dataset.player) - 1].build[Number(document.querySelector(
             ".move-select.selected").dataset.no) - 1].moves[Number(document.querySelector(".move-select.selected").dataset.moveNo) - 1] = i.name;
-    })
+    });
     document.getElementById("movesList").appendChild(div);
 }
 for (let i of document.getElementsByClassName("pokemon-select")) {
@@ -103,7 +103,7 @@ for (let i of document.getElementsByClassName("pokemon-select")) {
         i.classList.add("selected");
         document.querySelector(".list.show")?.classList.remove("show");
         document.getElementById("pokemonList").classList.add("show");
-    })
+    });
 }
 for (let i of document.getElementsByClassName("move-select")) {
     i.addEventListener("click", function () {
@@ -111,7 +111,7 @@ for (let i of document.getElementsByClassName("move-select")) {
         i.classList.add("selected");
         document.querySelector(".list.show")?.classList.remove("show");
         document.getElementById("movesList").classList.add("show");
-    })
+    });
 }
 function calculateDmg(power, atk, def, attackType, defenseType) {
     let effectiveness = calculateEffectiveness(attackType, defenseType);
@@ -121,7 +121,7 @@ function calculateEffectiveness(attackType, defenseType) {
     let effectiveness = 1;
     if (!attackType) return effectiveness;
     for (let i of defenseType) {
-        effectiveness *= multiplier[attackType][i]
+        effectiveness *= multiplier[attackType][i];
     }
     return effectiveness;
 }
@@ -141,7 +141,7 @@ function refreshDecision() {
             span.classList.add("sub");
             span.innerText = "/" + getMoveStats(Object.keys(getPkmn(true).moves)[i]).pp;
             div.appendChild(span);
-            document.getElementsByClassName("decisionMove")[i].appendChild(div)
+            document.getElementsByClassName("decisionMove")[i].appendChild(div);
             if (Object.keys(getPkmn(true).moves)[i] == "mimic" && getPkmn(true).mimicMove) document.getElementsByClassName("decisionMove")[i].dataset.for = getPkmn(true).mimicMove;
             else document.getElementsByClassName("decisionMove")[i].dataset.for = Object.keys(getPkmn(true).moves)[i];
         }
@@ -150,7 +150,7 @@ function refreshDecision() {
         document.getElementsByClassName("decisionMove")[0].innerText = "Pass";
         for (let i = 1; i < 4; i++) {
             document.getElementsByClassName("decisionMove")[i].disabled = "disabled";
-            document.getElementsByClassName("decisionMove")[i].innerText = "-"
+            document.getElementsByClassName("decisionMove")[i].innerText = "-";
         }
     } else {
         for (let i = 0; i < 4; i++) {
@@ -194,12 +194,12 @@ document.getElementById("startGame").addEventListener("click", function () {
             j.charge = {
                 move: "",
                 turns: 0
-            }
+            };
             j.uncontrollable = {
                 move: "",
                 turns: 0,
                 isCrit: false
-            }
+            };
             j.tempEffect = {
                 "confused": 0,
                 "semiInvulnerable": 0,
@@ -207,14 +207,14 @@ document.getElementById("startGame").addEventListener("click", function () {
                 "reflect": 0,
                 "light screen": 0,
                 "mist": 0
-            }
-            j.delay = []
+            };
+            j.delay = [];
             j.sleepTurns = 0;
             j.tempType = [];
             j.disable = {
                 move: "",
                 turns: 0
-            }
+            };
             j.substituteHp = 0;
             j.dmgTaken = [];
             j.lastDmgTakenType = "";
@@ -226,7 +226,7 @@ document.getElementById("startGame").addEventListener("click", function () {
     }
     nextTurn();
     refreshDecision();
-})
+});
 function addMainText(str) {
     document.getElementById("text").innerHTML = "";
     let div = document.createElement("div");
@@ -262,14 +262,14 @@ for (let i = 0; i < 6; i++) {
                 move: "",
                 turns: 0,
                 isCrit: false
-            }
+            };
         }
         battleInfo[playerToMove].currentPokemon = i;
         render();
         renderHP();
         nextPlayer();
         refreshDecision();
-    })
+    });
 }
 let isNewTurn = false;
 function dealDmg(isSelf, dmg) {
@@ -279,15 +279,15 @@ function dealDmg(isSelf, dmg) {
     else {
         dmg = Math.min(dmg, getPkmn(isSelf).hp);
         getPkmn(isSelf).hp -= dmg;
-        addSmallText("(" + capitalize(getPkmn(isSelf).name) + " lost " + (dmg / getPkmn(isSelf).maxHp * 100).toFixed(0) + "% of its health!)")
+        addSmallText("(" + capitalize(getPkmn(isSelf).name) + " lost " + (dmg / getPkmn(isSelf).maxHp * 100).toFixed(0) + "% of its health!)");
     }
 }
 function nextPlayer() {
-    if (getPkmn(true)?.status == "psn") dealDmg(true, getPkmn(true).hp / 16, { ignoreSubstitute: true })
+    if (getPkmn(true)?.status == "psn") dealDmg(true, getPkmn(true).hp / 16, { ignoreSubstitute: true });
     else if (getPkmn(true)?.status == "tox") dealDmg(true, getPkmn(true).hp / 8, { ignoreSubstitute: true });
     if (getPkmn(true)?.tempEffect["leech seed"] > 0) {
-        if (getPkmn(true).status == "tox") dealDmg(true, getPkmn(true).hp / 8, { ignoreSubstitute: true })
-        else dealDmg(true, getPkmn(true).hp / 16, { ignoreSubstitute: true })
+        if (getPkmn(true).status == "tox") dealDmg(true, getPkmn(true).hp / 8, { ignoreSubstitute: true });
+        else dealDmg(true, getPkmn(true).hp / 16, { ignoreSubstitute: true });
     }
     judgeHP();
     if (isNewTurn) {
@@ -336,7 +336,7 @@ function nextPlayer() {
         }
         nextPlayer();
     } else if (getPkmn(true)?.tempEffect.confused > 0) {
-        addSmallText(capitalize(getPkmn(true).name) + " is confused!")
+        addSmallText(capitalize(getPkmn(true).name) + " is confused!");
         if (Math.random() < 0.5) {
             dealDmg(true, calculateDmg(40, getStats(getPkmn(true).name).atk, getDefense(true, true), "",
                 getType(true)), { opposingSubstitute: true });
@@ -364,12 +364,12 @@ function nextTurn() {
     h2.classList.add("turn-number");
     h2.innerText = "Turn " + turn;
     document.getElementById("record").appendChild(h2);
-    if (battleInfo[1].currentPokemon == -1 && battleInfo[0].currentPokemon == -1) playerToMove = Math.round(Math.random())
+    if (battleInfo[1].currentPokemon == -1 && battleInfo[0].currentPokemon == -1) playerToMove = Math.round(Math.random());
     else if (battleInfo[1].currentPokemon == -1) playerToMove = 1;
     else if (battleInfo[0].currentPokemon == -1) playerToMove = 0;
     else {
-        let p1Spe = getStats(battleInfo[0].build[battleInfo[0].currentPokemon].name).spe * STAGE_MULTIPLIER[battleInfo[0].build[battleInfo[0].currentPokemon].speStage] * ((battleInfo[0].build[battleInfo[0].currentPokemon].status == "par") ? 0.25 : 1)
-        let p2Spe = getStats(battleInfo[1].build[battleInfo[1].currentPokemon].name).spe * STAGE_MULTIPLIER[battleInfo[1].build[battleInfo[1].currentPokemon].speStage] * ((battleInfo[1].build[battleInfo[1].currentPokemon].status == "par") ? 0.25 : 1)
+        let p1Spe = getStats(battleInfo[0].build[battleInfo[0].currentPokemon].name).spe * STAGE_MULTIPLIER[battleInfo[0].build[battleInfo[0].currentPokemon].speStage] * ((battleInfo[0].build[battleInfo[0].currentPokemon].status == "par") ? 0.25 : 1);
+        let p2Spe = getStats(battleInfo[1].build[battleInfo[1].currentPokemon].name).spe * STAGE_MULTIPLIER[battleInfo[1].build[battleInfo[1].currentPokemon].speStage] * ((battleInfo[1].build[battleInfo[1].currentPokemon].status == "par") ? 0.25 : 1);
         if (p1Spe > p2Spe) {
             playerToMove = 0;
         } else if (p1Spe < p2Spe) {
@@ -483,12 +483,12 @@ for (let i = 0; i < 4; i++) document.getElementsByClassName("decisionMove")[i].a
         if (getPkmn(false).tempEffect.rage > 0) modifyStats(false, "atk", 1, 1);
         break;
     }
-})
+});
 function charge(move, turns) {
     getPkmn(true).charge = {
         move: move,
         turns: turns
-    }
+    };
 }
 function repeatAttack(dmg, count) {
     for (let i = 0; i < count; i++) {
@@ -526,7 +526,7 @@ const STAGE_MULTIPLIER = {
     "4": 6 / 2,
     "5": 7 / 2,
     "6": 8 / 2
-}
+};
 const ACC_STAGE_MULTIPLIER = {
     "-6": 9 / 3,
     "-5": 8 / 3,
@@ -541,7 +541,7 @@ const ACC_STAGE_MULTIPLIER = {
     "4": 3 / 7,
     "5": 3 / 8,
     "6": 3 / 9
-}
+};
 function renderHP() {
     if (battleInfo[0].currentPokemon == -1) {
         document.getElementById("p1Gauge").classList.add("hide");
@@ -575,7 +575,7 @@ function renderHP() {
             } else {
                 span.classList.add("debuff");
             }
-            span.innerText = "[" + capitalize(i) + " x" + Number(STAGE_MULTIPLIER[battleInfo[0].build[battleInfo[0].currentPokemon][i + "Stage"]].toFixed(2)) + "]"
+            span.innerText = "[" + capitalize(i) + " x" + Number(STAGE_MULTIPLIER[battleInfo[0].build[battleInfo[0].currentPokemon][i + "Stage"]].toFixed(2)) + "]";
             document.getElementById("p1Status").appendChild(span);
         }
         if (battleInfo[1].currentPokemon != -1 && battleInfo[1].build[battleInfo[1].currentPokemon][i + "Stage"] != 0) {
@@ -585,7 +585,7 @@ function renderHP() {
             } else {
                 span.classList.add("debuff");
             }
-            span.innerText = "[" + capitalize(i) + " x" + Number(STAGE_MULTIPLIER[battleInfo[1].build[battleInfo[1].currentPokemon][i + "Stage"]].toFixed(2)) + "]"
+            span.innerText = "[" + capitalize(i) + " x" + Number(STAGE_MULTIPLIER[battleInfo[1].build[battleInfo[1].currentPokemon][i + "Stage"]].toFixed(2)) + "]";
             document.getElementById("p2Status").appendChild(span);
         }
     }
@@ -628,7 +628,7 @@ for (let i of document.getElementsByClassName("tab")) {
         i.classList.add("tab-selected");
         document.querySelector(".tab-content.tab-show").classList.remove("tab-show");
         document.querySelector(".tab-content[data-for='" + i.dataset.for + "']").classList.add("tab-show");
-    })
+    });
 }
 const STAT_NAMES = {
     "def": "Defense",
@@ -637,18 +637,18 @@ const STAT_NAMES = {
     "spe": "Speed",
     "eva": "Evasion",
     "acc": "Accuracy"
-}
+};
 function modifyStats(isSelf, stat, delta, prob) {
     if (getPkmn(isSelf).tempEffect.mist > 0 && delta < 0) return;
     let rand = Math.random();
     if (rand < prob && getPkmn(isSelf)[stat + "Stage"] + delta >= -6 && getPkmn(isSelf)[stat + "Stage"] + delta <= 6) {
         getPkmn(isSelf)[stat + "Stage"] += delta;
-        let word = ""
+        let word = "";
         if (delta >= 2) word = "rose sharply";
         else if (delta == 1) word = "rose";
         else if (delta == -1) word = "fell";
         else word = "harshly fell";
-        addSmallText(capitalize(getPkmn(isSelf).name) + "'s " + STAT_NAMES[stat] + " " + word + "!")
+        addSmallText(capitalize(getPkmn(isSelf).name) + "'s " + STAT_NAMES[stat] + " " + word + "!");
     }
 }
 function modifyStatus(status, prob) {

@@ -123,7 +123,7 @@ let moves = [{
     "acc": 100,
     "pp": 25,
     "effect": function () {
-        if (Math.random() < 0.1) return { flinch: true }
+        if (Math.random() < 0.1) return { flinch: true };
     }
 }, {
     "name": "blizzard",
@@ -153,7 +153,7 @@ let moves = [{
     "acc": 85,
     "pp": 20,
     "effect": function () {
-        if (Math.random() < 0.1) return { flinch: true }
+        if (Math.random() < 0.1) return { flinch: true };
     }
 }, {
     "name": "bonemerang",
@@ -183,7 +183,7 @@ let moves = [{
     "acc": 100,
     "pp": 20,
     "effect": function () {
-        modifyStats(false, "spe", -1, 1 / 3)
+        modifyStats(false, "spe", -1, 1 / 3);
     }
 }, {
     "name": "clamp",
@@ -273,7 +273,7 @@ let moves = [{
     "acc": 85,
     "pp": 10,
     "preCritEffect": function () {
-        return { isHighCritRatio: true }
+        return { isHighCritRatio: true };
     }
 }, {
     "name": "cut",
@@ -319,7 +319,7 @@ let moves = [{
         getPkmn(false).disable = {
             move: arr[Math.floor(Math.random() * arr.length)],
             turns: Math.floor(Math.random() * 7)
-        }
+        };
     }
 }, {
     "name": "dizzy punch",
@@ -361,7 +361,7 @@ let moves = [{
     "acc": Infinity,
     "pp": 15,
     "effect": function () {
-        modifyStats(true, "eva", 1, 1)
+        modifyStats(true, "eva", 1, 1);
     }
 }, {
     "name": "double-edge",
@@ -633,7 +633,7 @@ let moves = [{
     "acc": 100,
     "pp": 15,
     "effect": function () {
-        if (Math.random() < 0.3) return { flinch: true }
+        if (Math.random() < 0.3) return { flinch: true };
     }
 }, {
     "name": "high jump kick",
@@ -691,7 +691,7 @@ let moves = [{
     "acc": 90,
     "pp": 15,
     "effect": function () {
-        if (Math.random() < 0.1) return { flinch: true }
+        if (Math.random() < 0.1) return { flinch: true };
     }
 }, {
     "name": "hypnosis",
@@ -701,7 +701,7 @@ let moves = [{
     "acc": 60,
     "pp": 20,
     "effect": function () {
-        putToSleep(false, Math.ceil(Math.random() * 7))
+        putToSleep(false, Math.ceil(Math.random() * 7));
     }
 }, {
     "name": "ice beam",
@@ -741,7 +741,7 @@ let moves = [{
     "acc": 100,
     "pp": 25,
     "preCritEffect": function () {
-        return { isHighCritRatio: true }
+        return { isHighCritRatio: true };
     }
 }, {
     "name": "kinesis",
@@ -822,7 +822,7 @@ let moves = [{
     "acc": 90,
     "pp": 20,
     "effect": function () {
-        if (Math.random() < 0.3) return { flinch: true }
+        if (Math.random() < 0.3) return { flinch: true };
     }
 }, {
     "name": "meditate",
@@ -870,7 +870,7 @@ let moves = [{
     "effect": function () {
         while (true) {
             if (moves[Math.floor(Math.random() * moves.length)].name != "metronome" && moves[Math.floor(Math.random() * moves.length)].name != "struggle") {
-                attack(moves[Math.floor(Math.random() * moves.length)].name)
+                attack(moves[Math.floor(Math.random() * moves.length)].name);
                 break;
             }
         }
@@ -953,13 +953,13 @@ let moves = [{
         if (Math.random() < 0.5) {
             setUncontrollable("petal dance", 2);
             setDelay(true, function () {
-                addTempEffect(true, "confused", Infinity, 1)
-            }, 2)
+                addTempEffect(true, "confused", Infinity, 1);
+            }, 2);
         } else {
-            setUncontrollable("petal dance", 3)
+            setUncontrollable("petal dance", 3);
             setDelay(true, function () {
-                addTempEffect(true, "confused", Infinity, 1)
-            }, 3)
+                addTempEffect(true, "confused", Infinity, 1);
+            }, 3);
         }
     }
 }, {
@@ -1059,7 +1059,7 @@ let moves = [{
     "acc": 100,
     "pp": 20,
     "effect": function () {
-        addTempEffect(true, "rage", Infinity, 1)
+        addTempEffect(true, "rage", Infinity, 1);
         setUncontrollable("rage", Infinity);
     }
 }, {
@@ -1070,7 +1070,7 @@ let moves = [{
     "acc": 95,
     "pp": 25,
     "preCritEffect": function () {
-        return { isHighCritRatio: true }
+        return { isHighCritRatio: true };
     }
 }, {
     "name": "razor wind",
@@ -1093,7 +1093,7 @@ let moves = [{
         let hpLost = getPkmn(true).maxHp - getPkmn(true).hp;
         if (hpLost != 255 && hpLost != 511) {
             getPkmn(true).hp += Math.min(getPkmn(true).maxHp / 2, hpLost);
-            addSmallText(capitalize(getPkmn(true).name) + " had its HP restored.")
+            addSmallText(capitalize(getPkmn(true).name) + " had its HP restored.");
         }
     }
 }, {
@@ -1117,7 +1117,7 @@ let moves = [{
         let hpLost = getPkmn(true).maxHp - getPkmn(true).hp;
         if (hpLost != 255 && hpLost != 511) {
             getPkmn(true).hp = getPkmn(true).maxHp;
-            addSmallText(capitalize(getPkmn(true).name) + " had its HP restored.")
+            addSmallText(capitalize(getPkmn(true).name) + " had its HP restored.");
             putToSleep(true, 2);
         }
     }
@@ -1153,7 +1153,7 @@ let moves = [{
     "acc": 85,
     "pp": 15,
     "effect": function () {
-        if (Math.random() < 0.3) return { flinch: true }
+        if (Math.random() < 0.3) return { flinch: true };
     }
 }, {
     "name": "sand attack",
@@ -1182,7 +1182,7 @@ let moves = [{
     "acc": 85,
     "pp": 40,
     "effect": function () {
-        modifyStats(false, "def", -2, 1)
+        modifyStats(false, "def", -2, 1);
     }
 }, {
     "name": "seismic toss",
@@ -1260,7 +1260,7 @@ let moves = [{
     "acc": 100,
     "pp": 20,
     "preCritEffect": function () {
-        return { isHighCritRatio: true }
+        return { isHighCritRatio: true };
     }
 }, {
     "name": "sleep powder",
@@ -1270,7 +1270,7 @@ let moves = [{
     "acc": 75,
     "pp": 15,
     "effect": function () {
-        putToSleep(false, Math.ceil(Math.random() * 7))
+        putToSleep(false, Math.ceil(Math.random() * 7));
     }
 }, {
     "name": "sludge",
@@ -1364,7 +1364,7 @@ let moves = [{
     "acc": 100,
     "pp": 15,
     "effect": function () {
-        putToSleep(false, Math.ceil(Math.random() * 7))
+        putToSleep(false, Math.ceil(Math.random() * 7));
     }
 }, {
     "name": "stomp",
@@ -1374,7 +1374,7 @@ let moves = [{
     "acc": 100,
     "pp": 20,
     "effect": function () {
-        if (Math.random() < 0.3) return { flinch: true }
+        if (Math.random() < 0.3) return { flinch: true };
     }
 }, {
     "name": "strength",
@@ -1484,7 +1484,7 @@ let moves = [{
     "acc": Infinity,
     "pp": 30,
     "effect": function () {
-        modifyStats(true, "atk", 2, 1)
+        modifyStats(true, "atk", 2, 1);
     }
 }, {
     "name": "tackle",
@@ -1533,13 +1533,13 @@ let moves = [{
         if (Math.random() < 0.5) {
             setUncontrollable("thrash", 2);
             setDelay(true, function () {
-                addTempEffect(true, "confused", Infinity, 1)
-            }, 2)
+                addTempEffect(true, "confused", Infinity, 1);
+            }, 2);
         } else {
-            setUncontrollable("thrash", 3)
+            setUncontrollable("thrash", 3);
             setDelay(true, function () {
-                addTempEffect(true, "confused", Infinity, 1)
-            }, 3)
+                addTempEffect(true, "confused", Infinity, 1);
+            }, 3);
         }
     }
 }, {
@@ -1710,7 +1710,7 @@ let moves = [{
         else if (num < 7 / 8) setUncontrollable("wrap", 3);
         else setUncontrollable("wrap", 4);
     }
-}]
+}];
 let pokemon = [{
     "name": "abra",
     "type": ["psychic"],
@@ -3073,7 +3073,7 @@ let pokemon = [{
     "sp": 40,
     "spe": 55,
     "moves": ["bide", "bite", "confuse ray", "double-edge", "double team", "haze", "leech life", "mega drain", "mimic", "rage", "razor wind", "rest", "substitute", "supersonic", "swift", "take down", "toxic", "whirlwind", "wing attack"]
-}]
+}];
 let translation = {
     "en": {
         "pokemon": {
@@ -3228,6 +3228,173 @@ let translation = {
             "wigglytuff": "",
             "zapdos": "",
             "zubat": ""
+        },
+        "moves": {
+            "absorb": "",
+            "acid": "",
+            "acid armor": "",
+            "agility": "",
+            "amnesia": "",
+            "aurora beam": "",
+            "barrage": "",
+            "barrier": "",
+            "bide": "",
+            "bind": "",
+            "bite": "",
+            "blizzard": "",
+            "body slam": "",
+            "bone club": "",
+            "bonemerang": "",
+            "bubble": "",
+            "bubble beam": "",
+            "clamp": "",
+            "comet punch": "",
+            "confuse ray": "",
+            "confusion": "",
+            "constrict": "",
+            "conversion": "",
+            "counter": "",
+            "crabhammer": "",
+            "cut": "",
+            "defense curl": "",
+            "dig": "",
+            "disable": "",
+            "dizzy punch": "",
+            "double kick": "",
+            "double slap": "",
+            "double team": "",
+            "double-edge": "",
+            "dragon rage": "",
+            "dream eater": "",
+            "drill peck": "",
+            "earthquake": "",
+            "egg bomb": "",
+            "ember": "",
+            "explosion": "",
+            "fire blast": "",
+            "fire punch": "",
+            "fire spin": "",
+            "fissure": "",
+            "flamethrower": "",
+            "flash": "",
+            "fly": "",
+            "focus energy": "",
+            "fury attack": "",
+            "fury swipes": "",
+            "glare": "",
+            "growl": "",
+            "growth": "",
+            "guillotine": "",
+            "gust": "",
+            "harden": "",
+            "haze": "",
+            "headbutt": "",
+            "high jump kick": "",
+            "horn attack": "",
+            "horn drill": "",
+            "hydro pump": "",
+            "hyper beam": "",
+            "hyper fang": "",
+            "hypnosis": "",
+            "ice beam": "",
+            "ice punch": "",
+            "jump kick": "",
+            "karate chop": "",
+            "kinesis": "",
+            "leech life": "",
+            "leech seed": "",
+            "leer": "",
+            "lick": "",
+            "light screen": "",
+            "lovely kiss": "",
+            "low kick": "",
+            "meditate": "",
+            "mega drain": "",
+            "mega kick": "",
+            "mega punch": "",
+            "metronome": "",
+            "mimic": "",
+            "minimize": "",
+            "mirror move": "",
+            "mist": "",
+            "night shade": "",
+            "pay day": "",
+            "peck": "",
+            "petal dance": "",
+            "pin missile": "",
+            "poison gas": "",
+            "poison powder": "",
+            "poison sting": "",
+            "pound": "",
+            "psybeam": "",
+            "psychic": "",
+            "psywave": "",
+            "quick attack": "",
+            "rage": "",
+            "razor leaf": "",
+            "razor wind": "",
+            "recover": "",
+            "reflect": "",
+            "rest": "",
+            "roar": "",
+            "rock slide": "",
+            "rock throw": "",
+            "rolling kick": "",
+            "sand attack": "",
+            "scratch": "",
+            "screech": "",
+            "seismic toss": "",
+            "self-destruct": "",
+            "sharpen": "",
+            "sing": "",
+            "skull bash": "",
+            "sky attack": "",
+            "slam": "",
+            "slash": "",
+            "sleep powder": "",
+            "sludge": "",
+            "smog": "",
+            "smokescreen": "",
+            "soft-boiled": "",
+            "solar beam": "",
+            "sonic boom": "",
+            "spike cannon": "",
+            "splash": "",
+            "spore": "",
+            "stomp": "",
+            "strength": "",
+            "string shot": "",
+            "struggle": "",
+            "stun spore": "",
+            "submission": "",
+            "substitute": "",
+            "super fang": "",
+            "supersonic": "",
+            "surf": "",
+            "swift": "",
+            "swords dance": "",
+            "tackle": "",
+            "tail whip": "",
+            "take down": "",
+            "teleport": "",
+            "thrash": "",
+            "thunder": "",
+            "thunder punch": "",
+            "thunder shock": "",
+            "thunder wave": "",
+            "thunderbolt": "",
+            "toxic": "",
+            "transform": "",
+            "tri attack": "",
+            "twineedle": "",
+            "vice grip": "",
+            "vine whip": "",
+            "water gun": "",
+            "waterfall": "",
+            "whirlwind": "",
+            "wing attack": "",
+            "withdraw": "",
+            "wrap": ""
         }
     },
     "zh": {
@@ -3705,9 +3872,176 @@ let translation = {
             "wigglytuff": "",
             "zapdos": "",
             "zubat": ""
+        },
+        "moves": {
+            "absorb": "",
+            "acid": "",
+            "acid armor": "",
+            "agility": "",
+            "amnesia": "",
+            "aurora beam": "",
+            "barrage": "",
+            "barrier": "",
+            "bide": "",
+            "bind": "",
+            "bite": "",
+            "blizzard": "",
+            "body slam": "",
+            "bone club": "",
+            "bonemerang": "",
+            "bubble": "",
+            "bubble beam": "",
+            "clamp": "",
+            "comet punch": "",
+            "confuse ray": "",
+            "confusion": "",
+            "constrict": "",
+            "conversion": "",
+            "counter": "",
+            "crabhammer": "",
+            "cut": "",
+            "defense curl": "",
+            "dig": "",
+            "disable": "",
+            "dizzy punch": "",
+            "double kick": "",
+            "double slap": "",
+            "double team": "",
+            "double-edge": "",
+            "dragon rage": "",
+            "dream eater": "",
+            "drill peck": "",
+            "earthquake": "",
+            "egg bomb": "",
+            "ember": "",
+            "explosion": "",
+            "fire blast": "",
+            "fire punch": "",
+            "fire spin": "",
+            "fissure": "",
+            "flamethrower": "",
+            "flash": "",
+            "fly": "",
+            "focus energy": "",
+            "fury attack": "",
+            "fury swipes": "",
+            "glare": "",
+            "growl": "",
+            "growth": "",
+            "guillotine": "",
+            "gust": "",
+            "harden": "",
+            "haze": "",
+            "headbutt": "",
+            "high jump kick": "",
+            "horn attack": "",
+            "horn drill": "",
+            "hydro pump": "",
+            "hyper beam": "",
+            "hyper fang": "",
+            "hypnosis": "",
+            "ice beam": "",
+            "ice punch": "",
+            "jump kick": "",
+            "karate chop": "",
+            "kinesis": "",
+            "leech life": "",
+            "leech seed": "",
+            "leer": "",
+            "lick": "",
+            "light screen": "",
+            "lovely kiss": "",
+            "low kick": "",
+            "meditate": "",
+            "mega drain": "",
+            "mega kick": "",
+            "mega punch": "",
+            "metronome": "",
+            "mimic": "",
+            "minimize": "",
+            "mirror move": "",
+            "mist": "",
+            "night shade": "",
+            "pay day": "",
+            "peck": "",
+            "petal dance": "",
+            "pin missile": "",
+            "poison gas": "",
+            "poison powder": "",
+            "poison sting": "",
+            "pound": "",
+            "psybeam": "",
+            "psychic": "",
+            "psywave": "",
+            "quick attack": "",
+            "rage": "",
+            "razor leaf": "",
+            "razor wind": "",
+            "recover": "",
+            "reflect": "",
+            "rest": "",
+            "roar": "",
+            "rock slide": "",
+            "rock throw": "",
+            "rolling kick": "",
+            "sand attack": "",
+            "scratch": "",
+            "screech": "",
+            "seismic toss": "",
+            "self-destruct": "",
+            "sharpen": "",
+            "sing": "",
+            "skull bash": "",
+            "sky attack": "",
+            "slam": "",
+            "slash": "",
+            "sleep powder": "",
+            "sludge": "",
+            "smog": "",
+            "smokescreen": "",
+            "soft-boiled": "",
+            "solar beam": "",
+            "sonic boom": "",
+            "spike cannon": "",
+            "splash": "",
+            "spore": "",
+            "stomp": "",
+            "strength": "",
+            "string shot": "",
+            "struggle": "",
+            "stun spore": "",
+            "submission": "",
+            "substitute": "",
+            "super fang": "",
+            "supersonic": "",
+            "surf": "",
+            "swift": "",
+            "swords dance": "",
+            "tackle": "",
+            "tail whip": "",
+            "take down": "",
+            "teleport": "",
+            "thrash": "",
+            "thunder": "",
+            "thunder punch": "",
+            "thunder shock": "",
+            "thunder wave": "",
+            "thunderbolt": "",
+            "toxic": "",
+            "transform": "",
+            "tri attack": "",
+            "twineedle": "",
+            "vice grip": "",
+            "vine whip": "",
+            "water gun": "",
+            "waterfall": "",
+            "whirlwind": "",
+            "wing attack": "",
+            "withdraw": "",
+            "wrap": ""
         }
     }
-}
+};
 let multiplier = {
     "bug": {
         "bug": 1,
@@ -3950,4 +4284,4 @@ let multiplier = {
         "rock": 2,
         "water": 1 / 2
     }
-}
+};
