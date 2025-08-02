@@ -1,6 +1,6 @@
 let settings = {
     "lang": "en"
-}
+};
 let players = [{
     "name": "Player 1",
     "build": [{
@@ -46,8 +46,8 @@ let players = [{
 }];
 document.getElementById("p1Pokemon").style.backgroundImage = "url('back/" + players[0].build[0].name + ".png')";
 document.getElementById("p2Pokemon").style.backgroundImage = "url('front/" + players[1].build[0].name + ".png')";
-document.getElementById("p1Name").innerText = getL10n("pokemon", players[0].build[0].name)
-document.getElementById("p2Name").innerText = getL10n("pokemon", players[1].build[0].name)
+document.getElementById("p1Name").innerText = getL10n("pokemon", players[0].build[0].name);
+document.getElementById("p2Name").innerText = getL10n("pokemon", players[1].build[0].name);
 function setUncontrollable(move, turns) {
     getPkmn(true).uncontrollable = {
         move: move,
@@ -61,13 +61,26 @@ function setDelay(isSelf, func, turns) {
     });
 }
 function render() {
-    if (battleInfo[0].currentPokemon != -1) document.getElementById("p1Pokemon").style.backgroundImage = "url('back/" + players[0].build[battleInfo[0].currentPokemon].name + ".png')";
-    if (battleInfo[1].currentPokemon != -1) document.getElementById("p2Pokemon").style.backgroundImage = "url('front/" + players[1].build[battleInfo[1].currentPokemon].name + ".png')";
-    if (battleInfo[0].currentPokemon != -1) document.getElementById("p1Name").innerText = getL10n("pokemon", players[0].build[battleInfo[0].currentPokemon].name);
-    if (battleInfo[1].currentPokemon != -1) document.getElementById("p2Name").innerText = getL10n("pokemon", players[1].build[battleInfo[1].currentPokemon].name);
+    if (battleInfo[0].currentPokemon != -1) document.getElementById("p1Pokemon").style.backgroundImage = "url('back/" + players[0]
+        .build[battleInfo[0].currentPokemon].name + ".png')";
+    if (battleInfo[1].currentPokemon != -1) document.getElementById("p2Pokemon").style.backgroundImage = "url('front/" + players[1]
+        .build[battleInfo[1].currentPokemon].name + ".png')";
+    if (battleInfo[0].currentPokemon != -1) document.getElementById("p1Name").innerText = getL10n("pokemon", players[0]
+        .build[battleInfo[0].currentPokemon].name);
+    if (battleInfo[1].currentPokemon != -1) document.getElementById("p2Name").innerText = getL10n("pokemon", players[1]
+        .build[battleInfo[1].currentPokemon].name);
 }
 function getL10n(type, str) {
-    return translation[settings.lang][type][str];
+    let returnValue = translation[settings.lang][type][str];
+    if (arguments[2]) {
+        for (let i in arguments[2]) {
+            for (let j = 0; j < arguments[2][i].length; j++) {
+                if (translation[settings.lang][i]) returnValue = returnValue.replace("[" + i + j + "]", translation[settings.lang][i][arguments[2][i][j]]);
+                else returnValue = returnValue.replace("[" + i + j + "]", arguments[2][i][j]);
+            }
+        }
+    }
+    return returnValue;
 }
 function capitalize(str) {
     let temp = str.split(" ");
@@ -141,11 +154,11 @@ document.getElementById("clearMove").addEventListener("click", function () {
     renderTable();
     document.getElementById("movesList").classList.remove("show");
     document.getElementById("setupTable").classList.add("show");
-})
+});
 for (let i of document.querySelectorAll(".back")) i.addEventListener("click", function () {
     document.querySelector(".list.show").classList.remove("show");
     document.getElementById("setupTable").classList.add("show");
-})
+});
 function calculateDmg(power, atk, def, attackType, defenseType) {
     let effectiveness = calculateEffectiveness(attackType, defenseType);
     return Math.max(effectiveness * (power + atk - def), 0);
@@ -204,6 +217,7 @@ function refreshDecision() {
             document.getElementsByClassName("decisionSwitch")[i].disabled = "disabled";
             document.getElementsByClassName("decisionSwitch")[i].classList.add("selected");
         } else document.getElementsByClassName("decisionSwitch")[i].disabled = "";
+        document.getElementsByClassName("decisionSwitch")[i].dataset.for = players[playerToMove].build[i].name;
     }
 }
 let turn = 0, playerToMove = 0, battleInfo = [];
@@ -265,10 +279,64 @@ document.getElementById("startGame").addEventListener("click", function () {
     }
     nextTurn();
     render();
-    refreshDecision();
+    refreshSequence();
+    //refreshDecision();
 });
+let sequence = [], refreshSequenceIsRunning = false;
+function refreshSequence() {
+    if (refreshSequenceIsRunning) return;
+    refreshSequenceIsRunning = true;
+    let element = sequence.shift();
+    if (element.type == "main") {
+        document.getElementById("text").innerHTML = "";
+        let div = document.createElement("div");
+        div.innerHTML = element.str;
+        div.classList.add("main-text");
+        document.getElementById("text").appendChild(div);
+        let div2 = document.createElement("div");
+        div2.innerHTML = element.str;
+        div2.classList.add("main-text");
+        document.getElementById("record").appendChild(div2);
+    } else if (element.type == "small") {
+        let div = document.createElement("div");
+        div.innerHTML = element.str;
+        div.classList.add("small-text");
+        document.getElementById("text").appendChild(div);
+        let div2 = document.createElement("div");
+        div2.innerHTML = element.str;
+        div2.classList.add("small-text");
+        document.getElementById("record").appendChild(div2);
+    } else {
+        document.getElementById("turnNumber").innerText = element.str;
+        let h2 = document.createElement("h2");
+        h2.classList.add("turn-number");
+        h2.innerText = element.str;
+        document.getElementById("record").appendChild(h2);
+    }
+    if (sequence.length) {
+        if (sequence[0].type != "turn") {
+            setTimeout(function () {
+                refreshSequenceIsRunning = false;
+                refreshSequence();
+            }, 600)
+        } else {
+            refreshSequenceIsRunning = false;
+            refreshSequence();
+        }
+    } else {
+        refreshSequenceIsRunning = false;
+        refreshDecision();
+    }
+}
 function addMainText(str) {
-    document.getElementById("text").innerHTML = "";
+    for (let i of document.querySelectorAll(".decisionMove,.decisionSwitch")) {
+        i.disabled = "disabled"
+    }
+    sequence.push({
+        "type": "main",
+        "str": str
+    });
+    /*document.getElementById("text").innerHTML = "";
     let div = document.createElement("div");
     div.innerHTML = str;
     div.classList.add("main-text");
@@ -276,22 +344,31 @@ function addMainText(str) {
     let div2 = document.createElement("div");
     div2.innerHTML = str;
     div2.classList.add("main-text");
-    document.getElementById("record").appendChild(div2);
+    document.getElementById("record").appendChild(div2);*/
 }
 function addSmallText(str) {
-    let div = document.createElement("div");
+    for (let i of document.querySelectorAll(".decisionMove,.decisionSwitch")) {
+        i.disabled = "disabled"
+    }
+    sequence.push({
+        "type": "small",
+        "str": str
+    });
+    /*let div = document.createElement("div");
     div.innerHTML = str;
     div.classList.add("small-text");
     document.getElementById("text").appendChild(div);
     let div2 = document.createElement("div");
     div2.innerHTML = str;
     div2.classList.add("small-text");
-    document.getElementById("record").appendChild(div2);
+    document.getElementById("record").appendChild(div2);*/
 }
 for (let i = 0; i < 6; i++) {
     document.getElementsByClassName("decisionSwitch")[i].addEventListener("click", function () {
         if (battleInfo[playerToMove].currentPokemon != -1) addMainText(getL10n("pokemon", getPkmn(true).name) + ", come back!");
-        addMainText("Go! <strong>" + document.getElementsByClassName("decisionSwitch")[i].innerText + "</strong>!");
+        addMainText(getL10n("others", "go", {
+            "pokemon": [document.getElementsByClassName("decisionSwitch")[i].dataset.for]
+        }));
         if (getPkmn(true)) {
             for (let j in getPkmn(true).tempEffect) {
                 getPkmn(true).tempEffect[j] = 0;
@@ -308,7 +385,7 @@ for (let i = 0; i < 6; i++) {
         render();
         renderHP();
         nextPlayer();
-        refreshDecision();
+        //refreshDecision();
     });
 }
 let isNewTurn = false;
@@ -322,7 +399,10 @@ function dealDmg(isSelf, dmg) {
     } else {
         dmg = Math.min(dmg, getPkmn(isSelf).hp);
         getPkmn(isSelf).hp -= dmg;
-        addSmallText("(" + getL10n("pokemon", getPkmn(isSelf).name) + " lost " + (dmg / getPkmn(isSelf).maxHp * 100).toFixed(0) + "% of its health!)");
+        addSmallText(getL10n("others", "loseHealth", {
+            "pokemon": [getPkmn(isSelf).name],
+            "percentage": [(dmg / getPkmn(isSelf).maxHp * 100).toFixed(0)]
+        }));
     }
 }
 function nextPlayer() {
@@ -387,6 +467,7 @@ function nextPlayer() {
         }
         getPkmn(true).tempEffect.confused--;
     }
+    refreshSequence();
 }
 function getDefense(isSelf, isCrit) {
     if (isCrit) return getStats(getPkmn(isSelf).name).def;
@@ -402,11 +483,15 @@ function nextTurn() {
     judgeHP();
     turn++;
     isNewTurn = true;
-    document.getElementById("turnNumber").innerText = "Turn " + turn;
+    sequence.push({
+        "type": "turn",
+        "str": "Turn " + turn
+    })
+    /*document.getElementById("turnNumber").innerText = "Turn " + turn;
     let h2 = document.createElement("h2");
     h2.classList.add("turn-number");
     h2.innerText = "Turn " + turn;
-    document.getElementById("record").appendChild(h2);
+    document.getElementById("record").appendChild(h2);*/
     if (battleInfo[1].currentPokemon == -1 && battleInfo[0].currentPokemon == -1) playerToMove = Math.round(Math.random());
     else if (battleInfo[1].currentPokemon == -1) playerToMove = 1;
     else if (battleInfo[0].currentPokemon == -1) playerToMove = 0;
@@ -457,11 +542,11 @@ function attack(move) {
             switch (calculateEffectiveness(k.type, getType(false))) {
                 case 4:
                 case 2:
-                    addSmallText("It's super effective!");
+                    addSmallText(getL10n("others", "superEffective"));
                     break;
                 case 0.5:
                 case 0.25:
-                    addSmallText("It's not very effective...");
+                    addSmallText(getL10n("others", "notVeryEffective"));
                     break;
                 case 0:
                     addSmallText("It doesn't affect " + getL10n("pokemon", getPkmn(false).name) + "...");
@@ -469,7 +554,7 @@ function attack(move) {
             totalDmg += Math.min(dmg, getPkmn(false).hp);
             if (isCrit) {
                 totalDmg += Math.min(dmg, getPkmn(false).hp);
-                addSmallText("A critical hit!");
+                addSmallText(getL10n("others", "crit"));
             }
             dealDmg(false, totalDmg);
             getPkmn(false).dmgTaken.push(totalDmg);
@@ -486,7 +571,7 @@ function attack(move) {
             }
             else nextPlayer();
         }
-        refreshDecision();
+        //refreshDecision();
     }
 }
 for (let i = 0; i < 4; i++) document.getElementsByClassName("decisionMove")[i].addEventListener("click", function () {
@@ -505,8 +590,12 @@ for (let i = 0; i < 4; i++) document.getElementsByClassName("decisionMove")[i].a
 
     getPkmn(true).lastMoveUsed = document.getElementsByClassName("decisionMove")[i].dataset.for;
 
-    addMainText(getL10n("pokemon", players[playerToMove].build[battleInfo[playerToMove].currentPokemon].name) + " used <strong>" +
-        getL10n("moves", document.getElementsByClassName("decisionMove")[i].dataset.for) + "</strong>!");
+    addMainText(getL10n("others", "use", {
+        "pokemon": [players[playerToMove].build[battleInfo[playerToMove].currentPokemon].name],
+        "moves": [document.getElementsByClassName("decisionMove")[i].dataset.for]
+    }));
+    //addMainText(getL10n("pokemon", players[playerToMove].build[battleInfo[playerToMove].currentPokemon].name) + " used <strong>" +
+    //getL10n("moves", document.getElementsByClassName("decisionMove")[i].dataset.for) + "</strong>!");
     for (let k of moves) if (k.name == document.getElementsByClassName("decisionMove")[i].dataset.for) {
         if (k.category != "status" && Math.random() > k.acc * ACC_STAGE_MULTIPLIER[getPkmn(true).accStage] *
             ACC_STAGE_MULTIPLIER[getPkmn(false).evaStage] / 100) {
@@ -518,7 +607,7 @@ for (let i = 0; i < 4; i++) document.getElementsByClassName("decisionMove")[i].a
         if (k.preDmgEffect) preDmgEffect = k.preDmgEffect();
         if (getPkmn(true).charge.turns > 0) {
             nextPlayer();
-            refreshDecision();
+            //refreshDecision();
             break;
         }
         if (getPkmn(false).tempEffect.semiInvulnerable > 0 && !preDmgEffect.nullifySemiInvulnerable) break;
@@ -657,7 +746,7 @@ function renderTable() {
             if (players[0].build[i].moves[j]) {
                 document.querySelectorAll("#p1Table tr")[i + 1].children[j + 2].innerText = getL10n("moves", players[0].build[i].moves[j]);
             } else {
-                document.querySelectorAll("#p1Table tr")[i + 1].children[j + 2].innerText = "(Empty)"
+                document.querySelectorAll("#p1Table tr")[i + 1].children[j + 2].innerText = "(Empty)";
             }
         }
     }
@@ -667,7 +756,7 @@ function renderTable() {
             if (players[1].build[i].moves[j]) {
                 document.querySelectorAll("#p2Table tr")[i + 1].children[j + 2].innerText = getL10n("moves", players[1].build[i].moves[j]);
             } else {
-                document.querySelectorAll("#p2Table tr")[i + 1].children[j + 2].innerText = "(Empty)"
+                document.querySelectorAll("#p2Table tr")[i + 1].children[j + 2].innerText = "(Empty)";
             }
         }
     }
