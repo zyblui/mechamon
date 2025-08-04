@@ -48,6 +48,9 @@ document.getElementById("p1Pokemon").style.backgroundImage = "url('back/" + play
 document.getElementById("p2Pokemon").style.backgroundImage = "url('front/" + players[1].build[0].name + ".png')";
 document.getElementById("p1Name").innerText = getL10n("pokemon", players[0].build[0].name);
 document.getElementById("p2Name").innerText = getL10n("pokemon", players[1].build[0].name);
+document.getElementById("turnNumber").innerText = getL10n("others", "turn", {
+    "number": [0]
+})
 function setUncontrollable(move, turns) {
     getPkmn(true).uncontrollable = {
         move: move,
@@ -284,7 +287,7 @@ document.getElementById("startGame").addEventListener("click", function () {
 });
 let sequence = [], refreshSequenceIsRunning = false;
 function refreshSequence() {
-    if (refreshSequenceIsRunning) return;
+    if (refreshSequenceIsRunning || !sequence.length) return;
     refreshSequenceIsRunning = true;
     let element = sequence.shift();
     if (element.type == "main") {
@@ -392,10 +395,14 @@ let isNewTurn = false;
 function dealDmg(isSelf, dmg) {
     if (arguments[2]?.opposingSubstitute && getPkmn(!isSelf).substituteHp > 0) {
         getPkmn(!isSelf).substituteHp -= Math.min(dmg, getPkmn(!isSelf).substituteHp);
-        if (getPkmn(!isSelf).substituteHp == 0) addSmallText(getL10n("pokemon", getPkmn(!isSelf).name) + "'s substitute faded!");
+        if (getPkmn(!isSelf).substituteHp == 0) addSmallText(getL10n("others", "substituteFade", {
+            "pokemon": [getPkmn(!isSelf).name]
+        }))
     } else if (getPkmn(isSelf).substituteHp > 0 && !arguments[2]?.ignoreSubstitute) {
         getPkmn(isSelf).substituteHp -= Math.min(dmg, getPkmn(isSelf).substituteHp);
-        if (getPkmn(isSelf).substituteHp == 0) addSmallText(getL10n("pokemon", getPkmn(isSelf).name) + "'s substitute faded!");
+        if (getPkmn(isSelf).substituteHp == 0) addSmallText(getL10n("others", "substituteFade", {
+            "pokemon": [getPkmn(isSelf).name]
+        }))
     } else {
         dmg = Math.min(dmg, getPkmn(isSelf).hp);
         getPkmn(isSelf).hp -= dmg;
@@ -485,7 +492,9 @@ function nextTurn() {
     isNewTurn = true;
     sequence.push({
         "type": "turn",
-        "str": "Turn " + turn
+        "str": getL10n("others", "turn", {
+            "number": [turn]
+        })
     })
     /*document.getElementById("turnNumber").innerText = "Turn " + turn;
     let h2 = document.createElement("h2");
@@ -506,6 +515,7 @@ function nextTurn() {
             playerToMove = Math.round(Math.random());
         }
     }
+    //refreshSequence();
 }
 function getStats(name) {
     for (let i of pokemon) {
@@ -562,24 +572,11 @@ function attack(move) {
         }
         let effect;
         if (k.effect) effect = k.effect({ totalDmg: totalDmg });
-        judgeHP();
-        renderHP();
-        if (getPkmn(true)) {
-            getPkmn(true).moves[move]--;
-            if (effect?.flinch) {
-                nextTurn();
-            }
-            else nextPlayer();
-        }
+        return effect;
         //refreshDecision();
     }
 }
 for (let i = 0; i < 4; i++) document.getElementsByClassName("decisionMove")[i].addEventListener("click", function () {
-    /*if (getPkmn(true).mustPass) {
-
-        nextPlayer();
-        return;
-    }*/
     if (getPkmn(true).uncontrollable.turns > 0) {
         attack(getPkmn(true).uncontrollable.move);
         return;
@@ -594,25 +591,33 @@ for (let i = 0; i < 4; i++) document.getElementsByClassName("decisionMove")[i].a
         "pokemon": [players[playerToMove].build[battleInfo[playerToMove].currentPokemon].name],
         "moves": [document.getElementsByClassName("decisionMove")[i].dataset.for]
     }));
-    //addMainText(getL10n("pokemon", players[playerToMove].build[battleInfo[playerToMove].currentPokemon].name) + " used <strong>" +
-    //getL10n("moves", document.getElementsByClassName("decisionMove")[i].dataset.for) + "</strong>!");
     for (let k of moves) if (k.name == document.getElementsByClassName("decisionMove")[i].dataset.for) {
+        let effect;
         if (k.category != "status" && Math.random() > k.acc * ACC_STAGE_MULTIPLIER[getPkmn(true).accStage] *
             ACC_STAGE_MULTIPLIER[getPkmn(false).evaStage] / 100) {
             addSmallText(getL10n("pokemon", getPkmn(true).name) + "'s attack missed!");
             if (k.missEffect) k.missEffect();
-            break;
+        } else {
+            let preDmgEffect = {};
+            if (k.preDmgEffect) preDmgEffect = k.preDmgEffect();
+            if (getPkmn(true).charge.turns > 0) {
+                nextPlayer();
+                //refreshDecision();
+                break;
+            }
+            if (getPkmn(false).tempEffect.semiInvulnerable > 0 && !preDmgEffect.nullifySemiInvulnerable) break;
+            effect = attack(k.name);
+            if (getPkmn(false)?.tempEffect.rage > 0) modifyStats(false, "atk", 1, 1);
         }
-        let preDmgEffect = {};
-        if (k.preDmgEffect) preDmgEffect = k.preDmgEffect();
-        if (getPkmn(true).charge.turns > 0) {
-            nextPlayer();
-            //refreshDecision();
-            break;
-        }
-        if (getPkmn(false).tempEffect.semiInvulnerable > 0 && !preDmgEffect.nullifySemiInvulnerable) break;
-        attack(k.name);
-        if (getPkmn(false).tempEffect.rage > 0) modifyStats(false, "atk", 1, 1);
+        judgeHP();
+        renderHP();
+        if (getPkmn(true)) {
+            getPkmn(true).moves[k.name]--;
+            if (effect?.flinch) {
+                nextTurn();
+            }
+            else nextPlayer();
+        } else refreshSequence();
         break;
     }
 });
@@ -633,14 +638,18 @@ function judgeHP() {
         getPkmn(false).hp = 0;
         if (playerToMove == 0) document.getElementById("p2Pokemon").style.backgroundImage = "none";
         else document.getElementById("p1Pokemon").style.backgroundImage = "none";
-        addMainText(getL10n("pokemon", getPkmn(false).name) + " fainted!");
+        addMainText(getL10n("others", "faint", {
+            "pokemon": [getPkmn(false).name]
+        }));
         battleInfo[(playerToMove == 0) ? 1 : 0].currentPokemon = -1;
     }
     if (getPkmn(true)?.hp <= 0) {
         getPkmn(true).hp = 0;
         if (playerToMove == 1) document.getElementById("p2Pokemon").style.backgroundImage = "none";
         else document.getElementById("p1Pokemon").style.backgroundImage = "none";
-        addMainText(getL10n("pokemon", getPkmn(true).name) + " fainted!");
+        addMainText(getL10n("others", "faint", {
+            "pokemon": [getPkmn(true).name]
+        }));
         battleInfo[playerToMove].currentPokemon = -1;
     }
 }

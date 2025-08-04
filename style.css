@@ -43,6 +43,14 @@ body {
     width: 60%;
     height: 20%;
     background-color: rgba(0, 0, 0, 0.1);
+
+    & table {
+        padding: 3px 3px 0 3px;
+
+        & td {
+            padding: 0
+        }
+    }
 }
 
 #rightPanel {
@@ -157,9 +165,22 @@ body {
     width: 300px
 }
 
-th,
-td {
+#setupTable th,
+#setupTable td {
     border: solid 2px transparent;
+
+    &.select {
+        &:hover {
+            border: solid 2px rgba(30, 144, 255, 0.5);
+            background-color: rgba(30, 144, 255, 0.2);
+            cursor: pointer;
+        }
+
+        &.selected {
+            border: solid 2px rgba(30, 144, 255, 0.8);
+            background-color: rgba(30, 144, 255, 0.5);
+        }
+    }
 }
 
 .select {
@@ -249,7 +270,7 @@ p {
     color: white;
     padding: 10px;
     font-size: large;
-    
+
     #text & {
         width: fit-content;
         animation: 0.3s slide-in;
@@ -260,9 +281,9 @@ p {
     background-color: rgba(255, 255, 255, 0.9);
     color: gray;
     padding: 5px;
-    margin-left:15px;
+    margin-left: 15px;
     font-size: medium;
-    
+
     #text & {
         width: fit-content;
         animation: 0.3s slide-in;
@@ -438,4 +459,27 @@ button {
     position: absolute;
     bottom: 30px;
     left: calc(10% + 384px)
+}
+
+#bottomOptions {
+    padding: 0 3px;
+
+    &>div {
+        display: inline-block;
+        padding: 0 3px;
+
+        & button {
+            height: 25px;
+            font-family: Inter, sans-serif;
+            font-size: medium;
+            background-color: rgba(255, 255, 255, 0.5);
+            margin: 3px;
+            border: solid 3px transparent;
+            min-width: 100px;
+
+            &:hover {
+                border: solid 3px gray;
+            }
+        }
+    }
 }

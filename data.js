@@ -3077,13 +3077,15 @@ let pokemon = [{
 let translation = {
     "en": {
         "others": {
+            "turn":"Turn [number0]",
             "crit": "A critical hit!",
             "use": "[pokemon0] used <strong>[moves0]</strong>!",
             "faint": "[pokemon0] fainted!",
             "go": "Go! <strong>[pokemon0]</strong>!",
             "superEffective": "It's super effective!",
             "notVeryEffective": "It's not very effective...",
-            "loseHealth": "([pokemon0] lost [percentage0]% of its health!)"
+            "loseHealth": "([pokemon0] lost [percentage0]% of its health!)",
+            "substituteFade":"[pokemon0]'s substitute faded!"
         },
         "pokemon": {
             "abra": "Abra",
@@ -3408,13 +3410,15 @@ let translation = {
     },
     "zh": {
         "others": {
+            "turn":"第 [number0] 回合",
             "crit": "暴击！",
             "use": "[pokemon0]使出了<strong>[moves0]</strong>！",
             "faint": "[pokemon0]倒下了！",
             "go": "上吧！<strong>[pokemon0]</strong>！",
             "superEffective": "效果绝佳！",
             "notVeryEffective": "好像效果不好……",
-            "loseHealth": "（[pokemon0]失去了[percentage0]%的生命值！）"
+            "loseHealth": "（[pokemon0]失去了[percentage0]%的生命值！）",
+            "substituteFade":"[pokemon0]的替身消失了！"
         },
         "pokemon": {
             "abra": "凯西",
