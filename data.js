@@ -3719,7 +3719,7 @@ let translation = {
             "strength": "怪力",
             "string shot": "吐丝",
             "struggle": "挣扎",
-            "stun spore": "麻痺粉",
+            "stun spore": "麻痹粉",
             "submission": "地狱翻滚",
             "substitute": "替身",
             "super fang": "愤怒门牙",

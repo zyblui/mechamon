@@ -22,8 +22,14 @@ It's super effective!
 Wild [Pokemon] appears!
 野生的[Pokemon]出现了！
 
+[Pokemon]'s [Stat] rose!
+[Pokemon]的[Stat]提高了！
+
 [Pokemon]'s [Stat] fell!
 [Pokemon]的[Stat]降低了！
+
+[Pokemon]'s [Stat] harshly fell!
+[Pokemon]的[Stat]大幅降低了！
 
 [Trainer]使用了[Item]！
 
