@@ -474,7 +474,10 @@ function nextPlayer(player) {
     } else if (getPkmn(true)?.status == "slp") {
         getPkmn(true).sleepTurns--;
         if (getPkmn(true).sleepTurns > 0) {
-            addMainText(getL10n("pokemon", getPkmn(true).name) + " is fast asleep.");
+            addMainText(getL10n("others", "fastAsleep", {
+                "pokemon": [getPkmn(true).name],
+                "isEnemy": playerToMove != viewpoint
+            }))
         } else if (getPkmn(true).sleepTurns == 0) {
             addSmallText(getL10n("pokemon", getPkmn(true).name) + " woke up!");
             getPkmn(true).status = "";
@@ -552,7 +555,10 @@ function nextTurn() {
             let effect;
             if (k.category != "status" && Math.random() > k.acc * ACC_STAGE_MULTIPLIER[getPkmn(true).accStage] *
                 ACC_STAGE_MULTIPLIER[getPkmn(false).evaStage] / 100) {
-                addSmallText(getL10n("pokemon", getPkmn(true).name) + "'s attack missed!");
+                addSmallText(getL10n("others", "attackMiss", {
+                    "pokemon": [getPkmn(true).name],
+                    "isEnemy": playerToMove != viewpoint
+                }))
                 if (k.missEffect) k.missEffect();
             } else {
                 let preDmgEffect = {};
@@ -648,7 +654,10 @@ function attack(move) {
                     addSmallText(getL10n("others", "notVeryEffective"));
                     break;
                 case 0:
-                    addSmallText("It doesn't affect " + getL10n("pokemon", getPkmn(false).name) + "...");
+                    addSmallText(getL10n("others", "noEffect", {
+                        "pokemon": [getPkmn(false).name],
+                        "isEnemy": !playerToMove != viewpoint
+                    }))
             }
             totalDmg += Math.min(dmg, getPkmn(false).hp);
             if (isCrit) {
