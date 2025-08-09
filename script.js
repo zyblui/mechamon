@@ -4,44 +4,44 @@ let settings = {
 let players = [{
     "name": "Player 1",
     "build": [{
-        "name": "zapdos",
-        "moves": ["thunder wave", "drill peck", "thunderbolt", "agility"]
+        "name": "geodude",
+        "moves": ["earthquake", "rock slide", "body slam", "explosion"]
     }, {
-        "name": "slowbro",
-        "moves": ["amnesia", "surf", "thunder wave", "rest"]
+        "name": "staryu",
+        "moves": ["surf", "thunderbolt", "blizzard", "thunder wave"]
     }, {
-        "name": "rhydon",
-        "moves": ["earthquake", "body slam", "rock slide", "substitute"]
+        "name": "koffing",
+        "moves": ["sludge", "fire blast", "thunderbolt", "explosion"]
     }, {
-        "name": "mewtwo",
-        "moves": ["blizzard", "thunder wave", "psychic", "self-destruct"]
+        "name": "tentacool",
+        "moves": ["surf", "blizzard", "mega drain", "hydro pump"]
     }, {
-        "name": "exeggutor",
-        "moves": ["sleep powder", "psychic", "explosion", "double-edge"]
+        "name": "machop",
+        "moves": ["submission", "earthquake", "rock slide", "body slam"]
     }, {
-        "name": "mew",
-        "moves": ["psychic", "explosion", "swords dance", "earthquake"]
+        "name": "eevee",
+        "moves": ["substitute", "reflect", "body slam", "double-edge"]
     }]
 }, {
     "name": "Player 2",
     "build": [{
-        "name": "alakazam",
-        "moves": ["psychic", "seismic toss", "thunder wave", "recover"]
+        "name": "eevee",
+        "moves": ["rage", "body slam", "double-edge", "quick attack"]
     }, {
-        "name": "mewtwo",
-        "moves": ["recover", "thunderbolt", "amnesia", "psychic"]
+        "name": "vulpix",
+        "moves": ["flamethrower", "body slam", "confuse ray", "substitute"]
     }, {
-        "name": "rhydon",
-        "moves": ["earthquake", "body slam", "rock slide", "substitute"]
+        "name": "ponyta",
+        "moves": ["toxic", "agility", "fire blast", "body slam"]
     }, {
-        "name": "exeggutor",
-        "moves": ["sleep powder", "stun spore", "psychic", "explosion"]
+        "name": "growlithe",
+        "moves": ["agility", "body slam", "fire blast", "double-edge"]
     }, {
-        "name": "mew",
-        "moves": ["swords dance", "earthquake", "body slam", "soft-boiled"]
+        "name": "psyduck",
+        "moves": ["surf", "mega kick", "blizzard", "rage"]
     }, {
-        "name": "slowbro",
-        "moves": ["thunder wave", "amnesia", "surf", "rest"]
+        "name": "poliwag",
+        "moves": ["hypnosis", "amnesia", "surf", "psychic"]
     }]
 }];
 document.getElementById("p1Pokemon").style.backgroundImage = "url('back/" + players[0].build[0].name + ".png')";
@@ -50,7 +50,7 @@ document.getElementById("p1Name").innerText = getL10n("pokemon", players[0].buil
 document.getElementById("p2Name").innerText = getL10n("pokemon", players[1].build[0].name);
 document.getElementById("turnNumber").innerText = getL10n("others", "turn", {
     "number": [0]
-})
+});
 let record = [], viewpoint = 0;
 function refreshRecord() {
 
@@ -324,7 +324,7 @@ function refreshSequence() {
             setTimeout(function () {
                 refreshSequenceIsRunning = false;
                 refreshSequence();
-            }, 600)
+            }, 600);
         } else {
             refreshSequenceIsRunning = false;
             refreshSequence();
@@ -336,7 +336,7 @@ function refreshSequence() {
 }
 function addMainText(str) {
     for (let i of document.querySelectorAll(".decisionMove,.decisionSwitch")) {
-        i.disabled = "disabled"
+        i.disabled = "disabled";
     }
     sequence.push({
         "type": "main",
@@ -345,7 +345,7 @@ function addMainText(str) {
 }
 function addSmallText(str) {
     for (let i of document.querySelectorAll(".decisionMove,.decisionSwitch")) {
-        i.disabled = "disabled"
+        i.disabled = "disabled";
     }
     sequence.push({
         "type": "small",
@@ -379,13 +379,11 @@ function sendOutPkmn(pkmn) {
 for (let i = 0; i < 6; i++) {
     document.getElementsByClassName("decisionSwitch")[i].addEventListener("click", function () {
         if (battleInfo[playerToMove].currentPokemon != -1) {
-            //if (battleInfo[playerToMove].currentPokemon != -1) addMainText(getL10n("pokemon", getPkmn(true).name) + ", come back!");
-            //sendOutPkmn(document.getElementsByClassName("decisionSwitch")[i].dataset.for);
             attacks.push({
                 "user": playerToMove,
                 "type": "switch",
                 "pkmn": document.getElementsByClassName("decisionSwitch")[i].dataset.for
-            })
+            });
 
             decisionNextPlayer();
             //nextPlayer();
@@ -402,13 +400,21 @@ function dealDmg(isSelf, dmg) {
         if (getPkmn(!isSelf).substituteHp == 0) addSmallText(getL10n("others", "substituteFade", {
             "pokemon": [getPkmn(!isSelf).name],
             "isEnemy": ((viewpoint == -1) ? isSelf : ((!isSelf == playerToMove) != viewpoint))
-        }))
+        }));
+        else addSmallText(getL10n("others", "substituteTakeDamage", {
+            "pokemon": [getPkmn(!isSelf).name],
+            "isEnemy": ((viewpoint == -1) ? isSelf : ((!isSelf == playerToMove) != viewpoint))
+        }));
     } else if (getPkmn(isSelf).substituteHp > 0 && !arguments[2]?.ignoreSubstitute) {
         getPkmn(isSelf).substituteHp -= Math.min(dmg, getPkmn(isSelf).substituteHp);
         if (getPkmn(isSelf).substituteHp == 0) addSmallText(getL10n("others", "substituteFade", {
             "pokemon": [getPkmn(isSelf).name],
             "isEnemy": ((viewpoint == -1) ? !isSelf : ((isSelf == playerToMove) != viewpoint))
-        }))
+        }));
+        else addSmallText(getL10n("others", "substituteTakeDamage", {
+            "pokemon": [getPkmn(isSelf).name],
+            "isEnemy": ((viewpoint == -1) ? !isSelf : ((isSelf == playerToMove) != viewpoint))
+        }));
     } else {
         dmg = Math.min(dmg, getPkmn(isSelf).hp);
         getPkmn(isSelf).hp -= dmg;
@@ -451,14 +457,14 @@ function nextPlayer(player) {
     }
     if (getPkmn(true)?.status == "par" && Math.random() < 1 / 4) {
         addMainText(getL10n("pokemon", getPkmn(true).name) + " is paralyzed! It can't move!");
-        return { "continue": true }
+        return { "continue": true };
     } else if (getPkmn(true)?.charge.turns > 0) {
         getPkmn(true).charge.turns--;
         if (getPkmn(true).charge.move && getPkmn(true).charge.turns == 0 && getPkmn(true).charge.move) {
             attack(getPkmn(true).charge.move);
             getPkmn(true).charge.move = "";
         } else {
-            return { "continue": true }
+            return { "continue": true };
         }
     } else if (getPkmn(true)?.uncontrollable.turns > 0) {
         getPkmn(true).uncontrollable.turns--;
@@ -473,7 +479,7 @@ function nextPlayer(player) {
             addSmallText(getL10n("pokemon", getPkmn(true).name) + " woke up!");
             getPkmn(true).status = "";
         }
-        return { "continue": true }
+        return { "continue": true };
     } else if (getPkmn(true)?.tempEffect.confused > 0) {
         addSmallText(getL10n("pokemon", getPkmn(true).name) + " is confused!");
         if (Math.random() < 0.5) {
@@ -524,7 +530,10 @@ function nextTurn() {
         if (nextPlayer(i.user)?.continue) continue;
         if (!getPkmn(true) || !getPkmn(false)) continue;
         if (i.type == "switch") {
-            addMainText(getL10n("pokemon", getPkmn(true).name) + ", come back!");
+            addMainText(getL10n("others", "comeBack", {
+                "pokemon": [getPkmn(true).name],
+                "isEnemy": ((viewpoint == -1) ? false : (playerToMove != viewpoint))
+            }))
             sendOutPkmn(i.pkmn);
             continue;
         }
@@ -549,7 +558,7 @@ function nextTurn() {
                 let preDmgEffect = {};
                 if (k.preDmgEffect) preDmgEffect = k.preDmgEffect();
                 if (getPkmn(true).charge.turns > 0) {
-                    continue outer//nextPlayer();
+                    continue outer;//nextPlayer();
                     //break;
                 }
                 if (getPkmn(false).tempEffect.semiInvulnerable > 0 && !preDmgEffect.nullifySemiInvulnerable) break;
@@ -563,20 +572,20 @@ function nextTurn() {
                 if (effect?.flinch) {
                     nextTurn();
                 }
-                else continue outer//nextPlayer();
+                else continue outer;//nextPlayer();
             } else refreshSequence();
             break;
         }
     }
 
-    attacks = []
+    attacks = [];
 
     if (getPkmn(true)?.status == "brn") dealDmg(true, getPkmn(true).maxHp / 16, { ignoreSubstitute: true });
     if (getPkmn(false)?.status == "brn") dealDmg(false, getPkmn(false).maxHp / 16, { ignoreSubstitute: true });
     judgeHP();
 
     endTurn();
-    
+
 }
 function endTurn() {
     if (battleInfo[0].currentPokemon == -1) {
@@ -594,7 +603,6 @@ function endTurn() {
         });
         playerToMove = 0;
     }
-    refreshDecision();
 
     refreshSequence();
 }
@@ -657,13 +665,14 @@ function attack(move) {
         //refreshDecision();
     }
 }
-let attacks = []
+let attacks = [];
 function decisionNextPlayer() {
-    if (playerToMove == 0) playerToMove = 1;
-    else {
-        nextTurn()
+    if (playerToMove == 0) {
+        playerToMove = 1;
+        refreshDecision();
+    } else {
+        nextTurn();
     }
-    refreshDecision();
 }
 for (let i = 0; i < 4; i++) document.getElementsByClassName("decisionMove")[i].addEventListener("click", function () {
     if (getPkmn(true).uncontrollable.turns > 0) {
@@ -672,7 +681,7 @@ for (let i = 0; i < 4; i++) document.getElementsByClassName("decisionMove")[i].a
             "type": "move",
             "move": getPkmn(true).uncontrollable.move,
             "dirAttack": true
-        })
+        });
         decisionNextPlayer();
         return;
     } else if (getPkmn(false).uncontrollable.turns > 0) {
@@ -683,8 +692,8 @@ for (let i = 0; i < 4; i++) document.getElementsByClassName("decisionMove")[i].a
         "user": playerToMove,
         "type": "move",
         "move": document.getElementsByClassName("decisionMove")[i].dataset.for,
-    })
-    decisionNextPlayer()
+    });
+    decisionNextPlayer();
     /*
         getPkmn(true).lastMoveUsed = document.getElementsByClassName("decisionMove")[i].dataset.for;
     

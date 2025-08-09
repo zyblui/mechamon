@@ -3090,7 +3090,12 @@ let translation = {
             "loseHealth": "([pokemon0] lost [percentage0]% of its health!)",
             "loseHealth-enemy": "(The opposing [pokemon0] lost [percentage0]% of its health!)",
             "substituteFade":"[pokemon0]'s substitute faded!",
-            "substituteFade-enemy":"The opposing [pokemon0]'s substitute faded!"
+            "substituteFade-enemy":"The opposing [pokemon0]'s substitute faded!",
+            "substituteTakeDamage":"The substitute took damage for [pokemon0]!",
+            "substituteTakeDamage-enemy":"The substitute took damage for the opposing [pokemon0]!",
+            "comeBack":"[pokemon0], come back!",
+            "comeBack-enemy":"The enemy withdrew [pokemon0]!",
+            "nothingHappen":"But nothing happened!"
         },
         "pokemon": {
             "abra": "Abra",
@@ -3416,7 +3421,7 @@ let translation = {
     "zh": {
         "others": {
             "turn":"第 [number0] 回合",
-            "crit": "暴击！",
+            "crit": "击中了要害！",
             "use": "[pokemon0]使出了<strong>[moves0]</strong>！",
             "use-enemy":"对手的[pokemon0]使出了<strong>[moves0]</strong>！",
             "faint": "[pokemon0]倒下了！",
@@ -3428,7 +3433,12 @@ let translation = {
             "loseHealth": "（[pokemon0]失去了[percentage0]%的生命值！）",
             "loseHealth-enemy": "（对手的[pokemon0]失去了[percentage0]%的生命值！）",
             "substituteFade":"[pokemon0]的替身消失了！",
-            "substituteFade-enemy":"对手的[pokemon0]的替身消失了！"
+            "substituteFade-enemy":"对手的[pokemon0]的替身消失了！",
+            "substituteTakeDamage":"替身为[pokemon0]挡下了伤害！",
+            "substituteTakeDamage-enemy":"替身为对手的[pokemon0]挡下了伤害！",
+            "comeBack":"[pokemon0]，回来！",
+            "comeBack-enemy":"对手收回了[pokemon0]！",
+            "nothingHappen":"但是，什么也没有发生！"
         },
         "pokemon": {
             "abra": "凯西",
