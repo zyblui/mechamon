@@ -78,11 +78,11 @@ function render() {
         .build[battleInfo[1].currentPokemon].name);
 }
 function getL10n(type, str) {
-    let returnValue = translation[settings.lang][type][str + ((arguments[2]?.isEnemy) ? "-enemy" : "")];
+    let returnValue = TRANSLATION[settings.lang][type][str + ((arguments[2]?.isEnemy) ? "-enemy" : "")];
     if (arguments[2]) for (let i in arguments[2]) {
         if (i == "isEnemy") continue;
         for (let j = 0; j < arguments[2][i].length; j++) {
-            if (translation[settings.lang][i]) returnValue = returnValue.replace("[" + i + j + "]", translation[settings.lang][i][arguments[2][i][j]]);
+            if (TRANSLATION[settings.lang][i]) returnValue = returnValue.replace("[" + i + j + "]", TRANSLATION[settings.lang][i][arguments[2][i][j]]);
             else returnValue = returnValue.replace("[" + i + j + "]", arguments[2][i][j]);
         }
     }
@@ -101,7 +101,7 @@ function capitalize(str) {
     temp = temp.join("-");
     return temp;
 }
-for (let i of pokemon) {
+for (let i of POKEMON) {
     let div = document.createElement("div");
     div.classList.add("listButton");
     div.innerHTML = getL10n("pokemon", i.name);
@@ -118,7 +118,7 @@ for (let i of pokemon) {
     });
     document.getElementById("pokemonList").appendChild(div);
 }
-for (let i of moves) {
+for (let i of MOVES) {
     let div = document.createElement("div");
     div.classList.add("listButton");
     div.innerHTML = getL10n("moves", i.name);
@@ -173,7 +173,7 @@ function calculateEffectiveness(attackType, defenseType) {
     let effectiveness = 1;
     if (!attackType) return effectiveness;
     for (let i of defenseType) {
-        effectiveness *= multiplier[attackType][i];
+        effectiveness *= MULTIPLIER[attackType][i];
     }
     return effectiveness;
 }
@@ -233,7 +233,7 @@ document.getElementById("startGame").addEventListener("click", function () {
     battleInfo[1].currentPokemon = 0;
     for (let i of battleInfo) {
         for (let j of i.build) {
-            for (let k of pokemon) {
+            for (let k of POKEMON) {
                 if (k.name == j.name) {
                     j.hp = Math.floor(0.01 * (2 * k.hp + 30 + Math.floor(0.25 * 252)) * 100) + 100 + 10;
                     j.maxHp = Math.floor(0.01 * (2 * k.hp + 30 + Math.floor(0.25 * 252)) * 100) + 100 + 10;
@@ -279,7 +279,7 @@ document.getElementById("startGame").addEventListener("click", function () {
             j.lastDmgTakenType = "";
             j.lastMoveUsed = "";
             let json = {};
-            for (let k of j.moves) for (let l of moves) if (l.name == k) json[k] = l.pp;
+            for (let k of j.moves) for (let l of MOVES) if (l.name == k) json[k] = l.pp;
             j.moves = json;
         }
     }
@@ -507,13 +507,8 @@ function nextTurn() {
         if (b.type == "switch" && a.type == "move") return 1;
         else if (a.type == "switch" && b.type == "move") return -1;
         else if (a.type == "move" && b.type == "move") {
-            /*
-    if (battleInfo[1].currentPokemon == -1 && battleInfo[0].currentPokemon == -1) playerToMove = Math.round(Math.random());
-    else if (battleInfo[1].currentPokemon == -1) playerToMove = 1;
-    else if (battleInfo[0].currentPokemon == -1) playerToMove = 0;
-    else {
-        
-    }*/
+            if (a.priority > b.priority) return -1;
+            else if (b.priority > a.priority) return 1;
             let p1Spe = getStats(battleInfo[0].build[battleInfo[0].currentPokemon].name).spe * STAGE_MULTIPLIER[battleInfo[0].build[battleInfo[0].currentPokemon].speStage] * ((battleInfo[0].build[battleInfo[0].currentPokemon].status == "par") ? 0.25 : 1);
             let p2Spe = getStats(battleInfo[1].build[battleInfo[1].currentPokemon].name).spe * STAGE_MULTIPLIER[battleInfo[1].build[battleInfo[1].currentPokemon].speStage] * ((battleInfo[1].build[battleInfo[1].currentPokemon].status == "par") ? 0.25 : 1);
             let tempPlayerToMove = 0;
@@ -551,7 +546,7 @@ function nextTurn() {
             "moves": [i.move],
             "isEnemy": ((viewpoint == -1) ? false : (playerToMove != viewpoint))
         }));
-        for (let k of moves) if (k.name == i.move) {
+        for (let k of MOVES) if (k.name == i.move) {
             let effect;
             if (k.category != "status" && Math.random() > k.acc * ACC_STAGE_MULTIPLIER[getPkmn(true).accStage] *
                 ACC_STAGE_MULTIPLIER[getPkmn(false).evaStage] / 100) {
@@ -613,12 +608,12 @@ function endTurn() {
     refreshSequence();
 }
 function getStats(name) {
-    for (let i of pokemon) {
+    for (let i of POKEMON) {
         if (i.name == name) return i;
     }
 }
 function getMoveStats(name) {
-    for (let i of moves) {
+    for (let i of MOVES) {
         if (i.name == name) return i;
     }
 }
@@ -631,7 +626,7 @@ function getType(isSelf) {
     else return getStats(getPkmn(isSelf).name).type;
 }
 function attack(move) {
-    for (let k of moves) if (k.name == move) {
+    for (let k of MOVES) if (k.name == move) {
         let criticalHitRatioMultiplier = 1;
         let preCritEffect;
         if (k.preCritEffect) preCritEffect = k.preCritEffect();

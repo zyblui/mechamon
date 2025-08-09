@@ -1,4 +1,4 @@
-let moves = [{
+const MOVES = [{
     "name": "absorb",
     "type": "grass",
     "category": "special",
@@ -952,8 +952,8 @@ let moves = [{
     "priority": 0,
     "effect": function () {
         while (true) {
-            if (moves[Math.floor(Math.random() * moves.length)].name != "metronome" && moves[Math.floor(Math.random() * moves.length)].name != "struggle") {
-                attack(moves[Math.floor(Math.random() * moves.length)].name);
+            if (MOVES[Math.floor(Math.random() * MOVES.length)].name != "metronome" && MOVES[Math.floor(Math.random() * MOVES.length)].name != "struggle") {
+                attack(MOVES[Math.floor(Math.random() * MOVES.length)].name);
                 break;
             }
         }
@@ -1876,7 +1876,7 @@ let moves = [{
         else setUncontrollable("wrap", 4);
     }
 }];
-let pokemon = [{
+const POKEMON = [{
     "name": "abra",
     "type": ["psychic"],
     "hp": 25,
@@ -3239,7 +3239,7 @@ let pokemon = [{
     "spe": 55,
     "moves": ["bide", "bite", "confuse ray", "double-edge", "double team", "haze", "leech life", "mega drain", "mimic", "rage", "razor wind", "rest", "substitute", "supersonic", "swift", "take down", "toxic", "whirlwind", "wing attack"]
 }];
-let translation = {
+const TRANSLATION = {
     "en": {
         "others": {
             "turn": "Turn [number0]",
@@ -3266,7 +3266,12 @@ let translation = {
             "noEffect": "It doesn't affect [pokemon0]...",
             "noEffect-enemy": "It doesn't affect the opposing [pokemon0]...",
             "fastAsleep": "[pokemon0] is fast asleep.",
-            "fastAsleep-enemy": "The opposing [pokemon0] is fast asleep."
+            "fastAsleep-enemy": "The opposing [pokemon0] is fast asleep.",
+            "wakeUp":"[pokemon0] woke up!",
+            "wakeUp-enemy":"The opposing [pokemon0] woke up!",
+            "hurtConfusion":"It hurt itself in its confusion!",
+            "paralyzed":"[pokemon0] is paralyzed! It may be unable to move!",
+            "paralyzed-enemy":"The opposing[pokemon0] is paralyzed! It may be unable to move!"
         },
         "pokemon": {
             "abra": "Abra",
@@ -3615,7 +3620,12 @@ let translation = {
             "noEffect": "对于[pokemon0]，好像没有效果……",
             "noEffect-enemy": "对于对手的[pokemon0]，好像没有效果……",
             "fastAsleep": "[pokemon0]正在呼呼大睡。",
-            "fastAsleep-enemy": "对手的[pokemon0]正在呼呼大睡。"
+            "fastAsleep-enemy": "对手的[pokemon0]正在呼呼大睡。",
+            "wakeUp":"[pokemon0]醒过来了！",
+            "wakeUp-enemy":"对手的[pokemon0]醒过来了！",
+            "hurtConfusion":"不知所以地攻击了自己！",
+            "paralyzed":"[pokemon0]麻痹了，很难使出招式！",
+            "paralyzed-enemy":"对手的[pokemon0]麻痹了，很难使出招式！"
         },
         "pokemon": {
             "abra": "凯西",
@@ -4269,7 +4279,7 @@ let translation = {
         }
     }
 };
-let multiplier = {
+const MULTIPLIER = {
     "bug": {
         "bug": 1,
         "dragon": 1,

@@ -36,6 +36,7 @@ Wild [Pokemon] appears!
 Gotcha! [Pokemon] was caught!
 太好了！捉到[Pokemon]了！
 
+[Pokemon] was hurt by its burn!
 [Pokemon]受到了灼伤的伤害！
 
 It's not very effective...
