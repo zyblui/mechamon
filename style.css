@@ -447,18 +447,23 @@ button {
     image-rendering: pixelated;
     height: 30px;
     display: inline-block;
-}
+    scale: 1.5;
 
-#p1Balls {
-    position: absolute;
-    top: 30px;
-    right: calc(10% + 384px)
+    &.faint {
+        filter: grayscale(1) opacity(0.3);
+    }
 }
 
 #p2Balls {
     position: absolute;
+    top: 30px;
+    right: calc(10% + 384px);
+}
+
+#p1Balls {
+    position: absolute;
     bottom: 30px;
-    left: calc(10% + 384px)
+    left: calc(10% + 384px);
 }
 
 #bottomOptions {

@@ -4522,7 +4522,7 @@ const MULTIPLIER = {
         "water": 1 / 2
     }
 };
-const ICON = {
+const ICONS = {
     "bulbasaur": { "row": 1, "cell": 2 },
     "ivysaur": { "row": 1, "cell": 3 },
     "venusaur": { "row": 1, "cell": 4 },

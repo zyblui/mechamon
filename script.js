@@ -228,9 +228,10 @@ function refreshDecision() {
 }
 let turn = 0, playerToMove = 0, battleInfo = [];
 document.getElementById("startGame").addEventListener("click", function () {
+    turn=0;
     battleInfo = JSON.parse(JSON.stringify(players));
-    battleInfo[0].currentPokemon = 0;
-    battleInfo[1].currentPokemon = 0;
+    battleInfo[0].currentPokemon = -1;
+    battleInfo[1].currentPokemon = -1;
     for (let i of battleInfo) {
         for (let j of i.build) {
             for (let k of POKEMON) {
@@ -281,12 +282,14 @@ document.getElementById("startGame").addEventListener("click", function () {
             let json = {};
             for (let k of j.moves) for (let l of MOVES) if (l.name == k) json[k] = l.pp;
             j.moves = json;
+            j.revealed = false;
         }
     }
+    sendOutPkmn(battleInfo[0].build[0].name);
+    playerToMove=1;
+    sendOutPkmn(battleInfo[1].build[0].name);
     nextTurn();
     render();
-    refreshSequence();
-    //refreshDecision();
 });
 let sequence = [], refreshSequenceIsRunning = false;
 function refreshSequence() {
@@ -373,6 +376,7 @@ function sendOutPkmn(pkmn) {
         battleInfo[playerToMove].currentPokemon = i;
         break;
     }
+    getPkmn(true).revealed = true;
     render();
     renderHP();
 }
@@ -384,7 +388,6 @@ for (let i = 0; i < 6; i++) {
                 "type": "switch",
                 "pkmn": document.getElementsByClassName("decisionSwitch")[i].dataset.for
             });
-
             decisionNextPlayer();
             //nextPlayer();
         } else {
@@ -435,12 +438,6 @@ function nextPlayer(player) {
     judgeHP();
 
     playerToMove = player;
-    /*if (isNewTurn) {
-        isNewTurn = false;
-        playerToMove = (playerToMove == 0) ? 1 : 0;
-    } else {
-        nextTurn();
-    }*/
     if (getPkmn(true)) {
         for (let i = 0; i < getPkmn(true).delay.length; i++) {
             if (getPkmn(true).delay[i].turns > 0) getPkmn(true).delay[i].turns--;
@@ -863,6 +860,25 @@ function renderHP() {
         }
     }
 
+    for (let i of [0, 1]) {
+        for (let j = 0; j < 6; j++) {
+            if (!battleInfo[i].build[j].revealed) {
+                document.getElementById("p" + (i + 1) + "Ball" + (j + 1)).style.backgroundImage = "url(pokemonicons-pokeball-sheet.png)";
+                document.getElementById("p" + (i + 1) + "Ball" + (j + 1)).style.backgroundPosition = "0 0"
+            }
+            else {
+                document.getElementById("p" + (i + 1) + "Ball" + (j + 1)).style.backgroundImage = "url(pokemonicons-sheet.png)";
+                document.getElementById("p" + (i + 1) + "Ball" + (j + 1)).style.backgroundPosition = (-(ICONS[battleInfo[i].build[j]
+                    .name].cell - 1) * 40) + "px " + (-(ICONS[battleInfo[i].build[j].name].row - 1) * 30) + "px";
+
+                if (battleInfo[i].build[j].hp <= 0) {
+                    document.getElementById("p" + (i + 1) + "Ball" + (j + 1)).classList.add("faint")
+                } else {
+                    document.getElementById("p" + (i + 1) + "Ball" + (j + 1)).classList.remove("faint")
+                }
+            }
+        }
+    }
 }
 function renderTable() {
     for (let i = 0; i < 6; i++) {
@@ -939,8 +955,8 @@ function putToSleep(isSelf, turns) {
 function addTempEffect(isSelf, effect, turns, prob) {
     if (Math.random() < prob) {
         getPkmn(isSelf).tempEffect[effect] = turns;
-        if (effect == "confused") addSmallText(getL10n("pokemon", getPkmn(false).name) + " became confused!");
-        else if (effect == "reflect" || effect == "light screen") addSmallText(getL10n("pokemon", getPkmn(false).name) +
+        if (effect == "confused") addSmallText(getL10n("pokemon", getPkmn(isSelf).name) + " became confused!");
+        else if (effect == "reflect" || effect == "light screen") addSmallText(getL10n("pokemon", getPkmn(isSelf).name) +
             " gained armor!");
     }
 }
