@@ -228,7 +228,7 @@ function refreshDecision() {
 }
 let turn = 0, playerToMove = 0, battleInfo = [];
 document.getElementById("startGame").addEventListener("click", function () {
-    turn=0;
+    turn = 0;
     battleInfo = JSON.parse(JSON.stringify(players));
     battleInfo[0].currentPokemon = -1;
     battleInfo[1].currentPokemon = -1;
@@ -286,7 +286,7 @@ document.getElementById("startGame").addEventListener("click", function () {
         }
     }
     sendOutPkmn(battleInfo[0].build[0].name);
-    playerToMove=1;
+    playerToMove = 1;
     sendOutPkmn(battleInfo[1].build[0].name);
     nextTurn();
     render();
@@ -504,8 +504,8 @@ function nextTurn() {
         if (b.type == "switch" && a.type == "move") return 1;
         else if (a.type == "switch" && b.type == "move") return -1;
         else if (a.type == "move" && b.type == "move") {
-            if (a.priority > b.priority) return -1;
-            else if (b.priority > a.priority) return 1;
+            if (getMoveStats(a.move).priority > getMoveStats(b.move).priority) return -1;
+            else if (getMoveStats(b.move).priority > getMoveStats(a.move).priority) return 1;
             let p1Spe = getStats(battleInfo[0].build[battleInfo[0].currentPokemon].name).spe * STAGE_MULTIPLIER[battleInfo[0].build[battleInfo[0].currentPokemon].speStage] * ((battleInfo[0].build[battleInfo[0].currentPokemon].status == "par") ? 0.25 : 1);
             let p2Spe = getStats(battleInfo[1].build[battleInfo[1].currentPokemon].name).spe * STAGE_MULTIPLIER[battleInfo[1].build[battleInfo[1].currentPokemon].speStage] * ((battleInfo[1].build[battleInfo[1].currentPokemon].status == "par") ? 0.25 : 1);
             let tempPlayerToMove = 0;
@@ -742,7 +742,9 @@ function repeatAttack(dmg, count) {
     for (let i = 0; i < count; i++) {
         dealDmg(false, dmg);
     }
-    addSmallText("The Pokémon was hit " + (count + 1) + " times!");
+    addSmallText(getL10n("others", "hitTimes", {
+        "number": [count + 1]
+    }))
 }
 function judgeHP() {
     if (getPkmn(false)?.hp <= 0) {
@@ -941,9 +943,15 @@ function modifyStatus(status, prob) {
         }
         getPkmn(false).status = status;
         if (status == "par") {
-            addSmallText(getL10n("pokemon", getPkmn(false).name) + " is paralyzed! It may be unable to move!");
+            addSmallText(getL10n("others","paralyzed",{
+                "pokemon":[getPkmn(false).name],
+                "isEnemy":!playerToMove != viewpoint
+            }));
         } else if (status == "frz") {
-            addSmallText(getL10n("pokemon", getPkmn(false).name) + " is frozen solid!");
+            addSmallText(getL10n("others", "frozenSolid", {
+                "pokemon": [getPkmn(false).name],
+                "isEnemy": !playerToMove != viewpoint
+            }));
         }
     }
 }

@@ -1771,7 +1771,7 @@ const MOVES = [{
         }
         getPkmn(true).moves = JSON.parse(JSON.stringify(getPkmn(false).moves));
         for (let i in getPkmn(true).moves) {
-            getPkmn(true).moves[i].pp = 5;
+            getPkmn(true).moves[i] = 5;
         }
     }
 }, {
@@ -3271,7 +3271,12 @@ const TRANSLATION = {
             "wakeUp-enemy": "The opposing [pokemon0] woke up!",
             "hurtConfusion": "It hurt itself in its confusion!",
             "paralyzed": "[pokemon0] is paralyzed! It may be unable to move!",
-            "paralyzed-enemy": "The opposing[pokemon0] is paralyzed! It may be unable to move!"
+            "paralyzed-enemy": "The opposing [pokemon0] is paralyzed! It may be unable to move!",
+            "hitTimes": "The Pokémon was hit [number0] times!",
+            "frozenSolid": "[pokemon0] is frozen solid!",
+            "frozenSolid-enemy": "The opposing [pokemon0] is frozen solid!",
+            "dreamEaten": "[pokemon0]'s dream was eaten!",
+            "dreamEaten": "The opposing [pokemon0]'s dream was eaten!"
         },
         "pokemon": {
             "abra": "Abra",
@@ -3625,7 +3630,12 @@ const TRANSLATION = {
             "wakeUp-enemy": "对手的[pokemon0]醒过来了！",
             "hurtConfusion": "不知所以地攻击了自己！",
             "paralyzed": "[pokemon0]麻痹了，很难使出招式！",
-            "paralyzed-enemy": "对手的[pokemon0]麻痹了，很难使出招式！"
+            "paralyzed-enemy": "对手的[pokemon0]麻痹了，很难使出招式！",
+            "hitTimes": "击中了[number0]次！",
+            "frozenSolid": "[pokemon0]冻住了！",
+            "frozenSolid-enemy": "对手的[pokemon0]冻住了！",
+            "dreamEaten": "[pokemon0]的梦被吃掉了！",
+            "dreamEaten-enemy": "对手的[pokemon0]的梦被吃掉了！"
         },
         "pokemon": {
             "abra": "凯西",
