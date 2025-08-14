@@ -1223,7 +1223,10 @@ const MOVES = [{
         let hpLost = getPkmn(true).maxHp - getPkmn(true).hp;
         if (hpLost != 255 && hpLost != 511) {
             getPkmn(true).hp = getPkmn(true).maxHp;
-            addSmallText(capitalize(getPkmn(true).name) + " had its HP restored.");
+            addSmallText(getL10n("others", "sleepHealthy", {
+                "pokemon": [getPkmn(true).name],
+                "isEnemy": playerToMove != viewpoint
+            }))
             putToSleep(true, 2);
         }
     }
@@ -1773,6 +1776,10 @@ const MOVES = [{
         for (let i in getPkmn(true).moves) {
             getPkmn(true).moves[i] = 5;
         }
+        addSmallText(getL10n("others", "transform", {
+            "pokemon": [getPkmn(true).name, getPkmn(false).name],
+            "isEnemy": playerToMove != viewpoint
+        }));
     }
 }, {
     "name": "tri attack",
@@ -3241,6 +3248,14 @@ const POKEMON = [{
 }];
 const TRANSLATION = {
     "en": {
+        "stats": {
+            "atk": "Attack",
+            "def": "Defense",
+            "sp": "Special",
+            "spe": "Speed",
+            "acc": "Accuracy",
+            "eva": "Evasion"
+        },
         "others": {
             "turn": "Turn [number0]",
             "crit": "A critical hit!",
@@ -3276,7 +3291,13 @@ const TRANSLATION = {
             "frozenSolid": "[pokemon0] is frozen solid!",
             "frozenSolid-enemy": "The opposing [pokemon0] is frozen solid!",
             "dreamEaten": "[pokemon0]'s dream was eaten!",
-            "dreamEaten": "The opposing [pokemon0]'s dream was eaten!"
+            "dreamEaten-enemy": "The opposing [pokemon0]'s dream was eaten!",
+            "transform": "[pokemon0] transformed into [pokemon1]!",
+            "transform-enemy": "The opposing [pokemon0] transformed into [pokemon1]!",
+            "unableToMove": "[pokemon0] is paralyzed! It can't move!",
+            "unableToMove-enemy": "The opposing [pokemon0] is paralyzed! It can't move!",
+            "sleepHealthy": "[pokemon0] slept and became healthy!",
+            "sleepHealthy-enemy": "The opposing [pokemon0] slept and became healthy!"
         },
         "pokemon": {
             "abra": "Abra",
@@ -3600,6 +3621,14 @@ const TRANSLATION = {
         }
     },
     "zh": {
+        "stats": {
+            "atk": "攻击",
+            "def": "防御",
+            "sp": "速度",
+            "spe": "特殊",
+            "acc": "命中率",
+            "eva": "闪避率"
+        },
         "others": {
             "turn": "第 [number0] 回合",
             "crit": "击中了要害！",
@@ -3635,7 +3664,13 @@ const TRANSLATION = {
             "frozenSolid": "[pokemon0]冻住了！",
             "frozenSolid-enemy": "对手的[pokemon0]冻住了！",
             "dreamEaten": "[pokemon0]的梦被吃掉了！",
-            "dreamEaten-enemy": "对手的[pokemon0]的梦被吃掉了！"
+            "dreamEaten-enemy": "对手的[pokemon0]的梦被吃掉了！",
+            "transform": "[pokemon0]变身成了[pokemon1]！",
+            "transform-enemy": "对手的[pokemon0]变身成了[pokemon1]！",
+            "unableToMove": "[pokemon0]因身体麻痹而无法行动！",
+            "unableToMove-enemy": "对手的[pokemon0]因身体麻痹而无法行动！",
+            "sleepHealthy": "[pokemon0]睡着了，并且变得精力充沛！",
+            "sleepHealthy-enemy": "对手的[pokemon0]睡着了，并且变得精力充沛！"
         },
         "pokemon": {
             "abra": "凯西",

@@ -455,6 +455,9 @@ function nextPlayer(player) {
     if (getPkmn(true)?.status == "par" && Math.random() < 1 / 4) {
         addMainText(getL10n("pokemon", getPkmn(true).name) + " is paralyzed! It can't move!");
         return { "continue": true };
+    } else if (getPkmn(true)?.status == "frz") {
+        addMainText(getL10n("pokemon", getPkmn(true).name) + " is frozen solid!");
+        return { "continue": true };
     } else if (getPkmn(true)?.charge.turns > 0) {
         getPkmn(true).charge.turns--;
         if (getPkmn(true).charge.move && getPkmn(true).charge.turns == 0 && getPkmn(true).charge.move) {
@@ -476,7 +479,10 @@ function nextPlayer(player) {
                 "isEnemy": playerToMove != viewpoint
             }))
         } else if (getPkmn(true).sleepTurns == 0) {
-            addSmallText(getL10n("pokemon", getPkmn(true).name) + " woke up!");
+            addSmallText(getL10n("others", "wakeUp", {
+                "pokemon": [getPkmn(true).name],
+                "isEnemy": playerToMove != viewpoint
+            }))
             getPkmn(true).status = "";
         }
         return { "continue": true };
@@ -485,7 +491,7 @@ function nextPlayer(player) {
         if (Math.random() < 0.5) {
             dealDmg(true, calculateDmg(40, getStats(getPkmn(true).name).atk, getDefense(true, true), "",
                 getType(true)), { opposingSubstitute: true });
-            addMainText("It hurt itself in confusion!");
+            addMainText(getL10n("others", "hurtConfusion"))
         }
         getPkmn(true).tempEffect.confused--;
     }
@@ -943,9 +949,9 @@ function modifyStatus(status, prob) {
         }
         getPkmn(false).status = status;
         if (status == "par") {
-            addSmallText(getL10n("others","paralyzed",{
-                "pokemon":[getPkmn(false).name],
-                "isEnemy":!playerToMove != viewpoint
+            addSmallText(getL10n("others", "paralyzed", {
+                "pokemon": [getPkmn(false).name],
+                "isEnemy": !playerToMove != viewpoint
             }));
         } else if (status == "frz") {
             addSmallText(getL10n("others", "frozenSolid", {
