@@ -119,11 +119,13 @@ const MOVES = [{
     "pp": 20,
     "priority": 0,
     "effect": function (e) {
-        let num = Math.random();
-        if (num < 3 / 8) setUncontrollable("bind", 1);
-        else if (num < 6 / 8) setUncontrollable("bind", 2);
-        else if (num < 7 / 8) setUncontrollable("bind", 3);
-        else setUncontrollable("bind", 4);
+        let num = Math.random(), turns = 0;
+        if (num < 3 / 8) turns = 1;
+        else if (num < 6 / 8) turns = 2;
+        else if (num < 7 / 8) turns = 3;
+        else turns = 4;
+        setUncontrollable(true, "bind", turns);
+        setUncontrollable(false, "", turns);
     }
 }, {
     "name": "bite",
@@ -211,11 +213,13 @@ const MOVES = [{
     "pp": 10,
     "priority": 0,
     "effect": function (e) {
-        let num = Math.random();
-        if (num < 3 / 8) setUncontrollable("clamp", 1);
-        else if (num < 6 / 8) setUncontrollable("clamp", 2);
-        else if (num < 7 / 8) setUncontrollable("clamp", 3);
-        else setUncontrollable("clamp", 4);
+        let num = Math.random(), turns = 0;
+        if (num < 3 / 8) turns = 1;
+        else if (num < 6 / 8) turns = 2;
+        else if (num < 7 / 8) turns = 3;
+        else turns = 4;
+        setUncontrollable(true, "clamp", turns);
+        setUncontrollable(false, "", turns);
     }
 }, {
     "name": "comet punch",
@@ -509,11 +513,13 @@ const MOVES = [{
     "pp": 15,
     "priority": 0,
     "effect": function (e) {
-        let num = Math.random();
-        if (num < 3 / 8) setUncontrollable("fire spin", 1);
-        else if (num < 6 / 8) setUncontrollable("fire spin", 2);
-        else if (num < 7 / 8) setUncontrollable("fire spin", 3);
-        else setUncontrollable("fire spin", 4);
+        let num = Math.random(), turns = 0;
+        if (num < 3 / 8) turns = 1;
+        else if (num < 6 / 8) turns = 2;
+        else if (num < 7 / 8) turns = 3;
+        else turns = 4;
+        setUncontrollable(true, "fire spin", turns);
+        setUncontrollable(false, "", turns);
     }
 }, {
     "name": "fissure",
@@ -1042,12 +1048,12 @@ const MOVES = [{
     "priority": 0,
     "effect": function () {
         if (Math.random() < 0.5) {
-            setUncontrollable("petal dance", 2);
+            setUncontrollable(true, "petal dance", 2);
             setDelay(true, function () {
                 addTempEffect(true, "confused", Infinity, 1);
             }, 2);
         } else {
-            setUncontrollable("petal dance", 3);
+            setUncontrollable(true, "petal dance", 3);
             setDelay(true, function () {
                 addTempEffect(true, "confused", Infinity, 1);
             }, 3);
@@ -1161,7 +1167,7 @@ const MOVES = [{
     "priority": 0,
     "effect": function () {
         addTempEffect(true, "rage", Infinity, 1);
-        setUncontrollable("rage", Infinity);
+        setUncontrollable(true, "rage", Infinity);
     }
 }, {
     "name": "razor leaf",
@@ -1682,12 +1688,14 @@ const MOVES = [{
     "priority": 0,
     "effect": function () {
         if (Math.random() < 0.5) {
-            setUncontrollable("thrash", 2);
+            setUncontrollable(true, "thrash", 2);
+            setUncontrollable(false, "", 2);
             setDelay(true, function () {
                 addTempEffect(true, "confused", Infinity, 1);
             }, 2);
         } else {
-            setUncontrollable("thrash", 3);
+            setUncontrollable(true, "thrash", 3);
+            setUncontrollable(false, "", 3);
             setDelay(true, function () {
                 addTempEffect(true, "confused", Infinity, 1);
             }, 3);
@@ -1876,11 +1884,13 @@ const MOVES = [{
     "pp": 20,
     "priority": 0,
     "effect": function (e) {
-        let num = Math.random();
-        if (num < 3 / 8) setUncontrollable("wrap", 1);
-        else if (num < 6 / 8) setUncontrollable("wrap", 2);
-        else if (num < 7 / 8) setUncontrollable("wrap", 3);
-        else setUncontrollable("wrap", 4);
+        let num = Math.random(), turns = 0;
+        if (num < 3 / 8) turns = 1;
+        else if (num < 6 / 8) turns = 2;
+        else if (num < 7 / 8) turns = 3;
+        else turns = 4;
+        setUncontrollable(true, "wrap", turns);
+        setUncontrollable(false, "", turns);
     }
 }];
 const POKEMON = [{

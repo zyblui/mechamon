@@ -55,8 +55,8 @@ let record = [], viewpoint = 0;
 function refreshRecord() {
 
 }
-function setUncontrollable(move, turns) {
-    getPkmn(true).uncontrollable = {
+function setUncontrollable(isSelf, move, turns) {
+    getPkmn(isSelf).uncontrollable = {
         move: move,
         turns: turns
     };
@@ -178,16 +178,16 @@ function calculateEffectiveness(attackType, defenseType) {
     return effectiveness;
 }
 function refreshDecision() {
-    if (battleInfo[playerToMove].currentPokemon != -1 && getPkmn(true).uncontrollable.turns == 0 && (!getPkmn(false) || getPkmn(false).uncontrollable.turns == 0)) {
+    if (battleInfo[playerToMove].currentPokemon != -1 && getPkmn(true).uncontrollable.turns == 0/* && (!getPkmn(false) || getPkmn(false).uncontrollable.turns == 0)*/) {
         for (let i = 0; i < 4; i++) {
             if (!Object.keys(getPkmn(true).moves)[i]) {
                 document.getElementsByClassName("decisionMove")[i].innerHTML = "(Empty)";
                 document.getElementsByClassName("decisionMove")[i].disabled = "disabled";
                 continue;
             }
-            if (Object.values(getPkmn(true).moves)[i] <= 0 || (getPkmn(true).uncontrollable.move && getPkmn(true).uncontrollable
-                .move != Object.keys(getPkmn(true).moves)[i]) || (getPkmn(true).disable.move == Object.keys(getPkmn(true)
-                    .moves)[i])) document.getElementsByClassName("decisionMove")[i].disabled = "disabled";
+            if (Object.values(getPkmn(true).moves)[i] <= 0/* || (getPkmn(true).uncontrollable.move && getPkmn(true).uncontrollable
+                .move != Object.keys(getPkmn(true).moves)[i])*/ || (getPkmn(true).disable.move == Object.keys(getPkmn(true)
+                .moves)[i])) document.getElementsByClassName("decisionMove")[i].disabled = "disabled";
             else document.getElementsByClassName("decisionMove")[i].disabled = "";
             if (Object.keys(getPkmn(true).moves)[i] == "mimic" && getPkmn(true).mimicMove) document
                 .getElementsByClassName("decisionMove")[i].innerHTML = getL10n("moves", getPkmn(true).mimicMove);
@@ -453,7 +453,10 @@ function nextPlayer(player) {
         }
     }
     if (getPkmn(true)?.status == "par" && Math.random() < 1 / 4) {
-        addMainText(getL10n("pokemon", getPkmn(true).name) + " is paralyzed! It can't move!");
+        addMainText(getL10n("others", "unableToMove", {
+            "pokemon": [getPkmn(true).name],
+            "isEnemy": playerToMove != viewpoint
+        }));
         return { "continue": true };
     } else if (getPkmn(true)?.status == "frz") {
         addMainText(getL10n("pokemon", getPkmn(true).name) + " is frozen solid!");
@@ -489,7 +492,7 @@ function nextPlayer(player) {
     } else if (getPkmn(true)?.tempEffect.confused > 0) {
         addSmallText(getL10n("pokemon", getPkmn(true).name) + " is confused!");
         if (Math.random() < 0.5) {
-            dealDmg(true, calculateDmg(40, getStats(getPkmn(true).name).atk, getDefense(true, true), "",
+            dealDmg(true, calculateDmg(40, getAttack(true), getDefense(true, true), "",
                 getType(true)), { opposingSubstitute: true });
             addMainText(getL10n("others", "hurtConfusion"))
         }
@@ -497,13 +500,18 @@ function nextPlayer(player) {
     }
     refreshSequence();
 }
+function getAttack(isSelf) {
+    return getStats(getPkmn(isSelf).name).atk * STAGE_MULTIPLIER[getPkmn(isSelf).atkStage];
+}
 function getDefense(isSelf, isCrit) {
-    if (isCrit) return getStats(getPkmn(isSelf).name).def;
-    else return getStats(getPkmn(isSelf).name).def * ((getPkmn(isSelf).tempEffect.reflect) ? 2 : 1);
+    if (isCrit) return getStats(getPkmn(isSelf).name).def * STAGE_MULTIPLIER[getPkmn(isSelf).defStage];
+    else return getStats(getPkmn(isSelf).name).def * STAGE_MULTIPLIER[getPkmn(isSelf).defStage] * ((getPkmn(isSelf).tempEffect
+        .reflect) ? 2 : 1);
 }
 function getSp(isSelf, isCrit) {
-    if (isCrit) return getStats(getPkmn(isSelf).name).sp;
-    else return getStats(getPkmn(isSelf).name).sp * ((getPkmn(isSelf).tempEffect["light screen"]) ? 2 : 1);
+    if (isCrit) return getStats(getPkmn(isSelf).name).sp * STAGE_MULTIPLIER[getPkmn(isSelf).spStage];
+    else return getStats(getPkmn(isSelf).name).sp * STAGE_MULTIPLIER[getPkmn(isSelf).spStage] * ((getPkmn(isSelf)
+        .tempEffect["light screen"]) ? 2 : 1);
 }
 function nextTurn() {
     attacks.sort(function (a, b) {
@@ -538,17 +546,21 @@ function nextTurn() {
             sendOutPkmn(i.pkmn);
             continue;
         }
-        if (i.dirAttack) {
-            attack(i.move);
-            continue;
-        }
-        getPkmn(true).lastMoveUsed = i.move;
 
         addMainText(getL10n("others", "use", {
             "pokemon": [players[playerToMove].build[battleInfo[playerToMove].currentPokemon].name],
             "moves": [i.move],
             "isEnemy": ((viewpoint == -1) ? false : (playerToMove != viewpoint))
         }));
+
+        if (i.dirAttack) {
+            attack(i.move);
+            judgeHP();
+            renderHP();
+            continue;
+        }
+        getPkmn(true).lastMoveUsed = i.move;
+
         for (let k of MOVES) if (k.name == i.move) {
             let effect;
             if (k.category != "status" && Math.random() > k.acc * ACC_STAGE_MULTIPLIER[getPkmn(true).accStage] *
@@ -638,7 +650,7 @@ function attack(move) {
         let isCrit = (Math.random() < criticalHitRatioMultiplier * getPkmn(true).critProbMultiplier * getStats(getPkmn(true).name)
             .spe / 512);
         let dmg = 0, totalDmg = 0;
-        if (k.category == "physical") dmg = calculateDmg(k.power, getStats(getPkmn(true).name).atk, getDefense(false, isCrit),
+        if (k.category == "physical") dmg = calculateDmg(k.power, getAttack(true), getDefense(false, isCrit),
             k.type, getType(false));
         else dmg = calculateDmg(k.power, getSp(true, isCrit), getSp(false, isCrit), k.type, getType(false));
         if (k.category != "status") {
@@ -691,52 +703,16 @@ for (let i = 0; i < 4; i++) document.getElementsByClassName("decisionMove")[i].a
         });
         decisionNextPlayer();
         return;
-    } else if (getPkmn(false).uncontrollable.turns > 0) {
+    }/* else if (getPkmn(false).uncontrollable.turns > 0) {
         decisionNextPlayer();
         return;
-    }
+    }*/
     attacks.push({
         "user": playerToMove,
         "type": "move",
         "move": document.getElementsByClassName("decisionMove")[i].dataset.for,
     });
     decisionNextPlayer();
-    /*
-        getPkmn(true).lastMoveUsed = document.getElementsByClassName("decisionMove")[i].dataset.for;
-    
-        addMainText(getL10n("others", "use", {
-            "pokemon": [players[playerToMove].build[battleInfo[playerToMove].currentPokemon].name],
-            "moves": [document.getElementsByClassName("decisionMove")[i].dataset.for],
-            "isEnemy":((viewpoint == -1) ? false : (playerToMove != viewpoint))
-        }));
-        for (let k of moves) if (k.name == document.getElementsByClassName("decisionMove")[i].dataset.for) {
-            let effect;
-            if (k.category != "status" && Math.random() > k.acc * ACC_STAGE_MULTIPLIER[getPkmn(true).accStage] *
-                ACC_STAGE_MULTIPLIER[getPkmn(false).evaStage] / 100) {
-                addSmallText(getL10n("pokemon", getPkmn(true).name) + "'s attack missed!");
-                if (k.missEffect) k.missEffect();
-            } else {
-                let preDmgEffect = {};
-                if (k.preDmgEffect) preDmgEffect = k.preDmgEffect();
-                if (getPkmn(true).charge.turns > 0) {
-                    nextPlayer();
-                    break;
-                }
-                if (getPkmn(false).tempEffect.semiInvulnerable > 0 && !preDmgEffect.nullifySemiInvulnerable) break;
-                effect = attack(k.name);
-                if (getPkmn(false)?.tempEffect.rage > 0) modifyStats(false, "atk", 1, 1);
-            }
-            judgeHP();
-            renderHP();
-            if (getPkmn(true)) {
-                getPkmn(true).moves[k.name]--;
-                if (effect?.flinch) {
-                    nextTurn();
-                }
-                else nextPlayer();
-            } else refreshSequence();
-            break;
-        }*/
 });
 function charge(move, turns) {
     getPkmn(true).charge = {
