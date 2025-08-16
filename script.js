@@ -322,6 +322,11 @@ function refreshSequence() {
         h2.innerText = element.str;
         document.getElementById("record").appendChild(h2);
     }
+    document.getElementById("record").scroll({
+        top: document.getElementById("record").scrollHeight,
+        left: 0,
+        behavior: "smooth"
+    });
     if (sequence.length) {
         if (sequence[0].type != "turn") {
             setTimeout(function () {
@@ -336,6 +341,9 @@ function refreshSequence() {
         refreshSequenceIsRunning = false;
         refreshDecision();
     }
+
+    judgeHP();
+    renderHP();
 }
 function addMainText(str) {
     for (let i of document.querySelectorAll(".decisionMove,.decisionSwitch")) {
@@ -498,7 +506,7 @@ function nextPlayer(player) {
         }
         getPkmn(true).tempEffect.confused--;
     }
-    refreshSequence();
+    //refreshSequence();
 }
 function getAttack(isSelf) {
     return getStats(getPkmn(isSelf).name).atk * STAGE_MULTIPLIER[getPkmn(isSelf).atkStage];
@@ -909,11 +917,15 @@ function modifyStats(isSelf, stat, delta, prob) {
     if (rand < prob && getPkmn(isSelf)[stat + "Stage"] + delta >= -6 && getPkmn(isSelf)[stat + "Stage"] + delta <= 6) {
         getPkmn(isSelf)[stat + "Stage"] += delta;
         let word = "";
-        if (delta >= 2) word = "rose sharply";
-        else if (delta == 1) word = "rose";
-        else if (delta == -1) word = "fell";
-        else word = "harshly fell";
-        addSmallText(getL10n("pokemon", getPkmn(isSelf).name) + "'s " + STAT_NAMES[stat] + " " + word + "!");
+        if (delta >= 2) word = "riseSharply";
+        else if (delta == 1) word = "rise";
+        else if (delta == -1) word = "fall";
+        else word = "harshlyFall";
+        addSmallText(getL10n("others", word, {
+            "pokemon": [getPkmn(isSelf).name],
+            "stats": [stat],
+            "isEnemy": (playerToMove == isSelf) != viewpoint
+        }))
     }
 }
 function modifyStatus(status, prob) {

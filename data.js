@@ -3307,7 +3307,15 @@ const TRANSLATION = {
             "unableToMove": "[pokemon0] is paralyzed! It can't move!",
             "unableToMove-enemy": "The opposing [pokemon0] is paralyzed! It can't move!",
             "sleepHealthy": "[pokemon0] slept and became healthy!",
-            "sleepHealthy-enemy": "The opposing [pokemon0] slept and became healthy!"
+            "sleepHealthy-enemy": "The opposing [pokemon0] slept and became healthy!",
+            "rise":"[pokemon0]'s [stats0] rose!",
+            "rise-enemy":"The opposing [pokemon0]'s [stats0] rose!",
+            "riseSharply":"[pokemon0]'s [stats0] rose sharply!",
+            "riseSharply-enemy":"The opposing [pokemon0]'s [stats0] rose sharply!",
+            "fall":"[pokemon0]'s [stats0] fell!",
+            "fall-enemy":"The opposing [pokemon0]'s [stats0] fell!",
+            "harshlyFall":"[pokemon0]'s [stats0] harshly fell!",
+            "harshlyFall-enemy":"The opposing [pokemon0]'s [stats0] harshly fell!"
         },
         "pokemon": {
             "abra": "Abra",
@@ -3680,7 +3688,15 @@ const TRANSLATION = {
             "unableToMove": "[pokemon0]因身体麻痹而无法行动！",
             "unableToMove-enemy": "对手的[pokemon0]因身体麻痹而无法行动！",
             "sleepHealthy": "[pokemon0]睡着了，并且变得精力充沛！",
-            "sleepHealthy-enemy": "对手的[pokemon0]睡着了，并且变得精力充沛！"
+            "sleepHealthy-enemy": "对手的[pokemon0]睡着了，并且变得精力充沛！",
+            "rise":"[pokemon0]的[stats0]提高了！",
+            "rise-enemy":"对手的[pokemon0]的[stats0]提高了！",
+            "riseSharply":"[pokemon0]的[stats0]大幅提高了！",
+            "riseSharply-enemy":"对手的[pokemon0]的[stats0]大幅提高了！",
+            "fall":"[pokemon0]的[stats0]降低了！",
+            "fall-enemy":"对手的[pokemon0]的[stats0]降低了！",
+            "harshlyFall":"[pokemon0]的[stats0]大幅降低了！",
+            "harshlyFall-enemy":"对手的[pokemon0]的[stats0]大幅降低了！"
         },
         "pokemon": {
             "abra": "凯西",
