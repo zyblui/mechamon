@@ -1,5 +1,5 @@
 let settings = {
-    "lang": "en"
+    "lang": "zh"
 };
 let players = [{
     "name": "Player 1",
@@ -228,6 +228,7 @@ function refreshDecision() {
 }
 let turn = 0, playerToMove = 0, battleInfo = [];
 document.getElementById("startGame").addEventListener("click", function () {
+    document.getElementById("record").innerHTML = "";
     turn = 0;
     battleInfo = JSON.parse(JSON.stringify(players));
     battleInfo[0].currentPokemon = -1;
@@ -544,6 +545,7 @@ function nextTurn() {
         } else return 0;
     });
     outer: for (let i of attacks) {
+        let nextPlayerInfo = nextPlayer(i.user);
         if (!getPkmn(true) || !getPkmn(false)) continue;
         if (i.type == "switch") {
             addMainText(getL10n("others", "comeBack", {
@@ -553,8 +555,7 @@ function nextTurn() {
             sendOutPkmn(i.pkmn);
             continue;
         }
-        if (nextPlayer(i.user)?.continue) continue;
-
+        if (nextPlayerInfo?.continue) continue;
         addMainText(getL10n("others", "use", {
             "pokemon": [players[playerToMove].build[battleInfo[playerToMove].currentPokemon].name],
             "moves": [i.move],
@@ -612,6 +613,15 @@ function nextTurn() {
 
 }
 function endTurn() {
+    for (let i = 0; i <= 1; i++) {
+        let allFaint = true;
+        for (let j of battleInfo[i].build) if (j.hp > 0) allFaint = false;
+        if (allFaint) {
+            addMainText(battleInfo[Number(!i)].name + " won the battle!");
+            refreshSequence();
+            return;
+        }
+    }
     if (battleInfo[0].currentPokemon == -1) {
         playerToMove = 0;
     } else if (battleInfo[1].currentPokemon == -1) {

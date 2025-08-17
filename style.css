@@ -230,9 +230,22 @@ table {
 }
 
 .right-button {
-    float: right;
-    margin-top: 9px;
+    margin-top: 3px;
     font-family: Inter, sans-serif;
+    border-radius: 9px;
+    padding: 6px 18px;
+    border: solid 2px lightgray;
+    background-color: white;
+    font-size: medium;
+
+    &:hover {
+        border: solid 2px dodgerblue;
+        background-color: rgb(224, 239, 255);
+    }
+
+    &.float-right {
+        float: right;
+    }
 }
 
 .decisionMove,

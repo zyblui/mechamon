@@ -74,7 +74,7 @@
         </table>
         <div id="bottomOptions">
             <div>Player 1's turn</div>
-            <div>Viewpoint: <button>Player 1</button><button>Auto</button><button>Player 2</button></div>
+            <div><button>Viewpoint: Player 1</button></div>
             <div><button>Forfeit</button></div>
         </div>
     </div>
@@ -86,7 +86,7 @@
             <div class="list show" id="setupTable">
                 <div class="wrap">
                     <p class="dim">Welcome to the world of Mechamon!</p>
-                    <button id="startGame" class="right-button">Start Game</button>
+                    <button id="startGame" class="right-button float-right">Start Game</button>
                 </div>
                 Player 1:
                 <table id="p1Table">
@@ -206,30 +206,73 @@
                         <td class="select move-select" data-player="2" data-no="6" data-move-no="4"></td>
                     </tr>
                 </table>
+                Clauses:
+                <div class="wrap">
+                    <label>
+                        <input type="checkbox" />
+                        Sleep Clause
+                    </label>
+                    <p class="explanation">Each player can only have one Pokémon asleep at a time.</p>
+                </div>
+                <div class="wrap">
+                    <label>
+                        <input type="checkbox" />
+                        Species Clause
+                    </label>
+                    <p class="explanation">Each Pokémon on a player's team must be of different species or National
+                        Pokédex number.</p>
+                </div>
+                <div class="wrap">
+                    <label>
+                        <input type="checkbox" />
+                        OHKO clause
+                    </label>
+                    <p class="explanation">Fissure, Horn Drill, Guillotine, and Sheer Cold are banned.</p>
+                </div>
+                <div class="wrap">
+                    <label>
+                        <input type="checkbox" />
+                        Freeze clause
+                    </label>
+                    <p class="explanation">Each player can only have one Pokémon frozen at a time.</p>
+                </div>
+                <div class="wrap">
+                    <label>
+                        <input type="checkbox" />
+                        Evasion clause
+                    </label>
+                    <p class="explanation">Double Team and Minimize are banned.</p>
+                </div>
+                <div class="wrap">
+                    <label>
+                        <input type="checkbox" />
+                        Self-KO clause
+                    </label>
+                    <p class="explanation">The player automatically loses if their last Pokémon uses Self-Destruct or
+                        Explosion.</p>
+                </div>
             </div>
             <div class="list" id="pokemonList">
                 <div class="wrap">
-                    <button class="back">Back</button>
+                    <button class="back right-button">Back</button>
                     <p class="dim">Select a Pokémon...</p>
                 </div>
             </div>
             <div class="list" id="movesList">
                 <div class="wrap">
-                    <button class="back">Back</button>
+                    <button class="back right-button">Back</button>
                     <p class="dim">Select a move...</p>
-                    <button id="clearMove" class="right-button">Clear</button>
+                    <button id="clearMove" class="right-button float-right">Clear</button>
                 </div>
                 <div id="movesListInner"></div>
             </div>
         </div>
-        <div data-for="record" class="tab-content" id="record">
-
-        </div>
+        <div data-for="record" class="tab-content" id="record"></div>
         <div data-for="settings" class="tab-content" id="settings">
             <div class="wrap">Language: <select>
-                <option>English</option>
-                <option>Simplified Chinese</option>
-            </select></div>
+                    <option>English</option>
+                    <option>Simplified Chinese</option>
+                </select></div>
             <hr />
             <div class="wrap">
                 <label>
