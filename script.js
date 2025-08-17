@@ -1,5 +1,5 @@
 let settings = {
-    "lang": "zh"
+    "lang": "en"
 };
 let players = [{
     "name": "Player 1",
@@ -544,7 +544,6 @@ function nextTurn() {
         } else return 0;
     });
     outer: for (let i of attacks) {
-        if (nextPlayer(i.user)?.continue) continue;
         if (!getPkmn(true) || !getPkmn(false)) continue;
         if (i.type == "switch") {
             addMainText(getL10n("others", "comeBack", {
@@ -554,6 +553,7 @@ function nextTurn() {
             sendOutPkmn(i.pkmn);
             continue;
         }
+        if (nextPlayer(i.user)?.continue) continue;
 
         addMainText(getL10n("others", "use", {
             "pokemon": [players[playerToMove].build[battleInfo[playerToMove].currentPokemon].name],

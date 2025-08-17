@@ -6,9 +6,18 @@ body {
     background-color: #f3f3f3;
 }
 
-.dim {
-    color: gray;
-    font-style: italic;
+p {
+    &.dim {
+        color: gray;
+        font-style: italic;
+        display: inline-block;
+        margin: 9px 0;
+    }
+
+    &.explanation {
+        color: gray;
+        margin: 9px 0;
+    }
 }
 
 #turnNumber {
@@ -97,12 +106,14 @@ body {
     width: 300px;
     background-color: lightgray;
     height: 15px;
+    clip-path: rect(0 100% 100% 0 round 7.5px);
 }
 
 .inner-bar {
     width: 300px;
     height: 15px;
     background-color: green;
+    transition: 0.15s;
 
     &.green {
         background-color: green;
@@ -218,11 +229,6 @@ table {
     }
 }
 
-p {
-    display: inline-block;
-    margin: 9px 0
-}
-
 .right-button {
     float: right;
     margin-top: 9px;
@@ -234,23 +240,30 @@ p {
     height: 40px;
     font-family: Inter, sans-serif;
     font-size: large;
-    background-color: white
-        /*rgba(255, 255, 255, 0.5)*/
-    ;
-    margin: 3px;
-    border: solid 3px transparent;
+    background-color: white;
+    margin: 2px;
+    border: solid 2px lightgray;
+    border-radius: 9px;
 
     &:hover {
-        border: solid 3px gray;
+        border: solid 2px dodgerblue;
+        background-color: rgb(224, 239, 255);
     }
 }
 
 .decisionMove {
-    width: calc(25% - 6px);
+    width: calc(25% - 4px);
 }
 
 .decisionSwitch {
-    width: calc(100% / 6 - 6px);
+    width: calc(100% / 6 - 4px);
+
+    &.selected {
+        border: solid 2px dodgerblue;
+        color: black
+            /*background-color: dodgerblue;
+        color: white;*/
+    }
 }
 
 @keyframes slide-in {
@@ -278,10 +291,32 @@ p {
 }
 
 .main-text {
-    background-color: black;
-    color: white;
+    #record & {
+        background-color: #f3f3f3;
+    }
+
+    #text & {
+        background-color: rgb(226, 226, 226, 0.7);
+    }
+
     padding: 10px;
     font-size: large;
+    border-radius: 9px;
+    position: relative;
+
+    &::after {
+        width: 4px;
+        content: "";
+        display: block;
+        position: absolute;
+        margin: auto 0;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        background-color: dodgerblue;
+        height: calc(100% - 20px);
+        border-radius: 2px;
+    }
 
     #text & {
         width: fit-content;
@@ -295,6 +330,7 @@ p {
     padding: 5px;
     margin-left: 15px;
     font-size: medium;
+    border-radius: 9px;
 
     #text & {
         width: fit-content;
@@ -304,11 +340,6 @@ p {
 
 .hide {
     display: none;
-}
-
-button.selected {
-    background-color: dodgerblue;
-    color: white;
 }
 
 .tab-content {
