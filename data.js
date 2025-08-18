@@ -3269,6 +3269,13 @@ const TRANSLATION = {
             "acc": "Accuracy",
             "eva": "Evasion"
         },
+        "ui":{
+            "moves":"Moves: ",
+            "switch":"Switch to: ",
+            "setup":"Setup",
+            "record":"Record",
+            "settings":"Settings"
+        },
         "others": {
             "turn": "Turn [number0]",
             "crit": "A critical hit!",
@@ -3649,6 +3656,14 @@ const TRANSLATION = {
             "spe": "速度",
             "acc": "命中率",
             "eva": "闪避率"
+        },
+        "ui":{
+            "moves":"招式：",
+            "switch":"替换：",
+            "setup":"摆局",
+            "record":"记录",
+            "settings":"设置",
+            "sleepClause":""
         },
         "others": {
             "turn": "第 [number0] 回合",

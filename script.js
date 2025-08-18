@@ -68,14 +68,14 @@ function setDelay(isSelf, func, turns) {
     });
 }
 function render() {
-    if (battleInfo[0].currentPokemon != -1) document.getElementById("p1Pokemon").style.backgroundImage = "url('back/" + players[0]
-        .build[battleInfo[0].currentPokemon].name + ".png')";
-    if (battleInfo[1].currentPokemon != -1) document.getElementById("p2Pokemon").style.backgroundImage = "url('front/" + players[1]
-        .build[battleInfo[1].currentPokemon].name + ".png')";
-    if (battleInfo[0].currentPokemon != -1) document.getElementById("p1Name").innerText = getL10n("pokemon", players[0]
-        .build[battleInfo[0].currentPokemon].name);
-    if (battleInfo[1].currentPokemon != -1) document.getElementById("p2Name").innerText = getL10n("pokemon", players[1]
-        .build[battleInfo[1].currentPokemon].name);
+    if (battleInfo[Number(viewpoint != 0)].currentPokemon != -1) document.getElementById("p1Pokemon").style.backgroundImage =
+        "url('back/" + players[Number(viewpoint != 0)].build[battleInfo[Number(viewpoint != 0)].currentPokemon].name + ".png')";
+    if (battleInfo[Number(viewpoint != 1)].currentPokemon != -1) document.getElementById("p2Pokemon").style.backgroundImage =
+        "url('front/" + players[Number(viewpoint != 1)].build[battleInfo[Number(viewpoint != 1)].currentPokemon].name + ".png')";
+    if (battleInfo[Number(viewpoint != 0)].currentPokemon != -1) document.getElementById("p1Name").innerText = getL10n("pokemon",
+        players[Number(viewpoint != 0)].build[battleInfo[Number(viewpoint != 0)].currentPokemon].name);
+    if (battleInfo[Number(viewpoint != 1)].currentPokemon != -1) document.getElementById("p2Name").innerText = getL10n("pokemon",
+        players[Number(viewpoint != 1)].build[battleInfo[Number(viewpoint != 1)].currentPokemon].name);
 }
 function getL10n(type, str) {
     let returnValue = TRANSLATION[settings.lang][type][str + ((arguments[2]?.isEnemy) ? "-enemy" : "")];
@@ -617,7 +617,7 @@ function endTurn() {
         let allFaint = true;
         for (let j of battleInfo[i].build) if (j.hp > 0) allFaint = false;
         if (allFaint) {
-            addMainText(battleInfo[Number(!i)].name + " won the battle!");
+            addMainText("<strong>" + battleInfo[Number(!i)].name + "</strong> won the battle!");
             refreshSequence();
             return;
         }
@@ -972,3 +972,19 @@ function addTempEffect(isSelf, effect, turns, prob) {
             " gained armor!");
     }
 }
+document.getElementById("forfeit").addEventListener("click", function () {
+    addSmallText(battleInfo[playerToMove].name + " forfeited.")
+    addMainText("<strong>" + battleInfo[Number(!playerToMove)].name + "</strong> won the battle!");
+    refreshSequence()
+})
+document.getElementById("viewpoint").addEventListener("click", function () {
+    viewpoint = Number(!viewpoint);
+    document.getElementById("viewpoint").innerText = "Viewpoint: " + battleInfo[viewpoint].name;
+    render();
+})
+function refreshLang() {
+    for (let i of document.querySelectorAll("[data-transl-cat]")) {
+        i.innerText = TRANSLATION[settings.lang][i.dataset.translCat][i.dataset.translKey];
+    }
+}
+refreshLang();

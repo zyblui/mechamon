@@ -57,12 +57,12 @@
     <div id="decisionPanel">
         <table>
             <tr>
-                <th>Moves:</th>
+                <th data-transl-cat="ui" data-transl-key="moves">Moves:</th>
                 <td><button class="decisionMove">Move #1</button><button class="decisionMove">Move #2</button><button
                         class="decisionMove">Move #3</button><button class="decisionMove">Move #4</button></td>
             </tr>
             <tr>
-                <th>Switch to:</th>
+                <th data-transl-cat="ui" data-transl-key="switch">Switch to:</th>
                 <td><button class="decisionSwitch">Pokémon #1</button><button class="decisionSwitch">Pokémon
                         #2</button><button class="decisionSwitch">Pokémon #3</button><button
                         class="decisionSwitch">Pokémon
@@ -74,14 +74,14 @@
         </table>
         <div id="bottomOptions">
             <div>Player 1's turn</div>
-            <div><button>Viewpoint: Player 1</button></div>
-            <div><button>Forfeit</button></div>
+            <div><button id="viewpoint">Viewpoint: Player 1</button></div>
+            <div><button id="forfeit">Forfeit</button></div>
         </div>
     </div>
     <div id="rightPanel">
-        <button data-for="setup" class="tab tab-selected">Setup</button>
-        <button data-for="record" class="tab">Record</button>
-        <button data-for="settings" class="tab">Settings</button>
+        <button data-for="setup" class="tab tab-selected" data-transl-cat="ui" data-transl-key="setup">Setup</button>
+        <button data-for="record" class="tab" data-transl-cat="ui" data-transl-key="record">Record</button>
+        <button data-for="settings" class="tab" data-transl-cat="ui" data-transl-key="settings">Settings</button>
         <div data-for="setup" class="tab-content tab-show">
             <div class="list show" id="setupTable">
                 <div class="wrap">
