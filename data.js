@@ -3274,7 +3274,13 @@ const TRANSLATION = {
             "switch":"Switch to: ",
             "setup":"Setup",
             "record":"Record",
-            "settings":"Settings"
+            "settings":"Settings",
+            "sleepClause":"Sleep Clause",
+            "speciesClause":"Species Clause",
+            "ohkoClause":"OHKO clause",
+            "freezeClause":"Freeze Clause",
+            "evasionClause":"Evasion Clause",
+            "selfKoClause":"Self-KO Clause"
         },
         "others": {
             "turn": "Turn [number0]",
@@ -3663,7 +3669,12 @@ const TRANSLATION = {
             "setup":"摆局",
             "record":"记录",
             "settings":"设置",
-            "sleepClause":""
+            "sleepClause":"催眠条款",
+            "speciesClause":"种族条款",
+            "ohkoClause":"一击必杀条款",
+            "freezeClause":"冰冻条款",
+            "evasionClause":"闪避条款",
+            "selfKoClause":"自杀条款"
         },
         "others": {
             "turn": "第 [number0] 回合",

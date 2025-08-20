@@ -1,5 +1,11 @@
 let settings = {
-    "lang": "zh"
+    "lang": "en",
+    "sleepClause": false,
+    "speciesClause": false,
+    "ohkoClause": false,
+    "freezeClause": false,
+    "evasionClause": false,
+    "selfKoClause": false
 };
 let players = [{
     "name": "Player 1",
@@ -975,7 +981,7 @@ function addTempEffect(isSelf, effect, turns, prob) {
 document.getElementById("forfeit").addEventListener("click", function () {
     addSmallText(battleInfo[playerToMove].name + " forfeited.")
     addMainText("<strong>" + battleInfo[Number(!playerToMove)].name + "</strong> won the battle!");
-    refreshSequence()
+    refreshSequence();
 })
 document.getElementById("viewpoint").addEventListener("click", function () {
     viewpoint = Number(!viewpoint);
@@ -988,3 +994,8 @@ function refreshLang() {
     }
 }
 refreshLang();
+for (let i of document.querySelectorAll("[data-settings]")) {
+    i.addEventListener("change", function () {
+        settings[i.dataset.settings] = i.checked
+    })
+}
