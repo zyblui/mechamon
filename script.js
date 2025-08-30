@@ -1,5 +1,5 @@
 let settings = {
-    "lang": "en",
+    "lang": "zh",
     "sleepClause": false,
     "speciesClause": false,
     "ohkoClause": false,
@@ -112,10 +112,10 @@ for (let i of POKEMON) {
     div.classList.add("listButton");
     div.innerHTML = getL10n("pokemon", i.name);
     div.addEventListener("click", function () {
-        players[Number(document.querySelector(".pokemon-select.selected").dataset.player) - 1].build[Number(document.querySelector(".pokemon-select.selected").dataset.no) - 1].name = i.name;
+        players[Number(document.querySelector(".pkmnName.selected").dataset.player) - 1].build[Number(document.querySelector(".pkmnName.selected").dataset.no) - 1].name = i.name;
         for (let j = 0; j < 4; j++) {
-            if (!i.moves.includes(players[Number(document.querySelector(".pokemon-select.selected").dataset.player) - 1].build[Number(document.querySelector(".pokemon-select.selected").dataset.no) - 1].moves[j])) {
-                players[Number(document.querySelector(".pokemon-select.selected").dataset.player) - 1].build[Number(document.querySelector(".pokemon-select.selected").dataset.no) - 1].moves[j] = "";
+            if (!i.moves.includes(players[Number(document.querySelector(".pkmnName.selected").dataset.player) - 1].build[Number(document.querySelector(".pkmnName.selected").dataset.no) - 1].moves[j])) {
+                players[Number(document.querySelector(".pkmnName.selected").dataset.player) - 1].build[Number(document.querySelector(".pkmnName.selected").dataset.no) - 1].moves[j] = "";
             }
         }
         renderTable();
@@ -129,8 +129,8 @@ for (let i of MOVES) {
     div.classList.add("listButton");
     div.innerHTML = getL10n("moves", i.name);
     div.addEventListener("click", function () {
-        players[Number(document.querySelector(".move-select.selected").dataset.player) - 1].build[Number(document.querySelector(
-            ".move-select.selected").dataset.no) - 1].moves[Number(document.querySelector(".move-select.selected").dataset.moveNo) - 1] = i.name;
+        players[Number(document.querySelector(".move.selected").dataset.player) - 1].build[Number(document.querySelector(
+            ".move.selected").dataset.no) - 1].moves[Number(document.querySelector(".move.selected").dataset.moveNo) - 1] = i.name;
         renderTable();
         document.getElementById("movesList").classList.remove("show");
         document.getElementById("setupTable").classList.add("show");
@@ -138,7 +138,7 @@ for (let i of MOVES) {
     div.dataset.for = i.name;
     document.getElementById("movesListInner").appendChild(div);
 }
-for (let i of document.getElementsByClassName("pokemon-select")) {
+for (let i of document.getElementsByClassName("pkmnName")) {
     i.addEventListener("click", function () {
         document.querySelector(".select.selected")?.classList.remove("selected");
         i.classList.add("selected");
@@ -146,14 +146,14 @@ for (let i of document.getElementsByClassName("pokemon-select")) {
         document.getElementById("pokemonList").classList.add("show");
     });
 }
-for (let i of document.getElementsByClassName("move-select")) {
+for (let i of document.getElementsByClassName("move")) {
     i.addEventListener("click", function () {
         document.querySelector(".select.selected")?.classList.remove("selected");
         i.classList.add("selected");
         document.querySelector(".list.show").classList.remove("show");
         for (let j of document.getElementById("movesListInner").children) {
-            if (getStats(players[Number(document.querySelector(".move-select.selected").dataset.player) - 1].build[Number(document
-                .querySelector(".move-select.selected").dataset.no) - 1].name).moves.includes(j.dataset.for)) {
+            if (getStats(players[Number(document.querySelector(".move.selected").dataset.player) - 1].build[Number(document
+                .querySelector(".move.selected").dataset.no) - 1].name).moves.includes(j.dataset.for)) {
                 j.classList.remove("hide");
             } else j.classList.add("hide");
         }
@@ -161,8 +161,8 @@ for (let i of document.getElementsByClassName("move-select")) {
     });
 }
 document.getElementById("clearMove").addEventListener("click", function () {
-    players[Number(document.querySelector(".move-select.selected").dataset.player) - 1].build[Number(document.querySelector(
-        ".move-select.selected").dataset.no) - 1].moves[Number(document.querySelector(".move-select.selected").dataset.moveNo) - 1] = "";
+    players[Number(document.querySelector(".move.selected").dataset.player) - 1].build[Number(document.querySelector(
+        ".move.selected").dataset.no) - 1].moves[Number(document.querySelector(".move.selected").dataset.moveNo) - 1] = "";
     renderTable();
     document.getElementById("movesList").classList.remove("show");
     document.getElementById("setupTable").classList.add("show");
@@ -805,19 +805,19 @@ const ACC_STAGE_MULTIPLIER = {
     "6": 3 / 9
 };
 function renderHP() {
-    if (battleInfo[0].currentPokemon == -1) {
+    if (battleInfo[Number(0 != viewpoint)].currentPokemon == -1) {
         document.getElementById("p1Gauge").classList.add("hide");
     } else {
         document.getElementById("p1Gauge").classList.remove("hide");
     }
-    if (battleInfo[1].currentPokemon == -1) {
+    if (battleInfo[Number(1 != viewpoint)].currentPokemon == -1) {
         document.getElementById("p2Gauge").classList.add("hide");
     } else {
         document.getElementById("p2Gauge").classList.remove("hide");
     }
     for (let i of [0, 1]) {
-        if (battleInfo[i].currentPokemon != -1) {
-            let percentage = battleInfo[i].build[battleInfo[i].currentPokemon].hp / battleInfo[i].build[battleInfo[i].currentPokemon].maxHp * 100;
+        if (battleInfo[Number(i != viewpoint)].currentPokemon != -1) {
+            let percentage = battleInfo[Number(i != viewpoint)].build[battleInfo[Number(i != viewpoint)].currentPokemon].hp / battleInfo[Number(i != viewpoint)].build[battleInfo[Number(i != viewpoint)].currentPokemon].maxHp * 100;
             document.getElementById(`p${i + 1}Bar`).style.width = percentage + "%";
             document.getElementById(`p${i + 1}Percentage`).innerText = percentage.toFixed(0) + "%";
             document.getElementById(`p${i + 1}Bar`).classList.remove("green", "yellow", "red");
@@ -830,36 +830,41 @@ function renderHP() {
     document.getElementById("p2Status").innerHTML = "";
     let properties = ["atk", "def", "sp", "spe"];
     for (let i of properties) {
-        if (battleInfo[0].currentPokemon != -1 && battleInfo[0].build[battleInfo[0].currentPokemon][i + "Stage"] != 0) {
+        if (battleInfo[Number(0 != viewpoint)].currentPokemon != -1 && battleInfo[Number(0 != viewpoint)].build[battleInfo[
+            Number(0 != viewpoint)].currentPokemon][i + "Stage"] != 0) {
             let span = document.createElement("span");
-            if (battleInfo[0].build[battleInfo[0].currentPokemon][i + "Stage"] > 0) {
+            if (battleInfo[Number(0 != viewpoint)].build[battleInfo[Number(0 != viewpoint)].currentPokemon][i + "Stage"] > 0) {
                 span.classList.add("buff");
             } else {
                 span.classList.add("debuff");
             }
-            span.innerText = "[" + capitalize(i) + " x" + Number(STAGE_MULTIPLIER[battleInfo[0].build[battleInfo[0].currentPokemon][i + "Stage"]].toFixed(2)) + "]";
+            span.innerText = "[" + capitalize(i) + " x" + Number(STAGE_MULTIPLIER[battleInfo[Number(0 != viewpoint)].build[
+                battleInfo[Number(0 != viewpoint)].currentPokemon][i + "Stage"]].toFixed(2)) + "]";
             document.getElementById("p1Status").appendChild(span);
         }
-        if (battleInfo[1].currentPokemon != -1 && battleInfo[1].build[battleInfo[1].currentPokemon][i + "Stage"] != 0) {
+        if (battleInfo[Number(1 != viewpoint)].currentPokemon != -1 && battleInfo[Number(1 != viewpoint)].build[battleInfo[
+            Number(1 != viewpoint)].currentPokemon][i + "Stage"] != 0) {
             let span = document.createElement("span");
-            if (battleInfo[1].build[battleInfo[1].currentPokemon][i + "Stage"] > 0) {
+            if (battleInfo[Number(1 != viewpoint)].build[battleInfo[Number(1 != viewpoint)].currentPokemon][i + "Stage"] > 0) {
                 span.classList.add("buff");
             } else {
                 span.classList.add("debuff");
             }
-            span.innerText = "[" + capitalize(i) + " x" + Number(STAGE_MULTIPLIER[battleInfo[1].build[battleInfo[1].currentPokemon][i + "Stage"]].toFixed(2)) + "]";
+            span.innerText = "[" + capitalize(i) + " x" + Number(STAGE_MULTIPLIER[battleInfo[Number(1 != viewpoint)].build[
+                battleInfo[Number(1 != viewpoint)].currentPokemon][i + "Stage"]].toFixed(2)) + "]";
             document.getElementById("p2Status").appendChild(span);
         }
     }
-    for (let i of [0, 1]) if (battleInfo[i].currentPokemon != -1) {
-        if (battleInfo[i].build[battleInfo[i].currentPokemon].status) {
+    for (let i of [0, 1]) if (battleInfo[Number(i != viewpoint)].currentPokemon != -1) {
+        if (battleInfo[Number(i != viewpoint)].build[battleInfo[Number(i != viewpoint)].currentPokemon].status) {
             let span = document.createElement("span");
-            span.innerText = "[" + battleInfo[i].build[battleInfo[i].currentPokemon].status.toUpperCase() + "]";
-            span.classList.add(battleInfo[i].build[battleInfo[i].currentPokemon].status);
+            span.innerText = "[" + battleInfo[Number(i != viewpoint)].build[battleInfo[Number(i != viewpoint)].currentPokemon]
+                .status.toUpperCase() + "]";
+            span.classList.add(battleInfo[Number(i != viewpoint)].build[battleInfo[Number(i != viewpoint)].currentPokemon].status);
             document.getElementById(`p${i + 1}Status`).appendChild(span);
         }
-        for (let j in battleInfo[i].build[battleInfo[i].currentPokemon].tempEffect) {
-            if (battleInfo[i].build[battleInfo[i].currentPokemon].tempEffect[j]) {
+        for (let j in battleInfo[Number(i != viewpoint)].build[battleInfo[Number(i != viewpoint)].currentPokemon].tempEffect) {
+            if (battleInfo[Number(i != viewpoint)].build[battleInfo[Number(i != viewpoint)].currentPokemon].tempEffect[j]) {
                 let span = document.createElement("span");
                 span.innerText = "[" + capitalize(j) + "]";
                 span.classList.add("debuff");
@@ -870,16 +875,16 @@ function renderHP() {
 
     for (let i of [0, 1]) {
         for (let j = 0; j < 6; j++) {
-            if (!battleInfo[i].build[j].revealed) {
+            if (!battleInfo[Number(i != viewpoint)].build[j].revealed) {
                 document.getElementById("p" + (i + 1) + "Ball" + (j + 1)).style.backgroundImage = "url(pokemonicons-pokeball-sheet.png)";
                 document.getElementById("p" + (i + 1) + "Ball" + (j + 1)).style.backgroundPosition = "0 0"
             }
             else {
                 document.getElementById("p" + (i + 1) + "Ball" + (j + 1)).style.backgroundImage = "url(pokemonicons-sheet.png)";
-                document.getElementById("p" + (i + 1) + "Ball" + (j + 1)).style.backgroundPosition = (-(ICONS[battleInfo[i].build[j]
-                    .name].cell - 1) * 40) + "px " + (-(ICONS[battleInfo[i].build[j].name].row - 1) * 30) + "px";
+                document.getElementById("p" + (i + 1) + "Ball" + (j + 1)).style.backgroundPosition = (-(ICONS[battleInfo[Number(i != viewpoint)].build[j]
+                    .name].cell - 1) * 40) + "px " + (-(ICONS[battleInfo[Number(i != viewpoint)].build[j].name].row - 1) * 30) + "px";
 
-                if (battleInfo[i].build[j].hp <= 0) {
+                if (battleInfo[Number(i != viewpoint)].build[j].hp <= 0) {
                     document.getElementById("p" + (i + 1) + "Ball" + (j + 1)).classList.add("faint")
                 } else {
                     document.getElementById("p" + (i + 1) + "Ball" + (j + 1)).classList.remove("faint")
@@ -889,18 +894,21 @@ function renderHP() {
     }
 }
 function renderTable() {
-    for (let i = 0; i < 6; i++) {
-        document.querySelectorAll("#p1Table tr")[i + 1].children[1].innerText = getL10n("pokemon", players[0].build[i].name);
+    for (let playerNo of [0, 1]) for (let i = 0; i < 6; i++) {
+        document.querySelectorAll(".pkmnName[data-player='" + (playerNo + 1) + "']")[i].innerText = getL10n("pokemon", players[
+            playerNo].build[i].name);
         for (let j = 0; j < 4; j++) {
-            if (players[0].build[i].moves[j]) {
-                document.querySelectorAll("#p1Table tr")[i + 1].children[j + 2].innerText = getL10n("moves", players[0].build[i].moves[j]);
+            if (players[playerNo].build[i].moves[j]) {
+                document.querySelectorAll(".pkmn[data-player='" + (playerNo + 1) + "']")[i].querySelectorAll(".move")[j].innerText
+                    = getL10n("moves", players[playerNo].build[i].moves[j]);
             } else {
-                document.querySelectorAll("#p1Table tr")[i + 1].children[j + 2].innerText = "(Empty)";
+                document.querySelectorAll(".pkmn[data-player='" + (playerNo + 1) + "']")[i].querySelectorAll(".move")[j].innerText
+                    = "(Empty)";
             }
         }
-    }
+    }/*
     for (let i = 0; i < 6; i++) {
-        document.querySelectorAll("#p2Table tr")[i + 1].children[1].innerText = getL10n("pokemon", players[1].build[i].name);
+        document.querySelectorAll(".pkmnName[data-player='2']")[i].innerText = getL10n("pokemon", players[1].build[i].name);
         for (let j = 0; j < 4; j++) {
             if (players[1].build[i].moves[j]) {
                 document.querySelectorAll("#p2Table tr")[i + 1].children[j + 2].innerText = getL10n("moves", players[1].build[i].moves[j]);
@@ -908,7 +916,7 @@ function renderTable() {
                 document.querySelectorAll("#p2Table tr")[i + 1].children[j + 2].innerText = "(Empty)";
             }
         }
-    }
+    }*/
 }
 renderTable();
 for (let i of document.getElementsByClassName("tab")) {
@@ -987,6 +995,7 @@ document.getElementById("viewpoint").addEventListener("click", function () {
     viewpoint = Number(!viewpoint);
     document.getElementById("viewpoint").innerText = "Viewpoint: " + battleInfo[viewpoint].name;
     render();
+    renderHP();
 })
 function refreshLang() {
     for (let i of document.querySelectorAll("[data-transl-cat]")) {

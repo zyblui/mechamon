@@ -4,6 +4,7 @@ body {
     height: 100%;
     margin: 0;
     background-color: #f3f3f3;
+    user-select: none;
 }
 
 p {
@@ -179,24 +180,11 @@ p {
     text-align: right;
     width: 300px
 }
-
+/*
 #setupTable th,
 #setupTable td {
     border: solid 2px transparent;
-
-    &.select {
-        &:hover {
-            border: solid 2px rgba(30, 144, 255, 0.5);
-            background-color: rgba(30, 144, 255, 0.2);
-            cursor: pointer;
-        }
-
-        &.selected {
-            border: solid 2px rgba(30, 144, 255, 0.8);
-            background-color: rgba(30, 144, 255, 0.5);
-        }
-    }
-}
+}*/
 
 .select {
     &:hover {
@@ -596,5 +584,61 @@ button {
                 background-color: rgba(0, 0, 0, 0.05);
             }
         }
+    }
+}
+
+.pkmn {
+    border-radius: 9px;
+    background-color: rgba(0, 0, 0, 0.05);
+    padding: 4px 9px;
+    margin:9px 0;
+    transition: 0.1s;
+    &:hover{
+        background-color: rgba(30, 144, 255,0.2);
+    }
+    &>div {
+        margin: 5px 0
+    }
+
+    & .input {
+        background-color: white;
+        border-radius: 9px;
+        padding: 3px 9px;
+        border: solid 2px white;
+        display: inline-block;
+
+        &:hover {
+            border: solid 2px dodgerblue;
+        }
+    }
+
+    & .lv::before {
+        content: "Lv: ";
+        color: gray
+    }
+
+    & .nick::before {
+        content: "Nickname: ";
+        color: gray
+    }
+    & .move-1::before {
+        content: "1: ";
+        color: gray
+    }
+    & .move-2::before {
+        content: "2: ";
+        color: gray
+    }
+    & .move-3::before {
+        content: "3: ";
+        color: gray
+    }
+    & .move-4::before {
+        content: "4: ";
+        color: gray
+    }
+    & .pkmnName {
+        font-weight: bold;
+        font-size: large;
     }
 }
