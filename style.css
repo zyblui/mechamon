@@ -181,11 +181,6 @@ p {
     width: 300px
 }
 /*
-#setupTable th,
-#setupTable td {
-    border: solid 2px transparent;
-}*/
-
 .select {
     &:hover {
         border: solid 2px rgba(30, 144, 255, 0.5);
@@ -197,7 +192,7 @@ p {
         border: solid 2px rgba(30, 144, 255, 0.8);
         background-color: rgba(30, 144, 255, 0.5);
     }
-}
+}*/
 
 table {
     width: 100%;

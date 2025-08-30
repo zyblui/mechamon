@@ -11,43 +11,55 @@ let players = [{
     "name": "Player 1",
     "build": [{
         "name": "geodude",
-        "moves": ["earthquake", "rock slide", "body slam", "explosion"]
+        "moves": ["earthquake", "rock slide", "body slam", "explosion"],
+        "lv": 5
     }, {
         "name": "staryu",
-        "moves": ["surf", "thunderbolt", "blizzard", "thunder wave"]
+        "moves": ["surf", "thunderbolt", "blizzard", "thunder wave"],
+        "lv": 5
     }, {
         "name": "koffing",
-        "moves": ["sludge", "fire blast", "thunderbolt", "explosion"]
+        "moves": ["sludge", "fire blast", "thunderbolt", "explosion"],
+        "lv": 5
     }, {
         "name": "tentacool",
-        "moves": ["surf", "blizzard", "mega drain", "hydro pump"]
+        "moves": ["surf", "blizzard", "mega drain", "hydro pump"],
+        "lv": 5
     }, {
         "name": "machop",
-        "moves": ["submission", "earthquake", "rock slide", "body slam"]
+        "moves": ["submission", "earthquake", "rock slide", "body slam"],
+        "lv": 5
     }, {
         "name": "eevee",
-        "moves": ["substitute", "reflect", "body slam", "double-edge"]
+        "moves": ["substitute", "reflect", "body slam", "double-edge"],
+        "lv": 5
     }]
 }, {
     "name": "Player 2",
     "build": [{
         "name": "eevee",
-        "moves": ["rage", "body slam", "double-edge", "quick attack"]
+        "moves": ["rage", "body slam", "double-edge", "quick attack"],
+        "lv": 5
     }, {
         "name": "vulpix",
-        "moves": ["flamethrower", "body slam", "confuse ray", "substitute"]
+        "moves": ["flamethrower", "body slam", "confuse ray", "substitute"],
+        "lv": 5
     }, {
         "name": "ponyta",
-        "moves": ["toxic", "agility", "fire blast", "body slam"]
+        "moves": ["toxic", "agility", "fire blast", "body slam"],
+        "lv": 5
     }, {
         "name": "growlithe",
-        "moves": ["agility", "body slam", "fire blast", "double-edge"]
+        "moves": ["agility", "body slam", "fire blast", "double-edge"],
+        "lv": 5
     }, {
         "name": "psyduck",
-        "moves": ["surf", "mega kick", "blizzard", "rage"]
+        "moves": ["surf", "mega kick", "blizzard", "rage"],
+        "lv": 5
     }, {
         "name": "poliwag",
-        "moves": ["hypnosis", "amnesia", "surf", "psychic"]
+        "moves": ["hypnosis", "amnesia", "surf", "psychic"],
+        "lv": 5
     }]
 }];
 document.getElementById("p1Pokemon").style.backgroundImage = "url('back/" + players[0].build[0].name + ".png')";
@@ -171,9 +183,9 @@ for (let i of document.querySelectorAll(".back")) i.addEventListener("click", fu
     document.querySelector(".list.show").classList.remove("show");
     document.getElementById("setupTable").classList.add("show");
 });
-function calculateDmg(power, atk, def, attackType, defenseType) {
+function calculateDmg(power, atk, def, lv, attackType, defenseType) {
     let effectiveness = calculateEffectiveness(attackType, defenseType);
-    return Math.max(effectiveness * (power + atk - def), 0);
+    return ((2 * lv + 10) / 250 * atk / def * power + 2) * effectiveness;
 }
 function calculateEffectiveness(attackType, defenseType) {
     let effectiveness = 1;
@@ -243,10 +255,13 @@ document.getElementById("startGame").addEventListener("click", function () {
         for (let j of i.build) {
             for (let k of POKEMON) {
                 if (k.name == j.name) {
-                    j.hp = Math.floor(0.01 * (2 * k.hp + 30 + Math.floor(0.25 * 252)) * 100) + 100 + 10;
-                    j.maxHp = Math.floor(0.01 * (2 * k.hp + 30 + Math.floor(0.25 * 252)) * 100) + 100 + 10;
+                    j.hp = Math.floor(0.01 * (2 * k.hp + 30 + Math.floor(0.25 * 252)) * j.lv) + j.lv + 10;
+                    j.maxHp = Math.floor(0.01 * (2 * k.hp + 30 + Math.floor(0.25 * 252)) * j.lv) + j.lv + 10;
                     break;
                 }
+            }
+            for (let k of ["atk", "def", "sp", "spe"]) {
+                j[k] = Math.floor(0.01 * (2 * getStats(j.name)[k] + 30 + Math.floor(0.25 * 252)) * j.lv) + 5;
             }
             j.transformPkmn = "";
             j.mimicMove = "";
@@ -507,7 +522,7 @@ function nextPlayer(player) {
     } else if (getPkmn(true)?.tempEffect.confused > 0) {
         addSmallText(getL10n("pokemon", getPkmn(true).name) + " is confused!");
         if (Math.random() < 0.5) {
-            dealDmg(true, calculateDmg(40, getAttack(true), getDefense(true, true), "",
+            dealDmg(true, calculateDmg(40, getAttack(true), getDefense(true, true), getPkmn(true).lv, "",
                 getType(true)), { opposingSubstitute: true });
             addMainText(getL10n("others", "hurtConfusion"))
         }
@@ -516,16 +531,16 @@ function nextPlayer(player) {
     //refreshSequence();
 }
 function getAttack(isSelf) {
-    return getStats(getPkmn(isSelf).name).atk * STAGE_MULTIPLIER[getPkmn(isSelf).atkStage];
+    return getPkmn(isSelf).atk * STAGE_MULTIPLIER[getPkmn(isSelf).atkStage];
 }
 function getDefense(isSelf, isCrit) {
-    if (isCrit) return getStats(getPkmn(isSelf).name).def * STAGE_MULTIPLIER[getPkmn(isSelf).defStage];
-    else return getStats(getPkmn(isSelf).name).def * STAGE_MULTIPLIER[getPkmn(isSelf).defStage] * ((getPkmn(isSelf).tempEffect
+    if (isCrit) return getPkmn(isSelf).def * STAGE_MULTIPLIER[getPkmn(isSelf).defStage];
+    else return getPkmn(isSelf).def * STAGE_MULTIPLIER[getPkmn(isSelf).defStage] * ((getPkmn(isSelf).tempEffect
         .reflect) ? 2 : 1);
 }
 function getSp(isSelf, isCrit) {
-    if (isCrit) return getStats(getPkmn(isSelf).name).sp * STAGE_MULTIPLIER[getPkmn(isSelf).spStage];
-    else return getStats(getPkmn(isSelf).name).sp * STAGE_MULTIPLIER[getPkmn(isSelf).spStage] * ((getPkmn(isSelf)
+    if (isCrit) return getPkmn(isSelf).sp * STAGE_MULTIPLIER[getPkmn(isSelf).spStage];
+    else return getPkmn(isSelf).sp * STAGE_MULTIPLIER[getPkmn(isSelf).spStage] * ((getPkmn(isSelf)
         .tempEffect["light screen"]) ? 2 : 1);
 }
 function nextTurn() {
@@ -535,8 +550,8 @@ function nextTurn() {
         else if (a.type == "move" && b.type == "move") {
             if (getMoveStats(a.move).priority > getMoveStats(b.move).priority) return -1;
             else if (getMoveStats(b.move).priority > getMoveStats(a.move).priority) return 1;
-            let p1Spe = getStats(battleInfo[0].build[battleInfo[0].currentPokemon].name).spe * STAGE_MULTIPLIER[battleInfo[0].build[battleInfo[0].currentPokemon].speStage] * ((battleInfo[0].build[battleInfo[0].currentPokemon].status == "par") ? 0.25 : 1);
-            let p2Spe = getStats(battleInfo[1].build[battleInfo[1].currentPokemon].name).spe * STAGE_MULTIPLIER[battleInfo[1].build[battleInfo[1].currentPokemon].speStage] * ((battleInfo[1].build[battleInfo[1].currentPokemon].status == "par") ? 0.25 : 1);
+            let p1Spe = battleInfo[0].build[battleInfo[0].currentPokemon].spe * STAGE_MULTIPLIER[battleInfo[0].build[battleInfo[0].currentPokemon].speStage] * ((battleInfo[0].build[battleInfo[0].currentPokemon].status == "par") ? 0.25 : 1);
+            let p2Spe = battleInfo[1].build[battleInfo[1].currentPokemon].spe * STAGE_MULTIPLIER[battleInfo[1].build[battleInfo[1].currentPokemon].speStage] * ((battleInfo[1].build[battleInfo[1].currentPokemon].status == "par") ? 0.25 : 1);
             let tempPlayerToMove = 0;
             if (p1Spe > p2Spe) {
                 tempPlayerToMove = 0;
@@ -674,9 +689,9 @@ function attack(move) {
         let isCrit = (Math.random() < criticalHitRatioMultiplier * getPkmn(true).critProbMultiplier * getStats(getPkmn(true).name)
             .spe / 512);
         let dmg = 0, totalDmg = 0;
-        if (k.category == "physical") dmg = calculateDmg(k.power, getAttack(true), getDefense(false, isCrit),
+        if (k.category == "physical") dmg = calculateDmg(k.power, getAttack(true), getDefense(false, isCrit), getPkmn(true).lv,
             k.type, getType(false));
-        else dmg = calculateDmg(k.power, getSp(true, isCrit), getSp(false, isCrit), k.type, getType(false));
+        else dmg = calculateDmg(k.power, getSp(true, isCrit), getSp(false, isCrit), getPkmn(true).lv, k.type, getType(false));
         if (k.category != "status") {
             switch (calculateEffectiveness(k.type, getType(false))) {
                 case 4:
@@ -1005,6 +1020,18 @@ function refreshLang() {
 refreshLang();
 for (let i of document.querySelectorAll("[data-settings]")) {
     i.addEventListener("change", function () {
-        settings[i.dataset.settings] = i.checked
+        settings[i.dataset.settings] = i.checked;
     })
 }
+for (let i of document.querySelectorAll(".lv")) i.addEventListener("blur", function () {
+    if (isNaN(Number(i.innerText))) {
+        i.innerText = players[Number(i.dataset.player) - 1].build[Number(i.dataset.no) - 1].lv
+    } else if (Number(i.innerText) > 100) {
+        i.innerText = 100
+    } else if (Number(i.innerText) < 1) {
+        i.innerText = 1
+    } else {
+        i.innerText = Math.round(Number(i.innerText))
+    }
+    players[Number(i.dataset.player) - 1].build[Number(i.dataset.no) - 1].lv = Number(i.innerText)
+})
