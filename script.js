@@ -835,6 +835,7 @@ function renderHP() {
             let percentage = battleInfo[Number(i != viewpoint)].build[battleInfo[Number(i != viewpoint)].currentPokemon].hp / battleInfo[Number(i != viewpoint)].build[battleInfo[Number(i != viewpoint)].currentPokemon].maxHp * 100;
             document.getElementById(`p${i + 1}Bar`).style.width = percentage + "%";
             document.getElementById(`p${i + 1}Percentage`).innerText = percentage.toFixed(0) + "%";
+            document.getElementById(`p${i + 1}Lv`).innerText = "Lv " + battleInfo[Number(i != viewpoint)].build[battleInfo[Number(i != viewpoint)].currentPokemon].lv;
             document.getElementById(`p${i + 1}Bar`).classList.remove("green", "yellow", "red");
             if (percentage >= 50) document.getElementById(`p${i + 1}Bar`).classList.add("green");
             else if (percentage >= 20) document.getElementById(`p${i + 1}Bar`).classList.add("yellow");
