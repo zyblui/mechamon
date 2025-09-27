@@ -1018,7 +1018,7 @@ const MOVES = [{
     "pp": 15,
     "priority": 0,
     "effect": function () {
-        dealDmg(false, 100);
+        dealDmg(false, getPkmn(true).lv);
     }
 }, {
     "name": "pay day",
@@ -1315,7 +1315,7 @@ const MOVES = [{
     "pp": 20,
     "priority": 0,
     "effect": function () {
-        dealDmg(false, 100);
+        dealDmg(false, getPkmn(true).lv);
     }
 }, {
     "name": "self-destruct",
@@ -3269,18 +3269,18 @@ const TRANSLATION = {
             "acc": "Accuracy",
             "eva": "Evasion"
         },
-        "ui":{
-            "moves":"Moves: ",
-            "switch":"Switch to: ",
-            "setup":"Setup",
-            "record":"Record",
-            "settings":"Settings",
-            "sleepClause":"Sleep Clause",
-            "speciesClause":"Species Clause",
-            "ohkoClause":"OHKO clause",
-            "freezeClause":"Freeze Clause",
-            "evasionClause":"Evasion Clause",
-            "selfKoClause":"Self-KO Clause"
+        "ui": {
+            "moves": "Moves: ",
+            "switch": "Switch to: ",
+            "setup": "Setup",
+            "record": "Record",
+            "settings": "Settings",
+            "sleepClause": "Sleep Clause",
+            "speciesClause": "Species Clause",
+            "ohkoClause": "OHKO clause",
+            "freezeClause": "Freeze Clause",
+            "evasionClause": "Evasion Clause",
+            "selfKoClause": "Self-KO Clause"
         },
         "others": {
             "turn": "Turn [number0]",
@@ -3663,18 +3663,18 @@ const TRANSLATION = {
             "acc": "命中率",
             "eva": "闪避率"
         },
-        "ui":{
-            "moves":"招式：",
-            "switch":"替换：",
-            "setup":"摆局",
-            "record":"记录",
-            "settings":"设置",
-            "sleepClause":"催眠条款",
-            "speciesClause":"种族条款",
-            "ohkoClause":"一击必杀条款",
-            "freezeClause":"冰冻条款",
-            "evasionClause":"闪避条款",
-            "selfKoClause":"自杀条款"
+        "ui": {
+            "moves": "招式：",
+            "switch": "替换：",
+            "setup": "摆局",
+            "record": "记录",
+            "settings": "设置",
+            "sleepClause": "催眠条款",
+            "speciesClause": "种族条款",
+            "ohkoClause": "一击必杀条款",
+            "freezeClause": "冰冻条款",
+            "evasionClause": "闪避条款",
+            "selfKoClause": "自杀条款"
         },
         "others": {
             "turn": "第 [number0] 回合",

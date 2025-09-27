@@ -4,6 +4,7 @@ body {
     height: 100%;
     margin: 0;
     background-color: #f3f3f3;
+    -webkit-user-select: none;
     user-select: none;
 }
 
@@ -179,8 +180,9 @@ p {
 .percentage {
     float: right;
 }
-.gauge-lv{
-    float:left
+
+.gauge-lv {
+    float: left;
 }
 
 table {
@@ -253,9 +255,7 @@ table {
 
     &.selected {
         border: solid 2px dodgerblue;
-        color: black
-            /*background-color: dodgerblue;
-        color: white;*/
+        color: black;
     }
 }
 
@@ -575,11 +575,13 @@ button {
     border-radius: 9px;
     background-color: rgba(0, 0, 0, 0.05);
     padding: 4px 9px;
-    margin:9px 0;
+    margin: 9px 0;
     transition: 0.1s;
-    &:hover{
-        background-color: rgba(30, 144, 255,0.2);
+
+    &:hover {
+        background-color: rgba(30, 144, 255, 0.2);
     }
+
     &>div {
         margin: 5px 0
     }
@@ -605,22 +607,27 @@ button {
         content: "Nickname: ";
         color: gray
     }
+
     & .move-1::before {
         content: "1: ";
         color: gray
     }
+
     & .move-2::before {
         content: "2: ";
         color: gray
     }
+
     & .move-3::before {
         content: "3: ";
         color: gray
     }
+
     & .move-4::before {
         content: "4: ";
         color: gray
     }
+
     & .pkmnName {
         font-weight: bold;
         font-size: large;
