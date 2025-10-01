@@ -3,11 +3,23 @@ body {
     font-family: Inter, sans-serif;
     height: 100%;
     margin: 0;
+    background-color: #f3f3f3;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
-.dim {
-    color: gray;
-    font-style: italic;
+p {
+    &.dim {
+        color: gray;
+        font-style: italic;
+        display: inline-block;
+        margin: 9px 0;
+    }
+
+    &.explanation {
+        color: gray;
+        margin: 9px 0;
+    }
 }
 
 #turnNumber {
@@ -19,6 +31,8 @@ body {
     top: 10px;
     left: 10px;
     padding: 0 10px;
+    border-radius: 9px;
+    box-shadow: 0 0 9px lightgray;
 }
 
 #text {
@@ -33,19 +47,22 @@ body {
     left: 0;
     height: 80%;
     width: 60%;
-    background-color: rgba(0, 0, 0, 0.05);
 }
 
 #decisionPanel {
     position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 60%;
-    height: 20%;
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 9px;
+    border: solid 2px lightgray;
+    box-shadow: 0 0 9px lightgray;
+    bottom: 9px;
+    left: 9px;
+    width: calc(60% - 9px);
+    height: calc(20% - 9px);
 
     & table {
         padding: 3px 3px 0 3px;
+        height: calc(100% - 35px);
 
         & td {
             padding: 0
@@ -57,10 +74,8 @@ body {
     position: absolute;
     right: 0;
     top: 0;
-    width: calc(40% - 10px);
+    width: 40%;
     height: 100%;
-    padding-left: 10px;
-    overflow-y: auto;
 }
 
 #p1Pokemon,
@@ -99,12 +114,14 @@ body {
     width: 300px;
     background-color: lightgray;
     height: 15px;
+    clip-path: rect(0 100% 100% 0 round 7.5px);
 }
 
 .inner-bar {
     width: 300px;
     height: 15px;
     background-color: green;
+    transition: 0.15s;
 
     &.green {
         background-color: green;
@@ -161,39 +178,11 @@ body {
 }
 
 .percentage {
-    text-align: right;
-    width: 300px
+    float: right;
 }
 
-#setupTable th,
-#setupTable td {
-    border: solid 2px transparent;
-
-    &.select {
-        &:hover {
-            border: solid 2px rgba(30, 144, 255, 0.5);
-            background-color: rgba(30, 144, 255, 0.2);
-            cursor: pointer;
-        }
-
-        &.selected {
-            border: solid 2px rgba(30, 144, 255, 0.8);
-            background-color: rgba(30, 144, 255, 0.5);
-        }
-    }
-}
-
-.select {
-    &:hover {
-        border: solid 2px rgba(30, 144, 255, 0.5);
-        background-color: rgba(30, 144, 255, 0.2);
-        cursor: pointer;
-    }
-
-    &.selected {
-        border: solid 2px rgba(30, 144, 255, 0.8);
-        background-color: rgba(30, 144, 255, 0.5);
-    }
+.gauge-lv {
+    float: left;
 }
 
 table {
@@ -220,37 +209,54 @@ table {
     }
 }
 
-p {
-    display: inline-block;
-}
-
 .right-button {
-    position: absolute;
-    right: 10px;
-    margin-top: 1em;
+    margin-top: 3px;
     font-family: Inter, sans-serif;
+    border-radius: 9px;
+    padding: 6px 18px;
+    border: solid 2px lightgray;
+    background-color: white;
+    font-size: medium;
+
+    &:hover {
+        border: solid 2px dodgerblue;
+        background-color: rgb(224, 239, 255);
+    }
+
+    &.float-right {
+        float: right;
+    }
 }
 
 .decisionMove,
 .decisionSwitch {
-    height: 40px;
+    height:
+        /*40px*/
+        -webkit-fill-available;
     font-family: Inter, sans-serif;
     font-size: large;
-    background-color: rgba(255, 255, 255, 0.5);
-    margin: 3px;
-    border: solid 3px transparent;
+    background-color: white;
+    margin: 2px;
+    border: solid 2px lightgray;
+    border-radius: 9px;
 
     &:hover {
-        border: solid 3px gray;
+        border: solid 2px dodgerblue;
+        background-color: rgb(224, 239, 255);
     }
 }
 
 .decisionMove {
-    width: calc(25% - 6px);
+    width: calc(25% - 4px);
 }
 
 .decisionSwitch {
-    width: calc(100% / 6 - 6px);
+    width: calc(100% / 6 - 4px);
+
+    &.selected {
+        border: solid 2px dodgerblue;
+        color: black;
+    }
 }
 
 @keyframes slide-in {
@@ -265,11 +271,45 @@ p {
     }
 }
 
+@keyframes fade-in {
+    from {
+        transform: translateX(-30px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
 .main-text {
-    background-color: black;
-    color: white;
+    #record & {
+        background-color: #f3f3f3;
+    }
+
+    #text & {
+        background-color: rgb(226, 226, 226, 0.7);
+    }
+
     padding: 10px;
     font-size: large;
+    border-radius: 9px;
+    position: relative;
+
+    &::after {
+        width: 4px;
+        content: "";
+        display: block;
+        position: absolute;
+        margin: auto 0;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        background-color: dodgerblue;
+        height: calc(100% - 20px);
+        border-radius: 2px;
+    }
 
     #text & {
         width: fit-content;
@@ -283,6 +323,7 @@ p {
     padding: 5px;
     margin-left: 15px;
     font-size: medium;
+    border-radius: 9px;
 
     #text & {
         width: fit-content;
@@ -294,17 +335,58 @@ p {
     display: none;
 }
 
-button.selected {
-    background-color: dodgerblue;
-    color: white;
+.tab-content {
+    height: calc(100% - 67px);
+    background-color: white;
+    border-radius: 9px;
+    box-shadow: 0 0 9px lightgray;
+    margin: 0 9px 9px 9px;
+    padding: 9px;
+    overflow-y: auto;
+
+    &>* {
+        animation: 0.15s fade-in;
+    }
 }
 
 .tab-content:not(.tab-show) {
     display: none;
 }
 
-.tab-selected {
-    border-bottom: solid 3px black
+.tab {
+    position: relative;
+    font-family: Inter, sans-serif;
+    background-color: transparent;
+    border: none;
+    height: 40px;
+    padding: 1px 9px;
+    font-size: medium;
+
+    &::after {
+        height: 3px;
+        content: "";
+        display: block;
+        position: absolute;
+        margin: 0 auto;
+        left: 0;
+        right: 0;
+        transition: width 0.15s;
+    }
+
+    &:hover::after {
+        background-color: lightgray;
+        width: calc(100% - 18px);
+
+    }
+
+    &.tab-selected {
+        font-weight: bold;
+
+        &&::after {
+            background-color: dodgerblue;
+            width: 100%;
+        }
+    }
 }
 
 .turn-number {
@@ -447,39 +529,107 @@ button {
     image-rendering: pixelated;
     height: 30px;
     display: inline-block;
-}
+    scale: 1.5;
 
-#p1Balls {
-    position: absolute;
-    top: 30px;
-    right: calc(10% + 384px)
+    &.faint {
+        filter: grayscale(1) opacity(0.3);
+    }
 }
 
 #p2Balls {
     position: absolute;
+    top: 30px;
+    right: calc(10% + 384px);
+}
+
+#p1Balls {
+    position: absolute;
     bottom: 30px;
-    left: calc(10% + 384px)
+    left: calc(10% + 384px);
 }
 
 #bottomOptions {
-    padding: 0 3px;
+    padding: 0 9px 3px 9px;
 
     &>div {
         display: inline-block;
-        padding: 0 3px;
 
         & button {
-            height: 25px;
+            margin-bottom: 3px;
             font-family: Inter, sans-serif;
             font-size: medium;
-            background-color: rgba(255, 255, 255, 0.5);
-            margin: 3px;
-            border: solid 3px transparent;
-            min-width: 100px;
+            background-color: transparent;
+            border: none;
+            border-radius: 9px;
+            padding: 6px 12px;
+            height: 32px;
 
             &:hover {
-                border: solid 3px gray;
+                background-color: rgba(0, 0, 0, 0.05);
             }
         }
+    }
+}
+
+.pkmn {
+    border-radius: 9px;
+    background-color: rgba(0, 0, 0, 0.05);
+    padding: 4px 9px;
+    margin: 9px 0;
+    transition: 0.1s;
+
+    &:hover {
+        background-color: rgba(30, 144, 255, 0.2);
+    }
+
+    &>div {
+        margin: 5px 0
+    }
+
+    & .input {
+        background-color: white;
+        border-radius: 9px;
+        padding: 3px 9px;
+        border: solid 2px white;
+        display: inline-block;
+
+        &:hover {
+            border: solid 2px dodgerblue;
+        }
+    }
+
+    & .lv::before {
+        content: "Lv: ";
+        color: gray
+    }
+
+    & .nick::before {
+        content: "Nickname: ";
+        color: gray
+    }
+
+    & .move-1::before {
+        content: "1: ";
+        color: gray
+    }
+
+    & .move-2::before {
+        content: "2: ";
+        color: gray
+    }
+
+    & .move-3::before {
+        content: "3: ";
+        color: gray
+    }
+
+    & .move-4::before {
+        content: "4: ";
+        color: gray
+    }
+
+    & .pkmnName {
+        font-weight: bold;
+        font-size: large;
     }
 }

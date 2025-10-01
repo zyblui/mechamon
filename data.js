@@ -1,10 +1,11 @@
-let moves = [{
+const MOVES = [{
     "name": "absorb",
     "type": "grass",
     "category": "special",
     "power": 20,
     "acc": 100,
     "pp": 20,
+    "priority": 0,
     "effect": function (e) {
         getPkmn(true).hp += Math.min(e.totalDmg / 2, getPkmn(true).maxHp - getPkmn(true).hp);
     }
@@ -15,6 +16,7 @@ let moves = [{
     "power": 40,
     "acc": 100,
     "pp": 30,
+    "priority": 0,
     "effect": function () {
         modifyStats(false, "def", -1, 1 / 3);
     }
@@ -25,6 +27,7 @@ let moves = [{
     "power": 0,
     "acc": Infinity,
     "pp": 40,
+    "priority": 0,
     "effect": function () {
         modifyStats(true, "def", 2, 1);
     }
@@ -35,6 +38,7 @@ let moves = [{
     "power": 0,
     "acc": Infinity,
     "pp": 30,
+    "priority": 0,
     "effect": function () {
         modifyStats(true, "spe", 2, 1);
     }
@@ -45,6 +49,7 @@ let moves = [{
     "power": 0,
     "acc": Infinity,
     "pp": 20,
+    "priority": 0,
     "effect": function () {
         modifyStats(true, "sp", 2, 1);
     }
@@ -55,6 +60,7 @@ let moves = [{
     "power": 65,
     "acc": 100,
     "pp": 20,
+    "priority": 0,
     "effect": function () {
         modifyStats(false, "atk", -1, 1 / 3);
     }
@@ -65,6 +71,7 @@ let moves = [{
     "power": 15,
     "acc": 85,
     "pp": 20,
+    "priority": 0,
     "effect": function (e) {
         let num = Math.random();
         if (num < 3 / 8) repeatAttack(e.totalDmg, 1);
@@ -79,6 +86,7 @@ let moves = [{
     "power": 0,
     "acc": Infinity,
     "pp": 30,
+    "priority": 0,
     "effect": function () {
         modifyStats(true, "def", 2, 1);
     }
@@ -89,6 +97,7 @@ let moves = [{
     "power": 0,
     "acc": Infinity,
     "pp": 10,
+    "priority": 0,
     "preDmgEffect": function () {
         getPkmn(true).dmgTaken = [];
         if (Math.random() < 0.5) charge("bide", 2);
@@ -108,12 +117,15 @@ let moves = [{
     "power": 15,
     "acc": 75,
     "pp": 20,
+    "priority": 0,
     "effect": function (e) {
-        let num = Math.random();
-        if (num < 3 / 8) setUncontrollable("bind", 1);
-        else if (num < 6 / 8) setUncontrollable("bind", 2);
-        else if (num < 7 / 8) setUncontrollable("bind", 3);
-        else setUncontrollable("bind", 4);
+        let num = Math.random(), turns = 0;
+        if (num < 3 / 8) turns = 1;
+        else if (num < 6 / 8) turns = 2;
+        else if (num < 7 / 8) turns = 3;
+        else turns = 4;
+        setUncontrollable(true, "bind", turns);
+        setUncontrollable(false, "", turns);
     }
 }, {
     "name": "bite",
@@ -122,6 +134,7 @@ let moves = [{
     "power": 60,
     "acc": 100,
     "pp": 25,
+    "priority": 0,
     "effect": function () {
         if (Math.random() < 0.1) return { flinch: true };
     }
@@ -132,6 +145,7 @@ let moves = [{
     "power": 120,
     "acc": 90,
     "pp": 5,
+    "priority": 0,
     "effect": function () {
         modifyStatus("frz", 0.1);
     }
@@ -142,6 +156,7 @@ let moves = [{
     "power": 85,
     "acc": 100,
     "pp": 15,
+    "priority": 0,
     "effect": function () {
         if (!getType(false).includes("normal")) modifyStatus("par", 0.3);
     }
@@ -152,6 +167,7 @@ let moves = [{
     "power": 65,
     "acc": 85,
     "pp": 20,
+    "priority": 0,
     "effect": function () {
         if (Math.random() < 0.1) return { flinch: true };
     }
@@ -162,6 +178,7 @@ let moves = [{
     "power": 50,
     "acc": 90,
     "pp": 10,
+    "priority": 0,
     "effect": function (e) {
         repeatAttack(e.totalDmg, 1);
     }
@@ -172,6 +189,7 @@ let moves = [{
     "power": 20,
     "acc": 100,
     "pp": 30,
+    "priority": 0,
     "effect": function () {
         modifyStats(false, "spe", -1, 1 / 3);
     }
@@ -182,6 +200,7 @@ let moves = [{
     "power": 65,
     "acc": 100,
     "pp": 20,
+    "priority": 0,
     "effect": function () {
         modifyStats(false, "spe", -1, 1 / 3);
     }
@@ -192,12 +211,15 @@ let moves = [{
     "power": 35,
     "acc": 75,
     "pp": 10,
+    "priority": 0,
     "effect": function (e) {
-        let num = Math.random();
-        if (num < 3 / 8) setUncontrollable("clamp", 1);
-        else if (num < 6 / 8) setUncontrollable("clamp", 2);
-        else if (num < 7 / 8) setUncontrollable("clamp", 3);
-        else setUncontrollable("clamp", 4);
+        let num = Math.random(), turns = 0;
+        if (num < 3 / 8) turns = 1;
+        else if (num < 6 / 8) turns = 2;
+        else if (num < 7 / 8) turns = 3;
+        else turns = 4;
+        setUncontrollable(true, "clamp", turns);
+        setUncontrollable(false, "", turns);
     }
 }, {
     "name": "comet punch",
@@ -206,6 +228,7 @@ let moves = [{
     "power": 18,
     "acc": 85,
     "pp": 15,
+    "priority": 0,
     "effect": function (e) {
         let num = Math.random();
         if (num < 3 / 8) repeatAttack(e.totalDmg, 1);
@@ -220,6 +243,7 @@ let moves = [{
     "power": 0,
     "acc": 100,
     "pp": 10,
+    "priority": 0,
     "effect": function () {
         addTempEffect(false, "confused", 1 + Math.ceil(Math.random() * 4), 1);
     }
@@ -230,6 +254,7 @@ let moves = [{
     "power": 50,
     "acc": 100,
     "pp": 25,
+    "priority": 0,
     "effect": function () {
         addTempEffect(false, "confused", 1 + Math.ceil(Math.random() * 4), 0.1);
     }
@@ -240,6 +265,7 @@ let moves = [{
     "power": 10,
     "acc": 100,
     "pp": 35,
+    "priority": 0,
     "effect": function () {
         modifyStats(false, "spe", -1, 1 / 3);
     }
@@ -250,6 +276,7 @@ let moves = [{
     "power": 0,
     "acc": Infinity,
     "pp": 30,
+    "priority": 0,
     "effect": function () {
         getPkmn(true).tempType = getStats(getPkmn(false).name).type;
     }
@@ -260,6 +287,7 @@ let moves = [{
     "power": 1,
     "acc": 100,
     "pp": 20,
+    "priority": -1,
     "effect": function () {
         if (getPkmn(true).lastDmgTakenType == "normal" || getPkmn(true).lastDmgTakenType == "fighting") {
             dealDmg(false, getPkmn(true).dmgTaken[getPkmn(true).dmgTaken.length - 1]);
@@ -272,6 +300,7 @@ let moves = [{
     "power": 90,
     "acc": 85,
     "pp": 10,
+    "priority": 0,
     "preCritEffect": function () {
         return { isHighCritRatio: true };
     }
@@ -281,7 +310,8 @@ let moves = [{
     "category": "physical",
     "power": 50,
     "acc": 95,
-    "pp": 30
+    "pp": 30,
+    "priority": 0
     //No additional effect.
 }, {
     "name": "defense curl",
@@ -290,6 +320,7 @@ let moves = [{
     "power": 0,
     "acc": Infinity,
     "pp": 40,
+    "priority": 0,
     "effect": function () {
         modifyStats(true, "def", 1, 1);
     }
@@ -300,6 +331,7 @@ let moves = [{
     "power": 100,
     "acc": 100,
     "pp": 10,
+    "priority": 0,
     "preDmgEffect": function () {
         charge("dig", 1);
         addTempEffect(true, "semiInvulnerable", 1, 1);
@@ -311,6 +343,7 @@ let moves = [{
     "power": 0,
     "acc": 55,
     "pp": 20,
+    "priority": 0,
     "effect": function () {
         let arr = [];
         for (let i in getPkmn(false).moves) {
@@ -327,7 +360,8 @@ let moves = [{
     "category": "physical",
     "power": 70,
     "acc": 100,
-    "pp": 10
+    "pp": 10,
+    "priority": 0
     //No additional effect.
 }, {
     "name": "double kick",
@@ -336,6 +370,7 @@ let moves = [{
     "power": 30,
     "acc": 100,
     "pp": 30,
+    "priority": 0,
     "effect": function (e) {
         repeatAttack(e.totalDmg, 1);
     }
@@ -346,6 +381,7 @@ let moves = [{
     "power": 15,
     "acc": 85,
     "pp": 10,
+    "priority": 0,
     "effect": function (e) {
         let num = Math.random();
         if (num < 3 / 8) repeatAttack(e.totalDmg, 1);
@@ -360,6 +396,7 @@ let moves = [{
     "power": 0,
     "acc": Infinity,
     "pp": 15,
+    "priority": 0,
     "effect": function () {
         modifyStats(true, "eva", 1, 1);
     }
@@ -370,6 +407,7 @@ let moves = [{
     "power": 100,
     "acc": 100,
     "pp": 15,
+    "priority": 0,
     "effect": function (e) {
         dealDmg(true, e.totalDmg / 4);
     }
@@ -380,6 +418,7 @@ let moves = [{
     "power": 1,
     "acc": 100,
     "pp": 10,
+    "priority": 0,
     "effect": function () {
         dealDmg(false, 40);
     }
@@ -390,6 +429,7 @@ let moves = [{
     "power": 100,
     "acc": 100,
     "pp": 15,
+    "priority": 0,
     "effect": function (e) {
         if (getPkmn(false).status == "slp") getPkmn(true).hp += Math.min(e.totalDmg / 2, getPkmn(true).maxHp - getPkmn(true).hp);
     }
@@ -399,7 +439,8 @@ let moves = [{
     "category": "physical",
     "power": 80,
     "acc": 100,
-    "pp": 20
+    "pp": 20,
+    "priority": 0
     //No additional effect.
 }, {
     "name": "earthquake",
@@ -407,7 +448,8 @@ let moves = [{
     "category": "physical",
     "power": 100,
     "acc": 100,
-    "pp": 10
+    "pp": 10,
+    "priority": 0
     //No additional effect.
 }, {
     "name": "egg bomb",
@@ -415,7 +457,8 @@ let moves = [{
     "category": "physical",
     "power": 100,
     "acc": 75,
-    "pp": 10
+    "pp": 10,
+    "priority": 0
     //No additional effect.
 }, {
     "name": "ember",
@@ -424,6 +467,7 @@ let moves = [{
     "power": 40,
     "acc": 100,
     "pp": 25,
+    "priority": 0,
     "effect": function () {
         modifyStatus("brn", 0.1);
     }
@@ -434,6 +478,7 @@ let moves = [{
     "power": 170,
     "acc": 100,
     "pp": 5,
+    "priority": 0,
     "effect": function () {
         getPkmn(true).hp = 0;
     }
@@ -444,6 +489,7 @@ let moves = [{
     "power": 120,
     "acc": 85,
     "pp": 5,
+    "priority": 0,
     "effect": function () {
         modifyStatus("brn", 0.3);
     }
@@ -454,6 +500,7 @@ let moves = [{
     "power": 75,
     "acc": 100,
     "pp": 15,
+    "priority": 0,
     "effect": function () {
         modifyStatus("brn", 0.1);
     }
@@ -464,12 +511,15 @@ let moves = [{
     "power": 15,
     "acc": 70,
     "pp": 15,
+    "priority": 0,
     "effect": function (e) {
-        let num = Math.random();
-        if (num < 3 / 8) setUncontrollable("fire spin", 1);
-        else if (num < 6 / 8) setUncontrollable("fire spin", 2);
-        else if (num < 7 / 8) setUncontrollable("fire spin", 3);
-        else setUncontrollable("fire spin", 4);
+        let num = Math.random(), turns = 0;
+        if (num < 3 / 8) turns = 1;
+        else if (num < 6 / 8) turns = 2;
+        else if (num < 7 / 8) turns = 3;
+        else turns = 4;
+        setUncontrollable(true, "fire spin", turns);
+        setUncontrollable(false, "", turns);
     }
 }, {
     "name": "fissure",
@@ -478,6 +528,7 @@ let moves = [{
     "power": 0,
     "acc": 30,
     "pp": 5,
+    "priority": 0,
     "effect": function () {
         if (getStats(getPkmn(false).name).spe <= getStats(getPkmn(true).name).spe) {
             getPkmn(false).hp = 0;
@@ -490,6 +541,7 @@ let moves = [{
     "power": 95,
     "acc": 100,
     "pp": 15,
+    "priority": 0,
     "effect": function () {
         modifyStatus("brn", 0.1);
     }
@@ -500,6 +552,7 @@ let moves = [{
     "power": 0,
     "acc": 70,
     "pp": 20,
+    "priority": 0,
     "effect": function () {
         modifyStats(false, "acc", 1, 1);
         //An increase in Accuracy decreases the stages.
@@ -511,6 +564,7 @@ let moves = [{
     "power": 70,
     "acc": 95,
     "pp": 15,
+    "priority": 0,
     "preDmgEffect": function () {
         charge("fly", 1);
         addTempEffect(true, "semiInvulnerable", 1, 1);
@@ -522,6 +576,7 @@ let moves = [{
     "power": 0,
     "acc": Infinity,
     "pp": 30,
+    "priority": 0,
     "effect": function () {
         getPkmn(true).critProbMultiplier = 1 / 4;
     }
@@ -532,6 +587,7 @@ let moves = [{
     "power": 15,
     "acc": 85,
     "pp": 20,
+    "priority": 0,
     "effect": function (e) {
         let num = Math.random();
         if (num < 3 / 8) repeatAttack(e.totalDmg, 1);
@@ -546,6 +602,7 @@ let moves = [{
     "power": 18,
     "acc": 80,
     "pp": 15,
+    "priority": 0,
     "effect": function (e) {
         let num = Math.random();
         if (num < 3 / 8) repeatAttack(e.totalDmg, 1);
@@ -560,6 +617,7 @@ let moves = [{
     "power": 0,
     "acc": 75,
     "pp": 30,
+    "priority": 0,
     "effect": function () {
         modifyStatus("par", 1);
     }
@@ -570,6 +628,7 @@ let moves = [{
     "power": 0,
     "acc": 100,
     "pp": 40,
+    "priority": 0,
     "effect": function () {
         modifyStats(false, "def", -1, 1);
     }
@@ -580,6 +639,7 @@ let moves = [{
     "power": 0,
     "acc": Infinity,
     "pp": 40,
+    "priority": 0,
     "effect": function () {
         modifyStats(true, "sp", 1, 1);
     }
@@ -590,6 +650,7 @@ let moves = [{
     "power": 0,
     "acc": 30,
     "pp": 5,
+    "priority": 0,
     "effect": function () {
         if (getStats(getPkmn(false).name).spe <= getStats(getPkmn(true).name).spe) {
             getPkmn(false).hp = 0;
@@ -601,7 +662,8 @@ let moves = [{
     "category": "physical",
     "power": 40,
     "acc": 100,
-    "pp": 35
+    "pp": 35,
+    "priority": 0
     //No additional effect.
 }, {
     "name": "harden",
@@ -610,6 +672,7 @@ let moves = [{
     "power": 0,
     "acc": Infinity,
     "pp": 30,
+    "priority": 0,
     "effect": function () {
         modifyStats(true, "def", 1, 1);
     }
@@ -620,6 +683,7 @@ let moves = [{
     "power": 0,
     "acc": Infinity,
     "pp": 30,
+    "priority": 0,
     "effect": function () {
         for (let i of [true, false]) for (let j of ["atkStage", "defStage", "spStage", "speStage", "accStage", "evaStage"]) getPkmn(i)[j] = 0;
         getPkmn(false).status = "";
@@ -632,6 +696,7 @@ let moves = [{
     "power": 70,
     "acc": 100,
     "pp": 15,
+    "priority": 0,
     "effect": function () {
         if (Math.random() < 0.3) return { flinch: true };
     }
@@ -642,6 +707,7 @@ let moves = [{
     "power": 85,
     "acc": 90,
     "pp": 20,
+    "priority": 0,
     "missEffect": function () {
         dealDmg(true, 1, { opposingSubstitute: true });
     }
@@ -651,7 +717,8 @@ let moves = [{
     "category": "physical",
     "power": 65,
     "acc": 100,
-    "pp": 25
+    "pp": 25,
+    "priority": 0
     //No additional effect.
 }, {
     "name": "horn drill",
@@ -660,6 +727,7 @@ let moves = [{
     "power": 0,
     "acc": 30,
     "pp": 5,
+    "priority": 0,
     "effect": function () {
         if (getStats(getPkmn(false).name).spe <= getStats(getPkmn(true).name).spe) {
             getPkmn(false).hp = 0;
@@ -671,7 +739,8 @@ let moves = [{
     "category": "special",
     "power": 120,
     "acc": 80,
-    "pp": 5
+    "pp": 5,
+    "priority": 0
     //No additional effect.
 }, {
     "name": "hyper beam",
@@ -680,6 +749,7 @@ let moves = [{
     "power": 150,
     "acc": 90,
     "pp": 5,
+    "priority": 0,
     "effect": function () {
         charge("", 1);
     }
@@ -690,6 +760,7 @@ let moves = [{
     "power": 80,
     "acc": 90,
     "pp": 15,
+    "priority": 0,
     "effect": function () {
         if (Math.random() < 0.1) return { flinch: true };
     }
@@ -700,6 +771,7 @@ let moves = [{
     "power": 0,
     "acc": 60,
     "pp": 20,
+    "priority": 0,
     "effect": function () {
         putToSleep(false, Math.ceil(Math.random() * 7));
     }
@@ -710,6 +782,7 @@ let moves = [{
     "power": 95,
     "acc": 100,
     "pp": 10,
+    "priority": 0,
     "effect": function () {
         modifyStatus("frz", 0.1);
     }
@@ -720,6 +793,7 @@ let moves = [{
     "power": 75,
     "acc": 100,
     "pp": 15,
+    "priority": 0,
     "effect": function () {
         modifyStatus("frz", 0.1);
     }
@@ -730,6 +804,7 @@ let moves = [{
     "power": 70,
     "acc": 95,
     "pp": 25,
+    "priority": 0,
     "missEffect": function () {
         dealDmg(true, 1, { opposingSubstitute: true });
     }
@@ -740,6 +815,7 @@ let moves = [{
     "power": 50,
     "acc": 100,
     "pp": 25,
+    "priority": 0,
     "preCritEffect": function () {
         return { isHighCritRatio: true };
     }
@@ -750,6 +826,7 @@ let moves = [{
     "power": 0,
     "acc": 80,
     "pp": 15,
+    "priority": 0,
     "effect": function () {
         modifyStats(false, "acc", 1, 1);
         //An increase in Accuracy decreases the stages.
@@ -761,6 +838,7 @@ let moves = [{
     "power": 20,
     "acc": 100,
     "pp": 15,
+    "priority": 0,
     "effect": function (e) {
         getPkmn(true).hp += Math.min(e.totalDmg / 2, getPkmn(true).maxHp - getPkmn(true).hp);
     }
@@ -771,6 +849,7 @@ let moves = [{
     "power": 0,
     "acc": 90,
     "pp": 10,
+    "priority": 0,
     "effect": function () {
         if (!getType(false).includes("grass")) addTempEffect(false, "leech seed", Infinity, 1);
     }
@@ -781,6 +860,7 @@ let moves = [{
     "power": 0,
     "acc": 100,
     "pp": 30,
+    "priority": 0,
     "effect": function () {
         modifyStats(false, "def", -1, 1);
     }
@@ -791,6 +871,7 @@ let moves = [{
     "power": 20,
     "acc": 100,
     "pp": 30,
+    "priority": 0,
     "effect": function () {
         modifyStatus("par", 0.3);
     }
@@ -801,6 +882,7 @@ let moves = [{
     "power": 0,
     "acc": Infinity,
     "pp": 30,
+    "priority": 0,
     "effect": function () {
         addTempEffect(true, "light screen", Infinity, 1);
     }
@@ -811,6 +893,7 @@ let moves = [{
     "power": 0,
     "acc": 75,
     "pp": 10,
+    "priority": 0,
     "effect": function () {
         putToSleep(false, Math.ceil(Math.random() * 7));
     }
@@ -821,6 +904,7 @@ let moves = [{
     "power": 50,
     "acc": 90,
     "pp": 20,
+    "priority": 0,
     "effect": function () {
         if (Math.random() < 0.3) return { flinch: true };
     }
@@ -831,6 +915,7 @@ let moves = [{
     "power": 0,
     "acc": Infinity,
     "pp": 40,
+    "priority": 0,
     "effect": function () {
         modifyStats(true, "atk", 1, 1);
     }
@@ -841,6 +926,7 @@ let moves = [{
     "power": 40,
     "acc": 100,
     "pp": 10,
+    "priority": 0,
     "effect": function (e) {
         getPkmn(true).hp += Math.min(e.totalDmg / 2, getPkmn(true).maxHp - getPkmn(true).hp);
     }
@@ -850,7 +936,8 @@ let moves = [{
     "category": "physical",
     "power": 120,
     "acc": 75,
-    "pp": 5
+    "pp": 5,
+    "priority": 0
     //No additional effect.
 }, {
     "name": "mega punch",
@@ -858,7 +945,8 @@ let moves = [{
     "category": "physical",
     "power": 80,
     "acc": 85,
-    "pp": 20
+    "pp": 20,
+    "priority": 0
     //No additional effect.
 }, {
     "name": "metronome",
@@ -867,10 +955,11 @@ let moves = [{
     "power": 0,
     "acc": Infinity,
     "pp": 10,
+    "priority": 0,
     "effect": function () {
         while (true) {
-            if (moves[Math.floor(Math.random() * moves.length)].name != "metronome" && moves[Math.floor(Math.random() * moves.length)].name != "struggle") {
-                attack(moves[Math.floor(Math.random() * moves.length)].name);
+            if (MOVES[Math.floor(Math.random() * MOVES.length)].name != "metronome" && MOVES[Math.floor(Math.random() * MOVES.length)].name != "struggle") {
+                attack(MOVES[Math.floor(Math.random() * MOVES.length)].name);
                 break;
             }
         }
@@ -882,6 +971,7 @@ let moves = [{
     "power": 0,
     "acc": 100,
     "pp": 10,
+    "priority": 0,
     "effect": function () {
         getPkmn(true).mimicMove = Object.keys(getPkmn(false).moves)[Math.floor(Object.keys(getPkmn(false).moves).length * Math
             .random())].name;
@@ -893,6 +983,7 @@ let moves = [{
     "power": 0,
     "acc": Infinity,
     "pp": 20,
+    "priority": 0,
     "effect": function () {
         modifyStats(true, "eva", 1, 1);
     }
@@ -903,6 +994,7 @@ let moves = [{
     "power": 0,
     "acc": Infinity,
     "pp": 20,
+    "priority": 0,
     "effect": function () {
         attack(getPkmn(false).lastMoveUsed);
     }
@@ -913,6 +1005,7 @@ let moves = [{
     "power": 0,
     "acc": Infinity,
     "pp": 30,
+    "priority": 0,
     "effect": function () {
         addTempEffect(true, "mist", Infinity, 1);
     }
@@ -923,8 +1016,9 @@ let moves = [{
     "power": 1,
     "acc": 100,
     "pp": 15,
+    "priority": 0,
     "effect": function () {
-        dealDmg(false, 100);
+        dealDmg(false, getPkmn(true).lv);
     }
 }, {
     "name": "pay day",
@@ -932,7 +1026,8 @@ let moves = [{
     "category": "physical",
     "power": 40,
     "acc": 100,
-    "pp": 20
+    "pp": 20,
+    "priority": 0
     //No additional effect.
 }, {
     "name": "peck",
@@ -940,7 +1035,8 @@ let moves = [{
     "category": "physical",
     "power": 35,
     "acc": 100,
-    "pp": 35
+    "pp": 35,
+    "priority": 0
     //No additional effect.
 }, {
     "name": "petal dance",
@@ -949,14 +1045,15 @@ let moves = [{
     "power": 70,
     "acc": 100,
     "pp": 20,
+    "priority": 0,
     "effect": function () {
         if (Math.random() < 0.5) {
-            setUncontrollable("petal dance", 2);
+            setUncontrollable(true, "petal dance", 2);
             setDelay(true, function () {
                 addTempEffect(true, "confused", Infinity, 1);
             }, 2);
         } else {
-            setUncontrollable("petal dance", 3);
+            setUncontrollable(true, "petal dance", 3);
             setDelay(true, function () {
                 addTempEffect(true, "confused", Infinity, 1);
             }, 3);
@@ -969,6 +1066,7 @@ let moves = [{
     "power": 14,
     "acc": 85,
     "pp": 20,
+    "priority": 0,
     "effect": function (e) {
         let num = Math.random();
         if (num < 3 / 8) repeatAttack(e.totalDmg, 1);
@@ -983,6 +1081,7 @@ let moves = [{
     "power": 0,
     "acc": 55,
     "pp": 40,
+    "priority": 0,
     "effect": function () {
         modifyStatus("psn", 1);
     }
@@ -993,6 +1092,7 @@ let moves = [{
     "power": 0,
     "acc": 75,
     "pp": 35,
+    "priority": 0,
     "effect": function () {
         modifyStatus("psn", 1);
     }
@@ -1003,6 +1103,7 @@ let moves = [{
     "power": 15,
     "acc": 100,
     "pp": 35,
+    "priority": 0,
     "effect": function () {
         modifyStatus("psn", 0.2);
     }
@@ -1012,7 +1113,8 @@ let moves = [{
     "category": "physical",
     "power": 40,
     "acc": 100,
-    "pp": 35
+    "pp": 35,
+    "priority": 0
     //No additional effect.
 }, {
     "name": "psybeam",
@@ -1021,6 +1123,7 @@ let moves = [{
     "power": 65,
     "acc": 100,
     "pp": 20,
+    "priority": 0,
     "effect": function () {
         addTempEffect(false, "confused", 1 + Math.ceil(Math.random() * 4), 0.1);
     }
@@ -1031,6 +1134,7 @@ let moves = [{
     "power": 90,
     "acc": 100,
     "pp": 10,
+    "priority": 0,
     "effect": function () {
         modifyStats(false, "sp", -1, 1 / 3);
     }
@@ -1041,6 +1145,7 @@ let moves = [{
     "power": 1,
     "acc": 80,
     "pp": 15,
+    "priority": 0,
     "effect": function () {
         dealDmg(false, Math.ceil(Math.random() * 149));
     }
@@ -1050,7 +1155,8 @@ let moves = [{
     "category": "physical",
     "power": 40,
     "acc": 100,
-    "pp": 30
+    "pp": 30,
+    "priority": 1
 }, {
     "name": "rage",
     "type": "normal",
@@ -1058,9 +1164,10 @@ let moves = [{
     "power": 20,
     "acc": 100,
     "pp": 20,
+    "priority": 0,
     "effect": function () {
         addTempEffect(true, "rage", Infinity, 1);
-        setUncontrollable("rage", Infinity);
+        setUncontrollable(true, "rage", Infinity);
     }
 }, {
     "name": "razor leaf",
@@ -1069,6 +1176,7 @@ let moves = [{
     "power": 55,
     "acc": 95,
     "pp": 25,
+    "priority": 0,
     "preCritEffect": function () {
         return { isHighCritRatio: true };
     }
@@ -1079,6 +1187,7 @@ let moves = [{
     "power": 80,
     "acc": 75,
     "pp": 10,
+    "priority": 0,
     "preDmgEffect": function () {
         charge("razor wind", 1);
     }
@@ -1089,6 +1198,7 @@ let moves = [{
     "power": 0,
     "acc": Infinity,
     "pp": 20,
+    "priority": 0,
     "effect": function () {
         let hpLost = getPkmn(true).maxHp - getPkmn(true).hp;
         if (hpLost != 255 && hpLost != 511) {
@@ -1103,6 +1213,7 @@ let moves = [{
     "power": 0,
     "acc": Infinity,
     "pp": 20,
+    "priority": 0,
     "effect": function () {
         addTempEffect(true, "reflect", Infinity, 1);
     }
@@ -1113,11 +1224,15 @@ let moves = [{
     "power": 0,
     "acc": Infinity,
     "pp": 10,
+    "priority": 0,
     "effect": function () {
         let hpLost = getPkmn(true).maxHp - getPkmn(true).hp;
         if (hpLost != 255 && hpLost != 511) {
             getPkmn(true).hp = getPkmn(true).maxHp;
-            addSmallText(capitalize(getPkmn(true).name) + " had its HP restored.");
+            addSmallText(getL10n("others", "sleepHealthy", {
+                "pokemon": [getPkmn(true).name],
+                "isEnemy": playerToMove != viewpoint
+            }))
             putToSleep(true, 2);
         }
     }
@@ -1127,7 +1242,8 @@ let moves = [{
     "category": "status",
     "power": 0,
     "acc": 100,
-    "pp": 20
+    "pp": 20,
+    "priority": 0
     //No competitive use.
 }, {
     "name": "rock slide",
@@ -1135,7 +1251,8 @@ let moves = [{
     "category": "physical",
     "power": 75,
     "acc": 90,
-    "pp": 10
+    "pp": 10,
+    "priority": 0
     //No additional effect.
 }, {
     "name": "rock throw",
@@ -1143,7 +1260,8 @@ let moves = [{
     "category": "physical",
     "power": 50,
     "acc": 65,
-    "pp": 15
+    "pp": 15,
+    "priority": 0
     //No additional effect.
 }, {
     "name": "rolling kick",
@@ -1152,6 +1270,7 @@ let moves = [{
     "power": 60,
     "acc": 85,
     "pp": 15,
+    "priority": 0,
     "effect": function () {
         if (Math.random() < 0.3) return { flinch: true };
     }
@@ -1162,6 +1281,7 @@ let moves = [{
     "power": 0,
     "acc": 100,
     "pp": 15,
+    "priority": 0,
     "effect": function () {
         modifyStats(false, "acc", 1, 1);
         //An increase in Accuracy decreases the stages.
@@ -1172,7 +1292,8 @@ let moves = [{
     "category": "physical",
     "power": 40,
     "acc": 100,
-    "pp": 35
+    "pp": 35,
+    "priority": 0
     //No additional effect.
 }, {
     "name": "screech",
@@ -1181,6 +1302,7 @@ let moves = [{
     "power": 0,
     "acc": 85,
     "pp": 40,
+    "priority": 0,
     "effect": function () {
         modifyStats(false, "def", -2, 1);
     }
@@ -1191,8 +1313,9 @@ let moves = [{
     "power": 1,
     "acc": 100,
     "pp": 20,
+    "priority": 0,
     "effect": function () {
-        dealDmg(false, 100);
+        dealDmg(false, getPkmn(true).lv);
     }
 }, {
     "name": "self-destruct",
@@ -1201,6 +1324,7 @@ let moves = [{
     "power": 130,
     "acc": 100,
     "pp": 5,
+    "priority": 0,
     "effect": function () {
         getPkmn(true).hp = 0;
     }
@@ -1211,6 +1335,7 @@ let moves = [{
     "power": 0,
     "acc": Infinity,
     "pp": 30,
+    "priority": 0,
     "effect": function () {
         modifyStats(true, "atk", 1, 1);
     }
@@ -1221,6 +1346,7 @@ let moves = [{
     "power": 0,
     "acc": 55,
     "pp": 15,
+    "priority": 0,
     "effect": function () {
         putToSleep(false, Math.ceil(Math.random() * 7));
     }
@@ -1231,6 +1357,7 @@ let moves = [{
     "power": 100,
     "acc": 100,
     "pp": 15,
+    "priority": 0,
     "preDmgEffect": function () {
         charge("skull bash", 1);
     }
@@ -1241,6 +1368,7 @@ let moves = [{
     "power": 140,
     "acc": 90,
     "pp": 5,
+    "priority": 0,
     "preDmgEffect": function () {
         charge("sky attack", 1);
     }
@@ -1250,7 +1378,8 @@ let moves = [{
     "category": "physical",
     "power": 80,
     "acc": 75,
-    "pp": 20
+    "pp": 20,
+    "priority": 0
     //No additional effect.
 }, {
     "name": "slash",
@@ -1259,6 +1388,7 @@ let moves = [{
     "power": 70,
     "acc": 100,
     "pp": 20,
+    "priority": 0,
     "preCritEffect": function () {
         return { isHighCritRatio: true };
     }
@@ -1269,6 +1399,7 @@ let moves = [{
     "power": 0,
     "acc": 75,
     "pp": 15,
+    "priority": 0,
     "effect": function () {
         putToSleep(false, Math.ceil(Math.random() * 7));
     }
@@ -1279,6 +1410,7 @@ let moves = [{
     "power": 65,
     "acc": 100,
     "pp": 20,
+    "priority": 0,
     "effect": function () {
         modifyStatus("psn", 0.4);
     }
@@ -1289,6 +1421,7 @@ let moves = [{
     "power": 20,
     "acc": 70,
     "pp": 20,
+    "priority": 0,
     "effect": function () {
         modifyStatus("psn", 0.3);
     }
@@ -1299,6 +1432,7 @@ let moves = [{
     "power": 0,
     "acc": 100,
     "pp": 20,
+    "priority": 0,
     "effect": function () {
         modifyStats(false, "acc", 1, 1);
         //An increase in Accuracy decreases the stages.
@@ -1310,6 +1444,7 @@ let moves = [{
     "power": 0,
     "acc": Infinity,
     "pp": 10,
+    "priority": 0,
     "effect": function () {
         let hpLost = getPkmn(true).maxHp - getPkmn(true).hp;
         if (hpLost != 255 && hpLost != 511) getPkmn(true).hp += Math.min(getPkmn(true).maxHp / 2, hpLost);
@@ -1321,6 +1456,7 @@ let moves = [{
     "power": 120,
     "acc": 100,
     "pp": 10,
+    "priority": 0,
     "preDmgEffect": function () {
         charge("solar beam", 1);
     }
@@ -1331,6 +1467,7 @@ let moves = [{
     "power": 1,
     "acc": 90,
     "pp": 20,
+    "priority": 0,
     "effect": function () {
         dealDmg(false, 40);
     }
@@ -1341,6 +1478,7 @@ let moves = [{
     "power": 20,
     "acc": 100,
     "pp": 15,
+    "priority": 0,
     "effect": function (e) {
         let num = Math.random();
         if (num < 3 / 8) repeatAttack(e.totalDmg, 1);
@@ -1354,7 +1492,11 @@ let moves = [{
     "category": "status",
     "power": 0,
     "acc": Infinity,
-    "pp": 40
+    "pp": 40,
+    "priority": 0,
+    "effect": function () {
+        addSmallText(getL10n("others", "nothingHappen"));
+    }
     //No competitive use.
 }, {
     "name": "spore",
@@ -1363,6 +1505,7 @@ let moves = [{
     "power": 0,
     "acc": 100,
     "pp": 15,
+    "priority": 0,
     "effect": function () {
         putToSleep(false, Math.ceil(Math.random() * 7));
     }
@@ -1373,6 +1516,7 @@ let moves = [{
     "power": 65,
     "acc": 100,
     "pp": 20,
+    "priority": 0,
     "effect": function () {
         if (Math.random() < 0.3) return { flinch: true };
     }
@@ -1382,7 +1526,8 @@ let moves = [{
     "category": "physical",
     "power": 80,
     "acc": 100,
-    "pp": 15
+    "pp": 15,
+    "priority": 0
     //No additional effect.
 }, {
     "name": "string shot",
@@ -1391,6 +1536,7 @@ let moves = [{
     "power": 0,
     "acc": 95,
     "pp": 40,
+    "priority": 0,
     "effect": function () {
         modifyStats(false, "spe", -1, 1);
     }
@@ -1401,6 +1547,7 @@ let moves = [{
     "power": 50,
     "acc": 100,
     "pp": 10,
+    "priority": 0,
     "effect": function (e) {
         dealDmg(true, e.totalDmg / 4);
     }
@@ -1411,6 +1558,7 @@ let moves = [{
     "power": 0,
     "acc": 75,
     "pp": 30,
+    "priority": 0,
     "effect": function () {
         modifyStatus("par", 1);
     }
@@ -1421,6 +1569,7 @@ let moves = [{
     "power": 80,
     "acc": 80,
     "pp": 25,
+    "priority": 0,
     "effect": function (e) {
         dealDmg(true, e.totalDmg / 4);
     }
@@ -1431,6 +1580,7 @@ let moves = [{
     "power": 0,
     "acc": Infinity,
     "pp": 10,
+    "priority": 0,
     "effect": function () {
         if (getPkmn(true).hp >= getPkmn(true).maxHp / 4) {
             addSmallText(capitalize(getPkmn(true).name) + " put in a substitute!");
@@ -1445,6 +1595,7 @@ let moves = [{
     "power": 1,
     "acc": 90,
     "pp": 10,
+    "priority": 0,
     "effect": function () {
         getPkmn(false).hp /= 2;
     }
@@ -1455,6 +1606,7 @@ let moves = [{
     "power": 0,
     "acc": 55,
     "pp": 20,
+    "priority": 0,
     "effect": function () {
         addTempEffect(false, "confused", 1 + Math.ceil(Math.random() * 4), 1);
     }
@@ -1464,7 +1616,8 @@ let moves = [{
     "category": "special",
     "power": 95,
     "acc": 100,
-    "pp": 15
+    "pp": 15,
+    "priority": 0
     //No additional effect.
 }, {
     "name": "swift",
@@ -1473,6 +1626,7 @@ let moves = [{
     "power": 60,
     "acc": Infinity,
     "pp": 20,
+    "priority": 0,
     "preDmgEffect": function () {
         return { nullifySemiInvulnerable: true };
     }
@@ -1483,6 +1637,7 @@ let moves = [{
     "power": 0,
     "acc": Infinity,
     "pp": 30,
+    "priority": 0,
     "effect": function () {
         modifyStats(true, "atk", 2, 1);
     }
@@ -1492,7 +1647,8 @@ let moves = [{
     "category": "physical",
     "power": 35,
     "acc": 95,
-    "pp": 35
+    "pp": 35,
+    "priority": 0
     //No additional effect.
 }, {
     "name": "tail whip",
@@ -1501,6 +1657,7 @@ let moves = [{
     "power": 0,
     "acc": 100,
     "pp": 30,
+    "priority": 0,
     "effect": function () {
         modifyStats(false, "def", -1, 1);
     }
@@ -1511,6 +1668,7 @@ let moves = [{
     "power": 90,
     "acc": 85,
     "pp": 20,
+    "priority": 0,
     "effect": function (e) {
         dealDmg(true, e.totalDmg / 4);
     }
@@ -1520,7 +1678,8 @@ let moves = [{
     "category": "status",
     "power": 0,
     "acc": Infinity,
-    "pp": 20
+    "pp": 20,
+    "priority": 0
     //No competitive use.
 }, {
     "name": "thrash",
@@ -1529,14 +1688,17 @@ let moves = [{
     "power": 90,
     "acc": 100,
     "pp": 20,
+    "priority": 0,
     "effect": function () {
         if (Math.random() < 0.5) {
-            setUncontrollable("thrash", 2);
+            setUncontrollable(true, "thrash", 2);
+            setUncontrollable(false, "", 2);
             setDelay(true, function () {
                 addTempEffect(true, "confused", Infinity, 1);
             }, 2);
         } else {
-            setUncontrollable("thrash", 3);
+            setUncontrollable(true, "thrash", 3);
+            setUncontrollable(false, "", 3);
             setDelay(true, function () {
                 addTempEffect(true, "confused", Infinity, 1);
             }, 3);
@@ -1549,6 +1711,7 @@ let moves = [{
     "power": 120,
     "acc": 70,
     "pp": 10,
+    "priority": 0,
     "effect": function () {
         modifyStatus("par", 0.1);
     }
@@ -1559,6 +1722,7 @@ let moves = [{
     "power": 75,
     "acc": 100,
     "pp": 15,
+    "priority": 0,
     "effect": function () {
         modifyStatus("par", 0.1);
     }
@@ -1569,6 +1733,7 @@ let moves = [{
     "power": 40,
     "acc": 100,
     "pp": 30,
+    "priority": 0,
     "effect": function () {
         modifyStatus("par", 0.1);
     }
@@ -1579,6 +1744,7 @@ let moves = [{
     "power": 0,
     "acc": 100,
     "pp": 20,
+    "priority": 0,
     "effect": function () {
         modifyStatus("par", 1);
     }
@@ -1589,6 +1755,7 @@ let moves = [{
     "power": 95,
     "acc": 100,
     "pp": 15,
+    "priority": 0,
     "effect": function () {
         modifyStatus("par", 0.1);
     }
@@ -1599,6 +1766,7 @@ let moves = [{
     "power": 0,
     "acc": 85,
     "pp": 10,
+    "priority": 0,
     "effect": function () {
         modifyStatus("tox", 1);
     }
@@ -1609,6 +1777,7 @@ let moves = [{
     "power": 0,
     "acc": Infinity,
     "pp": 10,
+    "priority": 0,
     "effect": function () {
         getPkmn(true).transformPkmn = getPkmn(false).name;
         for (let i of ["atkStage", "defStage", "spStage ", "speStage", "accStage", "evaStage"]) {
@@ -1616,8 +1785,12 @@ let moves = [{
         }
         getPkmn(true).moves = JSON.parse(JSON.stringify(getPkmn(false).moves));
         for (let i in getPkmn(true).moves) {
-            getPkmn(true).moves[i].pp = 5;
+            getPkmn(true).moves[i] = 5;
         }
+        addSmallText(getL10n("others", "transform", {
+            "pokemon": [getPkmn(true).name, getPkmn(false).name],
+            "isEnemy": playerToMove != viewpoint
+        }));
     }
 }, {
     "name": "tri attack",
@@ -1625,7 +1798,8 @@ let moves = [{
     "category": "physical",
     "power": 80,
     "acc": 100,
-    "pp": 10
+    "pp": 10,
+    "priority": 0
     //No additional effect.
 }, {
     "name": "twineedle",
@@ -1634,6 +1808,7 @@ let moves = [{
     "power": 25,
     "acc": 100,
     "pp": 20,
+    "priority": 0,
     "effect": function (e) {
         repeatAttack(e.totalDmg, 1);
         modifyStatus("psn", 0.2);
@@ -1644,7 +1819,8 @@ let moves = [{
     "category": "physical",
     "power": 55,
     "acc": 100,
-    "pp": 30
+    "pp": 30,
+    "priority": 0
     //No additional effect.
 }, {
     "name": "vine whip",
@@ -1652,7 +1828,8 @@ let moves = [{
     "category": "special",
     "power": 35,
     "acc": 100,
-    "pp": 10
+    "pp": 10,
+    "priority": 0
     //No additional effect.
 }, {
     "name": "water gun",
@@ -1660,7 +1837,8 @@ let moves = [{
     "category": "special",
     "power": 40,
     "acc": 100,
-    "pp": 25
+    "pp": 25,
+    "priority": 0
     //No additional effect.
 }, {
     "name": "waterfall",
@@ -1668,7 +1846,8 @@ let moves = [{
     "category": "special",
     "power": 80,
     "acc": 100,
-    "pp": 15
+    "pp": 15,
+    "priority": 0
     //No additional effect.
 }, {
     "name": "whirlwind",
@@ -1676,7 +1855,8 @@ let moves = [{
     "category": "status",
     "power": 0,
     "acc": 85,
-    "pp": 20
+    "pp": 20,
+    "priority": 0
     //No competitive use.
 }, {
     "name": "wing attack",
@@ -1684,7 +1864,8 @@ let moves = [{
     "category": "physical",
     "power": 35,
     "acc": 100,
-    "pp": 35
+    "pp": 35,
+    "priority": 0
     //No additional effect.
 }, {
     "name": "withdraw",
@@ -1693,6 +1874,7 @@ let moves = [{
     "power": 0,
     "acc": Infinity,
     "pp": 40,
+    "priority": 0,
     "effect": function () {
         modifyStats(true, "def", 1, 1);
     }
@@ -1703,15 +1885,18 @@ let moves = [{
     "power": 15,
     "acc": 85,
     "pp": 20,
+    "priority": 0,
     "effect": function (e) {
-        let num = Math.random();
-        if (num < 3 / 8) setUncontrollable("wrap", 1);
-        else if (num < 6 / 8) setUncontrollable("wrap", 2);
-        else if (num < 7 / 8) setUncontrollable("wrap", 3);
-        else setUncontrollable("wrap", 4);
+        let num = Math.random(), turns = 0;
+        if (num < 3 / 8) turns = 1;
+        else if (num < 6 / 8) turns = 2;
+        else if (num < 7 / 8) turns = 3;
+        else turns = 4;
+        setUncontrollable(true, "wrap", turns);
+        setUncontrollable(false, "", turns);
     }
 }];
-let pokemon = [{
+const POKEMON = [{
     "name": "abra",
     "type": ["psychic"],
     "hp": 25,
@@ -3074,23 +3259,83 @@ let pokemon = [{
     "spe": 55,
     "moves": ["bide", "bite", "confuse ray", "double-edge", "double team", "haze", "leech life", "mega drain", "mimic", "rage", "razor wind", "rest", "substitute", "supersonic", "swift", "take down", "toxic", "whirlwind", "wing attack"]
 }];
-let translation = {
+const TRANSLATION = {
     "en": {
+        "stats": {
+            "atk": "Attack",
+            "def": "Defense",
+            "sp": "Special",
+            "spe": "Speed",
+            "acc": "Accuracy",
+            "eva": "Evasion"
+        },
+        "ui": {
+            "moves": "Moves: ",
+            "switch": "Switch to: ",
+            "setup": "Setup",
+            "record": "Record",
+            "settings": "Settings",
+            "sleepClause": "Sleep Clause",
+            "speciesClause": "Species Clause",
+            "ohkoClause": "OHKO clause",
+            "freezeClause": "Freeze Clause",
+            "evasionClause": "Evasion Clause",
+            "selfKoClause": "Self-KO Clause"
+        },
         "others": {
-            "turn":"Turn [number0]",
+            "turn": "Turn [number0]",
             "crit": "A critical hit!",
             "use": "[pokemon0] used <strong>[moves0]</strong>!",
-            "use-enemy":"The opposing [pokemon0] used <strong>[moves0]</strong>!",
+            "use-enemy": "The opposing [pokemon0] used <strong>[moves0]</strong>!",
             "faint": "[pokemon0] fainted!",
-            "faint-enemy":"The opposing [pokemon0] fainted!",
+            "faint-enemy": "The opposing [pokemon0] fainted!",
             "go": "Go! <strong>[pokemon0]</strong>!",
-            "go-enemy":"The enemy sent out <strong>[pokemon0]</strong>!",
+            "go-enemy": "The enemy sent out <strong>[pokemon0]</strong>!",
             "superEffective": "It's super effective!",
             "notVeryEffective": "It's not very effective...",
             "loseHealth": "([pokemon0] lost [percentage0]% of its health!)",
             "loseHealth-enemy": "(The opposing [pokemon0] lost [percentage0]% of its health!)",
-            "substituteFade":"[pokemon0]'s substitute faded!",
-            "substituteFade-enemy":"The opposing [pokemon0]'s substitute faded!"
+            "substituteFade": "[pokemon0]'s substitute faded!",
+            "substituteFade-enemy": "The opposing [pokemon0]'s substitute faded!",
+            "substituteTakeDamage": "The substitute took damage for [pokemon0]!",
+            "substituteTakeDamage-enemy": "The substitute took damage for the opposing [pokemon0]!",
+            "comeBack": "[pokemon0], come back!",
+            "comeBack-enemy": "The enemy withdrew [pokemon0]!",
+            "nothingHappen": "But nothing happened!",
+            "attackMiss": "[pokemon0]'s attack missed!",
+            "attackMiss-enemy": "The opposing [pokemon0]'s attack missed!",
+            "noEffect": "It doesn't affect [pokemon0]...",
+            "noEffect-enemy": "It doesn't affect the opposing [pokemon0]...",
+            "fastAsleep": "[pokemon0] is fast asleep.",
+            "fastAsleep-enemy": "The opposing [pokemon0] is fast asleep.",
+            "wakeUp": "[pokemon0] woke up!",
+            "wakeUp-enemy": "The opposing [pokemon0] woke up!",
+            "hurtConfusion": "It hurt itself in its confusion!",
+            "paralyzed": "[pokemon0] is paralyzed! It may be unable to move!",
+            "paralyzed-enemy": "The opposing [pokemon0] is paralyzed! It may be unable to move!",
+            "hitTimes": "The Pokémon was hit [number0] times!",
+            "frozenSolid": "[pokemon0] is frozen solid!",
+            "frozenSolid-enemy": "The opposing [pokemon0] is frozen solid!",
+            "dreamEaten": "[pokemon0]'s dream was eaten!",
+            "dreamEaten-enemy": "The opposing [pokemon0]'s dream was eaten!",
+            "transform": "[pokemon0] transformed into [pokemon1]!",
+            "transform-enemy": "The opposing [pokemon0] transformed into [pokemon1]!",
+            "unableToMove": "[pokemon0] is paralyzed! It can't move!",
+            "unableToMove-enemy": "The opposing [pokemon0] is paralyzed! It can't move!",
+            "sleepHealthy": "[pokemon0] slept and became healthy!",
+            "sleepHealthy-enemy": "The opposing [pokemon0] slept and became healthy!",
+            "rise": "[pokemon0]'s [stats0] rose!",
+            "rise-enemy": "The opposing [pokemon0]'s [stats0] rose!",
+            "riseSharply": "[pokemon0]'s [stats0] rose sharply!",
+            "riseSharply-enemy": "The opposing [pokemon0]'s [stats0] rose sharply!",
+            "fall": "[pokemon0]'s [stats0] fell!",
+            "fall-enemy": "The opposing [pokemon0]'s [stats0] fell!",
+            "harshlyFall": "[pokemon0]'s [stats0] harshly fell!",
+            "harshlyFall-enemy": "The opposing [pokemon0]'s [stats0] harshly fell!",
+            "poisoned":"[pokemon0] was poisoned!",
+            "badlyPoisoned":"[pokemon0] was badly poisoned!",
+            "poisoned-enemy":"The opposing [pokemon0] was poisoned!",
+            "badlyPoisoned-enemy":"The opposing [pokemon0] was badly poisoned!"
         },
         "pokemon": {
             "abra": "Abra",
@@ -3414,21 +3659,81 @@ let translation = {
         }
     },
     "zh": {
+        "stats": {
+            "atk": "攻击",
+            "def": "防御",
+            "sp": "特殊",
+            "spe": "速度",
+            "acc": "命中率",
+            "eva": "闪避率"
+        },
+        "ui": {
+            "moves": "招式：",
+            "switch": "替换：",
+            "setup": "摆局",
+            "record": "记录",
+            "settings": "设置",
+            "sleepClause": "催眠条款",
+            "speciesClause": "种族条款",
+            "ohkoClause": "一击必杀条款",
+            "freezeClause": "冰冻条款",
+            "evasionClause": "闪避条款",
+            "selfKoClause": "自杀条款"
+        },
         "others": {
-            "turn":"第 [number0] 回合",
-            "crit": "暴击！",
+            "turn": "第 [number0] 回合",
+            "crit": "击中了要害！",
             "use": "[pokemon0]使出了<strong>[moves0]</strong>！",
-            "use-enemy":"对手的[pokemon0]使出了<strong>[moves0]</strong>！",
+            "use-enemy": "对手的[pokemon0]使出了<strong>[moves0]</strong>！",
             "faint": "[pokemon0]倒下了！",
-            "faint-enemy":"对手的[pokemon0]倒下了！",
+            "faint-enemy": "对手的[pokemon0]倒下了！",
             "go": "上吧！<strong>[pokemon0]</strong>！",
-            "go-enemy":"对手派出了<strong>[pokemon0]</strong>!",
+            "go-enemy": "对手派出了<strong>[pokemon0]</strong>!",
             "superEffective": "效果绝佳！",
             "notVeryEffective": "好像效果不好……",
             "loseHealth": "（[pokemon0]失去了[percentage0]%的生命值！）",
             "loseHealth-enemy": "（对手的[pokemon0]失去了[percentage0]%的生命值！）",
-            "substituteFade":"[pokemon0]的替身消失了！",
-            "substituteFade-enemy":"对手的[pokemon0]的替身消失了！"
+            "substituteFade": "[pokemon0]的替身消失了！",
+            "substituteFade-enemy": "对手的[pokemon0]的替身消失了！",
+            "substituteTakeDamage": "替身代替[pokemon0]承受了攻击！",
+            "substituteTakeDamage-enemy": "替身代替对手的[pokemon0]承受了攻击！",
+            "comeBack": "[pokemon0]，回来！",
+            "comeBack-enemy": "对手收回了[pokemon0]！",
+            "nothingHappen": "但是，什么也没有发生！",
+            "attackMiss": "[pokemon0]的招式没有命中！",
+            "attackMiss-enemy": "对手的[pokemon0]的招式没有命中！",
+            "noEffect": "对于[pokemon0]，好像没有效果……",
+            "noEffect-enemy": "对于对手的[pokemon0]，好像没有效果……",
+            "fastAsleep": "[pokemon0]正在呼呼大睡。",
+            "fastAsleep-enemy": "对手的[pokemon0]正在呼呼大睡。",
+            "wakeUp": "[pokemon0]醒过来了！",
+            "wakeUp-enemy": "对手的[pokemon0]醒过来了！",
+            "hurtConfusion": "不知所以地攻击了自己！",
+            "paralyzed": "[pokemon0]麻痹了，很难使出招式！",
+            "paralyzed-enemy": "对手的[pokemon0]麻痹了，很难使出招式！",
+            "hitTimes": "击中了[number0]次！",
+            "frozenSolid": "[pokemon0]冻住了！",
+            "frozenSolid-enemy": "对手的[pokemon0]冻住了！",
+            "dreamEaten": "[pokemon0]的梦被吃掉了！",
+            "dreamEaten-enemy": "对手的[pokemon0]的梦被吃掉了！",
+            "transform": "[pokemon0]变身成了[pokemon1]！",
+            "transform-enemy": "对手的[pokemon0]变身成了[pokemon1]！",
+            "unableToMove": "[pokemon0]因身体麻痹而无法行动！",
+            "unableToMove-enemy": "对手的[pokemon0]因身体麻痹而无法行动！",
+            "sleepHealthy": "[pokemon0]睡着了，并且变得精力充沛！",
+            "sleepHealthy-enemy": "对手的[pokemon0]睡着了，并且变得精力充沛！",
+            "rise": "[pokemon0]的[stats0]提高了！",
+            "rise-enemy": "对手的[pokemon0]的[stats0]提高了！",
+            "riseSharply": "[pokemon0]的[stats0]大幅提高了！",
+            "riseSharply-enemy": "对手的[pokemon0]的[stats0]大幅提高了！",
+            "fall": "[pokemon0]的[stats0]降低了！",
+            "fall-enemy": "对手的[pokemon0]的[stats0]降低了！",
+            "harshlyFall": "[pokemon0]的[stats0]大幅降低了！",
+            "harshlyFall-enemy": "对手的[pokemon0]的[stats0]大幅降低了！",
+            "poisoned":"[pokemon0]中毒了！",
+            "badlyPoisoned":"[pokemon0]中剧毒了！",
+            "poisoned-enemy":"对手的[pokemon0]中毒了！",
+            "badlyPoisoned-enemy":"对手的[pokemon0]中剧毒了！"
         },
         "pokemon": {
             "abra": "凯西",
@@ -4082,7 +4387,7 @@ let translation = {
         }
     }
 };
-let multiplier = {
+const MULTIPLIER = {
     "bug": {
         "bug": 1,
         "dragon": 1,
@@ -4325,3 +4630,156 @@ let multiplier = {
         "water": 1 / 2
     }
 };
+const ICONS = {
+    "bulbasaur": { "row": 1, "cell": 2 },
+    "ivysaur": { "row": 1, "cell": 3 },
+    "venusaur": { "row": 1, "cell": 4 },
+    "charmander": { "row": 1, "cell": 5 },
+    "charmeleon": { "row": 1, "cell": 6 },
+    "charizard": { "row": 1, "cell": 7 },
+    "squirtle": { "row": 1, "cell": 8 },
+    "wartortle": { "row": 1, "cell": 9 },
+    "blastoise": { "row": 1, "cell": 10 },
+    "caterpie": { "row": 1, "cell": 11 },
+    "metapod": { "row": 1, "cell": 12 },
+    "butterfree": { "row": 2, "cell": 1 },
+    "weedle": { "row": 2, "cell": 2 },
+    "kakuna": { "row": 2, "cell": 3 },
+    "beedrill": { "row": 2, "cell": 4 },
+    "pidgey": { "row": 2, "cell": 5 },
+    "pidgeotto": { "row": 2, "cell": 6 },
+    "pidgeot": { "row": 2, "cell": 7 },
+    "rattata": { "row": 2, "cell": 8 },
+    "raticate": { "row": 2, "cell": 9 },
+    "spearow": { "row": 2, "cell": 10 },
+    "fearow": { "row": 2, "cell": 11 },
+    "ekans": { "row": 2, "cell": 12 },
+    "arbok": { "row": 3, "cell": 1 },
+    "pikachu": { "row": 3, "cell": 2 },
+    "raichu": { "row": 3, "cell": 3 },
+    "sandshrew": { "row": 3, "cell": 4 },
+    "sandslash": { "row": 3, "cell": 5 },
+    "nidoran-f": { "row": 3, "cell": 6 },
+    "nidorina": { "row": 3, "cell": 7 },
+    "nidoqueen": { "row": 3, "cell": 8 },
+    "nidoran-m": { "row": 3, "cell": 9 },
+    "nidorino": { "row": 3, "cell": 10 },
+    "nidoking": { "row": 3, "cell": 11 },
+    "clefairy": { "row": 3, "cell": 12 },
+    "clefable": { "row": 4, "cell": 1 },
+    "vulpix": { "row": 4, "cell": 2 },
+    "ninetales": { "row": 4, "cell": 3 },
+    "jigglypuff": { "row": 4, "cell": 4 },
+    "wigglytuff": { "row": 4, "cell": 5 },
+    "zubat": { "row": 4, "cell": 6 },
+    "golbat": { "row": 4, "cell": 7 },
+    "oddish": { "row": 4, "cell": 8 },
+    "gloom": { "row": 4, "cell": 9 },
+    "vileplume": { "row": 4, "cell": 10 },
+    "paras": { "row": 4, "cell": 11 },
+    "parasect": { "row": 4, "cell": 12 },
+    "venonat": { "row": 5, "cell": 1 },
+    "venomoth": { "row": 5, "cell": 2 },
+    "diglett": { "row": 5, "cell": 3 },
+    "dugtrio": { "row": 5, "cell": 4 },
+    "meowth": { "row": 5, "cell": 5 },
+    "persian": { "row": 5, "cell": 6 },
+    "psyduck": { "row": 5, "cell": 7 },
+    "golduck": { "row": 5, "cell": 8 },
+    "mankey": { "row": 5, "cell": 9 },
+    "primeape": { "row": 5, "cell": 10 },
+    "growlithe": { "row": 5, "cell": 11 },
+    "arcanine": { "row": 5, "cell": 12 },
+    "poliwag": { "row": 6, "cell": 1 },
+    "poliwhirl": { "row": 6, "cell": 2 },
+    "poliwrath": { "row": 6, "cell": 3 },
+    "abra": { "row": 6, "cell": 4 },
+    "kadabra": { "row": 6, "cell": 5 },
+    "alakazam": { "row": 6, "cell": 6 },
+    "machop": { "row": 6, "cell": 7 },
+    "machoke": { "row": 6, "cell": 8 },
+    "machamp": { "row": 6, "cell": 9 },
+    "bellsprout": { "row": 6, "cell": 10 },
+    "weepinbell": { "row": 6, "cell": 11 },
+    "victreebel": { "row": 6, "cell": 12 },
+    "tentacool": { "row": 7, "cell": 1 },
+    "tentacruel": { "row": 7, "cell": 2 },
+    "geodude": { "row": 7, "cell": 3 },
+    "graveler": { "row": 7, "cell": 4 },
+    "golem": { "row": 7, "cell": 5 },
+    "ponyta": { "row": 7, "cell": 6 },
+    "rapidash": { "row": 7, "cell": 7 },
+    "slowpoke": { "row": 7, "cell": 8 },
+    "slowbro": { "row": 7, "cell": 9 },
+    "magnemite": { "row": 7, "cell": 10 },
+    "magneton": { "row": 7, "cell": 11 },
+    "farfetch'd": { "row": 7, "cell": 12 },
+    "doduo": { "row": 8, "cell": 1 },
+    "dodrio": { "row": 8, "cell": 2 },
+    "seel": { "row": 8, "cell": 3 },
+    "dewgong": { "row": 8, "cell": 4 },
+    "grimer": { "row": 8, "cell": 5 },
+    "muk": { "row": 8, "cell": 6 },
+    "shellder": { "row": 8, "cell": 7 },
+    "cloyster": { "row": 8, "cell": 8 },
+    "gastly": { "row": 8, "cell": 9 },
+    "haunter": { "row": 8, "cell": 10 },
+    "gengar": { "row": 8, "cell": 11 },
+    "onix": { "row": 8, "cell": 12 },
+    "drowzee": { "row": 9, "cell": 1 },
+    "hypno": { "row": 9, "cell": 2 },
+    "krabby": { "row": 9, "cell": 3 },
+    "kingler": { "row": 9, "cell": 4 },
+    "voltorb": { "row": 9, "cell": 5 },
+    "electrode": { "row": 9, "cell": 6 },
+    "exeggcute": { "row": 9, "cell": 7 },
+    "exeggutor": { "row": 9, "cell": 8 },
+    "cubone": { "row": 9, "cell": 9 },
+    "marowak": { "row": 9, "cell": 10 },
+    "hitmonlee": { "row": 9, "cell": 11 },
+    "hitmonchan": { "row": 9, "cell": 12 },
+    "lickitung": { "row": 10, "cell": 1 },
+    "koffing": { "row": 10, "cell": 2 },
+    "weezing": { "row": 10, "cell": 3 },
+    "rhyhorn": { "row": 10, "cell": 4 },
+    "rhydon": { "row": 10, "cell": 5 },
+    "chansey": { "row": 10, "cell": 6 },
+    "tangela": { "row": 10, "cell": 7 },
+    "kangaskhan": { "row": 10, "cell": 8 },
+    "horsea": { "row": 10, "cell": 9 },
+    "seadra": { "row": 10, "cell": 10 },
+    "goldeen": { "row": 10, "cell": 11 },
+    "seaking": { "row": 10, "cell": 12 },
+    "staryu": { "row": 11, "cell": 1 },
+    "starmie": { "row": 11, "cell": 2 },
+    "mr. mime": { "row": 11, "cell": 3 },
+    "scyther": { "row": 11, "cell": 4 },
+    "jynx": { "row": 11, "cell": 5 },
+    "electabuzz": { "row": 11, "cell": 6 },
+    "magmar": { "row": 11, "cell": 7 },
+    "pinsir": { "row": 11, "cell": 8 },
+    "tauros": { "row": 11, "cell": 9 },
+    "magikarp": { "row": 11, "cell": 10 },
+    "gyarados": { "row": 11, "cell": 11 },
+    "lapras": { "row": 11, "cell": 12 },
+    "ditto": { "row": 12, "cell": 1 },
+    "eevee": { "row": 12, "cell": 2 },
+    "vaporeon": { "row": 12, "cell": 3 },
+    "jolteon": { "row": 12, "cell": 4 },
+    "flareon": { "row": 12, "cell": 5 },
+    "porygon": { "row": 12, "cell": 6 },
+    "omanyte": { "row": 12, "cell": 7 },
+    "omastar": { "row": 12, "cell": 8 },
+    "kabuto": { "row": 12, "cell": 9 },
+    "kabutops": { "row": 12, "cell": 10 },
+    "aerodactyl": { "row": 12, "cell": 11 },
+    "snorlax": { "row": 12, "cell": 12 },
+    "articuno": { "row": 13, "cell": 1 },
+    "zapdos": { "row": 13, "cell": 2 },
+    "moltres": { "row": 13, "cell": 3 },
+    "dratini": { "row": 13, "cell": 4 },
+    "dragonair": { "row": 13, "cell": 5 },
+    "dragonite": { "row": 13, "cell": 6 },
+    "mewtwo": { "row": 13, "cell": 7 },
+    "mew": { "row": 13, "cell": 8 }
+}

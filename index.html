@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mechamon</title>
+    <title>Mechamon-branch</title>
     <link rel="stylesheet" href="font/inter.css" />
     <link rel="stylesheet" href="style.css" />
 </head>
@@ -20,7 +20,11 @@
             <div class="outer-bar">
                 <div class="inner-bar" id="p1Bar"></div>
             </div>
-            <div class="percentage" id="p1Percentage">100%</div>
+
+            <div>
+                <span class="gauge-lv" id="p1Lv">Lv 5</span>
+                <span class="percentage" id="p1Percentage">100%</span>
+            </div>
         </div>
         <div id="p1Pokemon"></div>
         <div class="balls" id="p1Balls">
@@ -39,7 +43,11 @@
             <div class="outer-bar">
                 <div class="inner-bar" id="p2Bar"></div>
             </div>
-            <div class="percentage" id="p2Percentage">100%</div>
+
+            <div>
+                <span class="gauge-lv" id="p2Lv">Lv 5</span>
+                <span class="percentage" id="p2Percentage">100%</span>
+            </div>
         </div>
         <div id="p2Pokemon"></div>
         <div id="p2Balls" class="balls">
@@ -57,12 +65,12 @@
     <div id="decisionPanel">
         <table>
             <tr>
-                <th>Moves:</th>
+                <th data-transl-cat="ui" data-transl-key="moves">Moves:</th>
                 <td><button class="decisionMove">Move #1</button><button class="decisionMove">Move #2</button><button
                         class="decisionMove">Move #3</button><button class="decisionMove">Move #4</button></td>
             </tr>
             <tr>
-                <th>Switch to:</th>
+                <th data-transl-cat="ui" data-transl-key="switch">Switch to:</th>
                 <td><button class="decisionSwitch">Pokémon #1</button><button class="decisionSwitch">Pokémon
                         #2</button><button class="decisionSwitch">Pokémon #3</button><button
                         class="decisionSwitch">Pokémon
@@ -74,155 +82,293 @@
         </table>
         <div id="bottomOptions">
             <div>Player 1's turn</div>
-            <div>Viewpoint: <button>Player 1</button><button>Auto</button><button>Player 2</button></div>
-            <div><button>Forfeit</button></div>
+            <div><button id="viewpoint">Viewpoint: Player 1</button></div>
+            <div><button id="forfeit">Forfeit</button></div>
         </div>
     </div>
     <div id="rightPanel">
-        <button data-for="setup" class="tab tab-selected">Setup</button>
-        <button data-for="record" class="tab">Record</button>
+        <button data-for="setup" class="tab tab-selected" data-transl-cat="ui" data-transl-key="setup">Setup</button>
+        <button data-for="record" class="tab" data-transl-cat="ui" data-transl-key="record">Record</button>
+        <button data-for="settings" class="tab" data-transl-cat="ui" data-transl-key="settings">Settings</button>
         <div data-for="setup" class="tab-content tab-show">
             <div class="list show" id="setupTable">
                 <div class="wrap">
                     <p class="dim">Welcome to the world of Mechamon!</p>
-                    <button id="startGame" class="right-button">Start Game</button>
+                    <button id="startGame" class="right-button float-right">Start Game</button>
                 </div>
                 Player 1:
-                <table id="p1Table">
-                    <tr>
-                        <th>#</th>
-                        <th>Pokémon</th>
-                        <th>Move #1</th>
-                        <th>Move #2</th>
-                        <th>Move #3</th>
-                        <th>Move #4</th>
-                    </tr>
-                    <tr>
-                        <th>1</th>
-                        <td class="select pokemon-select" data-player="1" data-no="1"></td>
-                        <td class="select move-select" data-player="1" data-no="1" data-move-no="1"></td>
-                        <td class="select move-select" data-player="1" data-no="1" data-move-no="2"></td>
-                        <td class="select move-select" data-player="1" data-no="1" data-move-no="3"></td>
-                        <td class="select move-select" data-player="1" data-no="1" data-move-no="4"></td>
-                    </tr>
-                    <tr>
-                        <th>2</th>
-                        <td class="select pokemon-select" data-player="1" data-no="2"></td>
-                        <td class="select move-select" data-player="1" data-no="2" data-move-no="1"></td>
-                        <td class="select move-select" data-player="1" data-no="2" data-move-no="2"></td>
-                        <td class="select move-select" data-player="1" data-no="2" data-move-no="3"></td>
-                        <td class="select move-select" data-player="1" data-no="2" data-move-no="4"></td>
-                    </tr>
-                    <tr>
-                        <th>3</th>
-                        <td class="select pokemon-select" data-player="1" data-no="3"></td>
-                        <td class="select move-select" data-player="1" data-no="3" data-move-no="1"></td>
-                        <td class="select move-select" data-player="1" data-no="3" data-move-no="2"></td>
-                        <td class="select move-select" data-player="1" data-no="3" data-move-no="3"></td>
-                        <td class="select move-select" data-player="1" data-no="3" data-move-no="4"></td>
-                    </tr>
-                    <tr>
-                        <th>4</th>
-                        <td class="select pokemon-select" data-player="1" data-no="4"></td>
-                        <td class="select move-select" data-player="1" data-no="4" data-move-no="1"></td>
-                        <td class="select move-select" data-player="1" data-no="4" data-move-no="2"></td>
-                        <td class="select move-select" data-player="1" data-no="4" data-move-no="3"></td>
-                        <td class="select move-select" data-player="1" data-no="4" data-move-no="4"></td>
-                    </tr>
-                    <tr>
-                        <th>5</th>
-                        <td class="select pokemon-select" data-player="1" data-no="5"></td>
-                        <td class="select move-select" data-player="1" data-no="5" data-move-no="1"></td>
-                        <td class="select move-select" data-player="1" data-no="5" data-move-no="2"></td>
-                        <td class="select move-select" data-player="1" data-no="5" data-move-no="3"></td>
-                        <td class="select move-select" data-player="1" data-no="5" data-move-no="4"></td>
-                    </tr>
-                    <tr>
-                        <th>6</th>
-                        <td class="select pokemon-select" data-player="1" data-no="6"></td>
-                        <td class="select move-select" data-player="1" data-no="6" data-move-no="1"></td>
-                        <td class="select move-select" data-player="1" data-no="6" data-move-no="2"></td>
-                        <td class="select move-select" data-player="1" data-no="6" data-move-no="3"></td>
-                        <td class="select move-select" data-player="1" data-no="6" data-move-no="4"></td>
-                    </tr>
-                </table>
+                <div class="team">
+                    <div class="pkmn" data-player="1" data-no="1">
+                        <div>
+                            <div class="pkmnName input" data-player="1" data-no="1">Geodude</div>
+                            <div class="lv input" contenteditable="true" data-player="1" data-no="1">5</div>
+                            <div class="nick input" contenteditable="true" data-player="1" data-no="1"></div>
+                        </div>
+                        <div>
+                            <div class="input-outer">
+                                <div class="move input move-1" data-player="1" data-no="1" data-move-no="1">Move 1</div>
+                                <div class="move input move-2" data-player="1" data-no="1" data-move-no="2">Move 2</div>
+                                <div class="move input move-3" data-player="1" data-no="1" data-move-no="3">Move 3</div>
+                                <div class="move input move-4" data-player="1" data-no="1" data-move-no="4">Move 4</div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="pkmn" data-player="1" data-no="2">
+                        <div>
+                            <div class="pkmnName input" data-player="1" data-no="2">Geodude</div>
+                            <div class="lv input" contenteditable="true" data-player="1" data-no="2">5</div>
+                            <div class="nick input" contenteditable="true" data-player="1" data-no="2"></div>
+                        </div>
+                        <div>
+                            <div class="input-outer">
+                                <div class="move input move-1" data-player="1" data-no="2" data-move-no="1">Move 1</div>
+                                <div class="move input move-2" data-player="1" data-no="2" data-move-no="2">Move 2</div>
+                                <div class="move input move-3" data-player="1" data-no="2" data-move-no="3">Move 3</div>
+                                <div class="move input move-4" data-player="1" data-no="2" data-move-no="4">Move 4</div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="pkmn" data-player="1" data-no="3">
+                        <div>
+                            <div class="pkmnName input" data-player="1" data-no="3">Geodude</div>
+                            <div class="lv input" contenteditable="true" data-player="1" data-no="3">5</div>
+                            <div class="nick input" contenteditable="true" data-player="1" data-no="3"></div>
+                        </div>
+                        <div>
+                            <div class="input-outer">
+                                <div class="move input move-1" data-player="1" data-no="3" data-move-no="1">Move 1</div>
+                                <div class="move input move-2" data-player="1" data-no="3" data-move-no="2">Move 2</div>
+                                <div class="move input move-3" data-player="1" data-no="3" data-move-no="3">Move 3</div>
+                                <div class="move input move-4" data-player="1" data-no="3" data-move-no="4">Move 4</div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="pkmn" data-player="1" data-no="4">
+                        <div>
+                            <div class="pkmnName input" data-player="1" data-no="4">Geodude</div>
+                            <div class="lv input" contenteditable="true" data-player="1" data-no="4">5</div>
+                            <div class="nick input" contenteditable="true" data-player="1" data-no="4"></div>
+                        </div>
+                        <div>
+                            <div class="input-outer">
+                                <div class="move input move-1" data-player="1" data-no="4" data-move-no="1">Move 1</div>
+                                <div class="move input move-2" data-player="1" data-no="4" data-move-no="2">Move 2</div>
+                                <div class="move input move-3" data-player="1" data-no="4" data-move-no="3">Move 3</div>
+                                <div class="move input move-4" data-player="1" data-no="4" data-move-no="4">Move 4</div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="pkmn" data-player="1" data-no="5">
+                        <div>
+                            <div class="pkmnName input" data-player="1" data-no="5">Geodude</div>
+                            <div class="lv input" contenteditable="true" data-player="1" data-no="5">5</div>
+                            <div class="nick input" contenteditable="true" data-player="1" data-no="5"></div>
+                        </div>
+                        <div>
+                            <div class="input-outer">
+                                <div class="move input move-1" data-player="1" data-no="5" data-move-no="1">Move 1</div>
+                                <div class="move input move-2" data-player="1" data-no="5" data-move-no="2">Move 2</div>
+                                <div class="move input move-3" data-player="1" data-no="5" data-move-no="3">Move 3</div>
+                                <div class="move input move-4" data-player="1" data-no="5" data-move-no="4">Move 4</div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="pkmn" data-player="1" data-no="6">
+                        <div>
+                            <div class="pkmnName input" data-player="1" data-no="6">Geodude</div>
+                            <div class="lv input" contenteditable="true" data-player="1" data-no="6">5</div>
+                            <div class="nick input" contenteditable="true" data-player="1" data-no="6"></div>
+                        </div>
+                        <div>
+                            <div class="input-outer">
+                                <div class="move input move-1" data-player="1" data-no="6" data-move-no="1">Move 1</div>
+                                <div class="move input move-2" data-player="1" data-no="6" data-move-no="2">Move 2</div>
+                                <div class="move input move-3" data-player="1" data-no="6" data-move-no="3">Move 3</div>
+                                <div class="move input move-4" data-player="1" data-no="6" data-move-no="4">Move 4</div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
                 Player 2:
-                <table id="p2Table">
-                    <tr>
-                        <th>#</th>
-                        <th>Pokémon</th>
-                        <th>Move #1</th>
-                        <th>Move #2</th>
-                        <th>Move #3</th>
-                        <th>Move #4</th>
-                    </tr>
-                    <tr>
-                        <th>1</th>
-                        <td class="select pokemon-select" data-player="2" data-no="1"></td>
-                        <td class="select move-select" data-player="2" data-no="1" data-move-no="1"></td>
-                        <td class="select move-select" data-player="2" data-no="1" data-move-no="2"></td>
-                        <td class="select move-select" data-player="2" data-no="1" data-move-no="3"></td>
-                        <td class="select move-select" data-player="2" data-no="1" data-move-no="4"></td>
-                    </tr>
-                    <tr>
-                        <th>2</th>
-                        <td class="select pokemon-select" data-player="2" data-no="2"></td>
-                        <td class="select move-select" data-player="2" data-no="2" data-move-no="1"></td>
-                        <td class="select move-select" data-player="2" data-no="2" data-move-no="2"></td>
-                        <td class="select move-select" data-player="2" data-no="2" data-move-no="3"></td>
-                        <td class="select move-select" data-player="2" data-no="2" data-move-no="4"></td>
-                    </tr>
-                    <tr>
-                        <th>3</th>
-                        <td class="select pokemon-select" data-player="2" data-no="3"></td>
-                        <td class="select move-select" data-player="2" data-no="3" data-move-no="1"></td>
-                        <td class="select move-select" data-player="2" data-no="3" data-move-no="2"></td>
-                        <td class="select move-select" data-player="2" data-no="3" data-move-no="3"></td>
-                        <td class="select move-select" data-player="2" data-no="3" data-move-no="4"></td>
-                    </tr>
-                    <tr>
-                        <th>4</th>
-                        <td class="select pokemon-select" data-player="2" data-no="4"></td>
-                        <td class="select move-select" data-player="2" data-no="4" data-move-no="1"></td>
-                        <td class="select move-select" data-player="2" data-no="4" data-move-no="2"></td>
-                        <td class="select move-select" data-player="2" data-no="4" data-move-no="3"></td>
-                        <td class="select move-select" data-player="2" data-no="4" data-move-no="4"></td>
-                    </tr>
-                    <tr>
-                        <th>5</th>
-                        <td class="select pokemon-select" data-player="2" data-no="5"></td>
-                        <td class="select move-select" data-player="2" data-no="5" data-move-no="1"></td>
-                        <td class="select move-select" data-player="2" data-no="5" data-move-no="2"></td>
-                        <td class="select move-select" data-player="2" data-no="5" data-move-no="3"></td>
-                        <td class="select move-select" data-player="2" data-no="5" data-move-no="4"></td>
-                    </tr>
-                    <tr>
-                        <th>6</th>
-                        <td class="select pokemon-select" data-player="2" data-no="6"></td>
-                        <td class="select move-select" data-player="2" data-no="6" data-move-no="1"></td>
-                        <td class="select move-select" data-player="2" data-no="6" data-move-no="2"></td>
-                        <td class="select move-select" data-player="2" data-no="6" data-move-no="3"></td>
-                        <td class="select move-select" data-player="2" data-no="6" data-move-no="4"></td>
-                    </tr>
-                </table>
+                <div class="team">
+                    <div class="pkmn" data-player="2" data-no="1">
+                        <div>
+                            <div class="pkmnName input" data-player="2" data-no="1">Geodude</div>
+                            <div class="lv input" contenteditable="true" data-player="2" data-no="1">5</div>
+                            <div class="nick input" contenteditable="true" data-player="2" data-no="1"></div>
+                        </div>
+                        <div>
+                            <div class="input-outer">
+                                <div class="move input move-1" data-player="2" data-no="1" data-move-no="1">Move 1</div>
+                                <div class="move input move-2" data-player="2" data-no="1" data-move-no="2">Move 2</div>
+                                <div class="move input move-3" data-player="2" data-no="1" data-move-no="3">Move 3</div>
+                                <div class="move input move-4" data-player="2" data-no="1" data-move-no="4">Move 4</div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="pkmn" data-player="2" data-no="2">
+                        <div>
+                            <div class="pkmnName input" data-player="2" data-no="2">Geodude</div>
+                            <div class="lv input" contenteditable="true" data-player="2" data-no="2">5</div>
+                            <div class="nick input" contenteditable="true" data-player="2" data-no="2"></div>
+                        </div>
+                        <div>
+                            <div class="input-outer">
+                                <div class="move input move-1" data-player="2" data-no="2" data-move-no="1">Move 1</div>
+                                <div class="move input move-2" data-player="2" data-no="2" data-move-no="2">Move 2</div>
+                                <div class="move input move-3" data-player="2" data-no="2" data-move-no="3">Move 3</div>
+                                <div class="move input move-4" data-player="2" data-no="2" data-move-no="4">Move 4</div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="pkmn" data-player="2" data-no="3">
+                        <div>
+                            <div class="pkmnName input" data-player="2" data-no="3">Geodude</div>
+                            <div class="lv input" contenteditable="true" data-player="2" data-no="3">5</div>
+                            <div class="nick input" contenteditable="true" data-player="2" data-no="3"></div>
+                        </div>
+                        <div>
+                            <div class="input-outer">
+                                <div class="move input move-1" data-player="2" data-no="3" data-move-no="1">Move 1</div>
+                                <div class="move input move-2" data-player="2" data-no="3" data-move-no="2">Move 2</div>
+                                <div class="move input move-3" data-player="2" data-no="3" data-move-no="3">Move 3</div>
+                                <div class="move input move-4" data-player="2" data-no="3" data-move-no="4">Move 4</div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="pkmn" data-player="2" data-no="4">
+                        <div>
+                            <div class="pkmnName input" data-player="2" data-no="4">Geodude</div>
+                            <div class="lv input" contenteditable="true" data-player="2" data-no="4">5</div>
+                            <div class="nick input" contenteditable="true" data-player="2" data-no="4"></div>
+                        </div>
+                        <div>
+                            <div class="input-outer">
+                                <div class="move input move-1" data-player="2" data-no="4" data-move-no="1">Move 1</div>
+                                <div class="move input move-2" data-player="2" data-no="4" data-move-no="2">Move 2</div>
+                                <div class="move input move-3" data-player="2" data-no="4" data-move-no="3">Move 3</div>
+                                <div class="move input move-4" data-player="2" data-no="4" data-move-no="4">Move 4</div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="pkmn" data-player="2" data-no="5">
+                        <div>
+                            <div class="pkmnName input" data-player="2" data-no="5">Geodude</div>
+                            <div class="lv input" contenteditable="true" data-player="2" data-no="5">5</div>
+                            <div class="nick input" contenteditable="true" data-player="2" data-no="5"></div>
+                        </div>
+                        <div>
+                            <div class="input-outer">
+                                <div class="move input move-1" data-player="2" data-no="5" data-move-no="1">Move 1</div>
+                                <div class="move input move-2" data-player="2" data-no="5" data-move-no="2">Move 2</div>
+                                <div class="move input move-3" data-player="2" data-no="5" data-move-no="3">Move 3</div>
+                                <div class="move input move-4" data-player="2" data-no="5" data-move-no="4">Move 4</div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="pkmn" data-player="2" data-no="6">
+                        <div>
+                            <div class="pkmnName input" data-player="2" data-no="6">Geodude</div>
+                            <div class="lv input" contenteditable="true" data-player="2" data-no="6">5</div>
+                            <div class="nick input" contenteditable="true" data-player="2" data-no="6"></div>
+                        </div>
+                        <div>
+                            <div class="input-outer">
+                                <div class="move input move-1" data-player="2" data-no="6" data-move-no="1">Move 1</div>
+                                <div class="move input move-2" data-player="2" data-no="6" data-move-no="2">Move 2</div>
+                                <div class="move input move-3" data-player="2" data-no="6" data-move-no="3">Move 3</div>
+                                <div class="move input move-4" data-player="2" data-no="6" data-move-no="4">Move 4</div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                Clauses:
+                <div class="wrap">
+                    <label>
+                        <input type="checkbox" data-settings="sleepClause" />
+                        <span data-transl-cat="ui" data-transl-key="sleepClause">Sleep Clause</span>
+                    </label>
+                    <p class="explanation">Each player can only have one Pokémon asleep at a time.</p>
+                </div>
+                <div class="wrap">
+                    <label>
+                        <input type="checkbox" data-settings="speciesClause" />
+                        <span data-transl-cat="ui" data-transl-key="speciesClause">Species Clause</span>
+                    </label>
+                    <p class="explanation">Each Pokémon on a player's team must be of different species or National
+                        Pokédex number.</p>
+                </div>
+                <div class="wrap">
+                    <label>
+                        <input type="checkbox" data-settings="ohkoClause" />
+                        <span data-transl-cat="ui" data-transl-key="ohkoClause">OHKO clause</span>
+                    </label>
+                    <p class="explanation">Fissure, Horn Drill, Guillotine, and Sheer Cold are banned.</p>
+                </div>
+                <div class="wrap">
+                    <label>
+                        <input type="checkbox" data-settings="freezeClause" />
+                        <span data-transl-cat="ui" data-transl-key="freezeClause">Freeze clause</span>
+                    </label>
+                    <p class="explanation">Each player can only have one Pokémon frozen at a time.</p>
+                </div>
+                <div class="wrap">
+                    <label>
+                        <input type="checkbox" data-settings="evasionClause" />
+                        <span data-transl-cat="ui" data-transl-key="evasionClause">Evasion clause</span>
+                    </label>
+                    <p class="explanation">Double Team and Minimize are banned.</p>
+                </div>
+                <div class="wrap">
+                    <label>
+                        <input type="checkbox" data-settings="selfKoClause" />
+                        <span data-transl-cat="ui" data-transl-key="selfKoClause">Self-KO clause</span>
+                    </label>
+                    <p class="explanation">The player automatically loses if their last Pokémon uses Self-Destruct or
+                        Explosion.</p>
+                </div>
             </div>
             <div class="list" id="pokemonList">
                 <div class="wrap">
-                    <button class="back">Back</button>
+                    <button class="back right-button">Back</button>
                     <p class="dim">Select a Pokémon...</p>
                 </div>
             </div>
             <div class="list" id="movesList">
                 <div class="wrap">
-                    <button class="back">Back</button>
+                    <button class="back right-button">Back</button>
                     <p class="dim">Select a move...</p>
-                    <button id="clearMove" class="right-button">Clear</button>
+                    <button id="clearMove" class="right-button float-right">Clear</button>
                 </div>
                 <div id="movesListInner"></div>
             </div>
         </div>
-        <div data-for="record" class="tab-content" id="record">
-
+        <div data-for="record" class="tab-content" id="record"></div>
+        <div data-for="settings" class="tab-content" id="settings">
+            <div class="wrap">Language: <select title="Language">
+                    <option>English</option>
+                    <option>Simplified Chinese</option>
+                </select></div>
+            <hr />
+            <div class="wrap">
+                <label>
+                    <input type="checkbox" />
+                    Hardcore Mode
+                </label>
+                <p class="explanation">This will hide all information not shown ingame.</p>
+            </div>
         </div>
     </div>
     <script src="data.js"></script>
