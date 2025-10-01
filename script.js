@@ -12,54 +12,66 @@ let players = [{
     "build": [{
         "name": "geodude",
         "moves": ["earthquake", "rock slide", "body slam", "explosion"],
-        "lv": 5
+        "lv": 5,
+        "nick": ""
     }, {
         "name": "staryu",
         "moves": ["surf", "thunderbolt", "blizzard", "thunder wave"],
-        "lv": 5
+        "lv": 5,
+        "nick": ""
     }, {
         "name": "koffing",
         "moves": ["sludge", "fire blast", "thunderbolt", "explosion"],
-        "lv": 5
+        "lv": 5,
+        "nick": ""
     }, {
         "name": "tentacool",
         "moves": ["surf", "blizzard", "mega drain", "hydro pump"],
-        "lv": 5
+        "lv": 5,
+        "nick": ""
     }, {
         "name": "machop",
         "moves": ["submission", "earthquake", "rock slide", "body slam"],
-        "lv": 5
+        "lv": 5,
+        "nick": ""
     }, {
         "name": "eevee",
         "moves": ["substitute", "reflect", "body slam", "double-edge"],
-        "lv": 5
+        "lv": 5,
+        "nick": ""
     }]
 }, {
     "name": "Player 2",
     "build": [{
         "name": "eevee",
         "moves": ["rage", "body slam", "double-edge", "quick attack"],
-        "lv": 5
+        "lv": 5,
+        "nick": ""
     }, {
         "name": "vulpix",
         "moves": ["flamethrower", "body slam", "confuse ray", "substitute"],
-        "lv": 5
+        "lv": 5,
+        "nick": ""
     }, {
         "name": "ponyta",
         "moves": ["toxic", "agility", "fire blast", "body slam"],
-        "lv": 5
+        "lv": 5,
+        "nick": ""
     }, {
         "name": "growlithe",
         "moves": ["agility", "body slam", "fire blast", "double-edge"],
-        "lv": 5
+        "lv": 5,
+        "nick": ""
     }, {
         "name": "psyduck",
         "moves": ["surf", "mega kick", "blizzard", "rage"],
-        "lv": 5
+        "lv": 5,
+        "nick": ""
     }, {
         "name": "poliwag",
         "moves": ["hypnosis", "amnesia", "surf", "psychic"],
-        "lv": 5
+        "lv": 5,
+        "nick": ""
     }]
 }];
 document.getElementById("p1Pokemon").style.backgroundImage = "url('back/" + players[0].build[0].name + ".png')";
@@ -677,7 +689,14 @@ function getPkmn(isSelf) {
 function getType(isSelf) {
     if (getPkmn(isSelf).tempType.length) return getPkmn(isSelf).tempType;
     else return getStats(getPkmn(isSelf).name).type;
-}
+}/*
+function getName(isSelf, showSpeciesName) {
+    if (getPkmn(isSelf).nick){
+        if (showSpeciesName)return getPkmn(isSelf).nick + "(" + getL10n("pokemon", getPkmn(isSelf).name) + ")";
+        else
+    }
+    else return getL10n("pokemon", getPkmn(isSelf).name);
+}*/
 function attack(move) {
     for (let k of MOVES) if (k.name == move) {
         let criticalHitRatioMultiplier = 1;
@@ -1041,4 +1060,7 @@ for (let i of document.querySelectorAll(".lv")) i.addEventListener("blur", funct
         i.innerText = Math.round(Number(i.innerText))
     }
     players[Number(i.dataset.player) - 1].build[Number(i.dataset.no) - 1].lv = Number(i.innerText)
+})
+for (let i of document.querySelectorAll(".nick")) i.addEventListener("blur", function () {
+    players[Number(i.dataset.player) - 1].build[Number(i.dataset.no) - 1].nick = i.innerText
 })
