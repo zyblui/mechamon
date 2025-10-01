@@ -419,7 +419,6 @@ for (let i = 0; i < 6; i++) {
                 "pkmn": document.getElementsByClassName("decisionSwitch")[i].dataset.for
             });
             decisionNextPlayer();
-            //nextPlayer();
         } else {
             sendOutPkmn(document.getElementsByClassName("decisionSwitch")[i].dataset.for);
             endTurn();
@@ -604,8 +603,7 @@ function nextTurn() {
                 let preDmgEffect = {};
                 if (k.preDmgEffect) preDmgEffect = k.preDmgEffect();
                 if (getPkmn(true).charge.turns > 0) {
-                    continue outer;//nextPlayer();
-                    //break;
+                    continue outer;
                 }
                 if (getPkmn(false).tempEffect.semiInvulnerable > 0 && !preDmgEffect.nullifySemiInvulnerable) break;
                 effect = attack(k.name);
@@ -618,7 +616,7 @@ function nextTurn() {
                 if (effect?.flinch) {
                     nextTurn();
                 }
-                else continue outer;//nextPlayer();
+                else continue outer;
             } else refreshSequence();
             break;
         }
@@ -742,10 +740,7 @@ for (let i = 0; i < 4; i++) document.getElementsByClassName("decisionMove")[i].a
         });
         decisionNextPlayer();
         return;
-    }/* else if (getPkmn(false).uncontrollable.turns > 0) {
-        decisionNextPlayer();
-        return;
-    }*/
+    }
     attacks.push({
         "user": playerToMove,
         "type": "move",
@@ -983,6 +978,16 @@ function modifyStatus(status, prob) {
             }));
         } else if (status == "frz") {
             addSmallText(getL10n("others", "frozenSolid", {
+                "pokemon": [getPkmn(false).name],
+                "isEnemy": !playerToMove != viewpoint
+            }));
+        } else if (status == "psn") {
+            addSmallText(getL10n("others", "poisoned", {
+                "pokemon": [getPkmn(false).name],
+                "isEnemy": !playerToMove != viewpoint
+            }));
+        } else if (status == "tox") {
+            addSmallText(getL10n("others", "badlyPoisoned", {
                 "pokemon": [getPkmn(false).name],
                 "isEnemy": !playerToMove != viewpoint
             }));

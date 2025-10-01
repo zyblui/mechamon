@@ -3331,7 +3331,11 @@ const TRANSLATION = {
             "fall": "[pokemon0]'s [stats0] fell!",
             "fall-enemy": "The opposing [pokemon0]'s [stats0] fell!",
             "harshlyFall": "[pokemon0]'s [stats0] harshly fell!",
-            "harshlyFall-enemy": "The opposing [pokemon0]'s [stats0] harshly fell!"
+            "harshlyFall-enemy": "The opposing [pokemon0]'s [stats0] harshly fell!",
+            "poisoned":"[pokemon0] was poisoned!",
+            "badlyPoisoned":"[pokemon0] was badly poisoned!",
+            "poisoned-enemy":"The opposing [pokemon0] was poisoned!",
+            "badlyPoisoned-enemy":"The opposing [pokemon0] was badly poisoned!"
         },
         "pokemon": {
             "abra": "Abra",
@@ -3725,7 +3729,11 @@ const TRANSLATION = {
             "fall": "[pokemon0]的[stats0]降低了！",
             "fall-enemy": "对手的[pokemon0]的[stats0]降低了！",
             "harshlyFall": "[pokemon0]的[stats0]大幅降低了！",
-            "harshlyFall-enemy": "对手的[pokemon0]的[stats0]大幅降低了！"
+            "harshlyFall-enemy": "对手的[pokemon0]的[stats0]大幅降低了！",
+            "poisoned":"[pokemon0]中毒了！",
+            "badlyPoisoned":"[pokemon0]中剧毒了！",
+            "poisoned-enemy":"对手的[pokemon0]中毒了！",
+            "badlyPoisoned-enemy":"对手的[pokemon0]中剧毒了！"
         },
         "pokemon": {
             "abra": "凯西",
