@@ -307,6 +307,7 @@ document.getElementById("startGame").addEventListener("click", function () {
             j.revealed = false;
         }
     }
+    playerToMove = 0;
     sendOutPkmn(battleInfo[0].build[0].name);
     playerToMove = 1;
     sendOutPkmn(battleInfo[1].build[0].name);
