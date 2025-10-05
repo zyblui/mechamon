@@ -7,6 +7,15 @@ let settings = {
     "evasionClause": false,
     "selfKoClause": false
 };
+if (!localStorage.getItem("mechamonSettings")) {
+    localStorage.setItem("mechamonSettings", JSON.stringify(settings))
+} else {
+    for (let i in settings) if (!Object.keys(JSON.parse(localStorage.getItem("mechamonSettings"))).includes(i)) {
+        localStorage.setItem("mechamonSettings", JSON.stringify(settings));
+        break;
+    }
+    settings = JSON.parse(localStorage.getItem("mechamonSettings"));
+}
 let players = [{
     "name": "Player 1",
     "build": [{
@@ -1045,8 +1054,12 @@ function refreshLang() {
 }
 refreshLang();
 for (let i of document.querySelectorAll("[data-settings]")) {
+    if (i.tagName.toLowerCase() == "select") i.value = settings[i.dataset.settings];
+    else i.checked=settings[i.dataset.settings];
     i.addEventListener("change", function () {
-        settings[i.dataset.settings] = i.checked;
+        if (i.tagName.toLowerCase() == "select") settings[i.dataset.settings] = i.value;
+        else settings[i.dataset.settings] = i.checked;
+        localStorage.setItem("mechamonSettings", JSON.stringify(settings));
     })
 }
 for (let i of document.querySelectorAll(".lv")) i.addEventListener("blur", function () {
