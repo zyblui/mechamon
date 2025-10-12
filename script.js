@@ -144,10 +144,13 @@ for (let i of POKEMON) {
     div.classList.add("listButton");
     div.innerHTML = getL10n("pokemon", i.name);
     div.addEventListener("click", function () {
-        players[Number(document.querySelector(".pkmnName.selected").dataset.player) - 1].build[Number(document.querySelector(".pkmnName.selected").dataset.no) - 1].name = i.name;
+        players[Number(document.querySelector(".pkmnName.selected").dataset.player) - 1].build[Number(document.querySelector(
+            ".pkmnName.selected").dataset.no) - 1].name = i.name;
         for (let j = 0; j < 4; j++) {
-            if (!i.moves.includes(players[Number(document.querySelector(".pkmnName.selected").dataset.player) - 1].build[Number(document.querySelector(".pkmnName.selected").dataset.no) - 1].moves[j])) {
-                players[Number(document.querySelector(".pkmnName.selected").dataset.player) - 1].build[Number(document.querySelector(".pkmnName.selected").dataset.no) - 1].moves[j] = "";
+            if (!i.moves.includes(players[Number(document.querySelector(".pkmnName.selected").dataset.player) - 1].build[Number(
+                document.querySelector(".pkmnName.selected").dataset.no) - 1].moves[j])) {
+                players[Number(document.querySelector(".pkmnName.selected").dataset.player) - 1].build[Number(document
+                    .querySelector(".pkmnName.selected").dataset.no) - 1].moves[j] = "";
             }
         }
         renderTable();
@@ -216,30 +219,26 @@ function calculateEffectiveness(attackType, defenseType) {
     return effectiveness;
 }
 function refreshDecision() {
-    if (battleInfo[playerToMove].currentPokemon != -1 && getPkmn(true).uncontrollable.turns == 0/* && (!getPkmn(false) || getPkmn(false).uncontrollable.turns == 0)*/) {
+    if (battleInfo[playerToMove].currentPokemon != -1 && getPkmn(true).uncontrollable.turns == 0) {
         for (let i = 0; i < 4; i++) {
             if (!Object.keys(getPkmn(true).moves)[i]) {
-                document.getElementsByClassName("decisionMove")[i].innerHTML = "(Empty)";
+                document.getElementsByClassName("decisionMove")[i].querySelector(".move-text").innerText = "(Empty)";
                 document.getElementsByClassName("decisionMove")[i].disabled = "disabled";
                 continue;
             }
-            if (Object.values(getPkmn(true).moves)[i] <= 0/* || (getPkmn(true).uncontrollable.move && getPkmn(true).uncontrollable
-                .move != Object.keys(getPkmn(true).moves)[i])*/ || (getPkmn(true).disable.move == Object.keys(getPkmn(true)
+            if (Object.values(getPkmn(true).moves)[i] <= 0 || (getPkmn(true).disable.move == Object.keys(getPkmn(true)
                 .moves)[i])) document.getElementsByClassName("decisionMove")[i].disabled = "disabled";
             else document.getElementsByClassName("decisionMove")[i].disabled = "";
-            if (Object.keys(getPkmn(true).moves)[i] == "mimic" && getPkmn(true).mimicMove) document
-                .getElementsByClassName("decisionMove")[i].innerHTML = getL10n("moves", getPkmn(true).mimicMove);
-            else document.getElementsByClassName("decisionMove")[i].innerHTML = getL10n("moves", Object.keys(getPkmn(true).moves)[i]);
-            let div = document.createElement("div");
-            div.classList.add("pp");
-            div.innerHTML = Object.values(getPkmn(true).moves)[i];
-            let span = document.createElement("span");
-            span.classList.add("sub");
-            span.innerText = "/" + getMoveStats(Object.keys(getPkmn(true).moves)[i]).pp;
-            div.appendChild(span);
-            document.getElementsByClassName("decisionMove")[i].appendChild(div);
-            if (Object.keys(getPkmn(true).moves)[i] == "mimic" && getPkmn(true).mimicMove) document.getElementsByClassName("decisionMove")[i].dataset.for = getPkmn(true).mimicMove;
-            else document.getElementsByClassName("decisionMove")[i].dataset.for = Object.keys(getPkmn(true).moves)[i];
+            let tempMove="";
+            if (Object.keys(getPkmn(true).moves)[i] == "mimic" && getPkmn(true).mimicMove) tempMove=getPkmn(true).mimicMove;
+            else tempMove=Object.keys(getPkmn(true).moves)[i]
+            document.getElementsByClassName("decisionMove")[i].querySelector(".move-text").innerText = getL10n("moves", tempMove);
+            document.getElementsByClassName("decisionMove")[i].querySelector(".pp-remaining").innerText = Object.values(getPkmn(true)
+                .moves)[i];
+            document.getElementsByClassName("decisionMove")[i].querySelector(".sub").innerText = "/" + getMoveStats(Object.keys(
+                getPkmn(true).moves)[i]).pp;
+            document.getElementsByClassName("decisionMove")[i].querySelector(".move-type").innerText = getL10n("types",getMoveStats(tempMove).type);
+            document.getElementsByClassName("decisionMove")[i].dataset.for = tempMove;
         }
     } else if (battleInfo[playerToMove].currentPokemon != -1) {
         document.getElementsByClassName("decisionMove")[0].disabled = "";
