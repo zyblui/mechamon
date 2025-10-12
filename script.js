@@ -472,7 +472,7 @@ function dealDmg(isSelf, dmg) {
         dmg = Math.min(dmg, getPkmn(isSelf).hp);
         getPkmn(isSelf).hp -= dmg;
         addSmallText(getL10n("others", "loseHealth", {
-            "pokemon": [getName(getPkmn(isSelf),false)],
+            "pokemon": [getName(getPkmn(isSelf), false)],
             "percentage": [(dmg / getPkmn(isSelf).maxHp * 100).toFixed(0)],
             "isEnemy": ((viewpoint == -1) ? false : ((isSelf == playerToMove) != viewpoint))
         }));
@@ -504,12 +504,12 @@ function nextPlayer(player) {
     }
     if (getPkmn(true)?.status == "par" && Math.random() < 1 / 4) {
         addMainText(getL10n("others", "unableToMove", {
-            "pokemon": [getName(getPkmn(true),false)],
+            "pokemon": [getName(getPkmn(true), false)],
             "isEnemy": playerToMove != viewpoint
         }));
         return { "continue": true };
     } else if (getPkmn(true)?.status == "frz") {
-        addMainText(getName(getPkmn(true),false) + " is frozen solid!");
+        addMainText(getName(getPkmn(true), false) + " is frozen solid!");
         return { "continue": true };
     } else if (getPkmn(true)?.charge.turns > 0) {
         getPkmn(true).charge.turns--;
@@ -528,19 +528,19 @@ function nextPlayer(player) {
         getPkmn(true).sleepTurns--;
         if (getPkmn(true).sleepTurns > 0) {
             addMainText(getL10n("others", "fastAsleep", {
-                "pokemon": [getName(getPkmn(true),false)],
+                "pokemon": [getName(getPkmn(true), false)],
                 "isEnemy": playerToMove != viewpoint
             }))
         } else if (getPkmn(true).sleepTurns == 0) {
             addSmallText(getL10n("others", "wakeUp", {
-                "pokemon": [getName(getPkmn(true),false)],
+                "pokemon": [getName(getPkmn(true), false)],
                 "isEnemy": playerToMove != viewpoint
             }))
             getPkmn(true).status = "";
         }
         return { "continue": true };
     } else if (getPkmn(true)?.tempEffect.confused > 0) {
-        addSmallText(getName(getPkmn(true),false) + " is confused!");
+        addSmallText(getName(getPkmn(true), false) + " is confused!");
         if (Math.random() < 0.5) {
             dealDmg(true, calculateDmg(40, getAttack(true), getDefense(true, true), getPkmn(true).lv, "",
                 getType(true)), { opposingSubstitute: true });
@@ -590,7 +590,7 @@ function nextTurn() {
         if (!getPkmn(true) || !getPkmn(false)) continue;
         if (i.type == "switch") {
             addMainText(getL10n("others", "comeBack", {
-                "pokemon": [getName(getPkmn(true),false)],
+                "pokemon": [getName(getPkmn(true), false)],
                 "isEnemy": ((viewpoint == -1) ? false : (playerToMove != viewpoint))
             }))
             sendOutPkmn(i.pkmn);
@@ -598,7 +598,7 @@ function nextTurn() {
         }
         if (nextPlayerInfo?.continue) continue;
         addMainText(getL10n("others", "use", {
-            "pokemon": [getName(getPkmn(true),false)],
+            "pokemon": [getName(getPkmn(true), false)],
             "moves": [getL10n("moves", i.move)],
             "isEnemy": ((viewpoint == -1) ? false : (playerToMove != viewpoint))
         }));
@@ -616,7 +616,7 @@ function nextTurn() {
             if (k.category != "status" && Math.random() > k.acc * ACC_STAGE_MULTIPLIER[getPkmn(true).accStage] *
                 ACC_STAGE_MULTIPLIER[getPkmn(false).evaStage] / 100) {
                 addSmallText(getL10n("others", "attackMiss", {
-                    "pokemon": [getName(getPkmn(true),false)],
+                    "pokemon": [getName(getPkmn(true), false)],
                     "isEnemy": playerToMove != viewpoint
                 }))
                 if (k.missEffect) k.missEffect();
@@ -730,7 +730,7 @@ function attack(move) {
                     break;
                 case 0:
                     addSmallText(getL10n("others", "noEffect", {
-                        "pokemon": [getName(getPkmn(false),false)],
+                        "pokemon": [getName(getPkmn(false), false)],
                         "isEnemy": !playerToMove != viewpoint
                     }))
             }
@@ -796,7 +796,7 @@ function judgeHP() {
         if (playerToMove == 0) document.getElementById("p2Pokemon").style.backgroundImage = "none";
         else document.getElementById("p1Pokemon").style.backgroundImage = "none";
         addMainText(getL10n("others", "faint", {
-            "pokemon": [getName(getPkmn(false),false)],
+            "pokemon": [getName(getPkmn(false), false)],
             "isEnemy": ((viewpoint == -1) ? true : (!playerToMove != viewpoint))
         }));
         battleInfo[(playerToMove == 0) ? 1 : 0].currentPokemon = -1;
@@ -806,7 +806,7 @@ function judgeHP() {
         if (playerToMove == 1) document.getElementById("p2Pokemon").style.backgroundImage = "none";
         else document.getElementById("p1Pokemon").style.backgroundImage = "none";
         addMainText(getL10n("others", "faint", {
-            "pokemon": [getName(getPkmn(true),false)],
+            "pokemon": [getName(getPkmn(true), false)],
             "isEnemy": ((viewpoint == -1) ? false : (playerToMove != viewpoint))
         }));
         battleInfo[playerToMove].currentPokemon = -1;
@@ -975,7 +975,7 @@ function modifyStats(isSelf, stat, delta, prob) {
         else if (delta == -1) word = "fall";
         else word = "harshlyFall";
         addSmallText(getL10n("others", word, {
-            "pokemon": [getName(getPkmn(isSelf),false)],
+            "pokemon": [getName(getPkmn(isSelf), false)],
             "stats": [getL10n("stats", stat)],
             "isEnemy": (playerToMove == isSelf) != viewpoint
         }))
@@ -985,28 +985,28 @@ function modifyStatus(status, prob) {
     let rand = Math.random();
     if (rand < prob) {
         if (getPkmn(false).status == status) {
-            if (status == "par") addSmallText(getName(getPkmn(false),false) + " is already paralyzed!");
+            if (status == "par") addSmallText(getName(getPkmn(false), false) + " is already paralyzed!");
             return;
         }
         getPkmn(false).status = status;
         if (status == "par") {
             addSmallText(getL10n("others", "paralyzed", {
-                "pokemon": [getName(getPkmn(false),false)],
+                "pokemon": [getName(getPkmn(false), false)],
                 "isEnemy": !playerToMove != viewpoint
             }));
         } else if (status == "frz") {
             addSmallText(getL10n("others", "frozenSolid", {
-                "pokemon": [getName(getPkmn(false),false)],
+                "pokemon": [getName(getPkmn(false), false)],
                 "isEnemy": !playerToMove != viewpoint
             }));
         } else if (status == "psn") {
             addSmallText(getL10n("others", "poisoned", {
-                "pokemon": [getName(getPkmn(false),false)],
+                "pokemon": [getName(getPkmn(false), false)],
                 "isEnemy": !playerToMove != viewpoint
             }));
         } else if (status == "tox") {
             addSmallText(getL10n("others", "badlyPoisoned", {
-                "pokemon": [getName(getPkmn(false),false)],
+                "pokemon": [getName(getPkmn(false), false)],
                 "isEnemy": !playerToMove != viewpoint
             }));
         }
@@ -1015,13 +1015,13 @@ function modifyStatus(status, prob) {
 function putToSleep(isSelf, turns) {
     getPkmn(isSelf).status = "slp";
     getPkmn(isSelf).sleepTurns = turns;
-    addSmallText(getName(getPkmn(isSelf),false) + " fell asleep!");
+    addSmallText(getName(getPkmn(isSelf), false) + " fell asleep!");
 }
 function addTempEffect(isSelf, effect, turns, prob) {
     if (Math.random() < prob) {
         getPkmn(isSelf).tempEffect[effect] = turns;
-        if (effect == "confused") addSmallText(getName(getPkmn(isSelf),false) + " became confused!");
-        else if (effect == "reflect" || effect == "light screen") addSmallText(getName(getPkmn(isSelf),false) +
+        if (effect == "confused") addSmallText(getName(getPkmn(isSelf), false) + " became confused!");
+        else if (effect == "reflect" || effect == "light screen") addSmallText(getName(getPkmn(isSelf), false) +
             " gained armor!");
     }
 }

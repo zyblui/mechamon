@@ -1203,7 +1203,7 @@ const MOVES = [{
         let hpLost = getPkmn(true).maxHp - getPkmn(true).hp;
         if (hpLost != 255 && hpLost != 511) {
             getPkmn(true).hp += Math.min(getPkmn(true).maxHp / 2, hpLost);
-            addSmallText(getName(getPkmn(true),false) + " had its HP restored.");
+            addSmallText(getName(getPkmn(true), false) + " had its HP restored.");
         }
     }
 }, {
@@ -1230,7 +1230,7 @@ const MOVES = [{
         if (hpLost != 255 && hpLost != 511) {
             getPkmn(true).hp = getPkmn(true).maxHp;
             addSmallText(getL10n("others", "sleepHealthy", {
-                "pokemon": [getName(getPkmn(true),false)],
+                "pokemon": [getName(getPkmn(true), false)],
                 "isEnemy": playerToMove != viewpoint
             }))
             putToSleep(true, 2);
@@ -1583,7 +1583,7 @@ const MOVES = [{
     "priority": 0,
     "effect": function () {
         if (getPkmn(true).hp >= getPkmn(true).maxHp / 4) {
-            addSmallText(getName(getPkmn(true),false) + " put in a substitute!");
+            addSmallText(getName(getPkmn(true), false) + " put in a substitute!");
             dealDmg(true, getPkmn(true).maxHp / 4);
             getPkmn(true).substituteHp = getPkmn(true).maxHp / 4;
         }
@@ -1788,7 +1788,7 @@ const MOVES = [{
             getPkmn(true).moves[i] = 5;
         }
         addSmallText(getL10n("others", "transform", {
-            "pokemon": [getName(getPkmn(true),false), getName(getPkmn(false),false)],
+            "pokemon": [getName(getPkmn(true), false), getName(getPkmn(false), false)],
             "isEnemy": playerToMove != viewpoint
         }));
     }
@@ -3261,6 +3261,23 @@ const POKEMON = [{
 }];
 const TRANSLATION = {
     "en": {
+        "types": {
+            "bug": "Bug",
+            "dragon": "Dragon",
+            "electric": "Electric",
+            "fighting": "Fighting",
+            "fire": "Fire",
+            "flying": "Flying",
+            "ghost": "Ghost",
+            "grass": "Grass",
+            "ground": "Ground",
+            "ice": "Ice",
+            "normal": "Normal",
+            "poison": "Poison",
+            "psychic": "Psychic",
+            "rock": "Rock",
+            "water": "Water"
+        },
         "stats": {
             "atk": "Attack",
             "def": "Defense",
@@ -3659,6 +3676,23 @@ const TRANSLATION = {
         }
     },
     "zh": {
+        "types": {
+            "bug": "虫",
+            "dragon": "龙",
+            "electric": "电",
+            "fighting": "格斗",
+            "fire": "火",
+            "flying": "飞行",
+            "ghost": "幽灵",
+            "grass": "草",
+            "ground": "地面",
+            "ice": "冰",
+            "normal": "一般",
+            "poison": "毒",
+            "psychic": "超能力",
+            "rock": "岩石",
+            "water": "水"
+        },
         "stats": {
             "atk": "攻击",
             "def": "防御",
