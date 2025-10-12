@@ -229,15 +229,16 @@ function refreshDecision() {
             if (Object.values(getPkmn(true).moves)[i] <= 0 || (getPkmn(true).disable.move == Object.keys(getPkmn(true)
                 .moves)[i])) document.getElementsByClassName("decisionMove")[i].disabled = "disabled";
             else document.getElementsByClassName("decisionMove")[i].disabled = "";
-            let tempMove="";
-            if (Object.keys(getPkmn(true).moves)[i] == "mimic" && getPkmn(true).mimicMove) tempMove=getPkmn(true).mimicMove;
-            else tempMove=Object.keys(getPkmn(true).moves)[i]
+            let tempMove = "";
+            if (Object.keys(getPkmn(true).moves)[i] == "mimic" && getPkmn(true).mimicMove) tempMove = getPkmn(true).mimicMove;
+            else tempMove = Object.keys(getPkmn(true).moves)[i]
             document.getElementsByClassName("decisionMove")[i].querySelector(".move-text").innerText = getL10n("moves", tempMove);
-            document.getElementsByClassName("decisionMove")[i].querySelector(".pp-remaining").innerText = Object.values(getPkmn(true)
-                .moves)[i];
+            document.getElementsByClassName("decisionMove")[i].querySelector(".pp-remaining").innerText = Object.values(getPkmn(
+                true).moves)[i];
             document.getElementsByClassName("decisionMove")[i].querySelector(".sub").innerText = "/" + getMoveStats(Object.keys(
                 getPkmn(true).moves)[i]).pp;
-            document.getElementsByClassName("decisionMove")[i].querySelector(".move-type").innerText = getL10n("types",getMoveStats(tempMove).type);
+            document.getElementsByClassName("decisionMove")[i].querySelector(".move-type").innerText = getL10n("types",
+                getMoveStats(tempMove).type);
             document.getElementsByClassName("decisionMove")[i].dataset.for = tempMove;
         }
     } else if (battleInfo[playerToMove].currentPokemon != -1) {
@@ -569,8 +570,10 @@ function nextTurn() {
         else if (a.type == "move" && b.type == "move") {
             if (getMoveStats(a.move).priority > getMoveStats(b.move).priority) return -1;
             else if (getMoveStats(b.move).priority > getMoveStats(a.move).priority) return 1;
-            let p1Spe = battleInfo[0].build[battleInfo[0].currentPokemon].spe * STAGE_MULTIPLIER[battleInfo[0].build[battleInfo[0].currentPokemon].speStage] * ((battleInfo[0].build[battleInfo[0].currentPokemon].status == "par") ? 0.25 : 1);
-            let p2Spe = battleInfo[1].build[battleInfo[1].currentPokemon].spe * STAGE_MULTIPLIER[battleInfo[1].build[battleInfo[1].currentPokemon].speStage] * ((battleInfo[1].build[battleInfo[1].currentPokemon].status == "par") ? 0.25 : 1);
+            let p1Spe = battleInfo[0].build[battleInfo[0].currentPokemon].spe * STAGE_MULTIPLIER[battleInfo[0].build[battleInfo[0]
+                .currentPokemon].speStage] * ((battleInfo[0].build[battleInfo[0].currentPokemon].status == "par") ? 0.25 : 1);
+            let p2Spe = battleInfo[1].build[battleInfo[1].currentPokemon].spe * STAGE_MULTIPLIER[battleInfo[1].build[battleInfo[1]
+                .currentPokemon].speStage] * ((battleInfo[1].build[battleInfo[1].currentPokemon].status == "par") ? 0.25 : 1);
             let tempPlayerToMove = 0;
             if (p1Spe > p2Spe) {
                 tempPlayerToMove = 0;
@@ -854,10 +857,12 @@ function renderHP() {
     }
     for (let i of [0, 1]) {
         if (battleInfo[Number(i != viewpoint)].currentPokemon != -1) {
-            let percentage = battleInfo[Number(i != viewpoint)].build[battleInfo[Number(i != viewpoint)].currentPokemon].hp / battleInfo[Number(i != viewpoint)].build[battleInfo[Number(i != viewpoint)].currentPokemon].maxHp * 100;
+            let percentage = battleInfo[Number(i != viewpoint)].build[battleInfo[Number(i != viewpoint)].currentPokemon].hp /
+                battleInfo[Number(i != viewpoint)].build[battleInfo[Number(i != viewpoint)].currentPokemon].maxHp * 100;
             document.getElementById(`p${i + 1}Bar`).style.width = percentage + "%";
             document.getElementById(`p${i + 1}Percentage`).innerText = percentage.toFixed(0) + "%";
-            document.getElementById(`p${i + 1}Lv`).innerText = "Lv " + battleInfo[Number(i != viewpoint)].build[battleInfo[Number(i != viewpoint)].currentPokemon].lv;
+            document.getElementById(`p${i + 1}Lv`).innerText = "Lv " + battleInfo[Number(i != viewpoint)].build[battleInfo[Number(
+                i != viewpoint)].currentPokemon].lv;
             document.getElementById(`p${i + 1}Bar`).classList.remove("green", "yellow", "red");
             if (percentage >= 50) document.getElementById(`p${i + 1}Bar`).classList.add("green");
             else if (percentage >= 20) document.getElementById(`p${i + 1}Bar`).classList.add("yellow");
