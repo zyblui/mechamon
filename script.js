@@ -268,7 +268,7 @@ let turn = 0, playerToMove = 0, battleInfo = [];
 document.getElementById("startGame").addEventListener("click", function () {
     document.getElementById("record").innerHTML = "";
     turn = 0;
-    battleInfo = JSON.parse(JSON.stringify(players));
+    battleInfo = structuredClone(players);
     battleInfo[0].currentPokemon = -1;
     battleInfo[1].currentPokemon = -1;
     for (let i of battleInfo) {
@@ -452,11 +452,11 @@ function dealDmg(isSelf, dmg) {
         getPkmn(!isSelf).substituteHp -= Math.min(dmg, getPkmn(!isSelf).substituteHp);
         if (getPkmn(!isSelf).substituteHp == 0) addSmallText(getL10n("others", "substituteFade", {
             "pokemon": [getName(getPkmn(!isSelf), false)],
-            "isEnemy": ((viewpoint == -1) ? isSelf : ((!isSelf == playerToMove) != viewpoint))
+            "isEnemy": ((viewpoint == -1) ? isSelf : (((!isSelf) == playerToMove) != viewpoint))
         }));
         else addSmallText(getL10n("others", "substituteTakeDamage", {
             "pokemon": [getName(getPkmn(!isSelf), false)],
-            "isEnemy": ((viewpoint == -1) ? isSelf : ((!isSelf == playerToMove) != viewpoint))
+            "isEnemy": ((viewpoint == -1) ? isSelf : (((!isSelf) == playerToMove) != viewpoint))
         }));
     } else if (getPkmn(isSelf).substituteHp > 0 && !arguments[2]?.ignoreSubstitute) {
         getPkmn(isSelf).substituteHp -= Math.min(dmg, getPkmn(isSelf).substituteHp);
@@ -1056,7 +1056,7 @@ for (let i of document.querySelectorAll("[data-settings]")) {
     })
 }
 for (let i of document.querySelectorAll(".lv")) i.addEventListener("blur", function () {
-    if (isNaN(Number(i.innerText))) {
+    if (Number.isNaN(Number(i.innerText))) {
         i.innerText = players[Number(i.dataset.player) - 1].build[Number(i.dataset.no) - 1].lv
     } else if (Number(i.innerText) > 100) {
         i.innerText = 100
