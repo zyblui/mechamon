@@ -111,18 +111,17 @@ function render() {
         "url('back/" + players[Number(viewpoint != 0)].build[battleInfo[Number(viewpoint != 0)].currentPokemon].name + ".png')";
     if (battleInfo[Number(viewpoint != 1)].currentPokemon != -1) document.getElementById("p2Pokemon").style.backgroundImage =
         "url('front/" + players[Number(viewpoint != 1)].build[battleInfo[Number(viewpoint != 1)].currentPokemon].name + ".png')";
-    if (battleInfo[Number(viewpoint != 0)].currentPokemon != -1) document.getElementById("p1Name").innerText = getL10n("pokemon",
-        players[Number(viewpoint != 0)].build[battleInfo[Number(viewpoint != 0)].currentPokemon].name);
-    if (battleInfo[Number(viewpoint != 1)].currentPokemon != -1) document.getElementById("p2Name").innerText = getL10n("pokemon",
-        players[Number(viewpoint != 1)].build[battleInfo[Number(viewpoint != 1)].currentPokemon].name);
+    if (battleInfo[Number(viewpoint != 0)].currentPokemon != -1) document.getElementById("p1Name").innerText =
+        getName(players[Number(viewpoint != 0)].build[battleInfo[Number(viewpoint != 0)].currentPokemon], false);
+    if (battleInfo[Number(viewpoint != 1)].currentPokemon != -1) document.getElementById("p2Name").innerText =
+        getName(players[Number(viewpoint != 1)].build[battleInfo[Number(viewpoint != 1)].currentPokemon], false);
 }
 function getL10n(type, str) {
     let returnValue = TRANSLATION[settings.lang][type][str + ((arguments[2]?.isEnemy) ? "-enemy" : "")];
     if (arguments[2]) for (let i in arguments[2]) {
         if (i == "isEnemy") continue;
         for (let j = 0; j < arguments[2][i].length; j++) {
-            /*if (TRANSLATION[settings.lang][i]) returnValue = returnValue.replace("[" + i + j + "]", TRANSLATION[settings.lang][i][arguments[2][i][j]]);
-            else*/ returnValue = returnValue.replace("[" + i + j + "]", arguments[2][i][j]);
+            returnValue = returnValue.replace("[" + i + j + "]", arguments[2][i][j]);
         }
     }
     return returnValue;
@@ -255,7 +254,7 @@ function refreshDecision() {
         }
     }
     for (let i = 0; i < 6; i++) {
-        document.getElementsByClassName("decisionSwitch")[i].innerText = getL10n("pokemon", players[playerToMove].build[i].name);
+        document.getElementsByClassName("decisionSwitch")[i].innerText = getName(players[playerToMove].build[i], false);
         document.getElementsByClassName("decisionSwitch")[i].classList.remove("selected");
         if (battleInfo[playerToMove].build[i].hp == 0) document.getElementsByClassName("decisionSwitch")[i].disabled = "disabled";
         else if (battleInfo[playerToMove].currentPokemon == i) {
@@ -452,28 +451,28 @@ function dealDmg(isSelf, dmg) {
     if (arguments[2]?.opposingSubstitute && getPkmn(!isSelf).substituteHp > 0) {
         getPkmn(!isSelf).substituteHp -= Math.min(dmg, getPkmn(!isSelf).substituteHp);
         if (getPkmn(!isSelf).substituteHp == 0) addSmallText(getL10n("others", "substituteFade", {
-            "pokemon": [getL10n("pokemon", getPkmn(!isSelf).name)],
+            "pokemon": [getName(getPkmn(!isSelf), false)],
             "isEnemy": ((viewpoint == -1) ? isSelf : ((!isSelf == playerToMove) != viewpoint))
         }));
         else addSmallText(getL10n("others", "substituteTakeDamage", {
-            "pokemon": [getL10n("pokemon", getPkmn(!isSelf).name)],
+            "pokemon": [getName(getPkmn(!isSelf), false)],
             "isEnemy": ((viewpoint == -1) ? isSelf : ((!isSelf == playerToMove) != viewpoint))
         }));
     } else if (getPkmn(isSelf).substituteHp > 0 && !arguments[2]?.ignoreSubstitute) {
         getPkmn(isSelf).substituteHp -= Math.min(dmg, getPkmn(isSelf).substituteHp);
         if (getPkmn(isSelf).substituteHp == 0) addSmallText(getL10n("others", "substituteFade", {
-            "pokemon": [getL10n("pokemon", getPkmn(isSelf).name)],
+            "pokemon": [getName(getPkmn(isSelf), false)],
             "isEnemy": ((viewpoint == -1) ? !isSelf : ((isSelf == playerToMove) != viewpoint))
         }));
         else addSmallText(getL10n("others", "substituteTakeDamage", {
-            "pokemon": [getL10n("pokemon", getPkmn(isSelf).name)],
+            "pokemon": [getName(getPkmn(isSelf), false)],
             "isEnemy": ((viewpoint == -1) ? !isSelf : ((isSelf == playerToMove) != viewpoint))
         }));
     } else {
         dmg = Math.min(dmg, getPkmn(isSelf).hp);
         getPkmn(isSelf).hp -= dmg;
         addSmallText(getL10n("others", "loseHealth", {
-            "pokemon": [getL10n("pokemon", getPkmn(isSelf).name)],
+            "pokemon": [getName(getPkmn(isSelf),false)],
             "percentage": [(dmg / getPkmn(isSelf).maxHp * 100).toFixed(0)],
             "isEnemy": ((viewpoint == -1) ? false : ((isSelf == playerToMove) != viewpoint))
         }));
@@ -505,12 +504,12 @@ function nextPlayer(player) {
     }
     if (getPkmn(true)?.status == "par" && Math.random() < 1 / 4) {
         addMainText(getL10n("others", "unableToMove", {
-            "pokemon": [getL10n("pokemon", getPkmn(true).name)],
+            "pokemon": [getName(getPkmn(true),false)],
             "isEnemy": playerToMove != viewpoint
         }));
         return { "continue": true };
     } else if (getPkmn(true)?.status == "frz") {
-        addMainText(getL10n("pokemon", getPkmn(true).name) + " is frozen solid!");
+        addMainText(getName(getPkmn(true),false) + " is frozen solid!");
         return { "continue": true };
     } else if (getPkmn(true)?.charge.turns > 0) {
         getPkmn(true).charge.turns--;
@@ -529,19 +528,19 @@ function nextPlayer(player) {
         getPkmn(true).sleepTurns--;
         if (getPkmn(true).sleepTurns > 0) {
             addMainText(getL10n("others", "fastAsleep", {
-                "pokemon": [getL10n("pokemon", getPkmn(true).name)],
+                "pokemon": [getName(getPkmn(true),false)],
                 "isEnemy": playerToMove != viewpoint
             }))
         } else if (getPkmn(true).sleepTurns == 0) {
             addSmallText(getL10n("others", "wakeUp", {
-                "pokemon": [getL10n("pokemon", getPkmn(true).name)],
+                "pokemon": [getName(getPkmn(true),false)],
                 "isEnemy": playerToMove != viewpoint
             }))
             getPkmn(true).status = "";
         }
         return { "continue": true };
     } else if (getPkmn(true)?.tempEffect.confused > 0) {
-        addSmallText(getL10n("pokemon", getPkmn(true).name) + " is confused!");
+        addSmallText(getName(getPkmn(true),false) + " is confused!");
         if (Math.random() < 0.5) {
             dealDmg(true, calculateDmg(40, getAttack(true), getDefense(true, true), getPkmn(true).lv, "",
                 getType(true)), { opposingSubstitute: true });
@@ -591,7 +590,7 @@ function nextTurn() {
         if (!getPkmn(true) || !getPkmn(false)) continue;
         if (i.type == "switch") {
             addMainText(getL10n("others", "comeBack", {
-                "pokemon": [getL10n("pokemon", getPkmn(true).name)],
+                "pokemon": [getName(getPkmn(true),false)],
                 "isEnemy": ((viewpoint == -1) ? false : (playerToMove != viewpoint))
             }))
             sendOutPkmn(i.pkmn);
@@ -599,7 +598,7 @@ function nextTurn() {
         }
         if (nextPlayerInfo?.continue) continue;
         addMainText(getL10n("others", "use", {
-            "pokemon": [getL10n("pokemon", players[playerToMove].build[battleInfo[playerToMove].currentPokemon].name)],
+            "pokemon": [getName(getPkmn(true),false)],
             "moves": [getL10n("moves", i.move)],
             "isEnemy": ((viewpoint == -1) ? false : (playerToMove != viewpoint))
         }));
@@ -617,7 +616,7 @@ function nextTurn() {
             if (k.category != "status" && Math.random() > k.acc * ACC_STAGE_MULTIPLIER[getPkmn(true).accStage] *
                 ACC_STAGE_MULTIPLIER[getPkmn(false).evaStage] / 100) {
                 addSmallText(getL10n("others", "attackMiss", {
-                    "pokemon": [getL10n("pokemon", getPkmn(true).name)],
+                    "pokemon": [getName(getPkmn(true),false)],
                     "isEnemy": playerToMove != viewpoint
                 }))
                 if (k.missEffect) k.missEffect();
@@ -699,12 +698,12 @@ function getType(isSelf) {
     if (getPkmn(isSelf).tempType.length) return getPkmn(isSelf).tempType;
     else return getStats(getPkmn(isSelf).name).type;
 }
-function getName(isSelf, showSpeciesName) {
-    if (getPkmn(isSelf).nick) {
-        if (showSpeciesName) return getPkmn(isSelf).nick + "(" + getL10n("pokemon", getPkmn(isSelf).name) + ")";
-        else return getPkmn(isSelf).nick;
+function getName(pkmn, showSpeciesName) {
+    if (pkmn.nick) {
+        if (showSpeciesName) return pkmn.nick + "(" + getL10n("pokemon", pkmn.name) + ")";
+        else return pkmn.nick;
     }
-    else return getL10n("pokemon", getPkmn(isSelf).name);
+    else return getL10n("pokemon", pkmn.name);
 }
 function attack(move) {
     for (let k of MOVES) if (k.name == move) {
@@ -731,7 +730,7 @@ function attack(move) {
                     break;
                 case 0:
                     addSmallText(getL10n("others", "noEffect", {
-                        "pokemon": [getL10n("pokemon", getPkmn(false).name)],
+                        "pokemon": [getName(getPkmn(false),false)],
                         "isEnemy": !playerToMove != viewpoint
                     }))
             }
@@ -797,7 +796,7 @@ function judgeHP() {
         if (playerToMove == 0) document.getElementById("p2Pokemon").style.backgroundImage = "none";
         else document.getElementById("p1Pokemon").style.backgroundImage = "none";
         addMainText(getL10n("others", "faint", {
-            "pokemon": [getL10n("pokemon", getPkmn(false).name)],
+            "pokemon": [getName(getPkmn(false),false)],
             "isEnemy": ((viewpoint == -1) ? true : (!playerToMove != viewpoint))
         }));
         battleInfo[(playerToMove == 0) ? 1 : 0].currentPokemon = -1;
@@ -807,7 +806,7 @@ function judgeHP() {
         if (playerToMove == 1) document.getElementById("p2Pokemon").style.backgroundImage = "none";
         else document.getElementById("p1Pokemon").style.backgroundImage = "none";
         addMainText(getL10n("others", "faint", {
-            "pokemon": [getL10n("pokemon", getPkmn(true).name)],
+            "pokemon": [getName(getPkmn(true),false)],
             "isEnemy": ((viewpoint == -1) ? false : (playerToMove != viewpoint))
         }));
         battleInfo[playerToMove].currentPokemon = -1;
@@ -976,7 +975,7 @@ function modifyStats(isSelf, stat, delta, prob) {
         else if (delta == -1) word = "fall";
         else word = "harshlyFall";
         addSmallText(getL10n("others", word, {
-            "pokemon": [getL10n("pokemon", getPkmn(isSelf).name)],
+            "pokemon": [getName(getPkmn(isSelf),false)],
             "stats": [getL10n("stats", stat)],
             "isEnemy": (playerToMove == isSelf) != viewpoint
         }))
@@ -986,28 +985,28 @@ function modifyStatus(status, prob) {
     let rand = Math.random();
     if (rand < prob) {
         if (getPkmn(false).status == status) {
-            if (status == "par") addSmallText(getL10n("pokemon", getPkmn(false).name) + " is already paralyzed!");
+            if (status == "par") addSmallText(getName(getPkmn(false),false) + " is already paralyzed!");
             return;
         }
         getPkmn(false).status = status;
         if (status == "par") {
             addSmallText(getL10n("others", "paralyzed", {
-                "pokemon": [getL10n("pokemon", getPkmn(false).name)],
+                "pokemon": [getName(getPkmn(false),false)],
                 "isEnemy": !playerToMove != viewpoint
             }));
         } else if (status == "frz") {
             addSmallText(getL10n("others", "frozenSolid", {
-                "pokemon": [getL10n("pokemon", getPkmn(false).name)],
+                "pokemon": [getName(getPkmn(false),false)],
                 "isEnemy": !playerToMove != viewpoint
             }));
         } else if (status == "psn") {
             addSmallText(getL10n("others", "poisoned", {
-                "pokemon": [getL10n("pokemon", getPkmn(false).name)],
+                "pokemon": [getName(getPkmn(false),false)],
                 "isEnemy": !playerToMove != viewpoint
             }));
         } else if (status == "tox") {
             addSmallText(getL10n("others", "badlyPoisoned", {
-                "pokemon": [getL10n("pokemon", getPkmn(false).name)],
+                "pokemon": [getName(getPkmn(false),false)],
                 "isEnemy": !playerToMove != viewpoint
             }));
         }
@@ -1016,13 +1015,13 @@ function modifyStatus(status, prob) {
 function putToSleep(isSelf, turns) {
     getPkmn(isSelf).status = "slp";
     getPkmn(isSelf).sleepTurns = turns;
-    addSmallText(getL10n("pokemon", getPkmn(isSelf).name) + " fell asleep!");
+    addSmallText(getName(getPkmn(isSelf),false) + " fell asleep!");
 }
 function addTempEffect(isSelf, effect, turns, prob) {
     if (Math.random() < prob) {
         getPkmn(isSelf).tempEffect[effect] = turns;
-        if (effect == "confused") addSmallText(getL10n("pokemon", getPkmn(isSelf).name) + " became confused!");
-        else if (effect == "reflect" || effect == "light screen") addSmallText(getL10n("pokemon", getPkmn(isSelf).name) +
+        if (effect == "confused") addSmallText(getName(getPkmn(isSelf),false) + " became confused!");
+        else if (effect == "reflect" || effect == "light screen") addSmallText(getName(getPkmn(isSelf),false) +
             " gained armor!");
     }
 }

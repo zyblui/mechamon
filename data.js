@@ -1203,7 +1203,7 @@ const MOVES = [{
         let hpLost = getPkmn(true).maxHp - getPkmn(true).hp;
         if (hpLost != 255 && hpLost != 511) {
             getPkmn(true).hp += Math.min(getPkmn(true).maxHp / 2, hpLost);
-            addSmallText(capitalize(getPkmn(true).name) + " had its HP restored.");
+            addSmallText(getName(getPkmn(true),false) + " had its HP restored.");
         }
     }
 }, {
@@ -1230,7 +1230,7 @@ const MOVES = [{
         if (hpLost != 255 && hpLost != 511) {
             getPkmn(true).hp = getPkmn(true).maxHp;
             addSmallText(getL10n("others", "sleepHealthy", {
-                "pokemon": [getL10n("pokemon", getPkmn(true).name)],
+                "pokemon": [getName(getPkmn(true),false)],
                 "isEnemy": playerToMove != viewpoint
             }))
             putToSleep(true, 2);
@@ -1583,7 +1583,7 @@ const MOVES = [{
     "priority": 0,
     "effect": function () {
         if (getPkmn(true).hp >= getPkmn(true).maxHp / 4) {
-            addSmallText(capitalize(getPkmn(true).name) + " put in a substitute!");
+            addSmallText(getName(getPkmn(true),false) + " put in a substitute!");
             dealDmg(true, getPkmn(true).maxHp / 4);
             getPkmn(true).substituteHp = getPkmn(true).maxHp / 4;
         }
@@ -1788,7 +1788,7 @@ const MOVES = [{
             getPkmn(true).moves[i] = 5;
         }
         addSmallText(getL10n("others", "transform", {
-            "pokemon": [getL10n("pokemon", getPkmn(true).name, getPkmn(false).name)],
+            "pokemon": [getName(getPkmn(true),false), getName(getPkmn(false),false)],
             "isEnemy": playerToMove != viewpoint
         }));
     }
