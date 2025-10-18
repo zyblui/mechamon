@@ -415,7 +415,6 @@ const ACC_STAGE_MULTIPLIER = {
     "5": 3 / 8,
     "6": 3 / 9
 };
-renderTable();
 const STAT_NAMES = {
     "def": "Defense",
     "atk": "Attack",
