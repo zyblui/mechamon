@@ -1,3 +1,23 @@
+let w = new Worker("w.js");
+
+w.onmessage = function (e) {
+    if (e.data.type == "result") {
+        if (e.data.action == "switch") {
+            switchPkmn(e.data.pkmn)
+        } else if (e.data.action == "move") {
+            makeMove(e.data.move)
+        }
+    }
+}
+
+document.getElementById("mechaButton").addEventListener("click", function () {
+    w.postMessage({
+        type: "computerPlay",
+        battleInfo: battleInfo,
+        playerToMove: playerToMove
+    });
+})
+
 let settings = {
     "lang": "zh",
     "sleepClause": false,
@@ -433,18 +453,21 @@ function sendOutPkmn(pkmn) {
 }
 for (let i = 0; i < 6; i++) {
     document.getElementsByClassName("decisionSwitch")[i].addEventListener("click", function () {
-        if (battleInfo[playerToMove].currentPokemon != -1) {
-            attacks.push({
-                "user": playerToMove,
-                "type": "switch",
-                "pkmn": document.getElementsByClassName("decisionSwitch")[i].dataset.for
-            });
-            decisionNextPlayer();
-        } else {
-            sendOutPkmn(document.getElementsByClassName("decisionSwitch")[i].dataset.for);
-            endTurn();
-        }
+        switchPkmn(document.getElementsByClassName("decisionSwitch")[i].dataset.for);
     });
+}
+function switchPkmn(name) {
+    if (battleInfo[playerToMove].currentPokemon != -1) {
+        attacks.push({
+            "user": playerToMove,
+            "type": "switch",
+            "pkmn": name
+        });
+        decisionNextPlayer();
+    } else {
+        sendOutPkmn(name);
+        endTurn();
+    }
 }
 let isNewTurn = false;
 function dealDmg(isSelf, dmg) {
@@ -761,6 +784,9 @@ function decisionNextPlayer() {
     }
 }
 for (let i = 0; i < 4; i++) document.getElementsByClassName("decisionMove")[i].addEventListener("click", function () {
+    makeMove(document.getElementsByClassName("decisionMove")[i].dataset.for);
+});
+function makeMove(name) {
     if (getPkmn(true).uncontrollable.turns > 0) {
         attacks.push({
             "user": playerToMove,
@@ -774,10 +800,10 @@ for (let i = 0; i < 4; i++) document.getElementsByClassName("decisionMove")[i].a
     attacks.push({
         "user": playerToMove,
         "type": "move",
-        "move": document.getElementsByClassName("decisionMove")[i].dataset.for,
+        "move": name,
     });
     decisionNextPlayer();
-});
+}
 function charge(move, turns) {
     getPkmn(true).charge = {
         move: move,
