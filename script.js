@@ -1,5 +1,5 @@
 let w
-if (w.terminate) w.terminate();
+if (w?.terminate) w.terminate();
 w = new Worker("w.js");
 
 w.onmessage = function (e) {
