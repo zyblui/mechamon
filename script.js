@@ -1099,4 +1099,4 @@ for (let i of document.querySelectorAll(".lv")) i.addEventListener("blur", funct
 })
 for (let i of document.querySelectorAll(".nick")) i.addEventListener("blur", function () {
     players[Number(i.dataset.player) - 1].build[Number(i.dataset.no) - 1].nick = i.innerText
-})    
+})
