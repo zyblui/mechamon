@@ -9,7 +9,7 @@ w.onmessage = function (e) {
         } else if (e.data.action == "move") {
             makeMove(e.data.move);
         }
-    } else if(e.data.type=="log"){
+    } else if (e.data.type == "log") {
         console.log(e.data.content)
     }
 }
@@ -268,9 +268,15 @@ function refreshDecision() {
     } else if (battleInfo[playerToMove].currentPokemon != -1) {
         document.getElementsByClassName("decisionMove")[0].disabled = "";
         document.getElementsByClassName("decisionMove")[0].querySelector(".move-text").innerText = "Pass";
+        document.getElementsByClassName("decisionMove")[0].querySelector(".pp-remaining").innerText = "-"
+        document.getElementsByClassName("decisionMove")[0].querySelector(".sub").innerText = "/-"
+        document.getElementsByClassName("decisionMove")[0].querySelector(".move-type").innerText = "-";
         for (let i = 1; i < 4; i++) {
             document.getElementsByClassName("decisionMove")[i].disabled = "disabled";
             document.getElementsByClassName("decisionMove")[i].querySelector(".move-text").innerText = "-";
+            document.getElementsByClassName("decisionMove")[i].querySelector(".pp-remaining").innerText = "-"
+            document.getElementsByClassName("decisionMove")[i].querySelector(".sub").innerText = "/-"
+            document.getElementsByClassName("decisionMove")[i].querySelector(".move-type").innerText = "-";
         }
     } else {
         for (let i = 0; i < 4; i++) {
