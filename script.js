@@ -1,5 +1,6 @@
-if (w) w.terminate();
-let w = new Worker("w.js");
+let w
+if (w.terminate) w.terminate();
+w = new Worker("w.js");
 
 w.onmessage = function (e) {
     if (e.data.type == "result") {
@@ -1098,4 +1099,4 @@ for (let i of document.querySelectorAll(".lv")) i.addEventListener("blur", funct
 })
 for (let i of document.querySelectorAll(".nick")) i.addEventListener("blur", function () {
     players[Number(i.dataset.player) - 1].build[Number(i.dataset.no) - 1].nick = i.innerText
-})
+})    
