@@ -267,10 +267,10 @@ function refreshDecision() {
         }
     } else if (battleInfo[playerToMove].currentPokemon != -1) {
         document.getElementsByClassName("decisionMove")[0].disabled = "";
-        document.getElementsByClassName("decisionMove")[0].innerText = "Pass";
+        document.getElementsByClassName("decisionMove")[0].querySelector(".move-text").innerText = "Pass";
         for (let i = 1; i < 4; i++) {
             document.getElementsByClassName("decisionMove")[i].disabled = "disabled";
-            document.getElementsByClassName("decisionMove")[i].innerText = "-";
+            document.getElementsByClassName("decisionMove")[i].querySelector(".move-text").innerText = "-";
         }
     } else {
         for (let i = 0; i < 4; i++) {
