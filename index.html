@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="font/inter.css" />
     <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
     <div id="battlePanel">
         <div id="turnNumber">Turn 0</div>
@@ -364,20 +366,23 @@
         </div>
         <div data-for="record" class="tab-content" id="record"></div>
         <div data-for="settings" class="tab-content" id="settings">
-            <div class="wrap">Language: <select title="Language" data-settings="lang">
-                    <option value="en">English</option>
-                    <option value="zh">Simplified Chinese</option>
-                </select></div>
-            <hr /><label>
-                <div class="wrap">
-                    <input type="checkbox" />
-                    <span class="checkbox-key">Hardcore Mode</span>
-                    <p class="explanation">This will hide all information not shown ingame.</p>
-                </div>
-            </label>
+            <div class="list show">
+                <div class="wrap">Language: <select title="Language" data-settings="lang">
+                        <option value="en">English</option>
+                        <option value="zh">Simplified Chinese</option>
+                    </select></div>
+                <hr /><label>
+                    <div class="wrap">
+                        <input type="checkbox" />
+                        <span class="checkbox-key">Hardcore Mode</span>
+                        <p class="explanation">This will hide all information not shown ingame.</p>
+                    </div>
+                </label>
+            </div>
         </div>
     </div>
     <script src="data.js"></script>
     <script src="script.js"></script>
 </body>
+
 </html>
