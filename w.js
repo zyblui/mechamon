@@ -4,6 +4,10 @@ onmessage = function (e) {
     if (e.data.type == "computerPlay") {
         battleInfo = e.data.battleInfo;
         playerToMove = e.data.playerToMove;
+        postMessage({
+            "type": "log",
+            "content": getPkmn(true)
+        })
         if (getPkmn(true)) {
             for (let i in getPkmn(true).moves) {
                 if (getPkmn(true).moves[i].pp > 0) {

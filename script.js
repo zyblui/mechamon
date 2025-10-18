@@ -1,12 +1,15 @@
+if (w) w.terminate();
 let w = new Worker("w.js");
 
 w.onmessage = function (e) {
     if (e.data.type == "result") {
         if (e.data.action == "switch") {
-            switchPkmn(e.data.pkmn)
+            switchPkmn(e.data.pkmn);
         } else if (e.data.action == "move") {
-            makeMove(e.data.move)
+            makeMove(e.data.move);
         }
+    } else if(e.data.type=="log"){
+        console.log(e.data.content)
     }
 }
 
