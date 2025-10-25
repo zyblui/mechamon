@@ -793,9 +793,24 @@ function decisionNextPlayer() {
         nextTurn();
     }
 }
-for (let i = 0; i < 4; i++) document.getElementsByClassName("decisionMove")[i].addEventListener("click", function () {
-    makeMove(document.getElementsByClassName("decisionMove")[i].dataset.for);
-});
+for (let i = 0; i < 4; i++) {
+    document.getElementsByClassName("decisionMove")[i].addEventListener("click", function () {
+        makeMove(document.getElementsByClassName("decisionMove")[i].dataset.for);
+    });
+    document.getElementsByClassName("decisionMove")[i].addEventListener("mouseover",function(){
+        let tooltip
+        if(!document.getElementsByClassName("decisionMove")[i].parentElement.querySelector(".tooltip")){
+            tooltip=document.querySelector(".tooltip").cloneNode(true);
+            document.getElementsByClassName("decisionMove")[i].parentElement.insertBefore(tooltip,document.getElementsByClassName("decisionMove")[i]);
+        }
+        tooltip=document.getElementsByClassName("decisionMove")[i].parentElement.querySelector(".tooltip");
+        tooltip.querySelector(".tip-name").innerText="wha"
+        tooltip.classList.add("show")
+    })
+    document.getElementsByClassName("decisionMove")[i].addEventListener("mouseout",function(){
+        document.getElementsByClassName("decisionMove")[i].parentElement.querySelector(".tooltip").classList.remove("show");
+    })
+}
 function makeMove(name) {
     if (getPkmn(true).uncontrollable.turns > 0) {
         attacks.push({

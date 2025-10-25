@@ -65,37 +65,73 @@
             <tr>
                 <th data-transl-cat="ui" data-transl-key="moves">Moves:</th>
                 <td>
-                    <button class="decisionMove"><span class="move-text">Move #1</span>
-                        <div class="move-side">
-                            <div class="move-type">Type</div>
-                            <div class="pp"><span class="pp-remaining">0</span><span class="sub">/0</span></div>
-                        </div>
-                    </button><button class="decisionMove"><span class="move-text">Move #2</span>
-                        <div class="move-side">
-                            <div class="move-type">Type</div>
-                            <div class="pp"><span class="pp-remaining">0</span><span class="sub">/0</span></div>
-                        </div>
-                    </button><button class="decisionMove"><span class="move-text">Move #3</span>
-                        <div class="move-side">
-                            <div class="move-type">Type</div>
-                            <div class="pp"><span class="pp-remaining">0</span><span class="sub">/0</span></div>
-                        </div>
-                    </button><button class="decisionMove"><span class="move-text">Move #4</span>
-                        <div class="move-side">
-                            <div class="move-type">Type</div>
-                            <div class="pp"><span class="pp-remaining">0</span><span class="sub">/0</span></div>
-                        </div>
-                    </button>
+                    <!--NOFORMAT-->
+                    <div class="move-container">
+                        <button class="decisionMove">
+                            <span class="move-text">Move #1</span>
+                            <div class="move-side">
+                                <div class="move-type">Type</div>
+                                <div class="pp"><span class="pp-remaining">0</span><span class="sub">/0</span></div>
+                            </div>
+                        </button></div><div class="move-container"><button class="decisionMove">
+                            <span class="move-text">Move #2</span>
+                            <div class="move-side">
+                                <div class="move-type">Type</div>
+                                <div class="pp"><span class="pp-remaining">0</span><span class="sub">/0</span></div>
+                            </div>
+                        </button></div><div class="move-container"><button class="decisionMove">
+                            <span class="move-text">Move #3</span>
+                            <div class="move-side">
+                                <div class="move-type">Type</div>
+                                <div class="pp"><span class="pp-remaining">0</span><span class="sub">/0</span></div>
+                            </div>
+                        </button></div><div class="move-container"><button class="decisionMove">
+                            <span class="move-text">Move #4</span>
+                            <div class="move-side">
+                                <div class="move-type">Type</div>
+                                <div class="pp"><span class="pp-remaining">0</span><span class="sub">/0</span></div>
+                            </div>
+                        </button>
+                    </div>
+                    <!--NOFORMAT-->
                 </td>
             </tr>
             <tr>
                 <th data-transl-cat="ui" data-transl-key="switch">Switch to:</th>
-                <td><button class="decisionSwitch">Pokémon #1</button><button class="decisionSwitch">Pokémon
-                        #2</button><button class="decisionSwitch">Pokémon #3</button><button
-                        class="decisionSwitch">Pokémon
-                        #4</button><button class="decisionSwitch">Pokémon #5</button><button
-                        class="decisionSwitch">Pokémon
-                        #6</button>
+                <td>
+                    <!--NOFORMAT-->
+                    <div class="switch-container"><div class="tooltip">
+        <div>
+            <div class="img-left" style="background:url(pokemonicons-sheet.png) no-repeat scroll -40px -60px"></div>
+            <div class="container">
+                <div class="tip-name">Pikachu <span style="color:#FBD100">[PARALYZED]</span></div>
+                <div class="tip-desc">It keeps its tail raised to monitor its surroundings. If you yank its tail, it
+                    will
+                    try to bite you.</div>
+
+            </div>
+            <div class="type" style="color:#FBD100"><img alt="Pikachu" src="types/electric.png">
+                <div class="type-text">ELECTRIC</div>
+            </div>
+        </div>
+        <div class="stats">
+            <div class="stat">
+                <div class="small">HP</div>
+                <div class="number">100%<span class="sub">, 300/300</span></div>
+            </div>
+            <div class="stat">
+                <div class="small">SPE</div>
+                <div class="number">185~279</div>
+            </div>
+        </div>
+        <div class="moves">
+            <div class="move"><div class="move-name">Quick Attack</div><div class="pp">29<span class="sub">/30</span></div></div>
+            <div class="move"><div class="move-name">Thunderbolt</div><div class="pp">14<span class="sub">/15</span></div></div>
+            <div class="move"><div class="move-name unknown">Unknown Move</div><div class="pp">?<span class="sub">/?</span></div></div>
+            <div class="move"><div class="move-name unknown">Unknown Move</div><div class="pp">?<span class="sub">/?</span></div></div>
+        </div>
+    </div><button class="decisionSwitch">Pokémon #1</button></div><div class="switch-container"><button class="decisionSwitch">Pokémon #2</button></div><div class="switch-container"><button class="decisionSwitch">Pokémon #3</button></div><div class="switch-container"><button class="decisionSwitch">Pokémon #4</button></div><div class="switch-container"><button class="decisionSwitch">Pokémon #5</button></div><div class="switch-container"><button class="decisionSwitch">Pokémon #6</button></div>
+                    <!--NOFORMAT-->
                 </td>
             </tr>
         </table>
