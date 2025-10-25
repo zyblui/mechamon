@@ -797,18 +797,19 @@ for (let i = 0; i < 4; i++) {
     document.getElementsByClassName("decisionMove")[i].addEventListener("click", function () {
         makeMove(document.getElementsByClassName("decisionMove")[i].dataset.for);
     });
-    document.getElementsByClassName("decisionMove")[i].addEventListener("mouseover",function(){
-        let tooltip
-        if(!document.getElementsByClassName("decisionMove")[i].parentElement.querySelector(".tooltip")){
-            tooltip=document.querySelector(".tooltip").cloneNode(true);
-            document.getElementsByClassName("decisionMove")[i].parentElement.insertBefore(tooltip,document.getElementsByClassName("decisionMove")[i]);
+    document.getElementsByClassName("decisionMove")[i].addEventListener("mouseover", function () {
+        let tooltipMove;
+        if (!document.getElementsByClassName("decisionMove")[i].parentElement.querySelector(".tooltip-move")) {
+            tooltipMove = document.querySelector(".tooltip-move").cloneNode(true);
+            document.getElementsByClassName("decisionMove")[i].parentElement.insertBefore(tooltipMove, document
+                .getElementsByClassName("decisionMove")[i]);
         }
-        tooltip=document.getElementsByClassName("decisionMove")[i].parentElement.querySelector(".tooltip");
-        tooltip.querySelector(".tip-name").innerText="wha"
-        tooltip.classList.add("show")
+        tooltipMove = document.getElementsByClassName("decisionMove")[i].parentElement.querySelector(".tooltip-move");
+        tooltipMove.querySelector(".tip-name").innerText = getL10n("moves", document.getElementsByClassName("decisionMove")[i].dataset.for);
+        tooltipMove.classList.add("show");
     })
-    document.getElementsByClassName("decisionMove")[i].addEventListener("mouseout",function(){
-        document.getElementsByClassName("decisionMove")[i].parentElement.querySelector(".tooltip").classList.remove("show");
+    document.getElementsByClassName("decisionMove")[i].addEventListener("mouseout", function () {
+        document.getElementsByClassName("decisionMove")[i].parentElement.querySelector(".tooltip-move").classList.remove("show");
     })
 }
 function makeMove(name) {
