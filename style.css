@@ -418,12 +418,14 @@ table {
     position: absolute;
     bottom: 100%;
     display: none;
-    opacity:0;
+    opacity: 0;
     transition: opacity 0.1s;
-    &.show{
-        display:block;
+
+    &.show {
+        display: block;
         opacity: 1;
     }
+
     .tip-desc {
         font-style: italic;
         color: #ccc;
@@ -529,7 +531,8 @@ table {
         }
     }
 }
-.tooltip-move{
+
+.tooltip-move {
     border-radius: 9px;
     padding: 9px;
     width: 500px;
@@ -537,6 +540,14 @@ table {
     color: white;
     position: absolute;
     bottom: 100%;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.1s;
+
+    &.show {
+        display: block;
+        opacity: 1;
+    }
 
     .tip-desc {
         font-style: italic;
@@ -547,7 +558,34 @@ table {
         font-weight: bold;
         font-size: large;
     }
+
+    .container {
+        display: inline-block;
+        width: 270px;
+        vertical-align: top;
+    }
+
+    .type {
+        display: inline-block;
+        letter-spacing: 2px;
+        font-weight: bold;
+        position: absolute;
+
+        img {
+            width: 40px
+        }
+
+        .type-text {
+            display: inline-block;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            margin: auto 5px;
+            height: fit-content;
+        }
+    }
 }
+
 button {
     .move-text {
         vertical-align: -webkit-baseline-middle;
