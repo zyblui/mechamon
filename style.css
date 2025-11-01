@@ -6,9 +6,24 @@ body {
     background-color: #f3f3f3;
     -webkit-user-select: none;
     user-select: none;
-    --special:#7799DD;
-    --physical:#EE7700;
-    --status:#999;
+    --special: #7799DD;
+    --physical: #EE7700;
+    --status: #999;
+    --bug: #83c300;
+    --dragon: #006fc9;
+    --electric: #fbd100;
+    --fighting: #e0306a;
+    --fire: #fc9540;
+    --flying: #89aae3;
+    --ghost: #4c6ab2;
+    --grass: #38bf4b;
+    --ground: #e87236;
+    --ice: #4cd1c0;
+    --normal: #919aa2;
+    --poison: #b165c9;
+    --psychic: #ff6675;
+    --rock: #c8b686;
+    --water: #3692dc;
 }
 
 p {
@@ -562,18 +577,23 @@ table {
         font-weight: bold;
         font-size: large;
     }
-    .tip-cat{
+
+    .tip-cat {
         font-weight: bold;
-        &.cat-special{
+
+        &.cat-special {
             color: var(--special);
         }
-        &.cat-physical{
+
+        &.cat-physical {
             color: var(--physical);
         }
-        &.cat-status{
+
+        &.cat-status {
             color: var(--status);
         }
     }
+
     .container {
         display: inline-block;
         padding-right: 9px;
@@ -585,7 +605,8 @@ table {
         letter-spacing: 2px;
         font-weight: bold;
         position: absolute;
-        height:30px;
+        height: 30px;
+
         img {
             width: 30px
         }
@@ -597,13 +618,63 @@ table {
             bottom: 0;
             margin: auto 5px;
             height: fit-content;
+            width: max-content;
+
+            &.type-bug{
+                color: var(--bug);
+            }
+            &.type-dragon{
+                color: var(--dragon);
+            }
+            &.type-electric{
+                color: var(--electric);
+            }
+            &.type-fighting{
+                color: var(--fighting);
+            }
+            &.type-fire{
+                color: var(--fire);
+            }
+            &.type-flying{
+                color: var(--flying);
+            }
+            &.type-ghost{
+                color: var(--ghost);
+            }
+            &.type-grass{
+                color: var(--grass);
+            }
+            &.type-ground{
+                color: var(--ground);
+            }
+            &.type-ice{
+                color: var(--ice);
+            }
+            &.type-normal{
+                color: var(--normal);
+            }
+            &.type-poison{
+                color: var(--poison);
+            }
+            &.type-psychic{
+                color: var(--psychic);
+            }
+            &.type-rock{
+                color: var(--rock);
+            }
+            &.type-water{
+                color: var(--water);
+            }
         }
     }
+
     .stats {
-        padding-top:9px ;
+        padding-top: 9px;
+
         .stat {
-            display:inline-block;
+            display: inline-block;
             padding-right: 9px;
+
             .small {
                 color: #ccc;
                 font-weight: bold;
@@ -612,11 +683,12 @@ table {
             .number {
                 font-size: xx-large;
                 font-weight: bold;
+
                 .sub {
                     font-size: medium;
                     color: #ccc;
                     font-weight: normal;
-                    display:inline-block;
+                    display: inline-block;
                 }
             }
         }

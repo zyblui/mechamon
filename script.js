@@ -798,6 +798,7 @@ for (let i = 0; i < 4; i++) {
         makeMove(document.getElementsByClassName("decisionMove")[i].dataset.for);
     });
     document.getElementsByClassName("decisionMove")[i].addEventListener("mouseover", function () {
+        if (!getMoveStats(document.getElementsByClassName("decisionMove")[i].dataset.for)) return;
         let tooltipMove;
         if (!document.getElementsByClassName("decisionMove")[i].parentElement.querySelector(".tooltip-move")) {
             tooltipMove = document.querySelector(".tooltip-move").cloneNode(true);
@@ -805,11 +806,39 @@ for (let i = 0; i < 4; i++) {
                 .getElementsByClassName("decisionMove")[i]);
         }
         tooltipMove = document.getElementsByClassName("decisionMove")[i].parentElement.querySelector(".tooltip-move");
-        tooltipMove.querySelector(".tip-name").innerText = getL10n("moves", document.getElementsByClassName("decisionMove")[i].dataset.for);
+        tooltipMove.querySelector(".tip-name").innerText = getL10n("moves", document.getElementsByClassName("decisionMove")[i]
+            .dataset.for);
+        let moveStats = getMoveStats(document.getElementsByClassName("decisionMove")[i].dataset.for);
+        tooltipMove.querySelector(".tip-cat").innerText = moveStats.category.toUpperCase();
+        tooltipMove.querySelector(".tip-cat").classList.remove("cat-physical", "cat-special", "cat-status");
+        tooltipMove.querySelector(".tip-cat").classList.add("cat-" + moveStats.category);
+        tooltipMove.querySelector(".tip-desc").innerText = getL10n("moveDesc", document.getElementsByClassName("decisionMove")[i]
+            .dataset.for);
+        tooltipMove.querySelector(".type-text").innerText = getL10n("types", moveStats.type).toUpperCase();
+        tooltipMove.querySelector(".type-text").classList.remove(
+            "type-bug",
+            "type-dragon",
+            "type-electric",
+            "type-fighting",
+            "type-fire",
+            "type-flying",
+            "type-ghost",
+            "type-grass",
+            "type-ground",
+            "type-ice",
+            "type-normal",
+            "type-poison",
+            "type-psychic",
+            "type-rock",
+            "type-water")
+        tooltipMove.querySelector(".type-text").classList.add("type-" + moveStats.type)
+        tooltipMove.querySelector(".tip-pow").innerText = moveStats.power;
+        tooltipMove.querySelector(".tip-acc").innerText = (moveStats.acc == Infinity) ? "∞" : moveStats.acc + "%";
+        tooltipMove.querySelector(".type-img").src = "types/" + moveStats.type + ".png";
         tooltipMove.classList.add("show");
     })
     document.getElementsByClassName("decisionMove")[i].addEventListener("mouseout", function () {
-        document.getElementsByClassName("decisionMove")[i].parentElement.querySelector(".tooltip-move").classList.remove("show");
+        document.getElementsByClassName("decisionMove")[i].parentElement.querySelector(".tooltip-move")?.classList.remove("show");
     })
 }
 function makeMove(name) {
