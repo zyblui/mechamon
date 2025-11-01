@@ -6,6 +6,9 @@ body {
     background-color: #f3f3f3;
     -webkit-user-select: none;
     user-select: none;
+    --special:#7799DD;
+    --physical:#EE7700;
+    --status:#999;
 }
 
 p {
@@ -535,7 +538,7 @@ table {
 .tooltip-move {
     border-radius: 9px;
     padding: 9px;
-    width: 500px;
+    width: 400px;
     background-color: rgba(0, 0, 0, 0.9);
     color: white;
     position: absolute;
@@ -543,6 +546,7 @@ table {
     display: none;
     opacity: 0;
     transition: opacity 0.1s;
+    z-index: 9999;
 
     &.show {
         display: block;
@@ -558,10 +562,21 @@ table {
         font-weight: bold;
         font-size: large;
     }
-
+    .tip-cat{
+        font-weight: bold;
+        &.cat-special{
+            color: var(--special);
+        }
+        &.cat-physical{
+            color: var(--physical);
+        }
+        &.cat-status{
+            color: var(--status);
+        }
+    }
     .container {
         display: inline-block;
-        width: 270px;
+        padding-right: 9px;
         vertical-align: top;
     }
 
@@ -570,9 +585,9 @@ table {
         letter-spacing: 2px;
         font-weight: bold;
         position: absolute;
-
+        height:30px;
         img {
-            width: 40px
+            width: 30px
         }
 
         .type-text {
@@ -582,6 +597,28 @@ table {
             bottom: 0;
             margin: auto 5px;
             height: fit-content;
+        }
+    }
+    .stats {
+        padding-top:9px ;
+        .stat {
+            display:inline-block;
+            padding-right: 9px;
+            .small {
+                color: #ccc;
+                font-weight: bold;
+            }
+
+            .number {
+                font-size: xx-large;
+                font-weight: bold;
+                .sub {
+                    font-size: medium;
+                    color: #ccc;
+                    font-weight: normal;
+                    display:inline-block;
+                }
+            }
         }
     }
 }
