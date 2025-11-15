@@ -438,6 +438,7 @@ table {
     display: none;
     opacity: 0;
     transition: opacity 0.1s;
+    z-index: 9999;
 
     &.show {
         display: block;
@@ -452,6 +453,7 @@ table {
     .tip-name {
         font-weight: bold;
         font-size: large;
+        display: inline-block
     }
 
     .img-left {
@@ -463,12 +465,23 @@ table {
         transform-origin: left top;
         margin-right: 60px;
         margin-bottom: 45px;
+                vertical-align: top;
     }
 
     .container {
         display: inline-block;
-        width: 270px;
         vertical-align: top;
+    }
+    .outer-container{
+        display: inline-block;
+        width: calc(100% - 100px);
+    }
+    .tip-status {
+        font-weight: bold;
+
+        &.status-par {
+            color: #FBD100;
+        }
     }
 
     .type {
@@ -476,9 +489,10 @@ table {
         letter-spacing: 2px;
         font-weight: bold;
         position: absolute;
+        height: 30px;
 
         img {
-            width: 40px
+            width: 30px;
         }
 
         .type-text {
@@ -488,16 +502,15 @@ table {
             bottom: 0;
             margin: auto 5px;
             height: fit-content;
+            width: max-content;
         }
     }
 
     .stats {
-        display: inline-block;
-        width: 150px;
-        border-right: solid 2px #333;
-        padding-right: 9px;
-
+        padding-top: 9px;
         .stat {
+            display: inline-block;
+            padding-right: 9px;
             .small {
                 color: #ccc;
                 font-weight: bold;
@@ -517,10 +530,6 @@ table {
     }
 
     .moves {
-        display: inline-block;
-        width: 325px;
-        vertical-align: top;
-        margin-left: 9px;
 
         .move {
             height: 30px;
@@ -531,7 +540,7 @@ table {
                     color: #ccc
                 }
 
-                display: inline-block
+                display: inline-block;
             }
 
             .pp {
@@ -620,49 +629,63 @@ table {
             height: fit-content;
             width: max-content;
 
-            &.type-bug{
+            &.type-bug {
                 color: var(--bug);
             }
-            &.type-dragon{
+
+            &.type-dragon {
                 color: var(--dragon);
             }
-            &.type-electric{
+
+            &.type-electric {
                 color: var(--electric);
             }
-            &.type-fighting{
+
+            &.type-fighting {
                 color: var(--fighting);
             }
-            &.type-fire{
+
+            &.type-fire {
                 color: var(--fire);
             }
-            &.type-flying{
+
+            &.type-flying {
                 color: var(--flying);
             }
-            &.type-ghost{
+
+            &.type-ghost {
                 color: var(--ghost);
             }
-            &.type-grass{
+
+            &.type-grass {
                 color: var(--grass);
             }
-            &.type-ground{
+
+            &.type-ground {
                 color: var(--ground);
             }
-            &.type-ice{
+
+            &.type-ice {
                 color: var(--ice);
             }
-            &.type-normal{
+
+            &.type-normal {
                 color: var(--normal);
             }
-            &.type-poison{
+
+            &.type-poison {
                 color: var(--poison);
             }
-            &.type-psychic{
+
+            &.type-psychic {
                 color: var(--psychic);
             }
-            &.type-rock{
+
+            &.type-rock {
                 color: var(--rock);
             }
-            &.type-water{
+
+            &.type-water {
                 color: var(--water);
             }
         }

@@ -465,6 +465,46 @@ for (let i = 0; i < 6; i++) {
     document.getElementsByClassName("decisionSwitch")[i].addEventListener("click", function () {
         switchPkmn(document.getElementsByClassName("decisionSwitch")[i].dataset.for);
     });
+    document.getElementsByClassName("decisionSwitch")[i].addEventListener("mouseover", function () {
+        if (!getStats(document.getElementsByClassName("decisionSwitch")[i].dataset.for)) return;
+        let tooltip;
+        if (!document.getElementsByClassName("decisionSwitch")[i].parentElement.querySelector(".tooltip")) {
+            tooltip = document.querySelector(".tooltip").cloneNode(true);
+            document.getElementsByClassName("decisionSwitch")[i].parentElement.insertBefore(tooltip, document
+                .getElementsByClassName("decisionSwitch")[i]);
+        }
+        tooltip = document.getElementsByClassName("decisionSwitch")[i].parentElement.querySelector(".tooltip");
+        tooltip.querySelector(".tip-name").innerText = getL10n("pokemon", document.getElementsByClassName("decisionSwitch")[i]
+            .dataset.for);
+        let stats = getStats(document.getElementsByClassName("decisionSwitch")[i].dataset.for);
+        tooltip.querySelector(".img-left").style.background = "url(pokemonicons-sheet.png) no-repeat scroll -" +
+            (ICONS[document.getElementsByClassName("decisionSwitch")[i].dataset.for].cell - 1) * 40 + "px -" + (
+                ICONS[document.getElementsByClassName("decisionSwitch")[i].dataset.for].row - 1) * 30 + "px";
+        tooltip.querySelector(".tip-desc").innerText = getL10n("pkmnDesc", document.getElementsByClassName("decisionSwitch")[i]
+            .dataset.for);
+        /*tooltip.querySelector(".type-text").innerText = getL10n("types", stats.type).toUpperCase();
+        tooltip.querySelector(".type-text").classList.remove(
+            "type-bug",
+            "type-dragon",
+            "type-electric",
+            "type-fighting",
+            "type-fire",
+            "type-flying",
+            "type-ghost",
+            "type-grass",
+            "type-ground",
+            "type-ice",
+            "type-normal",
+            "type-poison",
+            "type-psychic",
+            "type-rock",
+            "type-water")
+        tooltip.querySelector(".type-text").classList.add("type-" + stats.type)*/
+        tooltip.classList.add("show");
+    })
+    document.getElementsByClassName("decisionSwitch")[i].addEventListener("mouseout", function () {
+        document.getElementsByClassName("decisionSwitch")[i].parentElement.querySelector(".tooltip")?.classList.remove("show");
+    })
 }
 function switchPkmn(name) {
     if (battleInfo[playerToMove].currentPokemon != -1) {
@@ -833,6 +873,9 @@ for (let i = 0; i < 4; i++) {
             "type-water")
         tooltipMove.querySelector(".type-text").classList.add("type-" + moveStats.type)
         tooltipMove.querySelector(".tip-pow").innerText = moveStats.power;
+        tooltipMove.querySelector(".tip-pp .main").innerText = document.getElementsByClassName("decisionMove")[i]
+            .querySelector(".pp-remaining").innerText;
+        tooltipMove.querySelector(".tip-pp .sub").innerText = "/" + moveStats.pp;
         tooltipMove.querySelector(".tip-acc").innerText = (moveStats.acc == Infinity) ? "∞" : moveStats.acc + "%";
         tooltipMove.querySelector(".type-img").src = "types/" + moveStats.type + ".png";
         tooltipMove.classList.add("show");
