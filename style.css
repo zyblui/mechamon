@@ -24,6 +24,8 @@ body {
     --psychic: #ff6675;
     --rock: #c8b686;
     --water: #3692dc;
+    overflow: hidden;
+    --fs-medium: 2.3vmin;
 }
 
 p {
@@ -112,8 +114,8 @@ p {
 
 #p1Pokemon,
 #p2Pokemon {
-    width: 384px;
-    height: 384px;
+    width: 55vmin;
+    height: 55vmin;
     background-size: cover;
     image-rendering: pixelated;
 }
@@ -132,7 +134,7 @@ p {
 
 #p1Gauge {
     position: absolute;
-    bottom: 300px;
+    bottom: 40vmin;
     left: calc(10% + 42px);
 }
 
@@ -465,17 +467,19 @@ table {
         transform-origin: left top;
         margin-right: 60px;
         margin-bottom: 45px;
-                vertical-align: top;
+        vertical-align: top;
     }
 
     .container {
         display: inline-block;
         vertical-align: top;
     }
-    .outer-container{
+
+    .outer-container {
         display: inline-block;
         width: calc(100% - 100px);
     }
+
     .tip-status {
         font-weight: bold;
 
@@ -508,9 +512,11 @@ table {
 
     .stats {
         padding-top: 9px;
+
         .stat {
             display: inline-block;
             padding-right: 9px;
+
             .small {
                 color: #ccc;
                 font-weight: bold;
@@ -892,5 +898,24 @@ label .wrap {
 
     &:hover {
         background-color: #eee;
+    }
+}
+
+@media screen and (width <=600px) {
+
+    #battlePanel,
+    #rightPanel {
+        position: relative;
+        width: 100%;
+    }
+
+    #decisionPanel {
+        position: static;
+        width: calc(100% - 9px);
+        height: calc(30% - 9px);
+    }
+
+    #battlePanel {
+        height: 70%;
     }
 }
