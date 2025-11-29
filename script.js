@@ -849,7 +849,7 @@ for (let i = 0; i < 4; i++) {
         tooltipMove.querySelector(".tip-name").innerText = getL10n("moves", document.getElementsByClassName("decisionMove")[i]
             .dataset.for);
         let moveStats = getMoveStats(document.getElementsByClassName("decisionMove")[i].dataset.for);
-        tooltipMove.querySelector(".tip-cat").innerText = moveStats.category.toUpperCase();
+        tooltipMove.querySelector(".tip-cat").innerText = getL10n("cat",moveStats.category).toUpperCase();
         tooltipMove.querySelector(".tip-cat").classList.remove("cat-physical", "cat-special", "cat-status");
         tooltipMove.querySelector(".tip-cat").classList.add("cat-" + moveStats.category);
         tooltipMove.querySelector(".tip-desc").innerText = getL10n("moveDesc", document.getElementsByClassName("decisionMove")[i]
@@ -873,6 +873,7 @@ for (let i = 0; i < 4; i++) {
             "type-water")
         tooltipMove.querySelector(".type-text").classList.add("type-" + moveStats.type)
         tooltipMove.querySelector(".tip-pow").innerText = moveStats.power;
+        tooltipMove.querySelector(".tip-priority").innerText = moveStats.priority;
         tooltipMove.querySelector(".tip-pp .main").innerText = document.getElementsByClassName("decisionMove")[i]
             .querySelector(".pp-remaining").innerText;
         tooltipMove.querySelector(".tip-pp .sub").innerText = "/" + moveStats.pp;

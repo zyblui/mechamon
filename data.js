@@ -3286,6 +3286,11 @@ const TRANSLATION = {
             "acc": "Accuracy",
             "eva": "Evasion"
         },
+        "cat":{
+            "physical":"Physical",
+            "special":"Special",
+            "status":"Status"
+        },
         "ui": {
             "moves": "Moves: ",
             "switch": "Switch to: ",
@@ -3297,7 +3302,11 @@ const TRANSLATION = {
             "ohkoClause": "OHKO clause",
             "freezeClause": "Freeze Clause",
             "evasionClause": "Evasion Clause",
-            "selfKoClause": "Self-KO Clause"
+            "selfKoClause": "Self-KO Clause",
+            "power":"Power",
+            "accuracy":"Accuracy",
+            "priority":"Priority",
+            "pp":"PP"
         },
         "others": {
             "turn": "Turn [number0]",
@@ -3508,11 +3517,11 @@ const TRANSLATION = {
             "zubat": "Zubat"
         },
         "pkmnDesc":{
-            "abra": "Abra",
-            "aerodactyl": "Aerodactyl",
+            "abra": "Sleeps 18 hours a day. If it senses danger, it will teleport itself to safety even as it sleeps.",
+            "aerodactyl": "A savage Pokémon that died out in ancient times. It was resurrected using DNA taken from amber.",
             "alakazam": "Alakazam",
             "arbok": "Arbok",
-            "arcanine": "Arcanine",
+            "arcanine": "A legendary Pokémon in China. Many people are charmed by its grace and beauty while running.",
             "articuno": "Articuno",
             "beedrill": "Beedrill",
             "bellsprout": "Bellsprout",
@@ -4021,6 +4030,11 @@ const TRANSLATION = {
             "acc": "命中率",
             "eva": "闪避率"
         },
+        "cat":{
+            "physical":"物理",
+            "special":"特殊",
+            "status":"变化"
+        },
         "ui": {
             "moves": "招式：",
             "switch": "替换：",
@@ -4032,7 +4046,11 @@ const TRANSLATION = {
             "ohkoClause": "一击必杀条款",
             "freezeClause": "冰冻条款",
             "evasionClause": "闪避条款",
-            "selfKoClause": "自杀条款"
+            "selfKoClause": "自杀条款",
+            "power":"威力",
+            "accuracy":"命中",
+            "priority":"优先度",
+            "pp":"PP"
         },
         "others": {
             "turn": "第 [number0] 回合",
