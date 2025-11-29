@@ -24,7 +24,7 @@ body {
     --psychic: #ff6675;
     --rock: #c8b686;
     --water: #3692dc;
-    overflow: hidden;
+    /*overflow: hidden;*/
     --fs-medium: 2.3vmin;
 }
 
