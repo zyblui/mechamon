@@ -161,7 +161,7 @@ p {
 }
 
 .outer-bar {
-    width: 300px;
+    width: 42.956vmin/*300px*/;
     background-color: lightgray;
     height: 15px;
     clip-path: rect(0 100% 100% 0 round 7.5px);
