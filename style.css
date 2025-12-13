@@ -445,7 +445,8 @@ table {
     display: inline-block;
 }
 
-.tooltip,.tooltip-move{
+.tooltip,
+.tooltip-move {
     border-radius: 9px;
     padding: 9px;
     background-color: rgba(0, 0, 0, 0.9);
@@ -467,6 +468,68 @@ table {
     &.show {
         display: block;
         opacity: 1;
+    }
+
+    .type-text {
+        &.type-bug {
+            color: var(--bug);
+        }
+
+        &.type-dragon {
+            color: var(--dragon);
+        }
+
+        &.type-electric {
+            color: var(--electric);
+        }
+
+        &.type-fighting {
+            color: var(--fighting);
+        }
+
+        &.type-fire {
+            color: var(--fire);
+        }
+
+        &.type-flying {
+            color: var(--flying);
+        }
+
+        &.type-ghost {
+            color: var(--ghost);
+        }
+
+        &.type-grass {
+            color: var(--grass);
+        }
+
+        &.type-ground {
+            color: var(--ground);
+        }
+
+        &.type-ice {
+            color: var(--ice);
+        }
+
+        &.type-normal {
+            color: var(--normal);
+        }
+
+        &.type-poison {
+            color: var(--poison);
+        }
+
+        &.type-psychic {
+            color: var(--psychic);
+        }
+
+        &.type-rock {
+            color: var(--rock);
+        }
+
+        &.type-water {
+            color: var(--water);
+        }
     }
 }
 
@@ -518,7 +581,7 @@ table {
         display: inline-block;
         letter-spacing: 2px;
         font-weight: bold;
-        position: absolute;
+        position: relative;
         height: 30px;
 
         img {
@@ -527,12 +590,14 @@ table {
 
         .type-text {
             display: inline-block;
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            margin: auto 5px;
-            height: fit-content;
+            margin: 0 5px;
             width: max-content;
+            line-height: 30px;
+            vertical-align: top;
+        }
+
+        &.hide {
+            display: none
         }
     }
 
@@ -645,66 +710,6 @@ table {
             margin: auto 5px;
             height: fit-content;
             width: max-content;
-
-            &.type-bug {
-                color: var(--bug);
-            }
-
-            &.type-dragon {
-                color: var(--dragon);
-            }
-
-            &.type-electric {
-                color: var(--electric);
-            }
-
-            &.type-fighting {
-                color: var(--fighting);
-            }
-
-            &.type-fire {
-                color: var(--fire);
-            }
-
-            &.type-flying {
-                color: var(--flying);
-            }
-
-            &.type-ghost {
-                color: var(--ghost);
-            }
-
-            &.type-grass {
-                color: var(--grass);
-            }
-
-            &.type-ground {
-                color: var(--ground);
-            }
-
-            &.type-ice {
-                color: var(--ice);
-            }
-
-            &.type-normal {
-                color: var(--normal);
-            }
-
-            &.type-poison {
-                color: var(--poison);
-            }
-
-            &.type-psychic {
-                color: var(--psychic);
-            }
-
-            &.type-rock {
-                color: var(--rock);
-            }
-
-            &.type-water {
-                color: var(--water);
-            }
         }
     }
 
