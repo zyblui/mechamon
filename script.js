@@ -199,7 +199,7 @@ for (let i of MOVES) {
 }
 for (let i of document.getElementsByClassName("pkmnName")) {
     i.addEventListener("click", function () {
-        document.querySelector(".select.selected")?.classList.remove("selected");
+        document.querySelector(".pkmnName.selected")?.classList.remove("selected");
         i.classList.add("selected");
         document.querySelector(".list.show").classList.remove("show");
         document.getElementById("pokemonList").classList.add("show");
@@ -207,7 +207,7 @@ for (let i of document.getElementsByClassName("pkmnName")) {
 }
 for (let i of document.getElementsByClassName("move")) {
     i.addEventListener("click", function () {
-        document.querySelector(".select.selected")?.classList.remove("selected");
+        document.querySelector(".move.selected")?.classList.remove("selected");
         i.classList.add("selected");
         document.querySelector(".list.show").classList.remove("show");
         for (let j of document.getElementById("movesListInner").children) {
