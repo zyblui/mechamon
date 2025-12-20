@@ -31,6 +31,7 @@ let settings = {
     "evasionClause": false,
     "selfKoClause": false
 };
+const PROPERTIES = ["atk", "def", "sp", "spe"];
 if (!localStorage.getItem("mechamonSettings")) {
     localStorage.setItem("mechamonSettings", JSON.stringify(settings));
 } else {
@@ -508,14 +509,8 @@ for (let i = 0; i < 6; i++) {
             tooltip.querySelectorAll(".type-text")[j].classList.add("type-" + stats.type[j]);
             tooltip.querySelectorAll(".type-img")[j].src = "types/" + stats.type[j] + ".png";
         }
-        tooltip.querySelector(".tip-status").innerHTML = "";
-        if (battleInfo[playerToMove].build[i].status) {
-            tooltip.querySelector(".tip-status").innerHTML = "";
-            let statusSpan = document.createElement("span");
-            statusSpan.classList.add(battleInfo[playerToMove].build[i].status);
-            statusSpan.innerText = "[" + getL10n("status", battleInfo[playerToMove].build[i].status).toUpperCase() + "]";
-            tooltip.querySelector(".tip-status").appendChild(statusSpan);
-        }
+        insertEffects(battleInfo[playerToMove].build[i], tooltip.querySelector(".tip-status"), true);
+
         for (let j = 0; j < 4; j++) {
             tooltip.querySelectorAll(".move-name")[j].innerText = getL10n("moves", Object.keys(battleInfo[playerToMove]
                 .build[i].moves)[j]);
@@ -537,6 +532,38 @@ for (let i = 0; i < 6; i++) {
     document.getElementsByClassName("decisionSwitch")[i].addEventListener("mouseout", function () {
         document.getElementsByClassName("decisionSwitch")[i].parentElement.querySelector(".tooltip")?.classList.remove("show");
     });
+}
+function insertEffects(pkmn, outputArea, showFull) {
+    outputArea.innerHTML = "";
+    if (pkmn.status) {
+        outputArea.innerHTML = "";
+        let statusSpan = document.createElement("span");
+        statusSpan.classList.add(pkmn.status);
+        statusSpan.innerText = "[" + ((showFull) ? getL10n("status", pkmn.status).toUpperCase() : capitalize(pkmn.status)) +
+            "]";
+        outputArea.appendChild(statusSpan);
+    }
+    for (let j of PROPERTIES) {
+        if (pkmn[j + "Stage"] != 0) {
+            let span = document.createElement("span");
+            if (pkmn[j + "Stage"] > 0) {
+                span.classList.add("buff");
+            } else {
+                span.classList.add("debuff");
+            }
+            span.innerText = "[" + ((showFull) ? getL10n("stats", j).toUpperCase() : capitalize(j)) + " x" +
+                Number(STAGE_MULTIPLIER[pkmn[j + "Stage"]].toFixed(2)) + "]";
+            outputArea.appendChild(span);
+        }
+    }
+    for (let j in pkmn.tempEffect) {
+        if (pkmn.tempEffect[j]) {
+            let tempEffectSpan = document.createElement("span");
+            tempEffectSpan.innerText = "[" + ((showFull) ? j.toUpperCase() : capitalize(j)) + "]";
+            tempEffectSpan.classList.add("debuff");
+            outputArea.appendChild(tempEffectSpan);
+        }
+    }
 }
 function switchPkmn(name) {
     if (battleInfo[playerToMove].currentPokemon != -1) {
@@ -1032,51 +1059,9 @@ function renderHP() {
     }
     document.getElementById("p1Status").innerHTML = "";
     document.getElementById("p2Status").innerHTML = "";
-    let properties = ["atk", "def", "sp", "spe"];
-    for (let i of properties) {
-        if (battleInfo[Number(0 != viewpoint)].currentPokemon != -1 && battleInfo[Number(0 != viewpoint)].build[battleInfo[
-            Number(0 != viewpoint)].currentPokemon][i + "Stage"] != 0) {
-            let span = document.createElement("span");
-            if (battleInfo[Number(0 != viewpoint)].build[battleInfo[Number(0 != viewpoint)].currentPokemon][i + "Stage"] > 0) {
-                span.classList.add("buff");
-            } else {
-                span.classList.add("debuff");
-            }
-            span.innerText = "[" + capitalize(i) + " x" + Number(STAGE_MULTIPLIER[battleInfo[Number(0 != viewpoint)].build[
-                battleInfo[Number(0 != viewpoint)].currentPokemon][i + "Stage"]].toFixed(2)) + "]";
-            document.getElementById("p1Status").appendChild(span);
-        }
-        if (battleInfo[Number(1 != viewpoint)].currentPokemon != -1 && battleInfo[Number(1 != viewpoint)].build[battleInfo[
-            Number(1 != viewpoint)].currentPokemon][i + "Stage"] != 0) {
-            let span = document.createElement("span");
-            if (battleInfo[Number(1 != viewpoint)].build[battleInfo[Number(1 != viewpoint)].currentPokemon][i + "Stage"] > 0) {
-                span.classList.add("buff");
-            } else {
-                span.classList.add("debuff");
-            }
-            span.innerText = "[" + capitalize(i) + " x" + Number(STAGE_MULTIPLIER[battleInfo[Number(1 != viewpoint)].build[
-                battleInfo[Number(1 != viewpoint)].currentPokemon][i + "Stage"]].toFixed(2)) + "]";
-            document.getElementById("p2Status").appendChild(span);
-        }
-    }
     for (let i of [0, 1]) if (battleInfo[Number(i != viewpoint)].currentPokemon != -1) {
-        if (battleInfo[Number(i != viewpoint)].build[battleInfo[Number(i != viewpoint)].currentPokemon].status) {
-            let span = document.createElement("span");
-            span.innerText = "[" + battleInfo[Number(i != viewpoint)].build[battleInfo[Number(i != viewpoint)].currentPokemon]
-                .status.toUpperCase() + "]";
-            span.classList.add(battleInfo[Number(i != viewpoint)].build[battleInfo[Number(i != viewpoint)].currentPokemon].status);
-            document.getElementById(`p${i + 1}Status`).appendChild(span);
-        }
-        for (let j in battleInfo[Number(i != viewpoint)].build[battleInfo[Number(i != viewpoint)].currentPokemon].tempEffect) {
-            if (battleInfo[Number(i != viewpoint)].build[battleInfo[Number(i != viewpoint)].currentPokemon].tempEffect[j]) {
-                let span = document.createElement("span");
-                span.innerText = "[" + capitalize(j) + "]";
-                span.classList.add("debuff");
-                document.getElementById(`p${i + 1}Status`).appendChild(span);
-            }
-        }
+        insertEffects(battleInfo[Number(i != viewpoint)].build[battleInfo[Number(i != viewpoint)].currentPokemon], document.getElementById(`p${i + 1}Status`), false);
     }
-
     for (let i of [0, 1]) {
         for (let j = 0; j < 6; j++) {
             if (!battleInfo[Number(i != viewpoint)].build[j].revealed) {
@@ -1185,7 +1170,7 @@ function putToSleep(isSelf, turns) {
 function addTempEffect(isSelf, effect, turns, prob) {
     if (Math.random() < prob) {
         getPkmn(isSelf).tempEffect[effect] = turns;
-        if (effect == "confused") addSmallText(getL10n("others","becomeConfused",{
+        if (effect == "confused") addSmallText(getL10n("others", "becomeConfused", {
             "pokemon": [getName(getPkmn(isSelf), false)],
             "isEnemy": ((viewpoint == -1) ? !isSelf : ((isSelf == playerToMove) != viewpoint))
         }));

@@ -197,37 +197,39 @@ p {
 
 .status {
     display: inline;
+}
 
-    & span.buff {
-        color: green;
-    }
-
-    & span.debuff {
-        color: red;
-    }
-
-    & span.tox {
+.tip-status,
+.status {
+    & .tox {
         color: #c040c8;
     }
 
-    & span.psn {
+    & .psn {
         color: #c040c8;
     }
 
-    & span.brn {
+    & .brn {
         color: #e05848;
     }
 
-    & span.frz {
+    & .frz {
         color: #009898;
     }
 
-    & span.par {
+    & .par {
         color: #e8a800;
     }
 
-    & span.slp {
+    & .slp {
         color: #687060;
+    }
+    & .buff {
+        color: mediumseagreen;
+    }
+
+    & .debuff {
+        color: orangered;
     }
 }
 
@@ -576,29 +578,7 @@ table {
     .tip-status {
         font-weight: bold;
 
-        & .tox {
-            color: #c040c8;
-        }
 
-        & .psn {
-            color: #c040c8;
-        }
-
-        & .brn {
-            color: #e05848;
-        }
-
-        & .frz {
-            color: #009898;
-        }
-
-        & .par {
-            color: #e8a800;
-        }
-
-        & .slp {
-            color: #687060;
-        }
     }
 
     .type {
