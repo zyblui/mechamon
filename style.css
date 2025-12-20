@@ -151,17 +151,21 @@ p {
 #p1Gauge {
     position: absolute;
     bottom: 40vmin;
-    left: calc(10% + 42px);
+    left: calc(10% + 27.5vmin - 42.956vmin / 2);
+    /*calc(10% + 42px);*/
 }
 
 #p2Gauge {
     position: absolute;
     top: 0;
-    right: calc(10% + 42px);
+    right: calc(10% + 27.5vmin - 42.956vmin / 2);
+    /*calc(10% + 42px);*/
 }
 
 .outer-bar {
-    width: 42.956vmin/*300px*/;
+    width: 42.956vmin
+        /*300px*/
+    ;
     background-color: lightgray;
     height: 15px;
     clip-path: rect(0 100% 100% 0 round 7.5px);
@@ -572,8 +576,28 @@ table {
     .tip-status {
         font-weight: bold;
 
-        &.status-par {
-            color: #FBD100;
+        & .tox {
+            color: #c040c8;
+        }
+
+        & .psn {
+            color: #c040c8;
+        }
+
+        & .brn {
+            color: #e05848;
+        }
+
+        & .frz {
+            color: #009898;
+        }
+
+        & .par {
+            color: #e8a800;
+        }
+
+        & .slp {
+            color: #687060;
         }
     }
 
@@ -917,7 +941,7 @@ label .wrap {
     }
 }
 
-@media screen and (width <=600px) {
+@media screen and (width <=1000px) {
 
     #battlePanel,
     #rightPanel {

@@ -508,6 +508,14 @@ for (let i = 0; i < 6; i++) {
             tooltip.querySelectorAll(".type-text")[j].classList.add("type-" + stats.type[j]);
             tooltip.querySelectorAll(".type-img")[j].src = "types/" + stats.type[j] + ".png";
         }
+        tooltip.querySelector(".tip-status").innerHTML = "";
+        if (battleInfo[playerToMove].build[i].status) {
+            tooltip.querySelector(".tip-status").innerHTML = "";
+            let statusSpan = document.createElement("span");
+            statusSpan.classList.add(battleInfo[playerToMove].build[i].status);
+            statusSpan.innerText = "[" + getL10n("status", battleInfo[playerToMove].build[i].status).toUpperCase() + "]";
+            tooltip.querySelector(".tip-status").appendChild(statusSpan);
+        }
         for (let j = 0; j < 4; j++) {
             tooltip.querySelectorAll(".move-name")[j].innerText = getL10n("moves", Object.keys(battleInfo[playerToMove]
                 .build[i].moves)[j]);
@@ -517,7 +525,7 @@ for (let i = 0; i < 6; i++) {
                 .build[i].moves)[j]).pp;
             if (Object.values(battleInfo[playerToMove].build[i].moves)[j] == getMoveStats(Object
                 .keys(battleInfo[playerToMove].build[i].moves)[j]).pp) tooltip.querySelectorAll(".move-name")[j].classList
-                .add("unknown");
+                    .add("unknown");
             else tooltip.querySelectorAll(".move-name")[j].classList.remove("unknown");
         }
         tooltip.querySelector(".hp-remaining").innerText = (battleInfo[playerToMove].build[i].hp / battleInfo[playerToMove]
@@ -637,15 +645,19 @@ function nextPlayer(player) {
         }
         return { "continue": true };
     } else if (getPkmn(true)?.tempEffect.confused > 0) {
-        addSmallText(getName(getPkmn(true), false) + " is confused!");
+        addSmallText(getL10n("others", "confused", {
+            "pokemon": [getName(getPkmn(true), false)],
+            "isEnemy": ((viewpoint == -1) ? false : (playerToMove != viewpoint))
+        }));
+        getPkmn(true).tempEffect.confused--;
         if (Math.random() < 0.5) {
             dealDmg(true, calculateDmg(40, getAttack(true), getDefense(true, true), getPkmn(true).lv, "",
                 getType(true)), { opposingSubstitute: true });
             addMainText(getL10n("others", "hurtConfusion"));
+            return { "continue": true };//!
         }
-        getPkmn(true).tempEffect.confused--;
+        //getPkmn(true).tempEffect.confused--;
     }
-    //refreshSequence();
 }
 function getAttack(isSelf) {
     return getPkmn(isSelf).atk * STAGE_MULTIPLIER[getPkmn(isSelf).atkStage];
@@ -1173,7 +1185,10 @@ function putToSleep(isSelf, turns) {
 function addTempEffect(isSelf, effect, turns, prob) {
     if (Math.random() < prob) {
         getPkmn(isSelf).tempEffect[effect] = turns;
-        if (effect == "confused") addSmallText(getName(getPkmn(isSelf), false) + " became confused!");
+        if (effect == "confused") addSmallText(getL10n("others","becomeConfused",{
+            "pokemon": [getName(getPkmn(isSelf), false)],
+            "isEnemy": ((viewpoint == -1) ? !isSelf : ((isSelf == playerToMove) != viewpoint))
+        }));
         else if (effect == "reflect" || effect == "light screen") addSmallText(getName(getPkmn(isSelf), false) +
             " gained armor!");
     }

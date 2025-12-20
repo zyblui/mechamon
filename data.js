@@ -1232,7 +1232,7 @@ const MOVES = [{
             addSmallText(getL10n("others", "sleepHealthy", {
                 "pokemon": [getName(getPkmn(true), false)],
                 "isEnemy": playerToMove != viewpoint
-            }))
+            }));
             putToSleep(true, 2);
         }
     }
@@ -3286,10 +3286,18 @@ const TRANSLATION = {
             "acc": "Accuracy",
             "eva": "Evasion"
         },
-        "cat":{
-            "physical":"Physical",
-            "special":"Special",
-            "status":"Status"
+        "cat": {
+            "physical": "Physical",
+            "special": "Special",
+            "status": "Status"
+        },
+        "status": {
+            "tox": "Toxic",
+            "psn": "Poisoned",
+            "brn": "Burned",
+            "frz": "Frozen",
+            "par": "Paralysed",
+            "slp": "Asleep"
         },
         "ui": {
             "moves": "Moves: ",
@@ -3303,10 +3311,10 @@ const TRANSLATION = {
             "freezeClause": "Freeze Clause",
             "evasionClause": "Evasion Clause",
             "selfKoClause": "Self-KO Clause",
-            "power":"Power",
-            "accuracy":"Accuracy",
-            "priority":"Priority",
-            "pp":"PP"
+            "power": "Power",
+            "accuracy": "Accuracy",
+            "priority": "Priority",
+            "pp": "PP"
         },
         "others": {
             "turn": "Turn [number0]",
@@ -3361,7 +3369,11 @@ const TRANSLATION = {
             "poisoned": "[pokemon0] was poisoned!",
             "badlyPoisoned": "[pokemon0] was badly poisoned!",
             "poisoned-enemy": "The opposing [pokemon0] was poisoned!",
-            "badlyPoisoned-enemy": "The opposing [pokemon0] was badly poisoned!"
+            "badlyPoisoned-enemy": "The opposing [pokemon0] was badly poisoned!",
+            "confused":"[pokemon0] is confused!",
+            "confused-enemy":"The opposing [pokemon0] is confused!",
+            "becomeConfused":"[pokemon0] became confused!",
+            "becomeConfused-enemy":"The opposing [pokemon0] became confused!"
         },
         "pokemon": {
             "abra": "Abra",
@@ -3516,7 +3528,7 @@ const TRANSLATION = {
             "zapdos": "Zapdos",
             "zubat": "Zubat"
         },
-        "pkmnDesc":{
+        "pkmnDesc": {
             "abra": "Sleeps 18 hours a day. If it senses danger, it will teleport itself to safety even as it sleeps.",
             "aerodactyl": "A savage Pokémon that died out in ancient times. It was resurrected using DNA taken from amber.",
             "alakazam": "A Pokémon that can memorize anything. It never forgets what it learns - that's why this Pokémon is smart.",
@@ -3836,7 +3848,7 @@ const TRANSLATION = {
             "withdraw": "Withdraw",
             "wrap": "Wrap"
         },
-        "moveDesc":{
+        "moveDesc": {
             "absorb": "A nutrient-draining attack. The user's HP is restored by half the damage taken by the target.",
             "acid": "The opposing Pokémon are attacked with a spray of harsh acid. This may also lower their Defense stat.",
             "acid armor": "The user alters its cellular structure to liquefy itself, sharply raising its Defense stat.",
@@ -4030,10 +4042,18 @@ const TRANSLATION = {
             "acc": "命中率",
             "eva": "闪避率"
         },
-        "cat":{
-            "physical":"物理",
-            "special":"特殊",
-            "status":"变化"
+        "cat": {
+            "physical": "物理",
+            "special": "特殊",
+            "status": "变化"
+        },
+        "status": {
+            "tox": "剧毒",
+            "psn": "中毒",
+            "brn": "灼伤",
+            "frz": "冰冻",
+            "par": "麻痹",
+            "slp": "睡眠"
         },
         "ui": {
             "moves": "招式：",
@@ -4047,10 +4067,10 @@ const TRANSLATION = {
             "freezeClause": "冰冻条款",
             "evasionClause": "闪避条款",
             "selfKoClause": "自杀条款",
-            "power":"威力",
-            "accuracy":"命中",
-            "priority":"优先度",
-            "pp":"PP"
+            "power": "威力",
+            "accuracy": "命中",
+            "priority": "优先度",
+            "pp": "PP"
         },
         "others": {
             "turn": "第 [number0] 回合",
@@ -4105,7 +4125,11 @@ const TRANSLATION = {
             "poisoned": "[pokemon0]中毒了！",
             "badlyPoisoned": "[pokemon0]中剧毒了！",
             "poisoned-enemy": "对手的[pokemon0]中毒了！",
-            "badlyPoisoned-enemy": "对手的[pokemon0]中剧毒了！"
+            "badlyPoisoned-enemy": "对手的[pokemon0]中剧毒了！",
+            "confused":"[pokemon0]正在混乱中！",
+            "confused-enemy":"对手的[pokemon0]正在混乱中！",
+            "becomeConfused":"[pokemon0]混乱了！",
+            "becomeConfused-enemy":"对手的[pokemon0]混乱了！"
         },
         "pokemon": {
             "abra": "凯西",
@@ -4427,7 +4451,7 @@ const TRANSLATION = {
             "withdraw": "缩入壳中",
             "wrap": "紧束"
         },
-        "moveDesc":{
+        "moveDesc": {
             "absorb": "吸取对手的养分进行攻击。可以回复给予对手伤害的一半HP。",
             "acid": "将强酸泼向对手进行攻击。有时会降低对手的防御。",
             "acid armor": "通过细胞的变化进行液化，从而大幅提高自己的防御。",
@@ -4594,7 +4618,7 @@ const TRANSLATION = {
             "withdraw": "缩入壳里保护身体，从而提高自己的防御。",
             "wrap": "使用长长的身体或藤蔓等，在4~5回合内紧束对手进行攻击。"
         },
-        "pkmnDesc":{
+        "pkmnDesc": {
             "abra": "它每天要睡18个小时。遇到危险时，即使在睡梦中也可以用瞬间移动来逃脱。",
             "aerodactyl": "通过研究从琥珀中提取出来的基因复活而成，是远古时期的凶恶宝可梦。",
             "alakazam": "什么事情都能记住。只要是曾经体验过的事情就绝对不会忘记，头脑非常聪明。",
@@ -5474,4 +5498,4 @@ const ICONS = {
     "dragonite": { "row": 13, "cell": 6 },
     "mewtwo": { "row": 13, "cell": 7 },
     "mew": { "row": 13, "cell": 8 }
-}
+};
