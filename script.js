@@ -541,7 +541,7 @@ function insertEffects(pkmn, outputArea, showFull) {
         outputArea.innerHTML = "";
         let statusSpan = document.createElement("span");
         statusSpan.classList.add(pkmn.status);
-        statusSpan.innerText = "[" + ((showFull) ? getL10n("status", pkmn.status).toUpperCase() : capitalize(pkmn.status)) +
+        statusSpan.innerText = "[" + ((showFull) ? getL10n("status", pkmn.status).toUpperCase() : pkmn.status.toUpperCase()) +
             "]";
         outputArea.appendChild(statusSpan);
     }
