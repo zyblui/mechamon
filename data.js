@@ -1203,7 +1203,10 @@ const MOVES = [{
         let hpLost = getPkmn(true).maxHp - getPkmn(true).hp;
         if (hpLost != 255 && hpLost != 511) {
             getPkmn(true).hp += Math.min(getPkmn(true).maxHp / 2, hpLost);
-            addSmallText(getName(getPkmn(true), false) + " had its HP restored.");
+            addSmallText("others", "hpRestored", {
+                "pokemon": [getName(getPkmn(true), false)],
+                "isEnemy": playerToMove != viewpoint
+            });
         }
     }
 }, {
@@ -1229,10 +1232,10 @@ const MOVES = [{
         let hpLost = getPkmn(true).maxHp - getPkmn(true).hp;
         if (hpLost != 255 && hpLost != 511) {
             getPkmn(true).hp = getPkmn(true).maxHp;
-            addSmallText(getL10n("others", "sleepHealthy", {
+            addSmallText("others", "sleepHealthy", {
                 "pokemon": [getName(getPkmn(true), false)],
                 "isEnemy": playerToMove != viewpoint
-            }));
+            });
             putToSleep(true, 2);
         }
     }
@@ -1495,7 +1498,7 @@ const MOVES = [{
     "pp": 40,
     "priority": 0,
     "effect": function () {
-        addSmallText(getL10n("others", "nothingHappen"));
+        addSmallText("others", "nothingHappen");
     }
     //No competitive use.
 }, {
@@ -1583,7 +1586,10 @@ const MOVES = [{
     "priority": 0,
     "effect": function () {
         if (getPkmn(true).hp >= getPkmn(true).maxHp / 4) {
-            addSmallText(getName(getPkmn(true), false) + " put in a substitute!");
+            addSmallText("others", "putInSubstitute", {
+                "pokemon": [getName(getPkmn(true), false)],
+                "isEnemy": playerToMove != viewpoint
+            });
             dealDmg(true, getPkmn(true).maxHp / 4);
             getPkmn(true).substituteHp = getPkmn(true).maxHp / 4;
         }
@@ -1787,10 +1793,10 @@ const MOVES = [{
         for (let i in getPkmn(true).moves) {
             getPkmn(true).moves[i] = 5;
         }
-        addSmallText(getL10n("others", "transform", {
+        addSmallText("others", "transform", {
             "pokemon": [getName(getPkmn(true), false), getName(getPkmn(false), false)],
             "isEnemy": playerToMove != viewpoint
-        }));
+        });
     }
 }, {
     "name": "tri attack",
@@ -3329,6 +3335,8 @@ const TRANSLATION = {
             "notVeryEffective": "It's not very effective...",
             "loseHealth": "([pokemon0] lost [percentage0]% of its health!)",
             "loseHealth-enemy": "(The opposing [pokemon0] lost [percentage0]% of its health!)",
+            "putInSubstitute": "[pokemon0] put in a substitute!",
+            "putInSubstitute-enemy": "The opposing [pokemon0] put in a substitute!",
             "substituteFade": "[pokemon0]'s substitute faded!",
             "substituteFade-enemy": "The opposing [pokemon0]'s substitute faded!",
             "substituteTakeDamage": "The substitute took damage for [pokemon0]!",
@@ -3340,6 +3348,8 @@ const TRANSLATION = {
             "attackMiss-enemy": "The opposing [pokemon0]'s attack missed!",
             "noEffect": "It doesn't affect [pokemon0]...",
             "noEffect-enemy": "It doesn't affect the opposing [pokemon0]...",
+            "fallAsleep": "[pokemon0] fell asleep!",
+            "fallAsleep-enemy": "The opposing [pokemon0] fell asleep!",
             "fastAsleep": "[pokemon0] is fast asleep.",
             "fastAsleep-enemy": "The opposing [pokemon0] is fast asleep.",
             "wakeUp": "[pokemon0] woke up!",
@@ -3347,6 +3357,8 @@ const TRANSLATION = {
             "hurtConfusion": "It hurt itself in its confusion!",
             "paralyzed": "[pokemon0] is paralyzed! It may be unable to move!",
             "paralyzed-enemy": "The opposing [pokemon0] is paralyzed! It may be unable to move!",
+            "alreadyParalyzed": "[pokemon0] is already paralyzed!",
+            "alreadyParalyzed-enemy": "The opposing [pokemon0] is already paralyzed!",
             "hitTimes": "The Pokémon was hit [number0] times!",
             "frozenSolid": "[pokemon0] is frozen solid!",
             "frozenSolid-enemy": "The opposing [pokemon0] is frozen solid!",
@@ -3370,10 +3382,16 @@ const TRANSLATION = {
             "badlyPoisoned": "[pokemon0] was badly poisoned!",
             "poisoned-enemy": "The opposing [pokemon0] was poisoned!",
             "badlyPoisoned-enemy": "The opposing [pokemon0] was badly poisoned!",
-            "confused":"[pokemon0] is confused!",
-            "confused-enemy":"The opposing [pokemon0] is confused!",
-            "becomeConfused":"[pokemon0] became confused!",
-            "becomeConfused-enemy":"The opposing [pokemon0] became confused!"
+            "confused": "[pokemon0] is confused!",
+            "confused-enemy": "The opposing [pokemon0] is confused!",
+            "becomeConfused": "[pokemon0] became confused!",
+            "becomeConfused-enemy": "The opposing [pokemon0] became confused!",
+            "winBattle": "[player0] won the battle!",
+            "forfeit": "[player0] forfeited.",
+            "gainArmor": "[pokemon0] gained armor!",
+            "gainArmor-enemy": "The opposing [pokemon0] gained armor!",
+            "hpRestored": "[pokemon0] had its HP restored.",
+            "hpRestored-enemy": "The opposing [pokemon0] had its HP restored."
         },
         "pokemon": {
             "abra": "Abra",
@@ -4085,6 +4103,8 @@ const TRANSLATION = {
             "notVeryEffective": "好像效果不好……",
             "loseHealth": "（[pokemon0]失去了[percentage0]%的生命值！）",
             "loseHealth-enemy": "（对手的[pokemon0]失去了[percentage0]%的生命值！）",
+            "putInSubstitute": "[pokemon0]的替身出现了！",
+            "putInSubstitute-enemy": "对手的[pokemon0]的替身出现了！",
             "substituteFade": "[pokemon0]的替身消失了！",
             "substituteFade-enemy": "对手的[pokemon0]的替身消失了！",
             "substituteTakeDamage": "替身代替[pokemon0]承受了攻击！",
@@ -4096,6 +4116,8 @@ const TRANSLATION = {
             "attackMiss-enemy": "对手的[pokemon0]的招式没有命中！",
             "noEffect": "对于[pokemon0]，好像没有效果……",
             "noEffect-enemy": "对于对手的[pokemon0]，好像没有效果……",
+            "fallAsleep": "[pokemon0]睡着了！",
+            "fallAsleep-enemy": "对手的[pokemon0]睡着了！",
             "fastAsleep": "[pokemon0]正在呼呼大睡。",
             "fastAsleep-enemy": "对手的[pokemon0]正在呼呼大睡。",
             "wakeUp": "[pokemon0]醒过来了！",
@@ -4103,6 +4125,8 @@ const TRANSLATION = {
             "hurtConfusion": "不知所以地攻击了自己！",
             "paralyzed": "[pokemon0]麻痹了，很难使出招式！",
             "paralyzed-enemy": "对手的[pokemon0]麻痹了，很难使出招式！",
+            "alreadyParalyzed": "[pokemon0]已经麻痹了！",
+            "alreadyParalyzed-enemy": "对手的[pokemon0]已经麻痹了！",
             "hitTimes": "击中了[number0]次！",
             "frozenSolid": "[pokemon0]冻住了！",
             "frozenSolid-enemy": "对手的[pokemon0]冻住了！",
@@ -4126,10 +4150,16 @@ const TRANSLATION = {
             "badlyPoisoned": "[pokemon0]中剧毒了！",
             "poisoned-enemy": "对手的[pokemon0]中毒了！",
             "badlyPoisoned-enemy": "对手的[pokemon0]中剧毒了！",
-            "confused":"[pokemon0]正在混乱中！",
-            "confused-enemy":"对手的[pokemon0]正在混乱中！",
-            "becomeConfused":"[pokemon0]混乱了！",
-            "becomeConfused-enemy":"对手的[pokemon0]混乱了！"
+            "confused": "[pokemon0]正在混乱中！",
+            "confused-enemy": "对手的[pokemon0]正在混乱中！",
+            "becomeConfused": "[pokemon0]混乱了！",
+            "becomeConfused-enemy": "对手的[pokemon0]混乱了！",
+            "winBattle": "<strong>[player0]</strong>赢下了对战！",
+            "forfeit": "[player0]认负。",
+            "gainArmor": "[pokemon0]获得了护甲！",
+            "gainArmor-enemy": "对手的[pokemon0]获得了护甲！",
+            "hpRestored": "[pokemon0]的体力回复了。",
+            "hpRestored-enemy": "对手的[pokemon0]的体力回复了。"
         },
         "pokemon": {
             "abra": "凯西",
