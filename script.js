@@ -1,4 +1,4 @@
-let w
+/*let w
 if (w?.terminate) w.terminate();
 w = new Worker("w.js");
 
@@ -12,7 +12,7 @@ w.onmessage = function (e) {
     } else if (e.data.type == "log") {
         console.log(e.data.content)
     }
-}
+}*/
 
 document.getElementById("mechaButton").addEventListener("click", function () {
     w.postMessage({
