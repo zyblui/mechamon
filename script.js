@@ -775,12 +775,12 @@ function nextTurn() {
                 if (getPkmn(false)?.tempEffect.rage > 0) modifyStats(false, "atk", 1, 1);
             }
 
-    if (getPkmn(true)?.status == "psn") dealDmg(true, getPkmn(true).maxHp / 16, { ignoreSubstitute: true });
-    else if (getPkmn(true)?.status == "tox") dealDmg(true, getPkmn(true).maxHp / 8, { ignoreSubstitute: true });
-    if (getPkmn(true)?.tempEffect["leech seed"] > 0) {
-        if (getPkmn(true).status == "tox") dealDmg(true, getPkmn(true).maxHp / 8, { ignoreSubstitute: true });
-        else dealDmg(true, getPkmn(true).maxHp / 16, { ignoreSubstitute: true });
-    }
+            if (getPkmn(true)?.status == "psn") dealDmg(true, getPkmn(true).maxHp / 16, { ignoreSubstitute: true });
+            else if (getPkmn(true)?.status == "tox") dealDmg(true, getPkmn(true).maxHp / 8, { ignoreSubstitute: true });
+            if (getPkmn(true)?.tempEffect["leech seed"] > 0) {
+                if (getPkmn(true).status == "tox") dealDmg(true, getPkmn(true).maxHp / 8, { ignoreSubstitute: true });
+                else dealDmg(true, getPkmn(true).maxHp / 16, { ignoreSubstitute: true });
+            }
 
             judgeHP();
             renderHP();
@@ -796,13 +796,15 @@ function nextTurn() {
     }
 
     attacks = [];
-
-    if (getPkmn(true)?.status == "brn") dealDmg(true, getPkmn(true).maxHp / 16, { ignoreSubstitute: true });
-    if (getPkmn(false)?.status == "brn") dealDmg(false, getPkmn(false).maxHp / 16, { ignoreSubstitute: true });
+    for (let i of [true, false]) if (getPkmn(i)?.status == "brn") {
+        addSmallText("others", "hurtByBurn", {
+            "pokemon": [getName(getPkmn(i), false)],
+            "isEnemy": (i == playerToMove) != viewpoint
+        });
+        dealDmg(i, getPkmn(i).maxHp / 16, { ignoreSubstitute: true });
+    }
     judgeHP();
-
     endTurn();
-
 }
 function endTurn() {
     for (let i = 0; i <= 1; i++) {
@@ -1052,15 +1054,12 @@ const ACC_STAGE_MULTIPLIER = {
     "6": 3 / 9
 };
 function renderHP() {
-    if (battleInfo[Number(0 != viewpoint)].currentPokemon == -1) {
-        document.getElementById("p1Gauge").classList.add("hide");
-    } else {
-        document.getElementById("p1Gauge").classList.remove("hide");
-    }
-    if (battleInfo[Number(1 != viewpoint)].currentPokemon == -1) {
-        document.getElementById("p2Gauge").classList.add("hide");
-    } else {
-        document.getElementById("p2Gauge").classList.remove("hide");
+    for (let i of [0, 1]) {
+        if (battleInfo[Number(i != viewpoint)].currentPokemon == -1) {
+            document.getElementById(`p${i + 1}Gauge`).classList.add("hide");
+        } else {
+            document.getElementById(`p${i + 1}Gauge`).classList.remove("hide");
+        }
     }
     for (let i of [0, 1]) {
         if (battleInfo[Number(i != viewpoint)].currentPokemon != -1) {
@@ -1164,26 +1163,19 @@ function modifyStatus(status, prob) {
             return;
         }
         getPkmn(false).status = status;
-        if (status == "par") {
-            addSmallText("others", "paralyzed", {
+        const SMALL_TEXT_KEY = {
+            "par": "paralyzed",
+            "frz": "frozenSolid",
+            "psn": "poisoned",
+            "tox": "badlyPoisoned",
+            "brn": "burn"
+        };
+        for (let i of Object.keys(SMALL_TEXT_KEY)) if (status == i) {
+            addSmallText("others", SMALL_TEXT_KEY[i], {
                 "pokemon": [getName(getPkmn(false), false)],
                 "isEnemy": !playerToMove != viewpoint
             });
-        } else if (status == "frz") {
-            addSmallText("others", "frozenSolid", {
-                "pokemon": [getName(getPkmn(false), false)],
-                "isEnemy": !playerToMove != viewpoint
-            });
-        } else if (status == "psn") {
-            addSmallText("others", "poisoned", {
-                "pokemon": [getName(getPkmn(false), false)],
-                "isEnemy": !playerToMove != viewpoint
-            });
-        } else if (status == "tox") {
-            addSmallText("others", "badlyPoisoned", {
-                "pokemon": [getName(getPkmn(false), false)],
-                "isEnemy": !playerToMove != viewpoint
-            });
+            break;
         }
     }
 }

@@ -3399,7 +3399,11 @@ const TRANSLATION = {
             "hpRestored": "[pokemon0] had its HP restored.",
             "hpRestored-enemy": "The opposing [pokemon0] had its HP restored.",
             "damagedByRecoil": "[pokemon0] was damaged by the recoil!",
-            "damagedByRecoil-enemy": "The opposing [pokemon0] was damaged by the recoil!"
+            "damagedByRecoil-enemy": "The opposing [pokemon0] was damaged by the recoil!",
+            "burn":"[pokemon0] was burned!",
+            "burn-enemy":"The opposing [pokemon0] was burned!",
+            "hurtByBurn":"[pokemon0] was hurt by its burn!",
+            "hurtByBurn-enemy":"The opposing [pokemon0] was hurt by its burn!"
         },
         "pokemon": {
             "abra": "Abra",
@@ -4171,7 +4175,11 @@ const TRANSLATION = {
             "hpRestored": "[pokemon0]的体力回复了。",
             "hpRestored-enemy": "对手的[pokemon0]的体力回复了。",
             "damagedByRecoil": "[pokemon0]受到了反作用力造成的伤害！",
-            "damagedByRecoil-enemy": "对手的[pokemon0]受到了反作用力造成的伤害！"
+            "damagedByRecoil-enemy": "对手的[pokemon0]受到了反作用力造成的伤害！",
+            "burn":"[pokemon0]被灼伤了！",
+            "burn-enemy":"对手的[pokemon0]被灼伤了！",
+            "hurtByBurn":"[pokemon0]受到了灼伤的伤害！",
+            "hurtByBurn-enemy":"对手的[pokemon0]受到了灼伤的伤害！"
         },
         "pokemon": {
             "abra": "凯西",
