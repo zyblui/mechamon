@@ -3308,6 +3308,8 @@ const TRANSLATION = {
         "ui": {
             "moves": "Moves: ",
             "switch": "Switch to: ",
+            "viewpoint":"Viewpoint: [player0]",
+            "forfeit":"Forfeit",
             "setup": "Setup",
             "record": "Record",
             "settings": "Settings",
@@ -4076,6 +4078,8 @@ const TRANSLATION = {
         "ui": {
             "moves": "招式：",
             "switch": "替换：",
+            "viewpoint":"视角：[player0]",
+            "forfeit":"认负",
             "setup": "摆局",
             "record": "记录",
             "settings": "设置",

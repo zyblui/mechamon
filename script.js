@@ -115,6 +115,9 @@ document.getElementById("p2Name").innerText = getL10n("pokemon", players[1].buil
 document.getElementById("turnNumber").innerText = getL10n("others", "turn", {
     "number": [0]
 });
+document.getElementById("viewpoint").innerText = getL10n("ui", "viewpoint", {
+    "player": ["Player 1"]
+});
 let record = [], viewpoint = 0;
 function refreshRecord() {
 
@@ -455,76 +458,82 @@ function sendOutPkmn(pkmn) {
     render();
     renderHP();
 }
+function addTooltip(elementGroup, i) {
+    if (!elementGroup[i].dataset.for || !getStats(elementGroup[i].dataset.for)) return;
+    let tooltip;
+    if (!elementGroup[i].parentElement.querySelector(".tooltip")) {
+        tooltip = document.querySelector(".tooltip").cloneNode(true);
+        elementGroup[i].parentElement.insertBefore(tooltip, elementGroup[i]);
+    }
+    tooltip = elementGroup[i].parentElement.querySelector(".tooltip");
+    tooltip.querySelector(".tip-name").innerText = getL10n("pokemon", elementGroup[i]
+        .dataset.for);
+    let stats = getStats(elementGroup[i].dataset.for);
+    tooltip.querySelector(".img-left").style.background = "url(pokemonicons-sheet.png) no-repeat scroll -" +
+        (ICONS[elementGroup[i].dataset.for].cell - 1) * 40 + "px -" + (
+            ICONS[elementGroup[i].dataset.for].row - 1) * 30 + "px";
+    tooltip.querySelector(".tip-desc").innerText = getL10n("pkmnDesc", elementGroup[i]
+        .dataset.for);
+    for (let j of [0, 1]) {
+        if (!stats.type[j]) {
+            tooltip.querySelectorAll(".type")[j].classList.add("hide");
+            break;
+        }
+        tooltip.querySelectorAll(".type")[j].classList.remove("hide");
+        tooltip.querySelectorAll(".type-text")[j].innerText = getL10n("types", stats.type[j]).toUpperCase();
+        tooltip.querySelectorAll(".type-text")[j].classList.remove(
+            "type-bug",
+            "type-dragon",
+            "type-electric",
+            "type-fighting",
+            "type-fire",
+            "type-flying",
+            "type-ghost",
+            "type-grass",
+            "type-ground",
+            "type-ice",
+            "type-normal",
+            "type-poison",
+            "type-psychic",
+            "type-rock",
+            "type-water");
+        tooltip.querySelectorAll(".type-text")[j].classList.add("type-" + stats.type[j]);
+        tooltip.querySelectorAll(".type-img")[j].src = "types/" + stats.type[j] + ".png";
+    }
+    insertEffects(battleInfo[playerToMove].build[i], tooltip.querySelector(".tip-status"), true);
+
+    for (let j = 0; j < 4; j++) {
+        tooltip.querySelectorAll(".move-name")[j].innerText = getL10n("moves", Object.keys(battleInfo[playerToMove]
+            .build[i].moves)[j]);
+        tooltip.querySelectorAll(".pp-remaining")[j].innerText = Object.values(battleInfo[playerToMove].build[i]
+            .moves)[j];
+        tooltip.querySelectorAll(".pp .sub")[j].innerText = "/" + getMoveStats(Object.keys(battleInfo[playerToMove]
+            .build[i].moves)[j]).pp;
+        if (Object.values(battleInfo[playerToMove].build[i].moves)[j] == getMoveStats(Object
+            .keys(battleInfo[playerToMove].build[i].moves)[j]).pp) tooltip.querySelectorAll(".move-name")[j].classList
+                .add("unknown");
+        else tooltip.querySelectorAll(".move-name")[j].classList.remove("unknown");
+    }
+    tooltip.querySelector(".hp-remaining").innerText = (battleInfo[playerToMove].build[i].hp / battleInfo[playerToMove]
+        .build[i].maxHp * 100).toFixed(0) + "%";
+    tooltip.querySelector(".hp .sub").innerText = ", " + battleInfo[playerToMove].build[i].hp.toFixed(0) + "/" +
+        battleInfo[playerToMove].build[i].maxHp;
+    tooltip.classList.add("show");
+}
 for (let i = 0; i < 6; i++) {
     document.getElementsByClassName("decisionSwitch")[i].addEventListener("click", function () {
         switchPkmn(document.getElementsByClassName("decisionSwitch")[i].dataset.for);
     });
-    document.getElementsByClassName("decisionSwitch")[i].addEventListener("mouseover", function () {
-        if (!getStats(document.getElementsByClassName("decisionSwitch")[i].dataset.for)) return;
-        let tooltip;
-        if (!document.getElementsByClassName("decisionSwitch")[i].parentElement.querySelector(".tooltip")) {
-            tooltip = document.querySelector(".tooltip").cloneNode(true);
-            document.getElementsByClassName("decisionSwitch")[i].parentElement.insertBefore(tooltip, document
-                .getElementsByClassName("decisionSwitch")[i]);
-        }
-        tooltip = document.getElementsByClassName("decisionSwitch")[i].parentElement.querySelector(".tooltip");
-        tooltip.querySelector(".tip-name").innerText = getL10n("pokemon", document.getElementsByClassName("decisionSwitch")[i]
-            .dataset.for);
-        let stats = getStats(document.getElementsByClassName("decisionSwitch")[i].dataset.for);
-        tooltip.querySelector(".img-left").style.background = "url(pokemonicons-sheet.png) no-repeat scroll -" +
-            (ICONS[document.getElementsByClassName("decisionSwitch")[i].dataset.for].cell - 1) * 40 + "px -" + (
-                ICONS[document.getElementsByClassName("decisionSwitch")[i].dataset.for].row - 1) * 30 + "px";
-        tooltip.querySelector(".tip-desc").innerText = getL10n("pkmnDesc", document.getElementsByClassName("decisionSwitch")[i]
-            .dataset.for);
-        for (let j of [0, 1]) {
-            if (!stats.type[j]) {
-                tooltip.querySelectorAll(".type")[j].classList.add("hide");
-                break;
-            }
-            tooltip.querySelectorAll(".type")[j].classList.remove("hide");
-            tooltip.querySelectorAll(".type-text")[j].innerText = getL10n("types", stats.type[j]).toUpperCase();
-            tooltip.querySelectorAll(".type-text")[j].classList.remove(
-                "type-bug",
-                "type-dragon",
-                "type-electric",
-                "type-fighting",
-                "type-fire",
-                "type-flying",
-                "type-ghost",
-                "type-grass",
-                "type-ground",
-                "type-ice",
-                "type-normal",
-                "type-poison",
-                "type-psychic",
-                "type-rock",
-                "type-water");
-            tooltip.querySelectorAll(".type-text")[j].classList.add("type-" + stats.type[j]);
-            tooltip.querySelectorAll(".type-img")[j].src = "types/" + stats.type[j] + ".png";
-        }
-        insertEffects(battleInfo[playerToMove].build[i], tooltip.querySelector(".tip-status"), true);
 
-        for (let j = 0; j < 4; j++) {
-            tooltip.querySelectorAll(".move-name")[j].innerText = getL10n("moves", Object.keys(battleInfo[playerToMove]
-                .build[i].moves)[j]);
-            tooltip.querySelectorAll(".pp-remaining")[j].innerText = Object.values(battleInfo[playerToMove].build[i]
-                .moves)[j];
-            tooltip.querySelectorAll(".pp .sub")[j].innerText = "/" + getMoveStats(Object.keys(battleInfo[playerToMove]
-                .build[i].moves)[j]).pp;
-            if (Object.values(battleInfo[playerToMove].build[i].moves)[j] == getMoveStats(Object
-                .keys(battleInfo[playerToMove].build[i].moves)[j]).pp) tooltip.querySelectorAll(".move-name")[j].classList
-                    .add("unknown");
-            else tooltip.querySelectorAll(".move-name")[j].classList.remove("unknown");
-        }
-        tooltip.querySelector(".hp-remaining").innerText = (battleInfo[playerToMove].build[i].hp / battleInfo[playerToMove]
-            .build[i].maxHp * 100).toFixed(0) + "%";
-        tooltip.querySelector(".hp .sub").innerText = ", " + battleInfo[playerToMove].build[i].hp.toFixed(0) + "/" +
-            battleInfo[playerToMove].build[i].maxHp;
-        tooltip.classList.add("show");
-    });
-    document.getElementsByClassName("decisionSwitch")[i].addEventListener("mouseout", function () {
-        document.getElementsByClassName("decisionSwitch")[i].parentElement.querySelector(".tooltip")?.classList.remove("show");
-    });
+    for (let j of [".decisionSwitch", "#p1Balls .ball", "#p2Balls .ball"]) {
+        document.querySelectorAll(j)[i].addEventListener("mouseover", function () {
+            addTooltip(document.querySelectorAll(j), i);
+        });
+        document.querySelectorAll(j)[i].addEventListener("mouseout", function () {
+            document.querySelectorAll(j)[i].parentElement.querySelector(".tooltip")?.classList.remove("show");
+        });
+    }
+
 }
 function insertEffects(pkmn, outputArea, showFull) {
     outputArea.innerHTML = "";
@@ -799,9 +808,9 @@ function endTurn() {
         }
     }
     if (battleInfo[0].currentPokemon == -1) {
-        playerToMove = 0;
+        refreshPlayerToMove(0);
     } else if (battleInfo[1].currentPokemon == -1) {
-        playerToMove = 1;
+        refreshPlayerToMove(1);
     } else {
         turn++;
         isNewTurn = true;
@@ -811,7 +820,7 @@ function endTurn() {
                 "number": [turn]
             }]
         });
-        playerToMove = 0;
+        refreshPlayerToMove(0);
     }
 
     refreshSequence();
@@ -882,13 +891,16 @@ function attack(move) {
         let effect;
         if (k.effect) effect = k.effect({ totalDmg: totalDmg });
         return effect;
-        //refreshDecision();
     }
 }
 let attacks = [];
+function refreshPlayerToMove(ptm) {
+    playerToMove = ptm;
+    document.getElementById("playerToMove").innerText = "Player " + (ptm + 1) + "'s turn";
+}
 function decisionNextPlayer() {
     if (playerToMove == 0) {
-        playerToMove = 1;
+        refreshPlayerToMove(1);
         refreshDecision();
     } else {
         nextTurn();
@@ -1062,20 +1074,23 @@ function renderHP() {
     }
     for (let i of [0, 1]) {
         for (let j = 0; j < 6; j++) {
+            let ballElement = document.getElementById("p" + (i + 1) + "Ball" + (j + 1));
             if (!battleInfo[Number(i != viewpoint)].build[j].revealed) {
-                document.getElementById("p" + (i + 1) + "Ball" + (j + 1)).style.backgroundImage = "url(pokemonicons-pokeball-sheet.png)";
-                document.getElementById("p" + (i + 1) + "Ball" + (j + 1)).style.backgroundPosition = "0 0";
+                ballElement.style.backgroundImage = "url(pokemonicons-pokeball-sheet.png)";
+                ballElement.style.backgroundPosition = "0 0";
+                ballElement.dataset.for = "";
             }
             else {
-                document.getElementById("p" + (i + 1) + "Ball" + (j + 1)).style.backgroundImage = "url(pokemonicons-sheet.png)";
-                document.getElementById("p" + (i + 1) + "Ball" + (j + 1)).style.backgroundPosition = (-(ICONS[battleInfo[Number(i != viewpoint)].build[j]
+                ballElement.style.backgroundImage = "url(pokemonicons-sheet.png)";
+                ballElement.style.backgroundPosition = (-(ICONS[battleInfo[Number(i != viewpoint)].build[j]
                     .name].cell - 1) * 40) + "px " + (-(ICONS[battleInfo[Number(i != viewpoint)].build[j].name].row - 1) * 30) + "px";
 
                 if (battleInfo[Number(i != viewpoint)].build[j].hp <= 0) {
-                    document.getElementById("p" + (i + 1) + "Ball" + (j + 1)).classList.add("faint");
+                    ballElement.classList.add("faint");
                 } else {
-                    document.getElementById("p" + (i + 1) + "Ball" + (j + 1)).classList.remove("faint");
+                    ballElement.classList.remove("faint");
                 }
+                ballElement.dataset.for = battleInfo[Number(i != viewpoint)].build[j].name;
             }
         }
     }
@@ -1201,7 +1216,9 @@ document.getElementById("viewpoint").addEventListener("click", function () {
         i.dataset.content = JSON.stringify(arr);
         i.innerHTML = getL10n(...arr);
     }
-    document.getElementById("viewpoint").innerText = "Viewpoint: " + battleInfo[viewpoint].name;
+    document.getElementById("viewpoint").innerText = getL10n("ui", "viewpoint", {
+        "player": [battleInfo[viewpoint].name]
+    });
     render();
     renderHP();
 });
