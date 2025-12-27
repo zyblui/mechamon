@@ -6,6 +6,25 @@ body {
     background-color: #f3f3f3;
     -webkit-user-select: none;
     user-select: none;
+    --special: #7799DD;
+    --physical: #EE7700;
+    --status: #999;
+    --bug: #83c300;
+    --dragon: #006fc9;
+    --electric: #fbd100;
+    --fighting: #e0306a;
+    --fire: #fc9540;
+    --flying: #89aae3;
+    --ghost: #4c6ab2;
+    --grass: #38bf4b;
+    --ground: #e87236;
+    --ice: #4cd1c0;
+    --normal: #919aa2;
+    --poison: #b165c9;
+    --psychic: #ff6675;
+    --rock: #c8b686;
+    --water: #3692dc;
+    --fs-medium: 2.3vmin;
 }
 
 p {
@@ -18,7 +37,7 @@ p {
 
     &.explanation {
         color: gray;
-        margin: 9px 0;
+        margin: 3px 0 0 20px;
     }
 }
 
@@ -65,7 +84,37 @@ p {
         height: calc(100% - 35px);
 
         & td {
-            padding: 0
+            padding: 0;
+
+            &>div {
+                display: inline-block;
+                position: relative;
+
+                @media screen and (width<=600px) {
+                    height: 50%;
+
+                    &.move-container {
+                        width: calc(100% / 2);
+                    }
+
+                    &.switch-container {
+                        width: calc(100% / 3);
+                    }
+                }
+
+                @media screen and (width > 600px) {
+                    height: 100%;
+
+                    &.move-container {
+                        width: calc(100% / 4);
+                    }
+
+                    &.switch-container {
+                        width: calc(100% / 6);
+                    }
+                }
+
+            }
         }
     }
 }
@@ -80,8 +129,8 @@ p {
 
 #p1Pokemon,
 #p2Pokemon {
-    width: 384px;
-    height: 384px;
+    width: 55vmin;
+    height: 55vmin;
     background-size: cover;
     image-rendering: pixelated;
 }
@@ -100,18 +149,22 @@ p {
 
 #p1Gauge {
     position: absolute;
-    bottom: 300px;
-    left: calc(10% + 42px);
+    bottom: 40vmin;
+    left: calc(10% + 27.5vmin - 42.956vmin / 2);
+    /*calc(10% + 42px);*/
 }
 
 #p2Gauge {
     position: absolute;
     top: 0;
-    right: calc(10% + 42px);
+    right: calc(10% + 27.5vmin - 42.956vmin / 2);
+    /*calc(10% + 42px);*/
 }
 
 .outer-bar {
-    width: 300px;
+    width: 42.956vmin
+        /*300px*/
+    ;
     background-color: lightgray;
     height: 15px;
     clip-path: rect(0 100% 100% 0 round 7.5px);
@@ -143,37 +196,39 @@ p {
 
 .status {
     display: inline;
+}
 
-    & span.buff {
-        color: green;
-    }
-
-    & span.debuff {
-        color: red;
-    }
-
-    & span.tox {
+.tip-status,
+.status {
+    & .tox {
         color: #c040c8;
     }
 
-    & span.psn {
+    & .psn {
         color: #c040c8;
     }
 
-    & span.brn {
+    & .brn {
         color: #e05848;
     }
 
-    & span.frz {
+    & .frz {
         color: #009898;
     }
 
-    & span.par {
+    & .par {
         color: #e8a800;
     }
 
-    & span.slp {
+    & .slp {
         color: #687060;
+    }
+    & .buff {
+        color: mediumseagreen;
+    }
+
+    & .debuff {
+        color: orangered;
     }
 }
 
@@ -232,7 +287,7 @@ table {
 .decisionSwitch {
     height:
         /*40px*/
-        -webkit-fill-available;
+        calc(100% - 4px);
     font-family: Inter, sans-serif;
     font-size: large;
     background-color: white;
@@ -247,11 +302,11 @@ table {
 }
 
 .decisionMove {
-    width: calc(25% - 4px);
+    width: calc(100% - 4px);
 }
 
 .decisionSwitch {
-    width: calc(100% / 6 - 4px);
+    width: calc(100% - 4px);
 
     &.selected {
         border: solid 2px dodgerblue;
@@ -395,12 +450,96 @@ table {
     display: inline-block;
 }
 
-.tooltip {
+.tooltip,
+.tooltip-move {
     border-radius: 9px;
     padding: 9px;
-    width: 500px;
     background-color: rgba(0, 0, 0, 0.9);
     color: white;
+    position: absolute;
+    bottom: 100%;
+    display: none;
+    transform-origin: bottom left;
+    opacity: 0;
+    transition: opacity 0.1s, display 0.1s;
+    box-shadow: 0 0 9px rgba(0, 0, 0, 0.3);
+    z-index: 9999;
+    transition-behavior: allow-discrete;
+
+    @starting-style {
+        opacity: 0;
+    }
+
+    &.show {
+        display: block;
+        opacity: 1;
+    }
+
+    .type-text {
+        &.type-bug {
+            color: var(--bug);
+        }
+
+        &.type-dragon {
+            color: var(--dragon);
+        }
+
+        &.type-electric {
+            color: var(--electric);
+        }
+
+        &.type-fighting {
+            color: var(--fighting);
+        }
+
+        &.type-fire {
+            color: var(--fire);
+        }
+
+        &.type-flying {
+            color: var(--flying);
+        }
+
+        &.type-ghost {
+            color: var(--ghost);
+        }
+
+        &.type-grass {
+            color: var(--grass);
+        }
+
+        &.type-ground {
+            color: var(--ground);
+        }
+
+        &.type-ice {
+            color: var(--ice);
+        }
+
+        &.type-normal {
+            color: var(--normal);
+        }
+
+        &.type-poison {
+            color: var(--poison);
+        }
+
+        &.type-psychic {
+            color: var(--psychic);
+        }
+
+        &.type-rock {
+            color: var(--rock);
+        }
+
+        &.type-water {
+            color: var(--water);
+        }
+    }
+}
+
+.tooltip {
+    width: 500px;
 
     .tip-desc {
         font-style: italic;
@@ -410,6 +549,7 @@ table {
     .tip-name {
         font-weight: bold;
         font-size: large;
+        display: inline-block
     }
 
     .img-left {
@@ -421,41 +561,56 @@ table {
         transform-origin: left top;
         margin-right: 60px;
         margin-bottom: 45px;
+        vertical-align: top;
     }
 
     .container {
         display: inline-block;
-        width: 270px;
         vertical-align: top;
+    }
+
+    .outer-container {
+        display: inline-block;
+        width: calc(100% - 100px);
+    }
+
+    .tip-status {
+        font-weight: bold;
+
+
     }
 
     .type {
         display: inline-block;
         letter-spacing: 2px;
         font-weight: bold;
-        position: absolute;
+        position: relative;
+        height: 30px;
 
         img {
-            width: 40px
+            width: 30px;
         }
 
         .type-text {
             display: inline-block;
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            margin: auto 5px;
-            height: fit-content;
+            margin: 0 5px;
+            width: max-content;
+            line-height: 30px;
+            vertical-align: top;
+        }
+
+        &.hide {
+            display: none
         }
     }
 
     .stats {
-        display: inline-block;
-        width: 150px;
-        border-right: solid 2px #333;
-        padding-right: 9px;
+        padding-top: 9px;
 
         .stat {
+            display: inline-block;
+            padding-right: 9px;
+
             .small {
                 color: #ccc;
                 font-weight: bold;
@@ -475,10 +630,6 @@ table {
     }
 
     .moves {
-        display: inline-block;
-        width: 325px;
-        vertical-align: top;
-        margin-left: 9px;
 
         .move {
             height: 30px;
@@ -489,7 +640,7 @@ table {
                     color: #ccc
                 }
 
-                display: inline-block
+                display: inline-block;
             }
 
             .pp {
@@ -502,6 +653,90 @@ table {
                     color: #ccc;
                     font-weight: normal;
                     font-size: medium;
+                }
+            }
+        }
+    }
+}
+
+.tooltip-move {
+    width: 400px;
+
+    .tip-desc {
+        font-style: italic;
+        color: #ccc;
+    }
+
+    .tip-name {
+        font-weight: bold;
+        font-size: large;
+    }
+
+    .tip-cat {
+        font-weight: bold;
+
+        &.cat-special {
+            color: var(--special);
+        }
+
+        &.cat-physical {
+            color: var(--physical);
+        }
+
+        &.cat-status {
+            color: var(--status);
+        }
+    }
+
+    .container {
+        display: inline-block;
+        padding-right: 9px;
+        vertical-align: top;
+    }
+
+    .type {
+        display: inline-block;
+        letter-spacing: 2px;
+        font-weight: bold;
+        position: absolute;
+        height: 30px;
+
+        img {
+            width: 30px
+        }
+
+        .type-text {
+            display: inline-block;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            margin: auto 5px;
+            height: fit-content;
+            width: max-content;
+        }
+    }
+
+    .stats {
+        padding-top: 9px;
+
+        .stat {
+            display: inline-block;
+            padding-right: 9px;
+
+            .small {
+                color: #ccc;
+                font-weight: bold;
+            }
+
+            .number {
+                font-size: xx-large;
+                font-weight: bold;
+
+                .sub {
+                    font-size: medium;
+                    color: #ccc;
+                    font-weight: normal;
+                    display: inline-block;
                 }
             }
         }
@@ -644,4 +879,63 @@ button {
         font-weight: bold;
         font-size: large;
     }
+}
+
+input[type="checkbox"] {
+    appearance: none;
+    border: solid 1px gray;
+    border-radius: 6px;
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    margin: 0;
+
+    &:checked {
+        background-color: dodgerblue;
+        border: solid 1px dodgerblue;
+
+        &::before {
+            width: 15px;
+            height: 15px;
+            margin-left: 2.5px;
+            background-color: white;
+            content: " ";
+            display: inline-block;
+            clip-path: path("M2 7 L6 11 L13 4 L15 6 L6 15 L0 9Z");
+        }
+    }
+}
+
+.checkbox-key {
+    vertical-align: middle;
+}
+
+label .wrap {
+    transition: 0.1s;
+    border-radius: 9px;
+    padding: 9px;
+
+    &:hover {
+        background-color: #eee;
+    }
+}
+
+@media screen and (width <=1000px) {
+
+    #battlePanel,
+    #rightPanel {
+        position: relative;
+        width: 100%;
+    }
+
+    #decisionPanel {
+        position: static;
+        width: calc(100% - 9px);
+        height: calc(30% - 9px);
+    }
+
+    #battlePanel {
+        height: 70%;
+    }
+
 }
