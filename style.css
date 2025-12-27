@@ -255,9 +255,11 @@ table {
 }
 
 .listButton {
-    width: calc(100% / 3 - 4px);
+    width: calc(100% / 3 - 10px);
     display: inline-block;
     border: solid 2px transparent;
+    border-radius: 9px;
+    padding: 3px;
 
     &:hover {
         border: solid 2px rgba(30, 144, 255, 0.5);
