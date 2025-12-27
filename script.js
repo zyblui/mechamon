@@ -370,32 +370,24 @@ function refreshSequence() {
     if (refreshSequenceIsRunning || !sequence.length) return;
     refreshSequenceIsRunning = true;
     let element = sequence.shift();
+    function insertElementWithClass(elementName, className, text, parentId) {
+        let tempElement = document.createElement(elementName);
+        tempElement.innerHTML = text;
+        tempElement.classList.add(className);
+        tempElement.dataset.content = JSON.stringify(element.args);
+        document.getElementById(parentId).appendChild(tempElement);
+    }
     let str = getL10n(...element.args);
     if (element.type == "main") {
         document.getElementById("text").innerHTML = "";
-        let div = document.createElement("div");
-        div.innerHTML = str;
-        div.classList.add("main-text");
-        document.getElementById("text").appendChild(div);
-        let div2 = document.createElement("div");
-        div2.innerHTML = str;
-        div2.classList.add("main-text");
-        document.getElementById("record").appendChild(div2);
+        insertElementWithClass("div", "main-text", str, "text");
+        insertElementWithClass("div", "main-text", str, "record");
     } else if (element.type == "small") {
-        let div = document.createElement("div");
-        div.innerHTML = str;
-        div.classList.add("small-text");
-        document.getElementById("text").appendChild(div);
-        let div2 = document.createElement("div");
-        div2.innerHTML = str;
-        div2.classList.add("small-text");
-        document.getElementById("record").appendChild(div2);
+        insertElementWithClass("div", "small-text", str, "text");
+        insertElementWithClass("div", "small-text", str, "record");
     } else if (element.type == "turn") {
         document.getElementById("turnNumber").innerText = str;
-        let h2 = document.createElement("h2");
-        h2.classList.add("turn-number");
-        h2.innerText = str;
-        document.getElementById("record").appendChild(h2);
+        insertElementWithClass("h2", "turn-number", str, "record");
     }
     document.getElementById("record").scroll({
         top: document.getElementById("record").scrollHeight,
@@ -421,7 +413,6 @@ function refreshSequence() {
     renderHP();
 }
 function addMainText(...args) {
-    //let str=getL10n(...args)
     for (let i of document.querySelectorAll(".decisionMove,.decisionSwitch")) {
         i.disabled = "disabled";
     }
@@ -1204,6 +1195,12 @@ document.getElementById("forfeit").addEventListener("click", function () {
 });
 document.getElementById("viewpoint").addEventListener("click", function () {
     viewpoint = Number(!viewpoint);
+    for (let i of document.querySelectorAll("[data-content]")) {
+        let arr = JSON.parse(i.dataset.content);
+        if (arr[2] && Object.keys(arr[2]).includes("isEnemy")) arr[2].isEnemy = !arr[2].isEnemy;
+        i.dataset.content = JSON.stringify(arr);
+        i.innerHTML = getL10n(...arr);
+    }
     document.getElementById("viewpoint").innerText = "Viewpoint: " + battleInfo[viewpoint].name;
     render();
     renderHP();
