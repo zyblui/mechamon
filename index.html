@@ -134,7 +134,9 @@
                     <div class="switch-container"><div class="tooltip">
         <div>
             <div class="img-left" style="background:url(pokemonicons-sheet.png) no-repeat scroll -40px -60px">
-                <!--NOFORMAT--></div><div class="outer-container"><!--NOFORMAT-->
+                <!--NOFORMAT-->
+    </div>
+    <div class="outer-container"><!--NOFORMAT-->
                 <div class="container">
                     <div class="tip-name">Pikachu</div>
                     <div class="tip-status"><span class="par">[PARALYZED]</span></div>
@@ -177,8 +179,8 @@
         </div>
     </div><button class="decisionSwitch">Pokémon #1</button></div><div class="switch-container"><button class="decisionSwitch">Pokémon #2</button></div><div class="switch-container"><button class="decisionSwitch">Pokémon #3</button></div><div class="switch-container"><button class="decisionSwitch">Pokémon #4</button></div><div class="switch-container"><button class="decisionSwitch">Pokémon #5</button></div><div class="switch-container"><button class="decisionSwitch">Pokémon #6</button></div>
                     <!--NOFORMAT-->
-                </td>
-            </tr>
+        </td>
+        </tr>
         </table>
         <div id="bottomOptions">
             <div id="playerToMove">Player 1's turn</div>
@@ -456,9 +458,36 @@
                     <div class="wrap">
                         <input type="checkbox" />
                         <span class="checkbox-key">Hardcore Mode</span>
-                        <p class="explanation">This will hide all information not shown ingame.</p>
+                        <p class="explanation">Hides all information not shown ingame.</p>
                     </div>
                 </label>
+                <label>
+                    <div class="wrap">
+                        <input type="checkbox" />
+                        <span class="checkbox-key">Effectiveness Indicator</span>
+                        <p class="explanation">When it is on, the effectiveness of each move will be displayed as: </p>
+                        <ul class="explanation">
+                            <li>Doubly Super-Effective (DSE)</li>
+                            <li>Super-Effective (SE)</li>
+                            <li>Effective (E)</li>
+                            <li>Not Very Effective (NVE)</li>
+                            <li>Doubly Not Very Effective (DNVE)</li>
+                            <li>No Effect (NE)</li>
+                        </ul>
+                    </div>
+                </label>
+                <label>
+                    <div class="wrap">
+                        <input type="checkbox" />
+                        <span class="checkbox-key">Dark Mode</span>
+                        <p class="explanation">Determines the overall color scheme.</p>
+                    </div>
+                </label>
+                <div class="wrap">Background Music: <select title="BGM">
+                        <option>Random</option>
+                        <option>Random: Intense</option>
+                        <option>Random: Relaxing</option>
+                    </select></div>
             </div>
         </div>
     </div>

@@ -27,7 +27,8 @@ body {
     --fs-medium: 2.3vmin;
 }
 
-p {
+p,
+ul {
     &.dim {
         color: gray;
         font-style: italic;
@@ -223,6 +224,7 @@ p {
     & .slp {
         color: #687060;
     }
+
     & .buff {
         color: mediumseagreen;
     }

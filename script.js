@@ -613,15 +613,6 @@ function dealDmg(isSelf, dmg) {
     }
 }
 function nextPlayer(player) {
-    /*console.log(playerToMove,player,getPkmn(true))
-    if (getPkmn(true)?.status == "psn") dealDmg(true, getPkmn(true).maxHp / 16, { ignoreSubstitute: true });
-    else if (getPkmn(true)?.status == "tox") dealDmg(true, getPkmn(true).maxHp / 8, { ignoreSubstitute: true });
-    if (getPkmn(true)?.tempEffect["leech seed"] > 0) {
-        if (getPkmn(true).status == "tox") dealDmg(true, getPkmn(true).maxHp / 8, { ignoreSubstitute: true });
-        else dealDmg(true, getPkmn(true).maxHp / 16, { ignoreSubstitute: true });
-    }
-    judgeHP();*/
-
     playerToMove = player;
     if (getPkmn(true)) {
         for (let i = 0; i < getPkmn(true).delay.length; i++) {
@@ -1087,8 +1078,7 @@ function renderHP() {
                 ballElement.style.backgroundImage = "url(pokemonicons-pokeball-sheet.png)";
                 ballElement.style.backgroundPosition = "0 0";
                 ballElement.dataset.for = "";
-            }
-            else {
+            } else {
                 ballElement.style.backgroundImage = "url(pokemonicons-sheet.png)";
                 ballElement.style.backgroundPosition = (-(ICONS[battleInfo[Number(i != viewpoint)].build[j]
                     .name].cell - 1) * 40) + "px " + (-(ICONS[battleInfo[Number(i != viewpoint)].build[j].name].row - 1) * 30) + "px";
