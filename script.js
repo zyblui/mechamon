@@ -436,7 +436,7 @@ function addSmallText(...args) {
 function sendOutPkmn(pkmn) {
     addMainText("others", "go", {
         "pokemon": [getL10n("pokemon", pkmn)],
-        "isEnemy": ((viewpoint == -1) ? false : (playerToMove != viewpoint))
+        "isEnemy": ((viewpoint == -1) ? false : (playerToMove != viewpoint))//viewpoint == -1?
     });
     if (getPkmn(true)) {
         for (let j in getPkmn(true).tempEffect) {
@@ -613,13 +613,14 @@ function dealDmg(isSelf, dmg) {
     }
 }
 function nextPlayer(player) {
-    if (getPkmn(true)?.status == "psn") dealDmg(true, getPkmn(true).hp / 16, { ignoreSubstitute: true });
-    else if (getPkmn(true)?.status == "tox") dealDmg(true, getPkmn(true).hp / 8, { ignoreSubstitute: true });
+    /*console.log(playerToMove,player,getPkmn(true))
+    if (getPkmn(true)?.status == "psn") dealDmg(true, getPkmn(true).maxHp / 16, { ignoreSubstitute: true });
+    else if (getPkmn(true)?.status == "tox") dealDmg(true, getPkmn(true).maxHp / 8, { ignoreSubstitute: true });
     if (getPkmn(true)?.tempEffect["leech seed"] > 0) {
-        if (getPkmn(true).status == "tox") dealDmg(true, getPkmn(true).hp / 8, { ignoreSubstitute: true });
-        else dealDmg(true, getPkmn(true).hp / 16, { ignoreSubstitute: true });
+        if (getPkmn(true).status == "tox") dealDmg(true, getPkmn(true).maxHp / 8, { ignoreSubstitute: true });
+        else dealDmg(true, getPkmn(true).maxHp / 16, { ignoreSubstitute: true });
     }
-    judgeHP();
+    judgeHP();*/
 
     playerToMove = player;
     if (getPkmn(true)) {
@@ -773,6 +774,14 @@ function nextTurn() {
                 effect = attack(k.name);
                 if (getPkmn(false)?.tempEffect.rage > 0) modifyStats(false, "atk", 1, 1);
             }
+
+    if (getPkmn(true)?.status == "psn") dealDmg(true, getPkmn(true).maxHp / 16, { ignoreSubstitute: true });
+    else if (getPkmn(true)?.status == "tox") dealDmg(true, getPkmn(true).maxHp / 8, { ignoreSubstitute: true });
+    if (getPkmn(true)?.tempEffect["leech seed"] > 0) {
+        if (getPkmn(true).status == "tox") dealDmg(true, getPkmn(true).maxHp / 8, { ignoreSubstitute: true });
+        else dealDmg(true, getPkmn(true).maxHp / 16, { ignoreSubstitute: true });
+    }
+
             judgeHP();
             renderHP();
             if (getPkmn(true)) {

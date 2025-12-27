@@ -409,6 +409,10 @@ const MOVES = [{
     "pp": 15,
     "priority": 0,
     "effect": function (e) {
+        addSmallText("others", "damagedByRecoil", {
+            "pokemon": [getName(getPkmn(true), false)],
+            "isEnemy": playerToMove != viewpoint
+        });
         dealDmg(true, e.totalDmg / 4);
     }
 }, {
@@ -3308,8 +3312,8 @@ const TRANSLATION = {
         "ui": {
             "moves": "Moves: ",
             "switch": "Switch to: ",
-            "viewpoint":"Viewpoint: [player0]",
-            "forfeit":"Forfeit",
+            "viewpoint": "Viewpoint: [player0]",
+            "forfeit": "Forfeit",
             "setup": "Setup",
             "record": "Record",
             "settings": "Settings",
@@ -3393,7 +3397,9 @@ const TRANSLATION = {
             "gainArmor": "[pokemon0] gained armor!",
             "gainArmor-enemy": "The opposing [pokemon0] gained armor!",
             "hpRestored": "[pokemon0] had its HP restored.",
-            "hpRestored-enemy": "The opposing [pokemon0] had its HP restored."
+            "hpRestored-enemy": "The opposing [pokemon0] had its HP restored.",
+            "damagedByRecoil": "[pokemon0] was damaged by the recoil!",
+            "damagedByRecoil-enemy": "The opposing [pokemon0] was damaged by the recoil!"
         },
         "pokemon": {
             "abra": "Abra",
@@ -4078,8 +4084,8 @@ const TRANSLATION = {
         "ui": {
             "moves": "招式：",
             "switch": "替换：",
-            "viewpoint":"视角：[player0]",
-            "forfeit":"认负",
+            "viewpoint": "视角：[player0]",
+            "forfeit": "认负",
             "setup": "摆局",
             "record": "记录",
             "settings": "设置",
@@ -4163,7 +4169,9 @@ const TRANSLATION = {
             "gainArmor": "[pokemon0]获得了护甲！",
             "gainArmor-enemy": "对手的[pokemon0]获得了护甲！",
             "hpRestored": "[pokemon0]的体力回复了。",
-            "hpRestored-enemy": "对手的[pokemon0]的体力回复了。"
+            "hpRestored-enemy": "对手的[pokemon0]的体力回复了。",
+            "damagedByRecoil": "[pokemon0]受到了反作用力造成的伤害！",
+            "damagedByRecoil-enemy": "对手的[pokemon0]受到了反作用力造成的伤害！"
         },
         "pokemon": {
             "abra": "凯西",
