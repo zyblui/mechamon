@@ -544,10 +544,12 @@ table {
 
 .tooltip {
     width: 500px;
-    &.under{
-        bottom:auto;
-        top:100%
+
+    &.under {
+        bottom: auto;
+        top: 100%
     }
+
     .tip-desc {
         font-style: italic;
         color: #ccc;
@@ -602,10 +604,6 @@ table {
             width: max-content;
             line-height: 30px;
             vertical-align: top;
-        }
-
-        &.hide {
-            display: none
         }
     }
 
@@ -943,4 +941,10 @@ label .wrap {
         height: 70%;
     }
 
+}
+
+.keyboard-shortcut {
+    font-size: small;
+    position: absolute;
+    opacity: 0.6;
 }

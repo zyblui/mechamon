@@ -29,7 +29,9 @@ let settings = {
     "ohkoClause": false,
     "freezeClause": false,
     "evasionClause": false,
-    "selfKoClause": false
+    "selfKoClause": false,
+    "hardcoreMode": false,
+    "keyboardControls": false
 };
 const PROPERTIES = ["atk", "def", "sp", "spe"];
 if (!localStorage.getItem("mechamonSettings")) {
@@ -287,15 +289,17 @@ function refreshDecision() {
             document.getElementsByClassName("decisionMove")[i].disabled = "disabled";
         }
     }
+    let switchButtons = document.querySelectorAll(".decisionSwitch");
     for (let i = 0; i < 6; i++) {
-        document.getElementsByClassName("decisionSwitch")[i].innerText = getName(players[playerToMove].build[i], false);
-        document.getElementsByClassName("decisionSwitch")[i].classList.remove("selected");
-        if (battleInfo[playerToMove].build[i].hp == 0) document.getElementsByClassName("decisionSwitch")[i].disabled = "disabled";
+        document.querySelectorAll(".decisionSwitch .decision-content")[i].innerText = getName(players[playerToMove].build[i],
+            false);
+        switchButtons[i].classList.remove("selected");
+        if (battleInfo[playerToMove].build[i].hp == 0) switchButtons[i].disabled = "disabled";
         else if (battleInfo[playerToMove].currentPokemon == i) {
-            document.getElementsByClassName("decisionSwitch")[i].disabled = "disabled";
-            document.getElementsByClassName("decisionSwitch")[i].classList.add("selected");
-        } else document.getElementsByClassName("decisionSwitch")[i].disabled = "";
-        document.getElementsByClassName("decisionSwitch")[i].dataset.for = players[playerToMove].build[i].name;
+            switchButtons[i].disabled = "disabled";
+            switchButtons[i].classList.add("selected");
+        } else switchButtons[i].disabled = "";
+        switchButtons[i].dataset.for = players[playerToMove].build[i].name;
     }
 }
 let turn = 0, playerToMove = 0, battleInfo = [];
@@ -1244,7 +1248,17 @@ for (let i of document.querySelectorAll("[data-settings]")) {
         if (i.tagName.toLowerCase() == "select") settings[i.dataset.settings] = i.value;
         else settings[i.dataset.settings] = i.checked;
         localStorage.setItem("mechamonSettings", JSON.stringify(settings));
+        applySetting(i.dataset.settings);
     });
+    applySetting(i.dataset.settings);
+}
+function applySetting(key) {
+    switch (key) {
+        case "keyboardControls":
+            if (settings.keyboardControls) {
+                for (let j of document.querySelectorAll(".keyboard-shortcut")) j.classList.remove("hide");
+            } else for (let j of document.querySelectorAll(".keyboard-shortcut")) j.classList.add("hide");
+    }
 }
 for (let i of document.querySelectorAll(".lv")) i.addEventListener("blur", function () {
     if (Number.isNaN(Number(i.innerText))) {
@@ -1260,4 +1274,7 @@ for (let i of document.querySelectorAll(".lv")) i.addEventListener("blur", funct
 });
 for (let i of document.querySelectorAll(".nick")) i.addEventListener("blur", function () {
     players[Number(i.dataset.player) - 1].build[Number(i.dataset.no) - 1].nick = i.innerText;
-});
+});/*
+document.querySelector("[data-settings='keyboardControls']").addEventListener("change",function(){
+    if()
+})*/

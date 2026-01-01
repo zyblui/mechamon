@@ -99,24 +99,28 @@
         </div>
     </div>
                         <button class="decisionMove">
+                            <div class="keyboard-shortcut hide">[1]</div>
                             <span class="move-text">Move #1</span>
                             <div class="move-side">
                                 <div class="move-type">Type</div>
                                 <div class="pp"><span class="pp-remaining">0</span><span class="sub">/0</span></div>
                             </div>
                         </button></div><div class="move-container"><button class="decisionMove">
+                            <div class="keyboard-shortcut hide">[2]</div>
                             <span class="move-text">Move #2</span>
                             <div class="move-side">
                                 <div class="move-type">Type</div>
                                 <div class="pp"><span class="pp-remaining">0</span><span class="sub">/0</span></div>
                             </div>
                         </button></div><div class="move-container"><button class="decisionMove">
+                            <div class="keyboard-shortcut hide">[3]</div>
                             <span class="move-text">Move #3</span>
                             <div class="move-side">
                                 <div class="move-type">Type</div>
                                 <div class="pp"><span class="pp-remaining">0</span><span class="sub">/0</span></div>
                             </div>
                         </button></div><div class="move-container"><button class="decisionMove">
+                            <div class="keyboard-shortcut hide">[4]</div>
                             <span class="move-text">Move #4</span>
                             <div class="move-side">
                                 <div class="move-type">Type</div>
@@ -172,7 +176,13 @@
                 <div class="pp"><span class="pp-remaining">?</span><span class="sub">/?</span></div>
             </div>
         </div>
-    </div><button class="decisionSwitch">Pokémon #1</button></div><div class="switch-container"><button class="decisionSwitch">Pokémon #2</button></div><div class="switch-container"><button class="decisionSwitch">Pokémon #3</button></div><div class="switch-container"><button class="decisionSwitch">Pokémon #4</button></div><div class="switch-container"><button class="decisionSwitch">Pokémon #5</button></div><div class="switch-container"><button class="decisionSwitch">Pokémon #6</button></div>
+    </div><button class="decisionSwitch"><div class="keyboard-shortcut hide">[Z]</div>
+        <div class="decision-content">Pokémon #1</div></button></div><div class="switch-container"><button class="decisionSwitch"><div class="keyboard-shortcut hide">[X]</div>
+        <div class="decision-content">Pokémon #2</div></button></div><div class="switch-container"><button class="decisionSwitch"><div class="keyboard-shortcut hide">[C]</div>
+        <div class="decision-content">Pokémon #3</div></button></div><div class="switch-container"><button class="decisionSwitch"><div class="keyboard-shortcut hide">[V]</div>
+        <div class="decision-content">Pokémon #4</div></button></div><div class="switch-container"><button class="decisionSwitch"><div class="keyboard-shortcut hide">[B]</div>
+        <div class="decision-content">Pokémon #5</div></button></div><div class="switch-container"><button class="decisionSwitch"><div class="keyboard-shortcut hide">[N]</div>
+        <div class="decision-content">Pokémon #6</div></button></div>
                     <!--NOFORMAT--><!--end-->
                 </td>
             </tr>
@@ -451,7 +461,7 @@
                     </select></div>
                 <hr /><label>
                     <div class="wrap">
-                        <input type="checkbox" />
+                        <input type="checkbox" data-settings="hardcoreMode" />
                         <span class="checkbox-key">Hardcore Mode</span>
                         <p class="explanation">Hides all information not shown ingame.</p>
                     </div>
@@ -480,7 +490,7 @@
                 </label>
                 <label>
                     <div class="wrap">
-                        <input type="checkbox" />
+                        <input type="checkbox" data-settings="keyboardControls"/>
                         <span class="checkbox-key">Keyboard Controls</span>
                         <p class="explanation">Press [1][2][3][4] for 4 moves, and press [Z][X][C][V][B][N] for 6
                             Pokemon.</p>
