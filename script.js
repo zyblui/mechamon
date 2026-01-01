@@ -352,6 +352,7 @@ document.getElementById("startGame").addEventListener("click", function () {
                 turns: 0
             };
             j.substituteHp = 0;
+            j.toxicCounter = 0;
             j.dmgTaken = [];
             j.lastDmgTakenType = "";
             j.lastMoveUsed = "";
@@ -463,6 +464,8 @@ function addTooltip(elementGroup, i) {
     let tooltip;
     if (!elementGroup[i].parentElement.querySelector(".tooltip")) {
         tooltip = document.querySelector(".tooltip").cloneNode(true);
+        if (elementGroup[i].parentElement.id == "p2Balls") tooltip.classList.add("under");
+        else tooltip.classList.remove("under");
         elementGroup[i].parentElement.insertBefore(tooltip, elementGroup[i]);
     }
     tooltip = elementGroup[i].parentElement.querySelector(".tooltip");
@@ -503,6 +506,13 @@ function addTooltip(elementGroup, i) {
     insertEffects(battleInfo[playerToMove].build[i], tooltip.querySelector(".tip-status"), true);
 
     for (let j = 0; j < 4; j++) {
+        if (!Object.keys(battleInfo[playerToMove].build[i].moves)[j]) {
+            tooltip.querySelectorAll(".move-name")[j].innerText = "(Empty)";
+            tooltip.querySelectorAll(".pp-remaining")[j].innerText = 0;
+            tooltip.querySelectorAll(".pp .sub")[j].innerText = "/0";
+            tooltip.querySelectorAll(".move-name")[j].classList.add("unknown");
+            continue;
+        }
         tooltip.querySelectorAll(".move-name")[j].innerText = getL10n("moves", Object.keys(battleInfo[playerToMove]
             .build[i].moves)[j]);
         tooltip.querySelectorAll(".pp-remaining")[j].innerText = Object.values(battleInfo[playerToMove].build[i]
@@ -767,10 +777,15 @@ function nextTurn() {
             }
 
             if (getPkmn(true)?.status == "psn") dealDmg(true, getPkmn(true).maxHp / 16, { ignoreSubstitute: true });
-            else if (getPkmn(true)?.status == "tox") dealDmg(true, getPkmn(true).maxHp / 8, { ignoreSubstitute: true });
+            else if (getPkmn(true)?.status == "tox") {
+                dealDmg(true, getPkmn(true).maxHp * getPkmn(true).toxicCounter / 16, { ignoreSubstitute: true });
+                getPkmn(true).toxicCounter++;
+            }
             if (getPkmn(true)?.tempEffect["leech seed"] > 0) {
-                if (getPkmn(true).status == "tox") dealDmg(true, getPkmn(true).maxHp / 8, { ignoreSubstitute: true });
-                else dealDmg(true, getPkmn(true).maxHp / 16, { ignoreSubstitute: true });
+                if (getPkmn(true).status == "tox") {
+                    dealDmg(true, getPkmn(true).maxHp * getPkmn(true).toxicCounter / 16, { ignoreSubstitute: true });
+                    getPkmn(true).toxicCounter++;
+                } else dealDmg(true, getPkmn(true).maxHp / 16, { ignoreSubstitute: true });
             }
 
             judgeHP();
@@ -1143,30 +1158,33 @@ function modifyStats(isSelf, stat, delta, prob) {
     }
 }
 function modifyStatus(status, prob) {
+    if ((getStats(getPkmn(false).name).type.includes("poison") && (status == "tox" || status == "psn"))
+        || (getStats(getPkmn(false).name).type.includes("fire") && status == "brn")
+        || (getStats(getPkmn(false).name).type.includes("ice") && status == "frz")) return;
     let rand = Math.random();
-    if (rand < prob) {
-        if (getPkmn(false).status == status) {
-            if (status == "par") addSmallText("others", "alreadyParalyzed", {
-                "pokemon": [getName(getPkmn(false), false)],
-                "isEnemy": !playerToMove != viewpoint
-            });
-            return;
-        }
-        getPkmn(false).status = status;
-        const SMALL_TEXT_KEY = {
-            "par": "paralyzed",
-            "frz": "frozenSolid",
-            "psn": "poisoned",
-            "tox": "badlyPoisoned",
-            "brn": "burn"
-        };
-        for (let i of Object.keys(SMALL_TEXT_KEY)) if (status == i) {
-            addSmallText("others", SMALL_TEXT_KEY[i], {
-                "pokemon": [getName(getPkmn(false), false)],
-                "isEnemy": !playerToMove != viewpoint
-            });
-            break;
-        }
+    if (rand >= prob) return;
+    if (getPkmn(false).status == status) {
+        if (status == "par") addSmallText("others", "alreadyParalyzed", {
+            "pokemon": [getName(getPkmn(false), false)],
+            "isEnemy": !playerToMove != viewpoint
+        });
+        return;
+    }
+    getPkmn(false).status = status;
+    if (status == "tox") getPkmn(false).toxicCounter = 1;
+    const SMALL_TEXT_KEY = {
+        "par": "paralyzed",
+        "frz": "frozenSolid",
+        "psn": "poisoned",
+        "tox": "badlyPoisoned",
+        "brn": "burn"
+    };
+    for (let i of Object.keys(SMALL_TEXT_KEY)) if (status == i) {
+        addSmallText("others", SMALL_TEXT_KEY[i], {
+            "pokemon": [getName(getPkmn(false), false)],
+            "isEnemy": !playerToMove != viewpoint
+        });
+        break;
     }
 }
 function putToSleep(isSelf, turns) {

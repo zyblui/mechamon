@@ -544,7 +544,10 @@ table {
 
 .tooltip {
     width: 500px;
-
+    &.under{
+        bottom:auto;
+        top:100%
+    }
     .tip-desc {
         font-style: italic;
         color: #ccc;
@@ -580,8 +583,6 @@ table {
 
     .tip-status {
         font-weight: bold;
-
-
     }
 
     .type {
