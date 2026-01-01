@@ -1274,7 +1274,15 @@ for (let i of document.querySelectorAll(".lv")) i.addEventListener("blur", funct
 });
 for (let i of document.querySelectorAll(".nick")) i.addEventListener("blur", function () {
     players[Number(i.dataset.player) - 1].build[Number(i.dataset.no) - 1].nick = i.innerText;
-});/*
-document.querySelector("[data-settings='keyboardControls']").addEventListener("change",function(){
-    if()
-})*/
+});
+document.addEventListener("keypress", function (e) {
+    if (settings.keyboardControls) {
+        if (e.key == "1" || e.key == "2" || e.key == "3" || e.key == "4") document.querySelectorAll(".decisionMove")[Number(e
+            .key) - 1].click();
+        else {
+            let keys = ["z", "x", "c", "v", "b", "n"];
+            if (keys.includes(e.key.toLowerCase())) document.querySelectorAll(".decisionSwitch")[keys.indexOf(e.key
+                .toLowerCase())].click();
+        }
+    }
+});

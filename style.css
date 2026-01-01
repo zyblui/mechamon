@@ -594,6 +594,11 @@ table {
         position: relative;
         height: 30px;
 
+        &.hide {
+            /*should not be removed, since the general .hide selector does not have much priority*/
+            display: none;
+        }
+
         img {
             width: 30px;
         }
