@@ -953,3 +953,16 @@ label .wrap {
     position: absolute;
     opacity: 0.6;
 }
+
+.effectiveness {
+    font-size: small;
+    position: absolute;
+    opacity: 0.6;
+    bottom: 7px;
+}
+
+#hardcoreTip {
+    text-align: center;
+    color: gray;
+    font-style: italic;
+}

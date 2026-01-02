@@ -105,6 +105,7 @@
                                 <div class="move-type">Type</div>
                                 <div class="pp"><span class="pp-remaining">0</span><span class="sub">/0</span></div>
                             </div>
+                            <div class="effectiveness hide">Effectiveness</div>
                         </button></div><div class="move-container"><button class="decisionMove">
                             <div class="keyboard-shortcut hide">[2]</div>
                             <span class="move-text">Move #2</span>
@@ -112,6 +113,7 @@
                                 <div class="move-type">Type</div>
                                 <div class="pp"><span class="pp-remaining">0</span><span class="sub">/0</span></div>
                             </div>
+                            <div class="effectiveness hide">Effectiveness</div>
                         </button></div><div class="move-container"><button class="decisionMove">
                             <div class="keyboard-shortcut hide">[3]</div>
                             <span class="move-text">Move #3</span>
@@ -119,6 +121,7 @@
                                 <div class="move-type">Type</div>
                                 <div class="pp"><span class="pp-remaining">0</span><span class="sub">/0</span></div>
                             </div>
+                            <div class="effectiveness hide">Effectiveness</div>
                         </button></div><div class="move-container"><button class="decisionMove">
                             <div class="keyboard-shortcut hide">[4]</div>
                             <span class="move-text">Move #4</span>
@@ -126,6 +129,7 @@
                                 <div class="move-type">Type</div>
                                 <div class="pp"><span class="pp-remaining">0</span><span class="sub">/0</span></div>
                             </div>
+                            <div class="effectiveness hide">Effectiveness</div>
                         </button>
                     </div>
                     <!--NOFORMAT--><!--end-->
@@ -452,7 +456,10 @@
                 <div id="movesListInner"></div>
             </div>
         </div>
-        <div data-for="record" class="tab-content" id="record"></div>
+        <div data-for="record" class="tab-content" id="record">
+            <div id="recordContent"></div>
+            <div id="hardcoreTip">Record is unavailable, because you are on Hardcore Mode. Turn it off to reveal battle records.</div>
+        </div>
         <div data-for="settings" class="tab-content" id="settings">
             <div class="list show">
                 <div class="wrap">Language: <select title="Language" data-settings="lang">
@@ -468,7 +475,7 @@
                 </label>
                 <label>
                     <div class="wrap">
-                        <input type="checkbox" />
+                        <input type="checkbox" data-settings="effectivenessIndicator"/>
                         <span class="checkbox-key">Effectiveness Indicator</span>
                         <p class="explanation">When it is on, the effectiveness of each move will be displayed as: </p>
                         <ul class="explanation">

@@ -31,7 +31,8 @@ let settings = {
     "evasionClause": false,
     "selfKoClause": false,
     "hardcoreMode": false,
-    "keyboardControls": false
+    "keyboardControls": false,
+    "effectivenessIndicator":false
 };
 const PROPERTIES = ["atk", "def", "sp", "spe"];
 if (!localStorage.getItem("mechamonSettings")) {
@@ -304,7 +305,7 @@ function refreshDecision() {
 }
 let turn = 0, playerToMove = 0, battleInfo = [];
 document.getElementById("startGame").addEventListener("click", function () {
-    document.getElementById("record").innerHTML = "";
+    document.getElementById("recordContent").innerHTML = "";
     turn = 0;
     battleInfo = structuredClone(players);
     battleInfo[0].currentPokemon = -1;
@@ -389,13 +390,13 @@ function refreshSequence() {
     if (element.type == "main") {
         document.getElementById("text").innerHTML = "";
         insertElementWithClass("div", "main-text", str, "text");
-        insertElementWithClass("div", "main-text", str, "record");
+        insertElementWithClass("div", "main-text", str, "recordContent");
     } else if (element.type == "small") {
         insertElementWithClass("div", "small-text", str, "text");
-        insertElementWithClass("div", "small-text", str, "record");
+        insertElementWithClass("div", "small-text", str, "recordContent");
     } else if (element.type == "turn") {
         document.getElementById("turnNumber").innerText = str;
-        insertElementWithClass("h2", "turn-number", str, "record");
+        insertElementWithClass("h2", "turn-number", str, "recordContent");
     }
     document.getElementById("record").scroll({
         top: document.getElementById("record").scrollHeight,
@@ -1258,6 +1259,22 @@ function applySetting(key) {
             if (settings.keyboardControls) {
                 for (let j of document.querySelectorAll(".keyboard-shortcut")) j.classList.remove("hide");
             } else for (let j of document.querySelectorAll(".keyboard-shortcut")) j.classList.add("hide");
+            break;
+        case "effectivenessIndicator":
+            if (settings.effectivenessIndicator) {
+                for (let j of document.querySelectorAll(".effectiveness")) j.classList.remove("hide");
+            } else for (let j of document.querySelectorAll(".effectiveness")) j.classList.add("hide");
+            break;
+        case "hardcoreMode":
+            if (settings.hardcoreMode){
+                document.getElementById("recordContent").classList.add("hide");
+                document.getElementById("turnNumber").classList.add("hide");
+                document.getElementById("hardcoreTip").classList.remove("hide");
+            }else {
+                document.getElementById("recordContent").classList.remove("hide");
+                document.getElementById("turnNumber").classList.remove("hide");
+                document.getElementById("hardcoreTip").classList.add("hide");
+            }
     }
 }
 for (let i of document.querySelectorAll(".lv")) i.addEventListener("blur", function () {
