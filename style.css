@@ -33,6 +33,7 @@ body {
         --text: white;
         --decision-bg: rgba(255, 255, 255, 0.05);
         --main-text-bg: rgb(29, 29, 29, 0.7);
+        --right-panel-bg:#0c0c0c
     }
 
     &.light {
@@ -42,6 +43,7 @@ body {
         --text: black;
         --decision-bg: rgba(0, 0, 0, 0.05);
         --main-text-bg: rgb(226, 226, 226, 0.7);
+        --right-panel-bg:white;
     }
 }
 
@@ -416,7 +418,7 @@ table {
 
 .tab-content {
     height: calc(100% - 67px);
-    background-color: var(--bg);
+    background-color: var(--right-panel-bg);
     color: var(--text);
     border-radius: 9px;
     box-shadow: 0 0 9px var(--shadow);
