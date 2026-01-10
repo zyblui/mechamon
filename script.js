@@ -33,7 +33,8 @@ let settings = {
     "hardcoreMode": false,
     "keyboardControls": false,
     "effectivenessIndicator": false,
-    "darkMode": false
+    "darkMode": false,
+    "omiegamon": false
 };
 const PROPERTIES = ["atk", "def", "sp", "spe"];
 if (!localStorage.getItem("mechamonSettings")) {
@@ -1334,3 +1335,9 @@ document.addEventListener("keypress", function (e) {
         }
     }
 });
+function mergeTranslationData(from, to) {
+    for (let i in from) for (let j in from[i]) for (let k in from[i][j]) {
+        to[i][j][k] = from[i][j][k];
+    }
+}
+mergeTranslationData(TRANSLATION_OMIEGA, TRANSLATION);

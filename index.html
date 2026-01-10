@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="style.css" />
 </head>
 
-<body id="body" class="dark">
+<body id="body" class="light">
     <div id="battlePanel">
         <div id="turnNumber">Turn 0</div>
         <div class="gauge" id="p1Gauge">
@@ -500,7 +500,14 @@
                         <input type="checkbox" data-settings="keyboardControls"/>
                         <span class="checkbox-key">Keyboard Controls</span>
                         <p class="explanation">Press [1][2][3][4] for 4 moves, and press [Z][X][C][V][B][N] for 6
-                            Pokemon.</p>
+                            Pokémon.</p>
+                    </div>
+                </label>
+                <label>
+                    <div class="wrap">
+                        <input type="checkbox" data-settings="omiegamon"/>
+                        <span class="checkbox-key">Omiega-mon</span>
+                        <p class="explanation">Enjoy brand-new Pokémon and moves designed by myself and inspired by my classmates and teachers in senior high.</p>
                     </div>
                 </label>
                 <div class="wrap">Background Music: <select title="BGM">
@@ -512,6 +519,7 @@
         </div>
     </div>
     <script src="data.js"></script>
+    <script src="omiegamon.js"></script>
     <script src="script.js"></script>
 </body>
 
