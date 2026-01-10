@@ -32,7 +32,8 @@ let settings = {
     "selfKoClause": false,
     "hardcoreMode": false,
     "keyboardControls": false,
-    "effectivenessIndicator": false
+    "effectivenessIndicator": false,
+    "darkMode": false
 };
 const PROPERTIES = ["atk", "def", "sp", "spe"];
 if (!localStorage.getItem("mechamonSettings")) {
@@ -1295,6 +1296,15 @@ function applySetting(key) {
                 document.getElementById("recordContent").classList.remove("hide");
                 document.getElementById("turnNumber").classList.remove("hide");
                 document.getElementById("hardcoreTip").classList.add("hide");
+            }
+            break;
+        case "darkMode":
+            if (settings.darkMode) {
+                document.getElementById("body").classList.add("dark");
+                document.getElementById("body").classList.remove("light");
+            } else {
+                document.getElementById("body").classList.remove("dark");
+                document.getElementById("body").classList.add("light");
             }
     }
 }

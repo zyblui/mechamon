@@ -3,7 +3,7 @@ body {
     font-family: Inter, sans-serif;
     height: 100%;
     margin: 0;
-    background-color: #f3f3f3;
+    background-color: var(--bg);
     -webkit-user-select: none;
     user-select: none;
     --special: #7799DD;
@@ -25,6 +25,24 @@ body {
     --rock: #c8b686;
     --water: #3692dc;
     --fs-medium: 2.3vmin;
+
+    &.dark {
+        --black: #888;
+        --shadow: lightgray;
+        --bg: #0c0c0c;
+        --text: white;
+        --decision-bg: rgba(255, 255, 255, 0.05);
+        --main-text-bg: rgb(29, 29, 29, 0.7);
+    }
+
+    &.light {
+        --black: black;
+        --shadow: lightgray;
+        --bg: #f3f3f3;
+        --text: black;
+        --decision-bg: rgba(0, 0, 0, 0.05);
+        --main-text-bg: rgb(226, 226, 226, 0.7);
+    }
 }
 
 p,
@@ -43,7 +61,7 @@ ul {
 }
 
 #turnNumber {
-    border: solid 3px black;
+    border: solid 3px var(--black);
     background-color: white;
     font-weight: bold;
     font-size: xx-large;
@@ -52,7 +70,7 @@ ul {
     left: 10px;
     padding: 0 10px;
     border-radius: 9px;
-    box-shadow: 0 0 9px lightgray;
+    box-shadow: 0 0 9px var(--shadow);
 }
 
 #text {
@@ -71,10 +89,11 @@ ul {
 
 #decisionPanel {
     position: absolute;
-    background-color: rgba(0, 0, 0, 0.05);
+    background-color: var(--decision-bg);
     border-radius: 9px;
+    color: var(--text);
     border: solid 2px lightgray;
-    box-shadow: 0 0 9px lightgray;
+    box-shadow: 0 0 9px var(--shadow);
     bottom: 9px;
     left: 9px;
     width: calc(60% - 9px);
@@ -348,9 +367,10 @@ table {
     }
 
     #text & {
-        background-color: rgb(226, 226, 226, 0.7);
+        background-color: var(--main-text-bg);
     }
 
+    color:var(--text);
     padding: 10px;
     font-size: large;
     border-radius: 9px;
@@ -396,9 +416,10 @@ table {
 
 .tab-content {
     height: calc(100% - 67px);
-    background-color: white;
+    background-color: var(--bg);
+    color: var(--text);
     border-radius: 9px;
-    box-shadow: 0 0 9px lightgray;
+    box-shadow: 0 0 9px var(--shadow);
     margin: 0 9px 9px 9px;
     padding: 9px;
     overflow-y: auto;
