@@ -172,10 +172,27 @@ function capitalize(str) {
     temp = temp.join("-");
     return temp;
 }
+function mergeTranslationData(from, to) {
+    for (let i in from) for (let j in from[i]) for (let k in from[i][j]) {
+        to[i][j][k] = from[i][j][k];
+    }
+}
+function mergeIconData(from, to) {
+    for (let i in from) to[i] = from[i];
+}
+function mergeMovePkmnData(from, to, tag) {
+    for (let i of from) i.tag = tag;
+    to.push(...from);
+}
+mergeTranslationData(TRANSLATION_OMIEGA, TRANSLATION);
+mergeIconData(ICONS_OMIEGA, ICONS);
+mergeMovePkmnData(MOVES_OMIEGA, MOVES, "omiega");
+mergeMovePkmnData(POKEMON_OMIEGA, POKEMON, "omiega");
 for (let i of POKEMON) {
     let div = document.createElement("div");
     div.classList.add("listButton");
     div.innerHTML = getL10n("pokemon", i.name);
+    if (i.tag) div.dataset.tag = i.tag;
     div.addEventListener("click", function () {
         players[Number(document.querySelector(".pkmnName.selected").dataset.player) - 1].build[Number(document.querySelector(
             ".pkmnName.selected").dataset.no) - 1].name = i.name;
@@ -1307,6 +1324,10 @@ function applySetting(key) {
                 document.getElementById("body").classList.remove("dark");
                 document.getElementById("body").classList.add("light");
             }
+            break;
+        case "omiegamon":
+            if (settings.omiegamon) for (let i of document.querySelectorAll("[data-tag='omiega']")) i.classList.remove("hide");
+            else for (let i of document.querySelectorAll("[data-tag='omiega']")) i.classList.add("hide");
     }
 }
 for (let i of document.querySelectorAll(".lv")) i.addEventListener("blur", function () {
@@ -1335,9 +1356,3 @@ document.addEventListener("keypress", function (e) {
         }
     }
 });
-function mergeTranslationData(from, to) {
-    for (let i in from) for (let j in from[i]) for (let k in from[i][j]) {
-        to[i][j][k] = from[i][j][k];
-    }
-}
-mergeTranslationData(TRANSLATION_OMIEGA, TRANSLATION);

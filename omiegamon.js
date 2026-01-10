@@ -42,7 +42,7 @@ const TRANSLATION_OMIEGA = {
         "moves": {
             "raging tide": "Raging Tide"
         },
-        "moveDesc":{
+        "moveDesc": {
             "raging tide": ""
         }
     },
@@ -53,6 +53,13 @@ const TRANSLATION_OMIEGA = {
         },
         "moves": {
             "raging tide": "群鼠狂潮"
+        },
+        "moveDesc": {
+            "raging tide": ""
         }
     }
+};
+const ICONS_OMIEGA = {
+    "masterat": { "row": 1, "cell": 1 },
+    "semenshooter": { "row": 1, "cell": 1 }
 };

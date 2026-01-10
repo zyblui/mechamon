@@ -370,6 +370,8 @@ table {
 
     #text & {
         background-color: var(--main-text-bg);
+        width: fit-content;
+        animation: 0.3s slide-in;
     }
 
     color:var(--text);
@@ -390,11 +392,6 @@ table {
         background-color: dodgerblue;
         height: calc(100% - 20px);
         border-radius: 2px;
-    }
-
-    #text & {
-        width: fit-content;
-        animation: 0.3s slide-in;
     }
 }
 
@@ -426,7 +423,7 @@ table {
     padding: 9px;
     overflow-y: auto;
 
-    &>* {
+    &>*,& #recordContent>* {
         animation: 0.15s fade-in;
     }
 }
