@@ -32,7 +32,7 @@ let settings = {
     "selfKoClause": false,
     "hardcoreMode": false,
     "keyboardControls": false,
-    "effectivenessIndicator":false
+    "effectivenessIndicator": false
 };
 const PROPERTIES = ["atk", "def", "sp", "spe"];
 if (!localStorage.getItem("mechamonSettings")) {
@@ -252,42 +252,50 @@ function calculateEffectiveness(attackType, defenseType) {
 function refreshDecision() {
     if (battleInfo[playerToMove].currentPokemon != -1 && getPkmn(true).uncontrollable.turns == 0) {
         for (let i = 0; i < 4; i++) {
+            let button = document.getElementsByClassName("decisionMove")[i];
             if (!Object.keys(getPkmn(true).moves)[i]) {
-                document.getElementsByClassName("decisionMove")[i].querySelector(".move-text").innerText = "(Empty)";
-                document.getElementsByClassName("decisionMove")[i].disabled = "disabled";
+                button.querySelector(".move-text").innerText = "(Empty)";
+                button.disabled = "disabled";
+                displayEffectiveness(button, "");
                 continue;
             }
             if (Object.values(getPkmn(true).moves)[i] <= 0 || (getPkmn(true).disable.move == Object.keys(getPkmn(true)
-                .moves)[i])) document.getElementsByClassName("decisionMove")[i].disabled = "disabled";
-            else document.getElementsByClassName("decisionMove")[i].disabled = "";
+                .moves)[i])) button.disabled = "disabled";
+            else button.disabled = "";
             let tempMove = "";
             if (Object.keys(getPkmn(true).moves)[i] == "mimic" && getPkmn(true).mimicMove) tempMove = getPkmn(true).mimicMove;
             else tempMove = Object.keys(getPkmn(true).moves)[i];
-            document.getElementsByClassName("decisionMove")[i].querySelector(".move-text").innerText = getL10n("moves", tempMove);
-            document.getElementsByClassName("decisionMove")[i].querySelector(".pp-remaining").innerText = Object.values(getPkmn(
+            button.querySelector(".move-text").innerText = getL10n("moves", tempMove);
+            button.querySelector(".pp-remaining").innerText = Object.values(getPkmn(
                 true).moves)[i];
-            document.getElementsByClassName("decisionMove")[i].querySelector(".sub").innerText = "/" + getMoveStats(Object.keys(
+            button.querySelector(".sub").innerText = "/" + getMoveStats(Object.keys(
                 getPkmn(true).moves)[i]).pp;
-            document.getElementsByClassName("decisionMove")[i].querySelector(".move-type").innerText = getL10n("types",
+            button.querySelector(".move-type").innerText = getL10n("types",
                 getMoveStats(tempMove).type);
-            document.getElementsByClassName("decisionMove")[i].dataset.for = tempMove;
+            button.dataset.for = tempMove;
+
+            displayEffectiveness(button, tempMove);
         }
     } else if (battleInfo[playerToMove].currentPokemon != -1) {
-        document.getElementsByClassName("decisionMove")[0].disabled = "";
-        document.getElementsByClassName("decisionMove")[0].querySelector(".move-text").innerText = "Pass";
-        document.getElementsByClassName("decisionMove")[0].querySelector(".pp-remaining").innerText = "-";
-        document.getElementsByClassName("decisionMove")[0].querySelector(".sub").innerText = "/-";
-        document.getElementsByClassName("decisionMove")[0].querySelector(".move-type").innerText = "-";
+        let moveButtonGroup = document.getElementsByClassName("decisionMove");
+        moveButtonGroup[0].disabled = "";
+        moveButtonGroup[0].querySelector(".move-text").innerText = "Pass";
+        moveButtonGroup[0].querySelector(".pp-remaining").innerText = "-";
+        moveButtonGroup[0].querySelector(".sub").innerText = "/-";
+        moveButtonGroup[0].querySelector(".move-type").innerText = "-";
+        displayEffectiveness(moveButtonGroup[0], getPkmn(true).uncontrollable.move);
         for (let i = 1; i < 4; i++) {
-            document.getElementsByClassName("decisionMove")[i].disabled = "disabled";
-            document.getElementsByClassName("decisionMove")[i].querySelector(".move-text").innerText = "-";
-            document.getElementsByClassName("decisionMove")[i].querySelector(".pp-remaining").innerText = "-";
-            document.getElementsByClassName("decisionMove")[i].querySelector(".sub").innerText = "/-";
-            document.getElementsByClassName("decisionMove")[i].querySelector(".move-type").innerText = "-";
+            moveButtonGroup[i].disabled = "disabled";
+            moveButtonGroup[i].querySelector(".move-text").innerText = "-";
+            moveButtonGroup[i].querySelector(".pp-remaining").innerText = "-";
+            moveButtonGroup[i].querySelector(".sub").innerText = "/-";
+            moveButtonGroup[i].querySelector(".move-type").innerText = "-";
+            displayEffectiveness(moveButtonGroup[i], "");
         }
     } else {
         for (let i = 0; i < 4; i++) {
             document.getElementsByClassName("decisionMove")[i].disabled = "disabled";
+            displayEffectiveness(document.getElementsByClassName("decisionMove")[i], "");
         }
     }
     let switchButtons = document.querySelectorAll(".decisionSwitch");
@@ -302,6 +310,19 @@ function refreshDecision() {
         } else switchButtons[i].disabled = "";
         switchButtons[i].dataset.for = players[playerToMove].build[i].name;
     }
+}
+function displayEffectiveness(button, move) {
+    const EFFECTIVENESS_ABBR = {
+        "0": "NE",
+        "0.25": "DNVE",
+        "0.5": "NVE",
+        "1": "E",
+        "2": "SE",
+        "4": "DSE"
+    };
+    if (!move || getMoveStats(move).category == "status") button.querySelector(".effectiveness").innerText = "";
+    else button.querySelector(".effectiveness").innerText = EFFECTIVENESS_ABBR[calculateEffectiveness(getMoveStats(move).type,
+        getType(false))];
 }
 let turn = 0, playerToMove = 0, battleInfo = [];
 document.getElementById("startGame").addEventListener("click", function () {
@@ -1266,11 +1287,11 @@ function applySetting(key) {
             } else for (let j of document.querySelectorAll(".effectiveness")) j.classList.add("hide");
             break;
         case "hardcoreMode":
-            if (settings.hardcoreMode){
+            if (settings.hardcoreMode) {
                 document.getElementById("recordContent").classList.add("hide");
                 document.getElementById("turnNumber").classList.add("hide");
                 document.getElementById("hardcoreTip").classList.remove("hide");
-            }else {
+            } else {
                 document.getElementById("recordContent").classList.remove("hide");
                 document.getElementById("turnNumber").classList.remove("hide");
                 document.getElementById("hardcoreTip").classList.add("hide");
