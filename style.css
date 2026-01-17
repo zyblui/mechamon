@@ -28,12 +28,16 @@ body {
 
     &.dark {
         --black: #888;
-        --shadow: lightgray;
+        --shadow: #666;
         --bg: #0c0c0c;
         --text: white;
         --decision-bg: rgba(255, 255, 255, 0.05);
         --main-text-bg: rgb(29, 29, 29, 0.7);
-        --right-panel-bg: #0c0c0c
+        --right-panel-bg: #0c0c0c;
+        --button-bg: #333;
+        --button-hover: rgb(42, 79, 112);
+        --option-hover-bg: #333;
+        --text-dim: #999;
     }
 
     &.light {
@@ -44,27 +48,33 @@ body {
         --decision-bg: rgba(0, 0, 0, 0.05);
         --main-text-bg: rgb(226, 226, 226, 0.7);
         --right-panel-bg: white;
+        --button-bg: white;
+        --button-hover: rgb(224, 239, 255);
+        --option-hover-bg: #eee;
+        --text-dim: gray;
     }
+
+    color:var(--text);
 }
 
 p,
 ul {
     &.dim {
-        color: gray;
+        color: var(--text-dim);
         font-style: italic;
         display: inline-block;
         margin: 9px 0;
     }
 
     &.explanation {
-        color: gray;
+        color: var(--text-dim);
         margin: 3px 0 0 20px;
     }
 }
 
 #turnNumber {
     border: solid 3px var(--black);
-    background-color: white;
+    background-color: var(--button-bg);
     font-weight: bold;
     font-size: xx-large;
     position: absolute;
@@ -94,7 +104,7 @@ ul {
     background-color: var(--decision-bg);
     border-radius: 9px;
     color: var(--text);
-    border: solid 2px lightgray;
+    border: solid 2px var(--shadow);
     box-shadow: 0 0 9px var(--shadow);
     bottom: 9px;
     left: 9px;
@@ -294,13 +304,13 @@ table {
     font-family: Inter, sans-serif;
     border-radius: 9px;
     padding: 6px 18px;
-    border: solid 2px lightgray;
-    background-color: white;
+    border: solid 2px var(--shadow);
+    background-color: var(--button-bg);
     font-size: medium;
 
     &:hover {
         border: solid 2px dodgerblue;
-        background-color: rgb(224, 239, 255);
+        background-color: var(--button-hover);
     }
 
     &.float-right {
@@ -315,14 +325,15 @@ table {
         calc(100% - 4px);
     font-family: Inter, sans-serif;
     font-size: large;
-    background-color: white;
+    background-color: var(--button-bg);
+    color: var(--text);
     margin: 2px;
-    border: solid 2px lightgray;
+    border: solid 2px var(--shadow);
     border-radius: 9px;
 
     &:hover {
         border: solid 2px dodgerblue;
-        background-color: rgb(224, 239, 255);
+        background-color: var(--button-hover);
     }
 }
 
@@ -365,7 +376,7 @@ table {
 
 .main-text {
     #record & {
-        background-color: #f3f3f3;
+        background-color: var(--bg);
     }
 
     #text & {
@@ -423,7 +434,8 @@ table {
     padding: 9px;
     overflow-y: auto;
 
-    &>*,& #recordContent>* {
+    &>*,
+    & #recordContent>* {
         animation: 0.15s fade-in;
     }
 }
@@ -440,6 +452,7 @@ table {
     height: 40px;
     padding: 1px 9px;
     font-size: medium;
+    color: var(--text);
 
     &::after {
         height: 3px;
@@ -772,6 +785,7 @@ table {
 }
 
 button {
+    color: var(--text);
     .move-text {
         vertical-align: -webkit-baseline-middle;
     }
@@ -862,10 +876,10 @@ button {
     }
 
     & .input {
-        background-color: white;
+        background-color: var(--button-bg);
         border-radius: 9px;
         padding: 3px 9px;
-        border: solid 2px white;
+        border: solid 2px var(--button-bg);
         display: inline-block;
 
         &:hover {
@@ -875,32 +889,32 @@ button {
 
     & .lv::before {
         content: "Lv: ";
-        color: gray
+        color: var(--text-dim);
     }
 
     & .nick::before {
         content: "Nickname: ";
-        color: gray
+        color: var(--text-dim);
     }
 
     & .move-1::before {
         content: "1: ";
-        color: gray
+        color: var(--text-dim);
     }
 
     & .move-2::before {
         content: "2: ";
-        color: gray
+        color: var(--text-dim);
     }
 
     & .move-3::before {
         content: "3: ";
-        color: gray
+        color: var(--text-dim);
     }
 
     & .move-4::before {
         content: "4: ";
-        color: gray
+        color: var(--text-dim);
     }
 
     & .pkmnName {
@@ -944,7 +958,7 @@ label .wrap {
     padding: 9px;
 
     &:hover {
-        background-color: #eee;
+        background-color: var(--option-hover-bg);
     }
 }
 
