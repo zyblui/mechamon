@@ -786,6 +786,7 @@ table {
 
 button {
     color: var(--text);
+
     .move-text {
         vertical-align: -webkit-baseline-middle;
     }
@@ -894,6 +895,16 @@ button {
 
     & .nick::before {
         content: "Nickname: ";
+        color: var(--text-dim);
+    }
+
+    & .ev::before {
+        content: "EV: ";
+        color: var(--text-dim);
+    }
+
+    & .dv::before {
+        content: "DV: ";
         color: var(--text-dim);
     }
 

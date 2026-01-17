@@ -52,31 +52,43 @@ let players = [{
         "name": "geodude",
         "moves": ["earthquake", "rock slide", "body slam", "explosion"],
         "lv": 5,
+        "ev": 252,
+        "dv": 15,
         "nick": ""
     }, {
         "name": "staryu",
         "moves": ["surf", "thunderbolt", "blizzard", "thunder wave"],
         "lv": 5,
+        "ev": 252,
+        "dv": 15,
         "nick": ""
     }, {
         "name": "koffing",
         "moves": ["sludge", "fire blast", "thunderbolt", "explosion"],
         "lv": 5,
+        "ev": 252,
+        "dv": 15,
         "nick": ""
     }, {
         "name": "tentacool",
         "moves": ["surf", "blizzard", "mega drain", "hydro pump"],
         "lv": 5,
+        "ev": 252,
+        "dv": 15,
         "nick": ""
     }, {
         "name": "machop",
         "moves": ["submission", "earthquake", "rock slide", "body slam"],
         "lv": 5,
+        "ev": 252,
+        "dv": 15,
         "nick": ""
     }, {
         "name": "eevee",
         "moves": ["substitute", "reflect", "body slam", "double-edge"],
         "lv": 5,
+        "ev": 252,
+        "dv": 15,
         "nick": ""
     }]
 }, {
@@ -85,31 +97,43 @@ let players = [{
         "name": "eevee",
         "moves": ["rage", "body slam", "double-edge", "quick attack"],
         "lv": 5,
+        "ev": 252,
+        "dv": 15,
         "nick": ""
     }, {
         "name": "vulpix",
         "moves": ["flamethrower", "body slam", "confuse ray", "substitute"],
         "lv": 5,
+        "ev": 252,
+        "dv": 15,
         "nick": ""
     }, {
         "name": "ponyta",
         "moves": ["toxic", "agility", "fire blast", "body slam"],
         "lv": 5,
+        "ev": 252,
+        "dv": 15,
         "nick": ""
     }, {
         "name": "growlithe",
         "moves": ["agility", "body slam", "fire blast", "double-edge"],
         "lv": 5,
+        "ev": 252,
+        "dv": 15,
         "nick": ""
     }, {
         "name": "psyduck",
         "moves": ["surf", "mega kick", "blizzard", "rage"],
         "lv": 5,
+        "ev": 252,
+        "dv": 15,
         "nick": ""
     }, {
         "name": "poliwag",
         "moves": ["hypnosis", "amnesia", "surf", "psychic"],
         "lv": 5,
+        "ev": 252,
+        "dv": 15,
         "nick": ""
     }]
 }];
@@ -354,13 +378,13 @@ document.getElementById("startGame").addEventListener("click", function () {
         for (let j of i.build) {
             for (let k of POKEMON) {
                 if (k.name == j.name) {
-                    j.hp = Math.floor(0.01 * (2 * k.hp + 30 + Math.floor(0.25 * 252)) * j.lv) + j.lv + 10;
-                    j.maxHp = Math.floor(0.01 * (2 * k.hp + 30 + Math.floor(0.25 * 252)) * j.lv) + j.lv + 10;
+                    j.maxHp = Math.floor(0.01 * (2 * (k.hp + j.dv) + Math.floor(0.25 * j.ev)) * j.lv) + j.lv + 10;
+                    j.hp = j.maxHp;
                     break;
                 }
             }
             for (let k of ["atk", "def", "sp", "spe"]) {
-                j[k] = Math.floor(0.01 * (2 * getStats(j.name)[k] + 30 + Math.floor(0.25 * 252)) * j.lv) + 5;
+                j[k] = Math.floor(0.01 * (2 * (getStats(j.name)[k] + j.dv) + Math.floor(0.25 * j.ev)) * j.lv) + 5;
             }
             j.transformPkmn = "";
             j.mimicMove = "";
@@ -1330,21 +1354,26 @@ function applySetting(key) {
             else for (let i of document.querySelectorAll("[data-tag='omiega']")) i.classList.add("hide");
     }
 }
-for (let i of document.querySelectorAll(".lv")) i.addEventListener("blur", function () {
-    if (Number.isNaN(Number(i.innerText))) {
-        i.innerText = players[Number(i.dataset.player) - 1].build[Number(i.dataset.no) - 1].lv;
-    } else if (Number(i.innerText) > 100) {
-        i.innerText = 100;
-    } else if (Number(i.innerText) < 1) {
-        i.innerText = 1;
-    } else {
-        i.innerText = Math.round(Number(i.innerText));
-    }
-    players[Number(i.dataset.player) - 1].build[Number(i.dataset.no) - 1].lv = Number(i.innerText);
-});
 for (let i of document.querySelectorAll(".nick")) i.addEventListener("blur", function () {
     players[Number(i.dataset.player) - 1].build[Number(i.dataset.no) - 1].nick = i.innerText;
 });
+function addUpdateValueListener(name, max) {
+    for (let i of document.querySelectorAll("." + name)) i.addEventListener("blur", function () {
+        if (Number.isNaN(Number(i.innerText))) {
+            i.innerText = players[Number(i.dataset.player) - 1].build[Number(i.dataset.no) - 1][name];
+        } else if (Number(i.innerText) > max) {
+            i.innerText = max;
+        } else if (Number(i.innerText) < 1) {
+            i.innerText = 1;
+        } else {
+            i.innerText = Math.round(Number(i.innerText));
+        }
+        players[Number(i.dataset.player) - 1].build[Number(i.dataset.no) - 1][name] = Number(i.innerText);
+    });
+}
+addUpdateValueListener("lv", 100);
+addUpdateValueListener("ev", 252);
+addUpdateValueListener("dv", 15);
 document.addEventListener("keypress", function (e) {
     if (settings.keyboardControls) {
         if (e.key == "1" || e.key == "2" || e.key == "3" || e.key == "4") document.querySelectorAll(".decisionMove")[Number(e
