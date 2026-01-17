@@ -1357,23 +1357,23 @@ function applySetting(key) {
 for (let i of document.querySelectorAll(".nick")) i.addEventListener("blur", function () {
     players[Number(i.dataset.player) - 1].build[Number(i.dataset.no) - 1].nick = i.innerText;
 });
-function addUpdateValueListener(name, max) {
+function addUpdateValueListener(name, min, max) {
     for (let i of document.querySelectorAll("." + name)) i.addEventListener("blur", function () {
         if (Number.isNaN(Number(i.innerText))) {
             i.innerText = players[Number(i.dataset.player) - 1].build[Number(i.dataset.no) - 1][name];
         } else if (Number(i.innerText) > max) {
             i.innerText = max;
-        } else if (Number(i.innerText) < 1) {
-            i.innerText = 1;
+        } else if (Number(i.innerText) < min) {
+            i.innerText = min;
         } else {
             i.innerText = Math.round(Number(i.innerText));
         }
         players[Number(i.dataset.player) - 1].build[Number(i.dataset.no) - 1][name] = Number(i.innerText);
     });
 }
-addUpdateValueListener("lv", 100);
-addUpdateValueListener("ev", 252);
-addUpdateValueListener("dv", 15);
+addUpdateValueListener("lv", 1, 100);
+addUpdateValueListener("ev", 0, 252);
+addUpdateValueListener("dv", 0, 15);
 document.addEventListener("keypress", function (e) {
     if (settings.keyboardControls) {
         if (e.key == "1" || e.key == "2" || e.key == "3" || e.key == "4") document.querySelectorAll(".decisionMove")[Number(e

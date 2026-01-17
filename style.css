@@ -32,12 +32,13 @@ body {
         --bg: #0c0c0c;
         --text: white;
         --decision-bg: rgba(255, 255, 255, 0.05);
-        --main-text-bg: rgb(29, 29, 29, 0.7);
+        --main-text-bg: rgb(43, 43, 43, 0.7);
         --right-panel-bg: #0c0c0c;
         --button-bg: #333;
         --button-hover: rgb(42, 79, 112);
         --option-hover-bg: #333;
         --text-dim: #999;
+        --small-text-bg: rgba(255, 255, 255, 0.1);
     }
 
     &.light {
@@ -52,6 +53,7 @@ body {
         --button-hover: rgb(224, 239, 255);
         --option-hover-bg: #eee;
         --text-dim: gray;
+        --small-text-bg: rgba(255, 255, 255, 0.9);
     }
 
     color:var(--text);
@@ -197,7 +199,7 @@ ul {
     width: 42.956vmin
         /*300px*/
     ;
-    background-color: lightgray;
+    background-color: var(--shadow);
     height: 15px;
     clip-path: rect(0 100% 100% 0 round 7.5px);
 }
@@ -346,7 +348,6 @@ table {
 
     &.selected {
         border: solid 2px dodgerblue;
-        color: black;
     }
 }
 
@@ -407,8 +408,7 @@ table {
 }
 
 .small-text {
-    background-color: rgba(255, 255, 255, 0.9);
-    color: gray;
+    color: var(--text-dim);
     padding: 5px;
     margin-left: 15px;
     font-size: medium;
@@ -417,6 +417,7 @@ table {
     #text & {
         width: fit-content;
         animation: 0.3s slide-in;
+        background-color: var(--small-text-bg);
     }
 }
 
@@ -466,7 +467,7 @@ table {
     }
 
     &:hover::after {
-        background-color: lightgray;
+        background-color: var(--shadow);
         width: calc(100% - 18px);
 
     }
@@ -482,7 +483,7 @@ table {
 }
 
 .turn-number {
-    border-bottom: solid 3px black;
+    border-bottom: solid 3px var(--text);
     margin-bottom: 3px;
     display: inline-block;
 }
@@ -855,7 +856,7 @@ button {
             height: 32px;
 
             &:hover {
-                background-color: rgba(0, 0, 0, 0.05);
+                background-color: var(--decision-bg);
             }
         }
     }
@@ -863,7 +864,7 @@ button {
 
 .pkmn {
     border-radius: 9px;
-    background-color: rgba(0, 0, 0, 0.05);
+    background-color: var(--decision-bg);
     padding: 4px 9px;
     margin: 9px 0;
     transition: 0.1s;
