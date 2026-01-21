@@ -1024,9 +1024,6 @@ select,
 
 select {
     flex: 1;
-}
-
-select {
     border: 2px solid var(--shadow);
     background: var(--button-bg);
     padding: 6px 9px;
@@ -1051,6 +1048,12 @@ select:open::picker-icon {
 ::picker(select) {
     border: solid 2px var(--shadow);
     padding: 6px;
+    border-radius: 8px;
+    background-color: var(--right-panel-bg);
+    box-shadow: 0 0 9px var(--shadow);
+    opacity: 0;
+    transition: all 0.1s allow-discrete;
+    top: calc(anchor(bottom) + 1px);
 }
 
 option {
@@ -1063,12 +1066,6 @@ option {
     transition: 0.1s;
     position: relative;
     border-radius: 9px;
-}
-
-::picker(select) {
-    border-radius: 8px;
-    background-color: var(--right-panel-bg);
-    box-shadow: 0 0 9px var(--shadow);
 }
 
 option:hover,
@@ -1099,11 +1096,6 @@ option::checkmark {
     border-radius: 2px;
 }
 
-::picker(select) {
-    opacity: 0;
-    transition: all 0.1s allow-discrete;
-}
-
 ::picker(select):popover-open {
     opacity: 1;
 }
@@ -1112,8 +1104,4 @@ option::checkmark {
     ::picker(select):popover-open {
         opacity: 0;
     }
-}
-
-::picker(select) {
-    top: calc(anchor(bottom) + 1px);
 }

@@ -1793,7 +1793,7 @@ const MOVES = [{
         for (let i of ["atkStage", "defStage", "spStage ", "speStage", "accStage", "evaStage"]) {
             getPkmn(true)[i] = getPkmn(false)[i];
         }
-        getPkmn(true).moves = JSON.parse(JSON.stringify(getPkmn(false).moves));
+        getPkmn(true).moves = structuredClone(getPkmn(false).moves);
         for (let i in getPkmn(true).moves) {
             getPkmn(true).moves[i] = 5;
         }
