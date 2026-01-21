@@ -1,4 +1,4 @@
-let w
+/*let w
 if (w?.terminate) w.terminate();
 w = new Worker("w.js");
 
@@ -12,7 +12,7 @@ w.onmessage = function (e) {
     } else if (e.data.type == "log") {
         console.log(e.data.content)
     }
-}
+}*/
 
 document.getElementById("mechaButton").addEventListener("click", function () {
     w.postMessage({
@@ -29,7 +29,12 @@ let settings = {
     "ohkoClause": false,
     "freezeClause": false,
     "evasionClause": false,
-    "selfKoClause": false
+    "selfKoClause": false,
+    "hardcoreMode": false,
+    "keyboardControls": false,
+    "effectivenessIndicator": false,
+    "darkMode": false,
+    "omiegamon": false
 };
 const PROPERTIES = ["atk", "def", "sp", "spe"];
 if (!localStorage.getItem("mechamonSettings")) {
@@ -47,31 +52,43 @@ let players = [{
         "name": "geodude",
         "moves": ["earthquake", "rock slide", "body slam", "explosion"],
         "lv": 5,
+        "ev": 252,
+        "dv": 15,
         "nick": ""
     }, {
         "name": "staryu",
         "moves": ["surf", "thunderbolt", "blizzard", "thunder wave"],
         "lv": 5,
+        "ev": 252,
+        "dv": 15,
         "nick": ""
     }, {
         "name": "koffing",
         "moves": ["sludge", "fire blast", "thunderbolt", "explosion"],
         "lv": 5,
+        "ev": 252,
+        "dv": 15,
         "nick": ""
     }, {
         "name": "tentacool",
         "moves": ["surf", "blizzard", "mega drain", "hydro pump"],
         "lv": 5,
+        "ev": 252,
+        "dv": 15,
         "nick": ""
     }, {
         "name": "machop",
         "moves": ["submission", "earthquake", "rock slide", "body slam"],
         "lv": 5,
+        "ev": 252,
+        "dv": 15,
         "nick": ""
     }, {
         "name": "eevee",
         "moves": ["substitute", "reflect", "body slam", "double-edge"],
         "lv": 5,
+        "ev": 252,
+        "dv": 15,
         "nick": ""
     }]
 }, {
@@ -80,31 +97,43 @@ let players = [{
         "name": "eevee",
         "moves": ["rage", "body slam", "double-edge", "quick attack"],
         "lv": 5,
+        "ev": 252,
+        "dv": 15,
         "nick": ""
     }, {
         "name": "vulpix",
         "moves": ["flamethrower", "body slam", "confuse ray", "substitute"],
         "lv": 5,
+        "ev": 252,
+        "dv": 15,
         "nick": ""
     }, {
         "name": "ponyta",
         "moves": ["toxic", "agility", "fire blast", "body slam"],
         "lv": 5,
+        "ev": 252,
+        "dv": 15,
         "nick": ""
     }, {
         "name": "growlithe",
         "moves": ["agility", "body slam", "fire blast", "double-edge"],
         "lv": 5,
+        "ev": 252,
+        "dv": 15,
         "nick": ""
     }, {
         "name": "psyduck",
         "moves": ["surf", "mega kick", "blizzard", "rage"],
         "lv": 5,
+        "ev": 252,
+        "dv": 15,
         "nick": ""
     }, {
         "name": "poliwag",
         "moves": ["hypnosis", "amnesia", "surf", "psychic"],
         "lv": 5,
+        "ev": 252,
+        "dv": 15,
         "nick": ""
     }]
 }];
@@ -167,10 +196,27 @@ function capitalize(str) {
     temp = temp.join("-");
     return temp;
 }
+function mergeTranslationData(from, to) {
+    for (let i in from) for (let j in from[i]) for (let k in from[i][j]) {
+        to[i][j][k] = from[i][j][k];
+    }
+}
+function mergeIconData(from, to) {
+    for (let i in from) to[i] = from[i];
+}
+function mergeMovePkmnData(from, to, tag) {
+    for (let i of from) i.tag = tag;
+    to.push(...from);
+}
+mergeTranslationData(TRANSLATION_OMIEGA, TRANSLATION);
+mergeIconData(ICONS_OMIEGA, ICONS);
+mergeMovePkmnData(MOVES_OMIEGA, MOVES, "omiega");
+mergeMovePkmnData(POKEMON_OMIEGA, POKEMON, "omiega");
 for (let i of POKEMON) {
     let div = document.createElement("div");
     div.classList.add("listButton");
     div.innerHTML = getL10n("pokemon", i.name);
+    if (i.tag) div.dataset.tag = i.tag;
     div.addEventListener("click", function () {
         players[Number(document.querySelector(".pkmnName.selected").dataset.player) - 1].build[Number(document.querySelector(
             ".pkmnName.selected").dataset.no) - 1].name = i.name;
@@ -249,58 +295,81 @@ function calculateEffectiveness(attackType, defenseType) {
 function refreshDecision() {
     if (battleInfo[playerToMove].currentPokemon != -1 && getPkmn(true).uncontrollable.turns == 0) {
         for (let i = 0; i < 4; i++) {
+            let button = document.getElementsByClassName("decisionMove")[i];
             if (!Object.keys(getPkmn(true).moves)[i]) {
-                document.getElementsByClassName("decisionMove")[i].querySelector(".move-text").innerText = "(Empty)";
-                document.getElementsByClassName("decisionMove")[i].disabled = "disabled";
+                button.querySelector(".move-text").innerText = "(Empty)";
+                button.disabled = "disabled";
+                displayEffectiveness(button, "");
                 continue;
             }
             if (Object.values(getPkmn(true).moves)[i] <= 0 || (getPkmn(true).disable.move == Object.keys(getPkmn(true)
-                .moves)[i])) document.getElementsByClassName("decisionMove")[i].disabled = "disabled";
-            else document.getElementsByClassName("decisionMove")[i].disabled = "";
+                .moves)[i])) button.disabled = "disabled";
+            else button.disabled = "";
             let tempMove = "";
             if (Object.keys(getPkmn(true).moves)[i] == "mimic" && getPkmn(true).mimicMove) tempMove = getPkmn(true).mimicMove;
             else tempMove = Object.keys(getPkmn(true).moves)[i];
-            document.getElementsByClassName("decisionMove")[i].querySelector(".move-text").innerText = getL10n("moves", tempMove);
-            document.getElementsByClassName("decisionMove")[i].querySelector(".pp-remaining").innerText = Object.values(getPkmn(
+            button.querySelector(".move-text").innerText = getL10n("moves", tempMove);
+            button.querySelector(".pp-remaining").innerText = Object.values(getPkmn(
                 true).moves)[i];
-            document.getElementsByClassName("decisionMove")[i].querySelector(".sub").innerText = "/" + getMoveStats(Object.keys(
+            button.querySelector(".sub").innerText = "/" + getMoveStats(Object.keys(
                 getPkmn(true).moves)[i]).pp;
-            document.getElementsByClassName("decisionMove")[i].querySelector(".move-type").innerText = getL10n("types",
+            button.querySelector(".move-type").innerText = getL10n("types",
                 getMoveStats(tempMove).type);
-            document.getElementsByClassName("decisionMove")[i].dataset.for = tempMove;
+            button.dataset.for = tempMove;
+
+            displayEffectiveness(button, tempMove);
         }
     } else if (battleInfo[playerToMove].currentPokemon != -1) {
-        document.getElementsByClassName("decisionMove")[0].disabled = "";
-        document.getElementsByClassName("decisionMove")[0].querySelector(".move-text").innerText = "Pass";
-        document.getElementsByClassName("decisionMove")[0].querySelector(".pp-remaining").innerText = "-";
-        document.getElementsByClassName("decisionMove")[0].querySelector(".sub").innerText = "/-";
-        document.getElementsByClassName("decisionMove")[0].querySelector(".move-type").innerText = "-";
+        let moveButtonGroup = document.getElementsByClassName("decisionMove");
+        moveButtonGroup[0].disabled = "";
+        moveButtonGroup[0].querySelector(".move-text").innerText = "Pass";
+        moveButtonGroup[0].querySelector(".pp-remaining").innerText = "-";
+        moveButtonGroup[0].querySelector(".sub").innerText = "/-";
+        moveButtonGroup[0].querySelector(".move-type").innerText = "-";
+        displayEffectiveness(moveButtonGroup[0], getPkmn(true).uncontrollable.move);
         for (let i = 1; i < 4; i++) {
-            document.getElementsByClassName("decisionMove")[i].disabled = "disabled";
-            document.getElementsByClassName("decisionMove")[i].querySelector(".move-text").innerText = "-";
-            document.getElementsByClassName("decisionMove")[i].querySelector(".pp-remaining").innerText = "-";
-            document.getElementsByClassName("decisionMove")[i].querySelector(".sub").innerText = "/-";
-            document.getElementsByClassName("decisionMove")[i].querySelector(".move-type").innerText = "-";
+            moveButtonGroup[i].disabled = "disabled";
+            moveButtonGroup[i].querySelector(".move-text").innerText = "-";
+            moveButtonGroup[i].querySelector(".pp-remaining").innerText = "-";
+            moveButtonGroup[i].querySelector(".sub").innerText = "/-";
+            moveButtonGroup[i].querySelector(".move-type").innerText = "-";
+            displayEffectiveness(moveButtonGroup[i], "");
         }
     } else {
         for (let i = 0; i < 4; i++) {
             document.getElementsByClassName("decisionMove")[i].disabled = "disabled";
+            displayEffectiveness(document.getElementsByClassName("decisionMove")[i], "");
         }
     }
+    let switchButtons = document.querySelectorAll(".decisionSwitch");
     for (let i = 0; i < 6; i++) {
-        document.getElementsByClassName("decisionSwitch")[i].innerText = getName(players[playerToMove].build[i], false);
-        document.getElementsByClassName("decisionSwitch")[i].classList.remove("selected");
-        if (battleInfo[playerToMove].build[i].hp == 0) document.getElementsByClassName("decisionSwitch")[i].disabled = "disabled";
+        document.querySelectorAll(".decisionSwitch .decision-content")[i].innerText = getName(players[playerToMove].build[i],
+            false);
+        switchButtons[i].classList.remove("selected");
+        if (battleInfo[playerToMove].build[i].hp == 0) switchButtons[i].disabled = "disabled";
         else if (battleInfo[playerToMove].currentPokemon == i) {
-            document.getElementsByClassName("decisionSwitch")[i].disabled = "disabled";
-            document.getElementsByClassName("decisionSwitch")[i].classList.add("selected");
-        } else document.getElementsByClassName("decisionSwitch")[i].disabled = "";
-        document.getElementsByClassName("decisionSwitch")[i].dataset.for = players[playerToMove].build[i].name;
+            switchButtons[i].disabled = "disabled";
+            switchButtons[i].classList.add("selected");
+        } else switchButtons[i].disabled = "";
+        switchButtons[i].dataset.for = players[playerToMove].build[i].name;
     }
+}
+function displayEffectiveness(button, move) {
+    const EFFECTIVENESS_ABBR = {
+        "0": "NE",
+        "0.25": "DNVE",
+        "0.5": "NVE",
+        "1": "E",
+        "2": "SE",
+        "4": "DSE"
+    };
+    if (!move || getMoveStats(move).category == "status") button.querySelector(".effectiveness").innerText = "";
+    else button.querySelector(".effectiveness").innerText = EFFECTIVENESS_ABBR[calculateEffectiveness(getMoveStats(move).type,
+        getType(false))];
 }
 let turn = 0, playerToMove = 0, battleInfo = [];
 document.getElementById("startGame").addEventListener("click", function () {
-    document.getElementById("record").innerHTML = "";
+    document.getElementById("recordContent").innerHTML = "";
     turn = 0;
     battleInfo = structuredClone(players);
     battleInfo[0].currentPokemon = -1;
@@ -309,13 +378,13 @@ document.getElementById("startGame").addEventListener("click", function () {
         for (let j of i.build) {
             for (let k of POKEMON) {
                 if (k.name == j.name) {
-                    j.hp = Math.floor(0.01 * (2 * k.hp + 30 + Math.floor(0.25 * 252)) * j.lv) + j.lv + 10;
-                    j.maxHp = Math.floor(0.01 * (2 * k.hp + 30 + Math.floor(0.25 * 252)) * j.lv) + j.lv + 10;
+                    j.maxHp = Math.floor(0.01 * (2 * (k.hp + j.dv) + Math.floor(0.25 * j.ev)) * j.lv) + j.lv + 10;
+                    j.hp = j.maxHp;
                     break;
                 }
             }
             for (let k of ["atk", "def", "sp", "spe"]) {
-                j[k] = Math.floor(0.01 * (2 * getStats(j.name)[k] + 30 + Math.floor(0.25 * 252)) * j.lv) + 5;
+                j[k] = Math.floor(0.01 * (2 * (getStats(j.name)[k] + j.dv) + Math.floor(0.25 * j.ev)) * j.lv) + 5;
             }
             j.transformPkmn = "";
             j.mimicMove = "";
@@ -352,6 +421,7 @@ document.getElementById("startGame").addEventListener("click", function () {
                 turns: 0
             };
             j.substituteHp = 0;
+            j.toxicCounter = 0;
             j.dmgTaken = [];
             j.lastDmgTakenType = "";
             j.lastMoveUsed = "";
@@ -384,13 +454,13 @@ function refreshSequence() {
     if (element.type == "main") {
         document.getElementById("text").innerHTML = "";
         insertElementWithClass("div", "main-text", str, "text");
-        insertElementWithClass("div", "main-text", str, "record");
+        insertElementWithClass("div", "main-text", str, "recordContent");
     } else if (element.type == "small") {
         insertElementWithClass("div", "small-text", str, "text");
-        insertElementWithClass("div", "small-text", str, "record");
+        insertElementWithClass("div", "small-text", str, "recordContent");
     } else if (element.type == "turn") {
         document.getElementById("turnNumber").innerText = str;
-        insertElementWithClass("h2", "turn-number", str, "record");
+        insertElementWithClass("h2", "turn-number", str, "recordContent");
     }
     document.getElementById("record").scroll({
         top: document.getElementById("record").scrollHeight,
@@ -436,7 +506,7 @@ function addSmallText(...args) {
 function sendOutPkmn(pkmn) {
     addMainText("others", "go", {
         "pokemon": [getL10n("pokemon", pkmn)],
-        "isEnemy": ((viewpoint == -1) ? false : (playerToMove != viewpoint))
+        "isEnemy": ((viewpoint == -1) ? false : (playerToMove != viewpoint))//viewpoint == -1?
     });
     if (getPkmn(true)) {
         for (let j in getPkmn(true).tempEffect) {
@@ -458,11 +528,13 @@ function sendOutPkmn(pkmn) {
     render();
     renderHP();
 }
-function addTooltip(elementGroup, i) {
+function addTooltip(elementGroup, i, player = playerToMove) {
     if (!elementGroup[i].dataset.for || !getStats(elementGroup[i].dataset.for)) return;
     let tooltip;
     if (!elementGroup[i].parentElement.querySelector(".tooltip")) {
         tooltip = document.querySelector(".tooltip").cloneNode(true);
+        if (elementGroup[i].parentElement.id == "p2Balls") tooltip.classList.add("under");
+        else tooltip.classList.remove("under");
         elementGroup[i].parentElement.insertBefore(tooltip, elementGroup[i]);
     }
     tooltip = elementGroup[i].parentElement.querySelector(".tooltip");
@@ -500,34 +572,49 @@ function addTooltip(elementGroup, i) {
         tooltip.querySelectorAll(".type-text")[j].classList.add("type-" + stats.type[j]);
         tooltip.querySelectorAll(".type-img")[j].src = "types/" + stats.type[j] + ".png";
     }
-    insertEffects(battleInfo[playerToMove].build[i], tooltip.querySelector(".tip-status"), true);
+    insertEffects(battleInfo[player].build[i], tooltip.querySelector(".tip-status"), true);
 
     for (let j = 0; j < 4; j++) {
-        tooltip.querySelectorAll(".move-name")[j].innerText = getL10n("moves", Object.keys(battleInfo[playerToMove]
-            .build[i].moves)[j]);
-        tooltip.querySelectorAll(".pp-remaining")[j].innerText = Object.values(battleInfo[playerToMove].build[i]
-            .moves)[j];
-        tooltip.querySelectorAll(".pp .sub")[j].innerText = "/" + getMoveStats(Object.keys(battleInfo[playerToMove]
-            .build[i].moves)[j]).pp;
-        if (Object.values(battleInfo[playerToMove].build[i].moves)[j] == getMoveStats(Object
-            .keys(battleInfo[playerToMove].build[i].moves)[j]).pp) tooltip.querySelectorAll(".move-name")[j].classList
-                .add("unknown");
-        else tooltip.querySelectorAll(".move-name")[j].classList.remove("unknown");
+        let totalPp = getMoveStats(Object.keys(battleInfo[player].build[i].moves)[j]).pp;
+        let ppRemaining = Object.values(battleInfo[player].build[i].moves)[j];
+        if (Object.keys(battleInfo[player].build[i].moves)[j] && ((player != playerToMove && ppRemaining < totalPp) ||
+            (player == playerToMove))) {
+            tooltip.querySelectorAll(".move-name")[j].innerText = getL10n("moves", Object.keys(battleInfo[player]
+                .build[i].moves)[j]);
+            tooltip.querySelectorAll(".pp-remaining")[j].innerText = ppRemaining;
+            tooltip.querySelectorAll(".pp .sub")[j].innerText = "/" + totalPp;
+            if (Object.values(battleInfo[player].build[i].moves)[j] == getMoveStats(Object
+                .keys(battleInfo[player].build[i].moves)[j]).pp) tooltip.querySelectorAll(".move-name")[j].classList
+                    .add("unknown");
+            else tooltip.querySelectorAll(".move-name")[j].classList.remove("unknown");
+        } else if (player == playerToMove) addGrayMove(tooltip,j, "empty", 0, "/0");
+        else addGrayMove(tooltip,j, "unknownMove", "?", "/?");
     }
-    tooltip.querySelector(".hp-remaining").innerText = (battleInfo[playerToMove].build[i].hp / battleInfo[playerToMove]
+    tooltip.querySelector(".hp-remaining").innerText = (battleInfo[player].build[i].hp / battleInfo[player]
         .build[i].maxHp * 100).toFixed(0) + "%";
-    tooltip.querySelector(".hp .sub").innerText = ", " + battleInfo[playerToMove].build[i].hp.toFixed(0) + "/" +
-        battleInfo[playerToMove].build[i].maxHp;
+    if (player == playerToMove) tooltip.querySelector(".hp .sub").innerText = ", " + battleInfo[player].build[i].hp
+        .toFixed(0) + "/" + battleInfo[player].build[i].maxHp;
+    else tooltip.querySelector(".hp .sub").innerText = "";
     tooltip.classList.add("show");
 }
+function addGrayMove(tooltip, j, textKey, ppRemaining, subText) {
+    tooltip.querySelectorAll(".move-name")[j].innerText = getL10n("ui", textKey);
+    tooltip.querySelectorAll(".pp-remaining")[j].innerText = ppRemaining;
+    tooltip.querySelectorAll(".pp .sub")[j].innerText = subText;
+    tooltip.querySelectorAll(".move-name")[j].classList.add("unknown");
+}
+const TOOLTIP_PLAYER = {
+    ".decisionSwitch": undefined,
+    "#p1Balls .ball": 0,
+    "#p2Balls .ball": 1
+};
 for (let i = 0; i < 6; i++) {
     document.getElementsByClassName("decisionSwitch")[i].addEventListener("click", function () {
         switchPkmn(document.getElementsByClassName("decisionSwitch")[i].dataset.for);
     });
-
-    for (let j of [".decisionSwitch", "#p1Balls .ball", "#p2Balls .ball"]) {
+    for (let j in TOOLTIP_PLAYER) {
         document.querySelectorAll(j)[i].addEventListener("mouseover", function () {
-            addTooltip(document.querySelectorAll(j), i);
+            addTooltip(document.querySelectorAll(j), i, TOOLTIP_PLAYER[j]);
         });
         document.querySelectorAll(j)[i].addEventListener("mouseout", function () {
             document.querySelectorAll(j)[i].parentElement.querySelector(".tooltip")?.classList.remove("show");
@@ -613,14 +700,6 @@ function dealDmg(isSelf, dmg) {
     }
 }
 function nextPlayer(player) {
-    if (getPkmn(true)?.status == "psn") dealDmg(true, getPkmn(true).hp / 16, { ignoreSubstitute: true });
-    else if (getPkmn(true)?.status == "tox") dealDmg(true, getPkmn(true).hp / 8, { ignoreSubstitute: true });
-    if (getPkmn(true)?.tempEffect["leech seed"] > 0) {
-        if (getPkmn(true).status == "tox") dealDmg(true, getPkmn(true).hp / 8, { ignoreSubstitute: true });
-        else dealDmg(true, getPkmn(true).hp / 16, { ignoreSubstitute: true });
-    }
-    judgeHP();
-
     playerToMove = player;
     if (getPkmn(true)) {
         for (let i = 0; i < getPkmn(true).delay.length; i++) {
@@ -773,6 +852,19 @@ function nextTurn() {
                 effect = attack(k.name);
                 if (getPkmn(false)?.tempEffect.rage > 0) modifyStats(false, "atk", 1, 1);
             }
+
+            if (getPkmn(true)?.status == "psn") dealDmg(true, getPkmn(true).maxHp / 16, { ignoreSubstitute: true });
+            else if (getPkmn(true)?.status == "tox") {
+                dealDmg(true, getPkmn(true).maxHp * getPkmn(true).toxicCounter / 16, { ignoreSubstitute: true });
+                getPkmn(true).toxicCounter++;
+            }
+            if (getPkmn(true)?.tempEffect["leech seed"] > 0) {
+                if (getPkmn(true).status == "tox") {
+                    dealDmg(true, getPkmn(true).maxHp * getPkmn(true).toxicCounter / 16, { ignoreSubstitute: true });
+                    getPkmn(true).toxicCounter++;
+                } else dealDmg(true, getPkmn(true).maxHp / 16, { ignoreSubstitute: true });
+            }
+
             judgeHP();
             renderHP();
             if (getPkmn(true)) {
@@ -787,13 +879,15 @@ function nextTurn() {
     }
 
     attacks = [];
-
-    if (getPkmn(true)?.status == "brn") dealDmg(true, getPkmn(true).maxHp / 16, { ignoreSubstitute: true });
-    if (getPkmn(false)?.status == "brn") dealDmg(false, getPkmn(false).maxHp / 16, { ignoreSubstitute: true });
+    for (let i of [true, false]) if (getPkmn(i)?.status == "brn") {
+        addSmallText("others", "hurtByBurn", {
+            "pokemon": [getName(getPkmn(i), false)],
+            "isEnemy": (i == playerToMove) != viewpoint
+        });
+        dealDmg(i, getPkmn(i).maxHp / 16, { ignoreSubstitute: true });
+    }
     judgeHP();
-
     endTurn();
-
 }
 function endTurn() {
     for (let i = 0; i <= 1; i++) {
@@ -1043,15 +1137,12 @@ const ACC_STAGE_MULTIPLIER = {
     "6": 3 / 9
 };
 function renderHP() {
-    if (battleInfo[Number(0 != viewpoint)].currentPokemon == -1) {
-        document.getElementById("p1Gauge").classList.add("hide");
-    } else {
-        document.getElementById("p1Gauge").classList.remove("hide");
-    }
-    if (battleInfo[Number(1 != viewpoint)].currentPokemon == -1) {
-        document.getElementById("p2Gauge").classList.add("hide");
-    } else {
-        document.getElementById("p2Gauge").classList.remove("hide");
+    for (let i of [0, 1]) {
+        if (battleInfo[Number(i != viewpoint)].currentPokemon == -1) {
+            document.getElementById(`p${i + 1}Gauge`).classList.add("hide");
+        } else {
+            document.getElementById(`p${i + 1}Gauge`).classList.remove("hide");
+        }
     }
     for (let i of [0, 1]) {
         if (battleInfo[Number(i != viewpoint)].currentPokemon != -1) {
@@ -1079,8 +1170,7 @@ function renderHP() {
                 ballElement.style.backgroundImage = "url(pokemonicons-pokeball-sheet.png)";
                 ballElement.style.backgroundPosition = "0 0";
                 ballElement.dataset.for = "";
-            }
-            else {
+            } else {
                 ballElement.style.backgroundImage = "url(pokemonicons-sheet.png)";
                 ballElement.style.backgroundPosition = (-(ICONS[battleInfo[Number(i != viewpoint)].build[j]
                     .name].cell - 1) * 40) + "px " + (-(ICONS[battleInfo[Number(i != viewpoint)].build[j].name].row - 1) * 30) + "px";
@@ -1145,37 +1235,33 @@ function modifyStats(isSelf, stat, delta, prob) {
     }
 }
 function modifyStatus(status, prob) {
+    if ((getStats(getPkmn(false).name).type.includes("poison") && (status == "tox" || status == "psn"))
+        || (getStats(getPkmn(false).name).type.includes("fire") && status == "brn")
+        || (getStats(getPkmn(false).name).type.includes("ice") && status == "frz")) return;
     let rand = Math.random();
-    if (rand < prob) {
-        if (getPkmn(false).status == status) {
-            if (status == "par") addSmallText("others", "alreadyParalyzed", {
-                "pokemon": [getName(getPkmn(false), false)],
-                "isEnemy": !playerToMove != viewpoint
-            });
-            return;
-        }
-        getPkmn(false).status = status;
-        if (status == "par") {
-            addSmallText("others", "paralyzed", {
-                "pokemon": [getName(getPkmn(false), false)],
-                "isEnemy": !playerToMove != viewpoint
-            });
-        } else if (status == "frz") {
-            addSmallText("others", "frozenSolid", {
-                "pokemon": [getName(getPkmn(false), false)],
-                "isEnemy": !playerToMove != viewpoint
-            });
-        } else if (status == "psn") {
-            addSmallText("others", "poisoned", {
-                "pokemon": [getName(getPkmn(false), false)],
-                "isEnemy": !playerToMove != viewpoint
-            });
-        } else if (status == "tox") {
-            addSmallText("others", "badlyPoisoned", {
-                "pokemon": [getName(getPkmn(false), false)],
-                "isEnemy": !playerToMove != viewpoint
-            });
-        }
+    if (rand >= prob) return;
+    if (getPkmn(false).status == status) {
+        if (status == "par") addSmallText("others", "alreadyParalyzed", {
+            "pokemon": [getName(getPkmn(false), false)],
+            "isEnemy": !playerToMove != viewpoint
+        });
+        return;
+    }
+    getPkmn(false).status = status;
+    if (status == "tox") getPkmn(false).toxicCounter = 1;
+    const SMALL_TEXT_KEY = {
+        "par": "paralyzed",
+        "frz": "frozenSolid",
+        "psn": "poisoned",
+        "tox": "badlyPoisoned",
+        "brn": "burn"
+    };
+    for (let i of Object.keys(SMALL_TEXT_KEY)) if (status == i) {
+        addSmallText("others", SMALL_TEXT_KEY[i], {
+            "pokemon": [getName(getPkmn(false), false)],
+            "isEnemy": !playerToMove != viewpoint
+        });
+        break;
     }
 }
 function putToSleep(isSelf, turns) {
@@ -1235,20 +1321,75 @@ for (let i of document.querySelectorAll("[data-settings]")) {
         if (i.tagName.toLowerCase() == "select") settings[i.dataset.settings] = i.value;
         else settings[i.dataset.settings] = i.checked;
         localStorage.setItem("mechamonSettings", JSON.stringify(settings));
+        applySetting(i.dataset.settings);
     });
+    applySetting(i.dataset.settings);
 }
-for (let i of document.querySelectorAll(".lv")) i.addEventListener("blur", function () {
-    if (Number.isNaN(Number(i.innerText))) {
-        i.innerText = players[Number(i.dataset.player) - 1].build[Number(i.dataset.no) - 1].lv;
-    } else if (Number(i.innerText) > 100) {
-        i.innerText = 100;
-    } else if (Number(i.innerText) < 1) {
-        i.innerText = 1;
-    } else {
-        i.innerText = Math.round(Number(i.innerText));
+function applySetting(key) {
+    switch (key) {
+        case "keyboardControls":
+            if (settings.keyboardControls) {
+                for (let j of document.querySelectorAll(".keyboard-shortcut")) j.classList.remove("hide");
+            } else for (let j of document.querySelectorAll(".keyboard-shortcut")) j.classList.add("hide");
+            break;
+        case "effectivenessIndicator":
+            if (settings.effectivenessIndicator) {
+                for (let j of document.querySelectorAll(".effectiveness")) j.classList.remove("hide");
+            } else for (let j of document.querySelectorAll(".effectiveness")) j.classList.add("hide");
+            break;
+        case "hardcoreMode":
+            if (settings.hardcoreMode) {
+                document.getElementById("recordContent").classList.add("hide");
+                document.getElementById("turnNumber").classList.add("hide");
+                document.getElementById("hardcoreTip").classList.remove("hide");
+            } else {
+                document.getElementById("recordContent").classList.remove("hide");
+                document.getElementById("turnNumber").classList.remove("hide");
+                document.getElementById("hardcoreTip").classList.add("hide");
+            }
+            break;
+        case "darkMode":
+            if (settings.darkMode) {
+                document.getElementById("body").classList.add("dark");
+                document.getElementById("body").classList.remove("light");
+            } else {
+                document.getElementById("body").classList.remove("dark");
+                document.getElementById("body").classList.add("light");
+            }
+            break;
+        case "omiegamon":
+            if (settings.omiegamon) for (let i of document.querySelectorAll("[data-tag='omiega']")) i.classList.remove("hide");
+            else for (let i of document.querySelectorAll("[data-tag='omiega']")) i.classList.add("hide");
     }
-    players[Number(i.dataset.player) - 1].build[Number(i.dataset.no) - 1].lv = Number(i.innerText);
-});
+}
 for (let i of document.querySelectorAll(".nick")) i.addEventListener("blur", function () {
     players[Number(i.dataset.player) - 1].build[Number(i.dataset.no) - 1].nick = i.innerText;
+});
+function addUpdateValueListener(name, min, max) {
+    for (let i of document.querySelectorAll("." + name)) i.addEventListener("blur", function () {
+        if (Number.isNaN(Number(i.innerText))) {
+            i.innerText = players[Number(i.dataset.player) - 1].build[Number(i.dataset.no) - 1][name];
+        } else if (Number(i.innerText) > max) {
+            i.innerText = max;
+        } else if (Number(i.innerText) < min) {
+            i.innerText = min;
+        } else {
+            i.innerText = Math.round(Number(i.innerText));
+        }
+        players[Number(i.dataset.player) - 1].build[Number(i.dataset.no) - 1][name] = Number(i.innerText);
+    });
+}
+addUpdateValueListener("lv", 1, 100);
+addUpdateValueListener("ev", 0, 252);
+addUpdateValueListener("dv", 0, 15);
+document.addEventListener("keypress", function (e) {
+    if (settings.keyboardControls) {
+        if (e.key == "1" || e.key == "2" || e.key == "3" || e.key == "4") document.querySelectorAll(".decisionMove")[Number(e
+            .key) - 1].click();
+        else {
+            let keys = ["z", "x", "c", "v", "b", "n"];
+            if (keys.includes(e.key.toLowerCase())) document.querySelectorAll(".decisionSwitch")[keys.indexOf(e.key
+                .toLowerCase())].click();
+        }
+    }
 });

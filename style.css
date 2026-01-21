@@ -3,7 +3,7 @@ body {
     font-family: Inter, sans-serif;
     height: 100%;
     margin: 0;
-    background-color: #f3f3f3;
+    background-color: var(--bg);
     -webkit-user-select: none;
     user-select: none;
     --special: #7799DD;
@@ -25,25 +25,60 @@ body {
     --rock: #c8b686;
     --water: #3692dc;
     --fs-medium: 2.3vmin;
+
+    &.dark {
+        --black: #888;
+        --shadow: #666;
+        --bg: #0c0c0c;
+        --text: white;
+        --decision-bg: rgba(255, 255, 255, 0.05);
+        --main-text-bg: rgb(43, 43, 43, 0.7);
+        --right-panel-bg: #0c0c0c;
+        --button-bg: #333;
+        --button-hover: rgb(42, 79, 112);
+        --option-hover-bg: #333;
+        --text-dim: #999;
+        --text-dim-dark: #ccc;
+        --small-text-bg: rgba(255, 255, 255, 0.1);
+    }
+
+    &.light {
+        --black: black;
+        --shadow: lightgray;
+        --bg: #f3f3f3;
+        --text: black;
+        --decision-bg: rgba(0, 0, 0, 0.05);
+        --main-text-bg: rgb(226, 226, 226, 0.7);
+        --right-panel-bg: white;
+        --button-bg: white;
+        --button-hover: rgb(224, 239, 255);
+        --option-hover-bg: #eee;
+        --text-dim: gray;
+        --text-dim-dark: #333;
+        --small-text-bg: rgba(255, 255, 255, 0.9);
+    }
+
+    color:var(--text);
 }
 
-p {
+p,
+ul {
     &.dim {
-        color: gray;
+        color: var(--text-dim);
         font-style: italic;
         display: inline-block;
         margin: 9px 0;
     }
 
     &.explanation {
-        color: gray;
+        color: var(--text-dim);
         margin: 3px 0 0 20px;
     }
 }
 
 #turnNumber {
-    border: solid 3px black;
-    background-color: white;
+    border: solid 3px var(--black);
+    background-color: var(--button-bg);
     font-weight: bold;
     font-size: xx-large;
     position: absolute;
@@ -51,7 +86,7 @@ p {
     left: 10px;
     padding: 0 10px;
     border-radius: 9px;
-    box-shadow: 0 0 9px lightgray;
+    box-shadow: 0 0 9px var(--shadow);
 }
 
 #text {
@@ -70,10 +105,11 @@ p {
 
 #decisionPanel {
     position: absolute;
-    background-color: rgba(0, 0, 0, 0.05);
+    background-color: var(--decision-bg);
     border-radius: 9px;
-    border: solid 2px lightgray;
-    box-shadow: 0 0 9px lightgray;
+    color: var(--text);
+    border: solid 2px var(--shadow);
+    box-shadow: 0 0 9px var(--shadow);
     bottom: 9px;
     left: 9px;
     width: calc(60% - 9px);
@@ -165,7 +201,7 @@ p {
     width: 42.956vmin
         /*300px*/
     ;
-    background-color: lightgray;
+    background-color: var(--shadow);
     height: 15px;
     clip-path: rect(0 100% 100% 0 round 7.5px);
 }
@@ -223,6 +259,7 @@ p {
     & .slp {
         color: #687060;
     }
+
     & .buff {
         color: mediumseagreen;
     }
@@ -253,9 +290,11 @@ table {
 }
 
 .listButton {
-    width: calc(100% / 3 - 4px);
+    width: calc(100% / 3 - 10px);
     display: inline-block;
     border: solid 2px transparent;
+    border-radius: 9px;
+    padding: 3px;
 
     &:hover {
         border: solid 2px rgba(30, 144, 255, 0.5);
@@ -269,13 +308,13 @@ table {
     font-family: Inter, sans-serif;
     border-radius: 9px;
     padding: 6px 18px;
-    border: solid 2px lightgray;
-    background-color: white;
+    border: solid 2px var(--shadow);
+    background-color: var(--button-bg);
     font-size: medium;
 
     &:hover {
         border: solid 2px dodgerblue;
-        background-color: rgb(224, 239, 255);
+        background-color: var(--button-hover);
     }
 
     &.float-right {
@@ -290,14 +329,15 @@ table {
         calc(100% - 4px);
     font-family: Inter, sans-serif;
     font-size: large;
-    background-color: white;
+    background-color: var(--button-bg);
+    color: var(--text);
     margin: 2px;
-    border: solid 2px lightgray;
+    border: solid 2px var(--shadow);
     border-radius: 9px;
 
     &:hover {
         border: solid 2px dodgerblue;
-        background-color: rgb(224, 239, 255);
+        background-color: var(--button-hover);
     }
 }
 
@@ -310,7 +350,6 @@ table {
 
     &.selected {
         border: solid 2px dodgerblue;
-        color: black;
     }
 }
 
@@ -340,13 +379,16 @@ table {
 
 .main-text {
     #record & {
-        background-color: #f3f3f3;
+        background-color: var(--bg);
     }
 
     #text & {
-        background-color: rgb(226, 226, 226, 0.7);
+        background-color: var(--main-text-bg);
+        width: fit-content;
+        animation: 0.3s slide-in;
     }
 
+    color:var(--text);
     padding: 10px;
     font-size: large;
     border-radius: 9px;
@@ -365,16 +407,10 @@ table {
         height: calc(100% - 20px);
         border-radius: 2px;
     }
-
-    #text & {
-        width: fit-content;
-        animation: 0.3s slide-in;
-    }
 }
 
 .small-text {
-    background-color: rgba(255, 255, 255, 0.9);
-    color: gray;
+    color: var(--text-dim);
     padding: 5px;
     margin-left: 15px;
     font-size: medium;
@@ -383,6 +419,7 @@ table {
     #text & {
         width: fit-content;
         animation: 0.3s slide-in;
+        background-color: var(--small-text-bg);
     }
 }
 
@@ -392,14 +429,16 @@ table {
 
 .tab-content {
     height: calc(100% - 67px);
-    background-color: white;
+    background-color: var(--right-panel-bg);
+    color: var(--text);
     border-radius: 9px;
-    box-shadow: 0 0 9px lightgray;
+    box-shadow: 0 0 9px var(--shadow);
     margin: 0 9px 9px 9px;
     padding: 9px;
     overflow-y: auto;
 
-    &>* {
+    &>*,
+    & #recordContent>* {
         animation: 0.15s fade-in;
     }
 }
@@ -416,6 +455,7 @@ table {
     height: 40px;
     padding: 1px 9px;
     font-size: medium;
+    color: var(--text);
 
     &::after {
         height: 3px;
@@ -429,7 +469,7 @@ table {
     }
 
     &:hover::after {
-        background-color: lightgray;
+        background-color: var(--shadow);
         width: calc(100% - 18px);
 
     }
@@ -445,7 +485,7 @@ table {
 }
 
 .turn-number {
-    border-bottom: solid 3px black;
+    border-bottom: solid 3px var(--text);
     margin-bottom: 3px;
     display: inline-block;
 }
@@ -541,6 +581,11 @@ table {
 .tooltip {
     width: 500px;
 
+    &.under {
+        bottom: auto;
+        top: 100%
+    }
+
     .tip-desc {
         font-style: italic;
         color: #ccc;
@@ -576,8 +621,6 @@ table {
 
     .tip-status {
         font-weight: bold;
-
-
     }
 
     .type {
@@ -586,6 +629,11 @@ table {
         font-weight: bold;
         position: relative;
         height: 30px;
+
+        &.hide {
+            /*should not be removed, since the general .hide selector does not have much priority*/
+            display: none;
+        }
 
         img {
             width: 30px;
@@ -597,10 +645,6 @@ table {
             width: max-content;
             line-height: 30px;
             vertical-align: top;
-        }
-
-        &.hide {
-            display: none
         }
     }
 
@@ -744,6 +788,8 @@ table {
 }
 
 button {
+    color: var(--text);
+
     .move-text {
         vertical-align: -webkit-baseline-middle;
     }
@@ -758,7 +804,7 @@ button {
             font-weight: bold;
 
             .sub {
-                color: #333;
+                color: var(--text-dim-dark);
                 font-weight: normal;
                 font-size: medium;
             }
@@ -812,7 +858,7 @@ button {
             height: 32px;
 
             &:hover {
-                background-color: rgba(0, 0, 0, 0.05);
+                background-color: var(--decision-bg);
             }
         }
     }
@@ -820,7 +866,7 @@ button {
 
 .pkmn {
     border-radius: 9px;
-    background-color: rgba(0, 0, 0, 0.05);
+    background-color: var(--decision-bg);
     padding: 4px 9px;
     margin: 9px 0;
     transition: 0.1s;
@@ -834,10 +880,10 @@ button {
     }
 
     & .input {
-        background-color: white;
+        background-color: var(--button-bg);
         border-radius: 9px;
         padding: 3px 9px;
-        border: solid 2px white;
+        border: solid 2px var(--button-bg);
         display: inline-block;
 
         &:hover {
@@ -847,32 +893,42 @@ button {
 
     & .lv::before {
         content: "Lv: ";
-        color: gray
+        color: var(--text-dim);
     }
 
     & .nick::before {
         content: "Nickname: ";
-        color: gray
+        color: var(--text-dim);
+    }
+
+    & .ev::before {
+        content: "EV: ";
+        color: var(--text-dim);
+    }
+
+    & .dv::before {
+        content: "DV: ";
+        color: var(--text-dim);
     }
 
     & .move-1::before {
         content: "1: ";
-        color: gray
+        color: var(--text-dim);
     }
 
     & .move-2::before {
         content: "2: ";
-        color: gray
+        color: var(--text-dim);
     }
 
     & .move-3::before {
         content: "3: ";
-        color: gray
+        color: var(--text-dim);
     }
 
     & .move-4::before {
         content: "4: ";
-        color: gray
+        color: var(--text-dim);
     }
 
     & .pkmnName {
@@ -916,7 +972,7 @@ label .wrap {
     padding: 9px;
 
     &:hover {
-        background-color: #eee;
+        background-color: var(--option-hover-bg);
     }
 }
 
@@ -938,4 +994,124 @@ label .wrap {
         height: 70%;
     }
 
+}
+
+.keyboard-shortcut {
+    font-size: small;
+    position: absolute;
+    opacity: 0.6;
+}
+
+.effectiveness {
+    font-size: small;
+    position: absolute;
+    opacity: 0.6;
+    bottom: 7px;
+}
+
+#hardcoreTip {
+    text-align: center;
+    color: gray;
+    font-style: italic;
+}
+
+select,
+::picker(select) {
+    appearance: base-select;
+}
+
+select {
+    flex: 1;
+}
+
+select {
+    border: 2px solid var(--shadow);
+    background: var(--button-bg);
+    padding: 6px 9px;
+    transition: 0.1s;
+}
+
+select:hover,
+select:focus {
+    background: var(--button-hover);
+    border-color: dodgerblue;
+}
+
+select::picker-icon {
+    color: #999999;
+    transition: 0.1s rotate;
+}
+
+select:open::picker-icon {
+    rotate: 180deg;
+}
+
+::picker(select) {
+    border: solid 2px var(--shadow);
+    padding: 6px;
+}
+
+option {
+    display: flex;
+    justify-content: flex-start;
+    gap: 20px;
+    color: var(--text);
+    background: var(--right-panel-bg);
+    padding: 6px 9px;
+    transition: 0.1s;
+    position: relative;
+    border-radius: 9px;
+}
+
+::picker(select) {
+    border-radius: 8px;
+    background-color: var(--right-panel-bg);
+    box-shadow: 0 0 9px var(--shadow);
+}
+
+option:hover,
+option:focus {
+    background: var(--option-hover-bg);
+}
+
+selectedcontent .icon {
+    display: none;
+}
+
+option:checked {
+    font-weight: bold;
+}
+
+option::checkmark {
+    order: 1;
+    margin: auto 0;
+    width: 4px;
+    content: "";
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    background-color: dodgerblue;
+    height: calc(100% - 20px);
+    border-radius: 2px;
+}
+
+::picker(select) {
+    opacity: 0;
+    transition: all 0.1s allow-discrete;
+}
+
+::picker(select):popover-open {
+    opacity: 1;
+}
+
+@starting-style {
+    ::picker(select):popover-open {
+        opacity: 0;
+    }
+}
+
+::picker(select) {
+    top: calc(anchor(bottom) + 1px);
 }
