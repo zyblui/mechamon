@@ -163,16 +163,23 @@ function setDelay(isSelf, func, turns) {
         "turns": turns
     });
 }
-function render() {
-    if (battleInfo[Number(viewpoint != 0)].currentPokemon != -1) document.getElementById("p1Pokemon").style.backgroundImage =
-        "url('back/" + players[Number(viewpoint != 0)].build[battleInfo[Number(viewpoint != 0)].currentPokemon].name + ".png')";
-    if (battleInfo[Number(viewpoint != 1)].currentPokemon != -1) document.getElementById("p2Pokemon").style.backgroundImage =
-        "url('front/" + players[Number(viewpoint != 1)].build[battleInfo[Number(viewpoint != 1)].currentPokemon].name + ".png')";
-    if (battleInfo[Number(viewpoint != 0)].currentPokemon != -1) document.getElementById("p1Name").innerText =
-        getName(players[Number(viewpoint != 0)].build[battleInfo[Number(viewpoint != 0)].currentPokemon], false);
-    if (battleInfo[Number(viewpoint != 1)].currentPokemon != -1) document.getElementById("p2Name").innerText =
-        getName(players[Number(viewpoint != 1)].build[battleInfo[Number(viewpoint != 1)].currentPokemon], false);
+function render(info = battleInfo) {
+    if (info[Number(viewpoint != 0)].currentPokemon != -1) document.getElementById("p1Pokemon").style.backgroundImage =
+        "url('back/" + players[Number(viewpoint != 0)].build[info[Number(viewpoint != 0)].currentPokemon].name + ".png')";
+    if (info[Number(viewpoint != 1)].currentPokemon != -1) document.getElementById("p2Pokemon").style.backgroundImage =
+        "url('front/" + players[Number(viewpoint != 1)].build[info[Number(viewpoint != 1)].currentPokemon].name + ".png')";
+    if (info[Number(viewpoint != 0)].currentPokemon != -1) document.getElementById("p1Name").innerText =
+        getName(players[Number(viewpoint != 0)].build[info[Number(viewpoint != 0)].currentPokemon], false);
+    if (info[Number(viewpoint != 1)].currentPokemon != -1) document.getElementById("p2Name").innerText =
+        getName(players[Number(viewpoint != 1)].build[info[Number(viewpoint != 1)].currentPokemon], false);
 }
+function renderFull(info = battleInfo) {
+    render(info);
+    renderHP(info);
+    if (info[0].currentPokemon == -1) document.getElementById("p1Pokemon").style.backgroundImage = "none";
+    else if (info[1].currentPokemon == -1) document.getElementById("p2Pokemon").style.backgroundImage = "none";
+}
+
 function getL10n(type, str) {
     let returnValue = TRANSLATION[settings.lang][type][str + ((arguments[2]?.isEnemy) ? "-enemy" : "")];
     if (arguments[2]) for (let i in arguments[2]) {
@@ -455,9 +462,11 @@ function refreshSequence() {
         document.getElementById("text").innerHTML = "";
         insertElementWithClass("div", "main-text", str, "text");
         insertElementWithClass("div", "main-text", str, "recordContent");
+        renderFull(element.refresh);
     } else if (element.type == "small") {
         insertElementWithClass("div", "small-text", str, "text");
         insertElementWithClass("div", "small-text", str, "recordContent");
+        renderFull(element.refresh);
     } else if (element.type == "turn") {
         document.getElementById("turnNumber").innerText = str;
         insertElementWithClass("h2", "turn-number", str, "recordContent");
@@ -479,11 +488,11 @@ function refreshSequence() {
         }
     } else {
         refreshSequenceIsRunning = false;
+        renderFull();
         refreshDecision();
     }
 
     judgeHP();
-    renderHP();
 }
 function addMainText(...args) {
     for (let i of document.querySelectorAll(".decisionMove,.decisionSwitch")) {
@@ -491,7 +500,8 @@ function addMainText(...args) {
     }
     sequence.push({
         "type": "main",
-        "args": args
+        "args": args,
+        "refresh": structuredClone(battleInfo)
     });
 }
 function addSmallText(...args) {
@@ -500,14 +510,11 @@ function addSmallText(...args) {
     }
     sequence.push({
         "type": "small",
-        "args": args
+        "args": args,
+        "refresh": structuredClone(battleInfo)
     });
 }
 function sendOutPkmn(pkmn) {
-    addMainText("others", "go", {
-        "pokemon": [getL10n("pokemon", pkmn)],
-        "isEnemy": ((viewpoint == -1) ? false : (playerToMove != viewpoint))//viewpoint == -1?
-    });
     if (getPkmn(true)) {
         for (let j in getPkmn(true).tempEffect) {
             getPkmn(true).tempEffect[j] = 0;
@@ -525,8 +532,10 @@ function sendOutPkmn(pkmn) {
         break;
     }
     getPkmn(true).revealed = true;
-    render();
-    renderHP();
+    addMainText("others", "go", {
+        "pokemon": [getL10n("pokemon", pkmn)],
+        "isEnemy": ((viewpoint == -1) ? false : (playerToMove != viewpoint))
+    });
 }
 function addTooltip(elementGroup, i, player = playerToMove) {
     if (!elementGroup[i].dataset.for || !getStats(elementGroup[i].dataset.for)) return;
@@ -587,8 +596,8 @@ function addTooltip(elementGroup, i, player = playerToMove) {
                 .keys(battleInfo[player].build[i].moves)[j]).pp) tooltip.querySelectorAll(".move-name")[j].classList
                     .add("unknown");
             else tooltip.querySelectorAll(".move-name")[j].classList.remove("unknown");
-        } else if (player == playerToMove) addGrayMove(tooltip,j, "empty", 0, "/0");
-        else addGrayMove(tooltip,j, "unknownMove", "?", "/?");
+        } else if (player == playerToMove) addGrayMove(tooltip, j, "empty", 0, "/0");
+        else addGrayMove(tooltip, j, "unknownMove", "?", "/?");
     }
     tooltip.querySelector(".hp-remaining").innerText = (battleInfo[player].build[i].hp / battleInfo[player]
         .build[i].maxHp * 100).toFixed(0) + "%";
@@ -828,7 +837,6 @@ function nextTurn() {
         if (i.dirAttack) {
             attack(i.move);
             judgeHP();
-            renderHP();
             continue;
         }
         getPkmn(true).lastMoveUsed = i.move;
@@ -866,7 +874,6 @@ function nextTurn() {
             }
 
             judgeHP();
-            renderHP();
             if (getPkmn(true)) {
                 getPkmn(true).moves[k.name]--;
                 if (effect?.flinch) {
@@ -1087,8 +1094,8 @@ function repeatAttack(dmg, count) {
 function judgeHP() {
     if (getPkmn(false)?.hp <= 0) {
         getPkmn(false).hp = 0;
-        if (playerToMove == 0) document.getElementById("p2Pokemon").style.backgroundImage = "none";
-        else document.getElementById("p1Pokemon").style.backgroundImage = "none";
+        /*if (playerToMove == 0) document.getElementById("p2Pokemon").style.backgroundImage = "none";
+        else document.getElementById("p1Pokemon").style.backgroundImage = "none";*/
         addMainText("others", "faint", {
             "pokemon": [getName(getPkmn(false), false)],
             "isEnemy": ((viewpoint == -1) ? true : (!playerToMove != viewpoint))
@@ -1097,8 +1104,8 @@ function judgeHP() {
     }
     if (getPkmn(true)?.hp <= 0) {
         getPkmn(true).hp = 0;
-        if (playerToMove == 1) document.getElementById("p2Pokemon").style.backgroundImage = "none";
-        else document.getElementById("p1Pokemon").style.backgroundImage = "none";
+        /*if (playerToMove == 1) document.getElementById("p2Pokemon").style.backgroundImage = "none";
+        else document.getElementById("p1Pokemon").style.backgroundImage = "none";*/
         addMainText("others", "faint", {
             "pokemon": [getName(getPkmn(true), false)],
             "isEnemy": ((viewpoint == -1) ? false : (playerToMove != viewpoint))
@@ -1136,21 +1143,21 @@ const ACC_STAGE_MULTIPLIER = {
     "5": 3 / 8,
     "6": 3 / 9
 };
-function renderHP() {
+function renderHP(info = battleInfo) {
     for (let i of [0, 1]) {
-        if (battleInfo[Number(i != viewpoint)].currentPokemon == -1) {
+        if (info[Number(i != viewpoint)].currentPokemon == -1) {
             document.getElementById(`p${i + 1}Gauge`).classList.add("hide");
         } else {
             document.getElementById(`p${i + 1}Gauge`).classList.remove("hide");
         }
     }
     for (let i of [0, 1]) {
-        if (battleInfo[Number(i != viewpoint)].currentPokemon != -1) {
-            let percentage = battleInfo[Number(i != viewpoint)].build[battleInfo[Number(i != viewpoint)].currentPokemon].hp /
-                battleInfo[Number(i != viewpoint)].build[battleInfo[Number(i != viewpoint)].currentPokemon].maxHp * 100;
+        if (info[Number(i != viewpoint)].currentPokemon != -1) {
+            let percentage = info[Number(i != viewpoint)].build[info[Number(i != viewpoint)].currentPokemon].hp /
+                info[Number(i != viewpoint)].build[info[Number(i != viewpoint)].currentPokemon].maxHp * 100;
             document.getElementById(`p${i + 1}Bar`).style.width = percentage + "%";
             document.getElementById(`p${i + 1}Percentage`).innerText = percentage.toFixed(0) + "%";
-            document.getElementById(`p${i + 1}Lv`).innerText = "Lv " + battleInfo[Number(i != viewpoint)].build[battleInfo[Number(
+            document.getElementById(`p${i + 1}Lv`).innerText = "Lv " + info[Number(i != viewpoint)].build[info[Number(
                 i != viewpoint)].currentPokemon].lv;
             document.getElementById(`p${i + 1}Bar`).classList.remove("green", "yellow", "red");
             if (percentage >= 50) document.getElementById(`p${i + 1}Bar`).classList.add("green");
@@ -1160,27 +1167,27 @@ function renderHP() {
     }
     document.getElementById("p1Status").innerHTML = "";
     document.getElementById("p2Status").innerHTML = "";
-    for (let i of [0, 1]) if (battleInfo[Number(i != viewpoint)].currentPokemon != -1) {
-        insertEffects(battleInfo[Number(i != viewpoint)].build[battleInfo[Number(i != viewpoint)].currentPokemon], document.getElementById(`p${i + 1}Status`), false);
+    for (let i of [0, 1]) if (info[Number(i != viewpoint)].currentPokemon != -1) {
+        insertEffects(info[Number(i != viewpoint)].build[info[Number(i != viewpoint)].currentPokemon], document.getElementById(`p${i + 1}Status`), false);
     }
     for (let i of [0, 1]) {
         for (let j = 0; j < 6; j++) {
             let ballElement = document.getElementById("p" + (i + 1) + "Ball" + (j + 1));
-            if (!battleInfo[Number(i != viewpoint)].build[j].revealed) {
+            if (!info[Number(i != viewpoint)].build[j].revealed) {
                 ballElement.style.backgroundImage = "url(pokemonicons-pokeball-sheet.png)";
                 ballElement.style.backgroundPosition = "0 0";
                 ballElement.dataset.for = "";
             } else {
                 ballElement.style.backgroundImage = "url(pokemonicons-sheet.png)";
-                ballElement.style.backgroundPosition = (-(ICONS[battleInfo[Number(i != viewpoint)].build[j]
-                    .name].cell - 1) * 40) + "px " + (-(ICONS[battleInfo[Number(i != viewpoint)].build[j].name].row - 1) * 30) + "px";
+                ballElement.style.backgroundPosition = (-(ICONS[info[Number(i != viewpoint)].build[j]
+                    .name].cell - 1) * 40) + "px " + (-(ICONS[info[Number(i != viewpoint)].build[j].name].row - 1) * 30) + "px";
 
-                if (battleInfo[Number(i != viewpoint)].build[j].hp <= 0) {
+                if (info[Number(i != viewpoint)].build[j].hp <= 0) {
                     ballElement.classList.add("faint");
                 } else {
                     ballElement.classList.remove("faint");
                 }
-                ballElement.dataset.for = battleInfo[Number(i != viewpoint)].build[j].name;
+                ballElement.dataset.for = info[Number(i != viewpoint)].build[j].name;
             }
         }
     }
@@ -1305,8 +1312,6 @@ document.getElementById("viewpoint").addEventListener("click", function () {
     document.getElementById("viewpoint").innerText = getL10n("ui", "viewpoint", {
         "player": [battleInfo[viewpoint].name]
     });
-    render();
-    renderHP();
 });
 function refreshLang() {
     for (let i of document.querySelectorAll("[data-transl-cat]")) {

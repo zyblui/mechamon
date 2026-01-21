@@ -330,12 +330,11 @@ table {
     font-family: Inter, sans-serif;
     font-size: large;
     background-color: var(--button-bg);
-    color: var(--text);
     margin: 2px;
     border: solid 2px var(--shadow);
     border-radius: 9px;
 
-    &:hover {
+    &:not(:disabled):hover {
         border: solid 2px dodgerblue;
         background-color: var(--button-hover);
     }
@@ -813,6 +812,9 @@ button {
         .move-type {
             font-size: small;
         }
+    }
+    &:disabled:not(.selected){
+        color:var(--text-dim)
     }
 }
 
