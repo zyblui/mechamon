@@ -38,6 +38,7 @@ body {
         --button-hover: rgb(42, 79, 112);
         --option-hover-bg: #333;
         --text-dim: #999;
+        --text-dim-dark: #ccc;
         --small-text-bg: rgba(255, 255, 255, 0.1);
     }
 
@@ -53,6 +54,7 @@ body {
         --button-hover: rgb(224, 239, 255);
         --option-hover-bg: #eee;
         --text-dim: gray;
+        --text-dim-dark: #333;
         --small-text-bg: rgba(255, 255, 255, 0.9);
     }
 
@@ -802,7 +804,7 @@ button {
             font-weight: bold;
 
             .sub {
-                color: #333;
+                color: var(--text-dim-dark);
                 font-weight: normal;
                 font-size: medium;
             }
@@ -1011,4 +1013,105 @@ label .wrap {
     text-align: center;
     color: gray;
     font-style: italic;
+}
+
+select,
+::picker(select) {
+    appearance: base-select;
+}
+
+select {
+    flex: 1;
+}
+
+select {
+    border: 2px solid var(--shadow);
+    background: var(--button-bg);
+    padding: 6px 9px;
+    transition: 0.1s;
+}
+
+select:hover,
+select:focus {
+    background: var(--button-hover);
+    border-color: dodgerblue;
+}
+
+select::picker-icon {
+    color: #999999;
+    transition: 0.1s rotate;
+}
+
+select:open::picker-icon {
+    rotate: 180deg;
+}
+
+::picker(select) {
+    border: solid 2px var(--shadow);
+    padding: 6px;
+}
+
+option {
+    display: flex;
+    justify-content: flex-start;
+    gap: 20px;
+    color: var(--text);
+    background: var(--right-panel-bg);
+    padding: 6px 9px;
+    transition: 0.1s;
+    position: relative;
+    border-radius: 9px;
+}
+
+::picker(select) {
+    border-radius: 8px;
+    background-color: var(--right-panel-bg);
+    box-shadow: 0 0 9px var(--shadow);
+}
+
+option:hover,
+option:focus {
+    background: var(--option-hover-bg);
+}
+
+selectedcontent .icon {
+    display: none;
+}
+
+option:checked {
+    font-weight: bold;
+}
+
+option::checkmark {
+    order: 1;
+    margin: auto 0;
+    width: 4px;
+    content: "";
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    background-color: dodgerblue;
+    height: calc(100% - 20px);
+    border-radius: 2px;
+}
+
+::picker(select) {
+    opacity: 0;
+    transition: all 0.1s allow-discrete;
+}
+
+::picker(select):popover-open {
+    opacity: 1;
+}
+
+@starting-style {
+    ::picker(select):popover-open {
+        opacity: 0;
+    }
+}
+
+::picker(select) {
+    top: calc(anchor(bottom) + 1px);
 }
