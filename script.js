@@ -528,7 +528,7 @@ function sendOutPkmn(pkmn) {
     render();
     renderHP();
 }
-function addTooltip(elementGroup, i) {
+function addTooltip(elementGroup, i, player = playerToMove) {
     if (!elementGroup[i].dataset.for || !getStats(elementGroup[i].dataset.for)) return;
     let tooltip;
     if (!elementGroup[i].parentElement.querySelector(".tooltip")) {
@@ -572,41 +572,49 @@ function addTooltip(elementGroup, i) {
         tooltip.querySelectorAll(".type-text")[j].classList.add("type-" + stats.type[j]);
         tooltip.querySelectorAll(".type-img")[j].src = "types/" + stats.type[j] + ".png";
     }
-    insertEffects(battleInfo[playerToMove].build[i], tooltip.querySelector(".tip-status"), true);
+    insertEffects(battleInfo[player].build[i], tooltip.querySelector(".tip-status"), true);
 
     for (let j = 0; j < 4; j++) {
-        if (!Object.keys(battleInfo[playerToMove].build[i].moves)[j]) {
-            tooltip.querySelectorAll(".move-name")[j].innerText = "(Empty)";
-            tooltip.querySelectorAll(".pp-remaining")[j].innerText = 0;
-            tooltip.querySelectorAll(".pp .sub")[j].innerText = "/0";
-            tooltip.querySelectorAll(".move-name")[j].classList.add("unknown");
-            continue;
-        }
-        tooltip.querySelectorAll(".move-name")[j].innerText = getL10n("moves", Object.keys(battleInfo[playerToMove]
-            .build[i].moves)[j]);
-        tooltip.querySelectorAll(".pp-remaining")[j].innerText = Object.values(battleInfo[playerToMove].build[i]
-            .moves)[j];
-        tooltip.querySelectorAll(".pp .sub")[j].innerText = "/" + getMoveStats(Object.keys(battleInfo[playerToMove]
-            .build[i].moves)[j]).pp;
-        if (Object.values(battleInfo[playerToMove].build[i].moves)[j] == getMoveStats(Object
-            .keys(battleInfo[playerToMove].build[i].moves)[j]).pp) tooltip.querySelectorAll(".move-name")[j].classList
-                .add("unknown");
-        else tooltip.querySelectorAll(".move-name")[j].classList.remove("unknown");
+        let totalPp = getMoveStats(Object.keys(battleInfo[player].build[i].moves)[j]).pp;
+        let ppRemaining = Object.values(battleInfo[player].build[i].moves)[j];
+        if (Object.keys(battleInfo[player].build[i].moves)[j] && ((player != playerToMove && ppRemaining < totalPp) ||
+            (player == playerToMove))) {
+            tooltip.querySelectorAll(".move-name")[j].innerText = getL10n("moves", Object.keys(battleInfo[player]
+                .build[i].moves)[j]);
+            tooltip.querySelectorAll(".pp-remaining")[j].innerText = ppRemaining;
+            tooltip.querySelectorAll(".pp .sub")[j].innerText = "/" + totalPp;
+            if (Object.values(battleInfo[player].build[i].moves)[j] == getMoveStats(Object
+                .keys(battleInfo[player].build[i].moves)[j]).pp) tooltip.querySelectorAll(".move-name")[j].classList
+                    .add("unknown");
+            else tooltip.querySelectorAll(".move-name")[j].classList.remove("unknown");
+        } else if (player == playerToMove) addGrayMove(tooltip, "empty", 0, "/0");
+        else addGrayMove(tooltip, "unknownMove", "?", "/?");
     }
-    tooltip.querySelector(".hp-remaining").innerText = (battleInfo[playerToMove].build[i].hp / battleInfo[playerToMove]
+    tooltip.querySelector(".hp-remaining").innerText = (battleInfo[player].build[i].hp / battleInfo[player]
         .build[i].maxHp * 100).toFixed(0) + "%";
-    tooltip.querySelector(".hp .sub").innerText = ", " + battleInfo[playerToMove].build[i].hp.toFixed(0) + "/" +
-        battleInfo[playerToMove].build[i].maxHp;
+    if (player == playerToMove) tooltip.querySelector(".hp .sub").innerText = ", " + battleInfo[player].build[i].hp
+        .toFixed(0) + "/" + battleInfo[player].build[i].maxHp;
+    else tooltip.querySelector(".hp .sub").innerText = "";
     tooltip.classList.add("show");
 }
+function addGrayMove(tooltip, textKey, ppRemaining, subText) {
+    tooltip.querySelectorAll(".move-name")[j].innerText = getL10n("ui", textKey);
+    tooltip.querySelectorAll(".pp-remaining")[j].innerText = ppRemaining;
+    tooltip.querySelectorAll(".pp .sub")[j].innerText = subText;
+    tooltip.querySelectorAll(".move-name")[j].classList.add("unknown");
+}
+const TOOLTIP_PLAYER = {
+    ".decisionSwitch": undefined,
+    "#p1Balls .ball": 0,
+    "#p2Balls .ball": 1
+};
 for (let i = 0; i < 6; i++) {
     document.getElementsByClassName("decisionSwitch")[i].addEventListener("click", function () {
         switchPkmn(document.getElementsByClassName("decisionSwitch")[i].dataset.for);
     });
-
-    for (let j of [".decisionSwitch", "#p1Balls .ball", "#p2Balls .ball"]) {
+    for (let j in TOOLTIP_PLAYER) {
         document.querySelectorAll(j)[i].addEventListener("mouseover", function () {
-            addTooltip(document.querySelectorAll(j), i);
+            addTooltip(document.querySelectorAll(j), i, TOOLTIP_PLAYER[j]);
         });
         document.querySelectorAll(j)[i].addEventListener("mouseout", function () {
             document.querySelectorAll(j)[i].parentElement.querySelector(".tooltip")?.classList.remove("show");

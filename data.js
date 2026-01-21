@@ -3326,7 +3326,9 @@ const TRANSLATION = {
             "power": "Power",
             "accuracy": "Accuracy",
             "priority": "Priority",
-            "pp": "PP"
+            "pp": "PP",
+            "empty":"(Empty)",
+            "unknownMove":"Unknown Move"
         },
         "others": {
             "turn": "Turn [number0]",
@@ -4102,7 +4104,9 @@ const TRANSLATION = {
             "power": "威力",
             "accuracy": "命中",
             "priority": "优先度",
-            "pp": "PP"
+            "pp": "PP",
+            "empty":"(空)",
+            "unknownMove":"未知招式"
         },
         "others": {
             "turn": "第 [number0] 回合",
