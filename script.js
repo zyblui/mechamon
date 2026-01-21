@@ -587,8 +587,8 @@ function addTooltip(elementGroup, i, player = playerToMove) {
                 .keys(battleInfo[player].build[i].moves)[j]).pp) tooltip.querySelectorAll(".move-name")[j].classList
                     .add("unknown");
             else tooltip.querySelectorAll(".move-name")[j].classList.remove("unknown");
-        } else if (player == playerToMove) addGrayMove(tooltip, "empty", 0, "/0");
-        else addGrayMove(tooltip, "unknownMove", "?", "/?");
+        } else if (player == playerToMove) addGrayMove(tooltip,j, "empty", 0, "/0");
+        else addGrayMove(tooltip,j, "unknownMove", "?", "/?");
     }
     tooltip.querySelector(".hp-remaining").innerText = (battleInfo[player].build[i].hp / battleInfo[player]
         .build[i].maxHp * 100).toFixed(0) + "%";
@@ -597,7 +597,7 @@ function addTooltip(elementGroup, i, player = playerToMove) {
     else tooltip.querySelector(".hp .sub").innerText = "";
     tooltip.classList.add("show");
 }
-function addGrayMove(tooltip, textKey, ppRemaining, subText) {
+function addGrayMove(tooltip, j, textKey, ppRemaining, subText) {
     tooltip.querySelectorAll(".move-name")[j].innerText = getL10n("ui", textKey);
     tooltip.querySelectorAll(".pp-remaining")[j].innerText = ppRemaining;
     tooltip.querySelectorAll(".pp .sub")[j].innerText = subText;
