@@ -326,7 +326,10 @@ function refreshDecision() {
 
             displayEffectiveness(button, tempMove);
         }
-    } else if (battleInfo[playerToMove].currentPokemon != -1) {
+    } else if (battleInfo[playerToMove].currentPokemon == -1) for (let i = 0; i < 4; i++) {
+        document.getElementsByClassName("decisionMove")[i].disabled = "disabled";
+        displayEffectiveness(document.getElementsByClassName("decisionMove")[i], "");
+    } else {
         let moveButtonGroup = document.getElementsByClassName("decisionMove");
         moveButtonGroup[0].disabled = "";
         moveButtonGroup[0].querySelector(".move-text").innerText = "Pass";
@@ -341,11 +344,6 @@ function refreshDecision() {
             moveButtonGroup[i].querySelector(".sub").innerText = "/-";
             moveButtonGroup[i].querySelector(".move-type").innerText = "-";
             displayEffectiveness(moveButtonGroup[i], "");
-        }
-    } else {
-        for (let i = 0; i < 4; i++) {
-            document.getElementsByClassName("decisionMove")[i].disabled = "disabled";
-            displayEffectiveness(document.getElementsByClassName("decisionMove")[i], "");
         }
     }
     let switchButtons = document.querySelectorAll(".decisionSwitch");
@@ -464,7 +462,6 @@ function refreshSequence() {
         insertElementWithClass("div", str, "recordContent", "main-text");
         renderFull(element.refresh);
     } else if (element.type == "small") {
-        console.log(element);
         if (element.args[2]?.hardcoreHide) insertElementWithClass("div", str, "text", "small-text", "hardcore-hide");
         else insertElementWithClass("div", str, "text", "small-text");
         insertElementWithClass("div", str, "recordContent", "small-text");
@@ -479,14 +476,14 @@ function refreshSequence() {
         behavior: "smooth"
     });
     if (sequence.length) {
-        if (sequence[0].type != "turn") {
+        if (sequence[0].type == "turn") {
+            refreshSequenceIsRunning = false;
+            refreshSequence();
+        } else {
             setTimeout(function () {
                 refreshSequenceIsRunning = false;
                 refreshSequence();
             }, 600);
-        } else {
-            refreshSequenceIsRunning = false;
-            refreshSequence();
         }
     } else {
         refreshSequenceIsRunning = false;
@@ -666,16 +663,16 @@ function insertEffects(pkmn, outputArea, showFull) {
     }
 }
 function switchPkmn(name) {
-    if (battleInfo[playerToMove].currentPokemon != -1) {
+    if (battleInfo[playerToMove].currentPokemon == -1) {
+        sendOutPkmn(name);
+        endTurn();
+    } else {
         attacks.push({
             "user": playerToMove,
             "type": "switch",
             "pkmn": name
         });
         decisionNextPlayer();
-    } else {
-        sendOutPkmn(name);
-        endTurn();
     }
 }
 let isNewTurn = false;
