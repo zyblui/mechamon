@@ -37,14 +37,14 @@ let settings = {
     "omiegamon": false
 };
 const PROPERTIES = ["atk", "def", "sp", "spe"];
-if (!localStorage.getItem("mechamonSettings")) {
-    localStorage.setItem("mechamonSettings", JSON.stringify(settings));
-} else {
+if (localStorage.getItem("mechamonSettings")) {
     for (let i in settings) if (!Object.keys(JSON.parse(localStorage.getItem("mechamonSettings"))).includes(i)) {
         localStorage.setItem("mechamonSettings", JSON.stringify(settings));
         break;
     }
     settings = JSON.parse(localStorage.getItem("mechamonSettings"));
+} else {
+    localStorage.setItem("mechamonSettings", JSON.stringify(settings));
 }
 let players = [{
     "name": "Player 1",
@@ -834,7 +834,8 @@ function nextTurn() {
         addMainText("others", "use", {
             "pokemon": [getName(getPkmn(true), false)],
             "moves": [getL10n("moves", i.move)],
-            "isEnemy": ((viewpoint == -1) ? false : (playerToMove != viewpoint))
+            "isEnemy": ((viewpoint == -1) ? false : (playerToMove != viewpoint)),
+            //"notation":i.move
         });
 
         if (i.dirAttack) {
@@ -1097,23 +1098,21 @@ function repeatAttack(dmg, count) {
 function judgeHP() {
     if (getPkmn(false)?.hp <= 0) {
         getPkmn(false).hp = 0;
-        /*if (playerToMove == 0) document.getElementById("p2Pokemon").style.backgroundImage = "none";
-        else document.getElementById("p1Pokemon").style.backgroundImage = "none";*/
+        let faintedPkmn = getPkmn(false);
+        battleInfo[(playerToMove == 0) ? 1 : 0].currentPokemon = -1;
         addMainText("others", "faint", {
-            "pokemon": [getName(getPkmn(false), false)],
+            "pokemon": [getName(faintedPkmn, false)],
             "isEnemy": ((viewpoint == -1) ? true : (!playerToMove != viewpoint))
         });
-        battleInfo[(playerToMove == 0) ? 1 : 0].currentPokemon = -1;
     }
     if (getPkmn(true)?.hp <= 0) {
         getPkmn(true).hp = 0;
-        /*if (playerToMove == 1) document.getElementById("p2Pokemon").style.backgroundImage = "none";
-        else document.getElementById("p1Pokemon").style.backgroundImage = "none";*/
+        let faintedPkmn = getPkmn(true);
+        battleInfo[playerToMove].currentPokemon = -1;
         addMainText("others", "faint", {
-            "pokemon": [getName(getPkmn(true), false)],
+            "pokemon": [getName(faintedPkmn, false)],
             "isEnemy": ((viewpoint == -1) ? false : (playerToMove != viewpoint))
         });
-        battleInfo[playerToMove].currentPokemon = -1;
     }
 }
 const STAGE_MULTIPLIER = {

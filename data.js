@@ -484,7 +484,7 @@ const MOVES = [{
     "pp": 5,
     "priority": 0,
     "effect": function () {
-        getPkmn(true).hp = 0;
+        dealDmg(true, getPkmn(true).hp, { "ignoreSubstitute": true });
     }
 }, {
     "name": "fire blast",
@@ -535,7 +535,7 @@ const MOVES = [{
     "priority": 0,
     "effect": function () {
         if (getStats(getPkmn(false).name).spe <= getStats(getPkmn(true).name).spe) {
-            getPkmn(false).hp = 0;
+            dealDmg(false, getPkmn(false).hp, { "ignoreSubstitute": true });
         }
     }
 }, {
@@ -657,7 +657,7 @@ const MOVES = [{
     "priority": 0,
     "effect": function () {
         if (getStats(getPkmn(false).name).spe <= getStats(getPkmn(true).name).spe) {
-            getPkmn(false).hp = 0;
+            dealDmg(false, getPkmn(false).hp, { "ignoreSubstitute": true });
         }
     }
 }, {
@@ -734,7 +734,7 @@ const MOVES = [{
     "priority": 0,
     "effect": function () {
         if (getStats(getPkmn(false).name).spe <= getStats(getPkmn(true).name).spe) {
-            getPkmn(false).hp = 0;
+            dealDmg(false, getPkmn(false).hp, { "ignoreSubstitute": true });
         }
     }
 }, {
@@ -1327,13 +1327,13 @@ const MOVES = [{
 }, {
     "name": "self-destruct",
     "type": "normal",
-    "category": "",
+    "category": "physical",
     "power": 130,
     "acc": 100,
     "pp": 5,
     "priority": 0,
     "effect": function () {
-        getPkmn(true).hp = 0;
+        dealDmg(true, getPkmn(true).hp, { "ignoreSubstitute": true });
     }
 }, {
     "name": "sharpen",
@@ -1349,7 +1349,7 @@ const MOVES = [{
 }, {
     "name": "sing",
     "type": "normal",
-    "category": "",
+    "category": "status",
     "power": 0,
     "acc": 55,
     "pp": 15,
@@ -3327,8 +3327,8 @@ const TRANSLATION = {
             "accuracy": "Accuracy",
             "priority": "Priority",
             "pp": "PP",
-            "empty":"(Empty)",
-            "unknownMove":"Unknown Move"
+            "empty": "(Empty)",
+            "unknownMove": "Unknown Move"
         },
         "others": {
             "turn": "Turn [number0]",
@@ -3402,10 +3402,10 @@ const TRANSLATION = {
             "hpRestored-enemy": "The opposing [pokemon0] had its HP restored.",
             "damagedByRecoil": "[pokemon0] was damaged by the recoil!",
             "damagedByRecoil-enemy": "The opposing [pokemon0] was damaged by the recoil!",
-            "burn":"[pokemon0] was burned!",
-            "burn-enemy":"The opposing [pokemon0] was burned!",
-            "hurtByBurn":"[pokemon0] was hurt by its burn!",
-            "hurtByBurn-enemy":"The opposing [pokemon0] was hurt by its burn!"
+            "burn": "[pokemon0] was burned!",
+            "burn-enemy": "The opposing [pokemon0] was burned!",
+            "hurtByBurn": "[pokemon0] was hurt by its burn!",
+            "hurtByBurn-enemy": "The opposing [pokemon0] was hurt by its burn!"
         },
         "pokemon": {
             "abra": "Abra",
@@ -4105,8 +4105,8 @@ const TRANSLATION = {
             "accuracy": "命中",
             "priority": "优先度",
             "pp": "PP",
-            "empty":"(空)",
-            "unknownMove":"未知招式"
+            "empty": "(空)",
+            "unknownMove": "未知招式"
         },
         "others": {
             "turn": "第 [number0] 回合",
@@ -4180,10 +4180,10 @@ const TRANSLATION = {
             "hpRestored-enemy": "对手的[pokemon0]的体力回复了。",
             "damagedByRecoil": "[pokemon0]受到了反作用力造成的伤害！",
             "damagedByRecoil-enemy": "对手的[pokemon0]受到了反作用力造成的伤害！",
-            "burn":"[pokemon0]被灼伤了！",
-            "burn-enemy":"对手的[pokemon0]被灼伤了！",
-            "hurtByBurn":"[pokemon0]受到了灼伤的伤害！",
-            "hurtByBurn-enemy":"对手的[pokemon0]受到了灼伤的伤害！"
+            "burn": "[pokemon0]被灼伤了！",
+            "burn-enemy": "对手的[pokemon0]被灼伤了！",
+            "hurtByBurn": "[pokemon0]受到了灼伤的伤害！",
+            "hurtByBurn-enemy": "对手的[pokemon0]受到了灼伤的伤害！"
         },
         "pokemon": {
             "abra": "凯西",
