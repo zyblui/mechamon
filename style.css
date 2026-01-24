@@ -59,6 +59,9 @@ body {
     }
 
     color:var(--text);
+    &.hardcore-hide-container .hardcore-hide{
+        display: none;
+    }
 }
 
 p,
@@ -582,7 +585,7 @@ table {
 
     &.under {
         bottom: auto;
-        top: 100%
+        top: 100%;
     }
 
     .tip-desc {
@@ -593,7 +596,7 @@ table {
     .tip-name {
         font-weight: bold;
         font-size: large;
-        display: inline-block
+        display: inline-block;
     }
 
     .img-left {
@@ -941,7 +944,7 @@ button {
 
 input[type="checkbox"] {
     appearance: none;
-    border: solid 1px gray;
+    border: solid 1px var(--text-dim);
     border-radius: 6px;
     width: 20px;
     height: 20px;
@@ -1013,7 +1016,7 @@ label .wrap {
 
 #hardcoreTip {
     text-align: center;
-    color: gray;
+    color: var(--text-dim);
     font-style: italic;
 }
 
@@ -1054,6 +1057,7 @@ select:open::picker-icon {
     opacity: 0;
     transition: all 0.1s allow-discrete;
     top: calc(anchor(bottom) + 1px);
+    min-block-size: fit-content;
 }
 
 option {

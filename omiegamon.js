@@ -6,7 +6,7 @@ const POKEMON_OMIEGA = [{
     "def": 50,
     "sp": 50,
     "spe": 50,
-    "moves": ["raging tide"]
+    "moves": ["raging tide","pretend"]
 }, {
     "name": "semenshooter",
     "type": ["grass"],
@@ -32,6 +32,16 @@ const MOVES_OMIEGA = [{
             } else break;
         }
     }
+},{
+    "name": "pretend",
+    "type": "normal",
+    "category": "physical",
+    "power": 40,
+    "acc": 100,
+    "pp": 20,
+    "priority": 0,
+    "effect": function (e) {
+    }
 }];
 const TRANSLATION_OMIEGA = {
     "en": {
@@ -40,7 +50,8 @@ const TRANSLATION_OMIEGA = {
             "masterat": "Masterat"
         },
         "moves": {
-            "raging tide": "Raging Tide"
+            "raging tide": "Raging Tide",
+            "pretend":"Pretend"
         },
         "moveDesc": {
             "raging tide": ""

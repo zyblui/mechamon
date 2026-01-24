@@ -450,26 +450,28 @@ function refreshSequence() {
     if (refreshSequenceIsRunning || !sequence.length) return;
     refreshSequenceIsRunning = true;
     let element = sequence.shift();
-    function insertElementWithClass(elementName, className, text, parentId) {
+    function insertElementWithClass(elementName, text, parentId, ...className) {
         let tempElement = document.createElement(elementName);
         tempElement.innerHTML = text;
-        tempElement.classList.add(className);
+        tempElement.classList.add(...className);
         tempElement.dataset.content = JSON.stringify(element.args);
         document.getElementById(parentId).appendChild(tempElement);
     }
     let str = getL10n(...element.args);
     if (element.type == "main") {
         document.getElementById("text").innerHTML = "";
-        insertElementWithClass("div", "main-text", str, "text");
-        insertElementWithClass("div", "main-text", str, "recordContent");
+        insertElementWithClass("div", str, "text", "main-text");
+        insertElementWithClass("div", str, "recordContent", "main-text");
         renderFull(element.refresh);
     } else if (element.type == "small") {
-        insertElementWithClass("div", "small-text", str, "text");
-        insertElementWithClass("div", "small-text", str, "recordContent");
+        console.log(element);
+        if (element.args[2]?.hardcoreHide) insertElementWithClass("div", str, "text", "small-text", "hardcore-hide");
+        else insertElementWithClass("div", str, "text", "small-text");
+        insertElementWithClass("div", str, "recordContent", "small-text");
         renderFull(element.refresh);
     } else if (element.type == "turn") {
         document.getElementById("turnNumber").innerText = str;
-        insertElementWithClass("h2", "turn-number", str, "recordContent");
+        insertElementWithClass("h2", str, "recordContent", "turn-number");
     }
     document.getElementById("record").scroll({
         top: document.getElementById("record").scrollHeight,
@@ -584,7 +586,7 @@ function addTooltip(elementGroup, i, player = playerToMove) {
     insertEffects(battleInfo[player].build[i], tooltip.querySelector(".tip-status"), true);
 
     for (let j = 0; j < 4; j++) {
-        let totalPp = getMoveStats(Object.keys(battleInfo[player].build[i].moves)[j]).pp;
+        let totalPp = getMoveStats(Object.keys(battleInfo[player].build[i].moves)[j])?.pp;
         let ppRemaining = Object.values(battleInfo[player].build[i].moves)[j];
         if (Object.keys(battleInfo[player].build[i].moves)[j] && ((player != playerToMove && ppRemaining < totalPp) ||
             (player == playerToMove))) {
@@ -704,7 +706,8 @@ function dealDmg(isSelf, dmg) {
         addSmallText("others", "loseHealth", {
             "pokemon": [getName(getPkmn(isSelf), false)],
             "percentage": [(dmg / getPkmn(isSelf).maxHp * 100).toFixed(0)],
-            "isEnemy": ((viewpoint == -1) ? false : ((isSelf == playerToMove) != viewpoint))
+            "isEnemy": ((viewpoint == -1) ? false : ((isSelf == playerToMove) != viewpoint)),
+            "hardcoreHide": true
         });
     }
 }
@@ -1347,10 +1350,12 @@ function applySetting(key) {
                 document.getElementById("recordContent").classList.add("hide");
                 document.getElementById("turnNumber").classList.add("hide");
                 document.getElementById("hardcoreTip").classList.remove("hide");
+                document.querySelector("body").classList.add("hardcore-hide-container");
             } else {
                 document.getElementById("recordContent").classList.remove("hide");
                 document.getElementById("turnNumber").classList.remove("hide");
                 document.getElementById("hardcoreTip").classList.add("hide");
+                document.querySelector("body").classList.remove("hardcore-hide-container");
             }
             break;
         case "darkMode":
