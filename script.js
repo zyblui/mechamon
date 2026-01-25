@@ -708,9 +708,10 @@ function dealDmg(isSelf, dmg) {
         });
     }
 }
-function nextPlayer(player) {
-    playerToMove = player;
-    if (getPkmn(true)) {
+let nextPlayerEffect = [{
+    "name": "delay",
+    "condition": function () { return true; },
+    "effect": function () {
         for (let i = 0; i < getPkmn(true).delay.length; i++) {
             if (getPkmn(true).delay[i].turns > 0) getPkmn(true).delay[i].turns--;
             else {
@@ -719,24 +720,40 @@ function nextPlayer(player) {
                 i--;
             }
         }
-        if (getPkmn(true).disable.turns > 0) getPkmn(true).delay[i].turns--;
-        else {
-            getPkmn(true).disable.move = "";
-        }
     }
-    if (getPkmn(true)?.status == "par" && Math.random() < 1 / 4) {
+}, {
+    "name": "disable",
+    "condition": function () { return true; },
+    "effect": function () {
+        if (getPkmn(true).disable.turns > 0) getPkmn(true).disable.turns--;
+        else getPkmn(true).disable.move = "";
+    }
+}, {
+    "name": "par",
+    "condition": function () { return getPkmn(true).status == "par" && Math.random() < 1 / 4; },
+    "effect": function () {
         addMainText("others", "unableToMove", {
             "pokemon": [getName(getPkmn(true), false)],
             "isEnemy": playerToMove != viewpoint
         });
         return { "continue": true };
-    } else if (getPkmn(true)?.status == "frz") {
+    }
+}, {
+    "name": "frz",
+    "condition": function () { return getPkmn(true).status == "frz"; },
+    "exclude": "par",
+    "effect": function () {
         addMainText("others", "frozenSolid", {
             "pokemon": [getName(getPkmn(true), false)],
             "isEnemy": playerToMove != viewpoint
         });
         return { "continue": true };
-    } else if (getPkmn(true)?.charge.turns > 0) {
+    }
+}, {
+    "name": "charge",
+    "condition": function () { return getPkmn(true).charge.turns > 0; },
+    "exclude": "frz",
+    "effect": function () {
         getPkmn(true).charge.turns--;
         if (getPkmn(true).charge.move && getPkmn(true).charge.turns == 0 && getPkmn(true).charge.move) {
             attack(getPkmn(true).charge.move);
@@ -744,12 +761,22 @@ function nextPlayer(player) {
         } else {
             return { "continue": true };
         }
-    } else if (getPkmn(true)?.uncontrollable.turns > 0) {
+    }
+}, {
+    "name": "uncontrollable",
+    "condition": function () { return getPkmn(true).uncontrollable.turns > 0; },
+    "exclude": "charge",
+    "effect": function () {
         getPkmn(true).uncontrollable.turns--;
         if (getPkmn(true).uncontrollable.move && getPkmn(true).uncontrollable.turns == 0) {
             getPkmn(true).uncontrollable.move = "";
         }
-    } else if (getPkmn(true)?.status == "slp") {
+    }
+}, {
+    "name": "slp",
+    "condition": function () { return getPkmn(true).status == "slp"; },
+    "exclude": "uncontrollable",
+    "effect": function () {
         getPkmn(true).sleepTurns--;
         if (getPkmn(true).sleepTurns > 0) {
             addMainText("others", "fastAsleep", {
@@ -764,7 +791,12 @@ function nextPlayer(player) {
             getPkmn(true).status = "";
         }
         return { "continue": true };
-    } else if (getPkmn(true)?.tempEffect.confused > 0) {
+    }
+}, {
+    "name": "confused",
+    "condition": function () { return getPkmn(true).tempEffect.confused > 0; },
+    "exclude": "slp",
+    "effect": function () {
         addSmallText("others", "confused", {
             "pokemon": [getName(getPkmn(true), false)],
             "isEnemy": ((viewpoint == -1) ? false : (playerToMove != viewpoint))
@@ -778,6 +810,23 @@ function nextPlayer(player) {
         }
         //getPkmn(true).tempEffect.confused--;
     }
+}];
+function nextPlayer(player) {
+    playerToMove = player;
+    let matchedConditions = [];
+    if (!getPkmn(true)) return;
+    for (let i of nextPlayerEffect) if (i.condition()) {
+        matchedConditions.push(i.name);
+        if (!(i.exclude && matchedConditions.includes(i.exclude))) {
+            let additionalInfo = i.effect();
+            if (additionalInfo) return additionalInfo;
+        }
+    }
+}
+function insertCustomNextPlayerEffect(insertAfter, effectJSON) {
+    if (!insertAfter) nextPlayerEffect.unshift(effectJSON);
+    for (let i = 0; i < nextPlayerEffect.length; i++) if (nextPlayerEffect[i].name == insertAfter) nextPlayerEffect.splice(i +
+        1, 0, effectJSON);
 }
 function getAttack(isSelf) {
     return getPkmn(isSelf).atk * STAGE_MULTIPLIER[getPkmn(isSelf).atkStage];

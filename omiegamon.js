@@ -41,6 +41,7 @@ const MOVES_OMIEGA = [{
     "pp": 20,
     "priority": 0,
     "effect": function (e) {
+        
     }
 }];
 const TRANSLATION_OMIEGA = {

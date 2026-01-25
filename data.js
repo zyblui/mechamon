@@ -1790,7 +1790,7 @@ const MOVES = [{
     "priority": 0,
     "effect": function () {
         getPkmn(true).transformPkmn = getPkmn(false).name;
-        for (let i of ["atkStage", "defStage", "spStage ", "speStage", "accStage", "evaStage"]) {
+        for (let i of ["atkStage", "defStage", "spStage", "speStage", "accStage", "evaStage"]) {
             getPkmn(true)[i] = getPkmn(false)[i];
         }
         getPkmn(true).moves = structuredClone(getPkmn(false).moves);
