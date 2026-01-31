@@ -482,14 +482,14 @@
         </div>
         <div data-for="record" class="tab-content" id="record">
             <div id="recordContent"></div>
-            <div id="hardcoreTip">Record is unavailable, because you are on Hardcore Mode. Turn it off to reveal battle
-                records.</div>
+            <div id="hardcoreTip" data-transl-cat="ui" data-transl-key="recordUnavailable">Record is unavailable,
+                because you are on Hardcore Mode. Turn it off to reveal battle records.</div>
             <div id="navigation">
                 <div id="navigationInner">
                     <button>&lt;&lt;</button><button>&lt;</button><button>&gt;</button><button>&gt;&gt;</button>
                 </div>
                 <a id="saveReplay" download="Replay.mcm">
-                <button>Save Replay</button>
+                    <button>Save Replay</button>
                 </a>
             </div>
         </div>
@@ -502,14 +502,16 @@
                 <hr /><label>
                     <div class="wrap">
                         <input type="checkbox" data-settings="hardcoreMode" />
-                        <span class="checkbox-key">Hardcore Mode</span>
+                        <span class="checkbox-key" data-transl-cat="ui" data-transl-key="hardcoreMode">Hardcore
+                            Mode</span>
                         <p class="explanation">Hides all information not shown ingame.</p>
                     </div>
                 </label>
                 <label>
                     <div class="wrap">
                         <input type="checkbox" data-settings="effectivenessIndicator" />
-                        <span class="checkbox-key">Effectiveness Indicator</span>
+                        <span class="checkbox-key" data-transl-cat="ui"
+                            data-transl-key="effectivenessIndicator">Effectiveness Indicator</span>
                         <p class="explanation">When it is on, the effectiveness of each move will be displayed as: </p>
                         <ul class="explanation">
                             <li>Doubly Super-Effective (DSE)</li>
@@ -524,14 +526,15 @@
                 <label>
                     <div class="wrap">
                         <input type="checkbox" data-settings="darkMode" />
-                        <span class="checkbox-key">Dark Mode</span>
+                        <span class="checkbox-key" data-transl-cat="ui" data-transl-key="darkMode">Dark Mode</span>
                         <p class="explanation">Determines the overall color scheme.</p>
                     </div>
                 </label>
                 <label>
                     <div class="wrap">
                         <input type="checkbox" data-settings="keyboardControls" />
-                        <span class="checkbox-key">Keyboard Controls</span>
+                        <span class="checkbox-key" data-transl-cat="ui" data-transl-key="keyboardControls">Keyboard
+                            Controls</span>
                         <p class="explanation">Press [1][2][3][4] for 4 moves, and press [Z][X][C][V][B][N] for 6
                             Pokémon.</p>
                     </div>

@@ -3328,7 +3328,13 @@ const TRANSLATION = {
             "priority": "Priority",
             "pp": "PP",
             "empty": "(Empty)",
-            "unknownMove": "Unknown Move"
+            "unknownMove": "Unknown Move",
+            "playerTurn": "[player0]'s turn",
+            "recordUnavailable": "Record is unavailable, because you are on Hardcore Mode. Turn it off to reveal battle records.",
+            "hardcoreMode":"Hardcore Mode",
+            "effectivenessIndicator":"Effectiveness Indicator",
+            "darkMode":"Dark Mode",
+            "keyboardControls":"Keyboard Controls"
         },
         "others": {
             "turn": "Turn [number0]",
@@ -4106,7 +4112,13 @@ const TRANSLATION = {
             "priority": "优先度",
             "pp": "PP",
             "empty": "(空)",
-            "unknownMove": "未知招式"
+            "unknownMove": "未知招式",
+            "playerTurn": "[player0] 的回合",
+            "recordUnavailable": "记录不可用，因为你正处于硬核模式。将其关闭以显示对战记录。",
+            "hardcoreMode":"硬核模式",
+            "effectivenessIndicator":"效果指示器",
+            "darkMode":"暗黑模式",
+            "keyboardControls":"键盘控制"
         },
         "others": {
             "turn": "第 [number0] 回合",

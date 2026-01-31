@@ -144,6 +144,9 @@ document.getElementById("p2Name").innerText = getL10n("pokemon", players[1].buil
 document.getElementById("turnNumber").innerText = getL10n("others", "turn", {
     "number": [0]
 });
+document.getElementById("playerToMove").innerText = getL10n("ui", "playerTurn", {
+    "player": ["Player 1"]
+});
 document.getElementById("viewpoint").innerText = getL10n("ui", "viewpoint", {
     "player": ["Player 1"]
 });
@@ -373,70 +376,72 @@ function displayEffectiveness(button, move) {
         getType(false))];
 }
 let turn = 0, playerToMove = 0, battleInfo = [];
+function getDefaultProperties(playersInfo) {
+    let arr = structuredClone(playersInfo);
+    arr[0].currentPokemon = -1;
+    arr[1].currentPokemon = -1;
+    for (let i of arr) for (let j of i.build) {
+        for (let k of POKEMON) {
+            if (k.name == j.name) {
+                j.maxHp = Math.floor(0.01 * (2 * (k.hp + j.dv) + Math.floor(0.25 * j.ev)) * j.lv) + j.lv + 10;
+                j.hp = j.maxHp;
+                break;
+            }
+        }
+        for (let k of ["atk", "def", "sp", "spe"]) {
+            j[k] = Math.floor(0.01 * (2 * (getStats(j.name)[k] + j.dv) + Math.floor(0.25 * j.ev)) * j.lv) + 5;
+        }
+        j.transformPkmn = "";
+        j.mimicMove = "";
+        j.atkStage = 0;
+        j.defStage = 0;
+        j.spStage = 0;
+        j.speStage = 0;
+        j.accStage = 0;
+        j.evaStage = 0;
+        j.critProbMultiplier = 1;
+        j.status = "";
+        j.charge = {
+            move: "",
+            turns: 0
+        };
+        j.uncontrollable = {
+            move: "",
+            turns: 0,
+            isCrit: false
+        };
+        j.tempEffect = {
+            "confused": 0,
+            "semiInvulnerable": 0,
+            "rage": 0,
+            "reflect": 0,
+            "light screen": 0,
+            "mist": 0
+        };
+        j.delay = [];
+        j.sleepTurns = 0;
+        j.tempType = [];
+        j.disable = {
+            move: "",
+            turns: 0
+        };
+        j.substituteHp = 0;
+        j.toxicCounter = 0;
+        j.dmgTaken = [];
+        j.lastDmgTakenType = "";
+        j.lastMoveUsed = "";
+        let json = {};
+        for (let k of j.moves) for (let l of MOVES) if (l.name == k) json[k] = l.pp;
+        j.moves = json;
+        j.revealed = false;
+    }
+    return arr;
+}
 document.getElementById("startGame").addEventListener("click", function () {
     document.getElementById("recordContent").innerHTML = "";
     turn = 0;
     record = [];
-    battleInfo = structuredClone(players);
-    battleInfo[0].currentPokemon = -1;
-    battleInfo[1].currentPokemon = -1;
-    for (let i of battleInfo) {
-        for (let j of i.build) {
-            for (let k of POKEMON) {
-                if (k.name == j.name) {
-                    j.maxHp = Math.floor(0.01 * (2 * (k.hp + j.dv) + Math.floor(0.25 * j.ev)) * j.lv) + j.lv + 10;
-                    j.hp = j.maxHp;
-                    break;
-                }
-            }
-            for (let k of ["atk", "def", "sp", "spe"]) {
-                j[k] = Math.floor(0.01 * (2 * (getStats(j.name)[k] + j.dv) + Math.floor(0.25 * j.ev)) * j.lv) + 5;
-            }
-            j.transformPkmn = "";
-            j.mimicMove = "";
-            j.atkStage = 0;
-            j.defStage = 0;
-            j.spStage = 0;
-            j.speStage = 0;
-            j.accStage = 0;
-            j.evaStage = 0;
-            j.critProbMultiplier = 1;
-            j.status = "";
-            j.charge = {
-                move: "",
-                turns: 0
-            };
-            j.uncontrollable = {
-                move: "",
-                turns: 0,
-                isCrit: false
-            };
-            j.tempEffect = {
-                "confused": 0,
-                "semiInvulnerable": 0,
-                "rage": 0,
-                "reflect": 0,
-                "light screen": 0,
-                "mist": 0
-            };
-            j.delay = [];
-            j.sleepTurns = 0;
-            j.tempType = [];
-            j.disable = {
-                move: "",
-                turns: 0
-            };
-            j.substituteHp = 0;
-            j.toxicCounter = 0;
-            j.dmgTaken = [];
-            j.lastDmgTakenType = "";
-            j.lastMoveUsed = "";
-            let json = {};
-            for (let k of j.moves) for (let l of MOVES) if (l.name == k) json[k] = l.pp;
-            j.moves = json;
-            j.revealed = false;
-        }
-    }
+    battleInfo = getDefaultProperties(players);
     playerToMove = 0;
     sendOutPkmn(battleInfo[0].build[0].name);
     playerToMove = 1;
@@ -508,19 +513,36 @@ function simplifyRecord(rec) {
         for (let k of Object.keys(players[i].build[j])) str += `;${k}=${players[i].build[j][k]}`;
         str += "]\r\n";
     }
-    for (let i of rec) {
-        str += `[${capitalize(i.type)} ${i.args[1]}`;
-        if (i.args[2]) {
-            for (let j of Object.keys(i.args[2])) {
-                str += `;${j}=${i.args[2][j]}`;
+    for (let i = 0; i < rec.length; i++) {
+        str += `[${capitalize(rec[i].type)} ${rec[i].args[1]}`;
+        if (rec[i].args[2]) {
+            for (let j of Object.keys(rec[i].args[2])) {
+                str += `;${j}=${rec[i].args[2][j]}`;
             }
         }
         str += "]\r\n";
-        if (i.refresh) {
-            str += `[Effect]\r\n`;
+        if (rec[i].refresh) {
+            let arr = compare(getNearestRefresh(rec, i), rec[i].refresh);
+            for (let j of arr) str += `[Effect ${j.property} ${j.value}]\r\n`;
         }
     }
     return str;
+}
+function getNearestRefresh(rec, i) {
+    for (let j = i - 1; j >= 0; j--) if (rec[j].refresh) return rec[j].refresh;
+    return getDefaultProperties(players);
+}
+function compare(before, after) {
+    let arr = [];
+    console.log(before, after);
+    for (let i of Object.keys(after)) if (typeof after[i] != "object" && before[i] != after[i]) arr.push({
+        "property": [i],
+        "value": after[i]
+    }); else if (typeof after[i] == "object") for (let j of compare(before[i], after[i])) arr.push({
+        "property": [i, ...j.property],
+        "value": j.value
+    });
+    return arr;
 }
 function addMainText(...args) {
     for (let i of document.querySelectorAll(".decisionMove,.decisionSwitch")) {
@@ -1076,7 +1098,9 @@ function attack(move) {
 let attacks = [];
 function refreshPlayerToMove(ptm) {
     playerToMove = ptm;
-    document.getElementById("playerToMove").innerText = "Player " + (ptm + 1) + "'s turn";
+    document.getElementById("playerToMove").innerText = getL10n("ui", "playerTurn", {
+        "player": ["Player " + (ptm + 1)]
+    });
 }
 function decisionNextPlayer() {
     if (playerToMove == 0) {
