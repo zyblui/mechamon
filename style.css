@@ -59,7 +59,8 @@ body {
     }
 
     color:var(--text);
-    &.hardcore-hide-container .hardcore-hide{
+
+    &.hardcore-hide-container .hardcore-hide {
         display: none;
     }
 }
@@ -308,7 +309,6 @@ table {
 
 .right-button {
     margin-top: 3px;
-    font-family: Inter, sans-serif;
     border-radius: 9px;
     padding: 6px 18px;
     border: solid 2px var(--shadow);
@@ -330,7 +330,6 @@ table {
     height:
         /*40px*/
         calc(100% - 4px);
-    font-family: Inter, sans-serif;
     font-size: large;
     background-color: var(--button-bg);
     margin: 2px;
@@ -451,7 +450,6 @@ table {
 
 .tab {
     position: relative;
-    font-family: Inter, sans-serif;
     background-color: transparent;
     border: none;
     height: 40px;
@@ -791,6 +789,10 @@ table {
 
 button {
     color: var(--text);
+    background-color: var(--button-bg);
+    border: solid 2px var(--shadow);
+    border-radius: 9px;
+    font-family: Inter, sans-serif;
 
     .move-text {
         vertical-align: -webkit-baseline-middle;
@@ -816,8 +818,9 @@ button {
             font-size: small;
         }
     }
-    &:disabled:not(.selected){
-        color:var(--text-dim)
+
+    &:disabled:not(.selected) {
+        color: var(--text-dim)
     }
 }
 
@@ -1107,5 +1110,26 @@ option::checkmark {
 @starting-style {
     ::picker(select):popover-open {
         opacity: 0;
+    }
+}
+
+#navigation {
+    position: absolute;
+    bottom: 9px;
+    left: 9px;
+    width: calc(100% - 18px);
+    border-top: solid 2px var(--text-dim);
+    padding: 9px;
+    box-sizing: border-box;
+
+    & #navigationInner {
+
+        & button {
+            width: 25%;
+        }
+    }
+    button:hover{
+        border: solid 2px dodgerblue;
+        background-color: var(--button-hover);
     }
 }

@@ -376,6 +376,7 @@ let turn = 0, playerToMove = 0, battleInfo = [];
 document.getElementById("startGame").addEventListener("click", function () {
     document.getElementById("recordContent").innerHTML = "";
     turn = 0;
+    record = [];
     battleInfo = structuredClone(players);
     battleInfo[0].currentPokemon = -1;
     battleInfo[1].currentPokemon = -1;
@@ -470,6 +471,13 @@ function refreshSequence() {
         document.getElementById("turnNumber").innerText = str;
         insertElementWithClass("h2", str, "recordContent", "turn-number");
     }
+    record.push(element);
+    let blo = new Blob([simplifyRecord(record)], {
+        type: "application/json"
+    });
+    let bloURL = URL.createObjectURL(blo);
+    document.getElementById("saveReplay").setAttribute("href", bloURL);
+
     document.getElementById("record").scroll({
         top: document.getElementById("record").scrollHeight,
         left: 0,
@@ -492,6 +500,27 @@ function refreshSequence() {
     }
 
     judgeHP();
+}
+function simplifyRecord(rec) {
+    let str = "";
+    for (let i of [0, 1]) for (let j = 0; j < 6; j++) {
+        str += (`[Setup ${i} ${j}`);
+        for (let k of Object.keys(players[i].build[j])) str += `;${k}=${players[i].build[j][k]}`;
+        str += "]\r\n";
+    }
+    for (let i of rec) {
+        str += `[${capitalize(i.type)} ${i.args[1]}`;
+        if (i.args[2]) {
+            for (let j of Object.keys(i.args[2])) {
+                str += `;${j}=${i.args[2][j]}`;
+            }
+        }
+        str += "]\r\n";
+        if (i.refresh) {
+            str += `[Effect]\r\n`;
+        }
+    }
+    return str;
 }
 function addMainText(...args) {
     for (let i of document.querySelectorAll(".decisionMove,.decisionSwitch")) {
@@ -1447,4 +1476,10 @@ document.addEventListener("keypress", function (e) {
                 .toLowerCase())].click();
         }
     }
-});
+});/*
+document.getElementById("saveReplay").addEventListener("click", function () {
+    let blo = new Blob([JSON.stringify(replay)], {
+        type: "application/json"
+    });
+    let bloURL = URL.createObjectURL(blo);
+});*/
