@@ -150,7 +150,7 @@ document.getElementById("playerToMove").innerText = getL10n("ui", "playerTurn", 
 document.getElementById("viewpoint").innerText = getL10n("ui", "viewpoint", {
     "player": ["Player 1"]
 });
-let record = [], viewpoint = 0;
+let record = [], recordPosition = 0, viewpoint = 0;
 function refreshRecord() {
 
 }
@@ -467,7 +467,7 @@ function refreshSequence() {
         tempElement.dataset.content = JSON.stringify(element.args);
         document.getElementById(parentId).appendChild(tempElement);
     }
-    let str = getSequenceL10n(element.args);//getL10n(...element.args);
+    let str = getSequenceL10n(element.args);
     if (element.type == "main") {
         document.getElementById("text").innerHTML = "";
         insertElementWithClass("div", str, "text", "main-text");
@@ -483,6 +483,7 @@ function refreshSequence() {
         insertElementWithClass("h2", str, "recordContent", "turn-number");
     }
     record.push(element);
+    recordPosition = record.length - 1;
     let blo = new Blob([simplifyRecord(record)], {
         type: "application/json"
     });
@@ -1543,10 +1544,20 @@ document.addEventListener("keypress", function (e) {
                 .toLowerCase())].click();
         }
     }
-});/*
-document.getElementById("saveReplay").addEventListener("click", function () {
-    let blo = new Blob([JSON.stringify(replay)], {
-        type: "application/json"
-    });
-    let bloURL = URL.createObjectURL(blo);
-});*/
+});
+document.getElementById("navFirst").addEventListener("click", function () {
+    recordPosition = 0;
+    renderFull(record[recordPosition].refresh);
+});
+document.getElementById("navPrev").addEventListener("click", function () {
+    if (recordPosition != 0) recordPosition--;
+    renderFull(record[recordPosition].refresh);
+});
+document.getElementById("navNext").addEventListener("click", function () {
+    if (recordPosition != record.length - 1) recordPosition++;
+    renderFull(record[recordPosition].refresh);
+});
+document.getElementById("navLast").addEventListener("click", function () {
+    recordPosition = record.length - 1;
+    renderFull(record[recordPosition].refresh);
+});
