@@ -371,7 +371,7 @@ function displayEffectiveness(button, move) {
         "2": "SE",
         "4": "DSE"
     };
-    if (!move || getMoveStats(move).category == "status") button.querySelector(".effectiveness").innerText = "";
+    if (!getPkmn(false) || !move || getMoveStats(move).category == "status") button.querySelector(".effectiveness").innerText = "";
     else button.querySelector(".effectiveness").innerText = EFFECTIVENESS_ABBR[calculateEffectiveness(getMoveStats(move).type,
         getType(false))];
 }
@@ -542,15 +542,31 @@ function simplifyRecordValue(val, isInitial = true) {
     } else return val;
 }
 function readSimplifiedRecord(lines) {
-    record=[];
-    for(let i of lines){
-        if(i.indexOf("[Setup")==0){
-
+    record = [];
+    for (let i of lines) {
+        let params = sliceParams(i);
+        switch (params[0].type) {
+            case "setup":
+                for (let i = 1; i < params.length; i++) {
+                    players[params[0].args[0]].build[params[0].args[1]][params[i].param] = params[i].val;
+                }
+                battleInfo = getDefaultProperties(players);
         }
     }
 }
-function sliceParams(line){
-    
+function sliceParams(line) {
+    let arr = line.slice(1).split(";");
+    arr[0] = {
+        "type": arr[i].split(" ")[0].toLowerCase(),
+        "args": arr[i].split(" ").slice(1)
+    };
+    for (let i = 1; i < arr.length; i++) {
+        arr[i] = {
+            "param": arr[i].split("=")[0],
+            "val": arr[i].split("=")[1]
+        };
+    }
+    return arr;
 }
 function getNearestRefresh(rec, i) {
     for (let j = i - 1; j >= 0; j--) if (rec[j].refresh) return rec[j].refresh;
@@ -1063,7 +1079,7 @@ function getPkmn(isSelf) {
     else return battleInfo[(playerToMove == 0) ? 1 : 0].build[battleInfo[(playerToMove == 0) ? 1 : 0].currentPokemon];
 }
 function getType(isSelf) {
-    if (getPkmn(isSelf)?.tempType.length) return getPkmn(isSelf).tempType;
+    if (getPkmn(isSelf).tempType.length) return getPkmn(isSelf).tempType;
     else return getStats(getPkmn(isSelf).name).type;
 }
 function getName(pkmn, showSpeciesName, returnArr) {
