@@ -450,6 +450,12 @@ document.getElementById("startGame").addEventListener("click", function () {
     render();
 });
 let sequence = [], refreshSequenceIsRunning = false;
+function getSequenceL10n(args) {
+    let tempArgs = structuredClone(args);
+    if (tempArgs[2]) for (let i in tempArgs[2]) if (Array.isArray(tempArgs[2][i])) for (let j = 0; j < tempArgs[2][i].length;
+        j++) if (Array.isArray(tempArgs[2][i][j])) tempArgs[2][i][j] = getSequenceL10n(tempArgs[2][i][j]);
+    return getL10n(...tempArgs);
+}
 function refreshSequence() {
     if (refreshSequenceIsRunning || !sequence.length) return;
     refreshSequenceIsRunning = true;
@@ -461,7 +467,7 @@ function refreshSequence() {
         tempElement.dataset.content = JSON.stringify(element.args);
         document.getElementById(parentId).appendChild(tempElement);
     }
-    let str = getL10n(...element.args);
+    let str = getSequenceL10n(element.args);//getL10n(...element.args);
     if (element.type == "main") {
         document.getElementById("text").innerHTML = "";
         insertElementWithClass("div", str, "text", "main-text");
@@ -517,7 +523,7 @@ function simplifyRecord(rec) {
         str += `[${capitalize(rec[i].type)} ${rec[i].args[1]}`;
         if (rec[i].args[2]) {
             for (let j of Object.keys(rec[i].args[2])) {
-                str += `;${j}=${rec[i].args[2][j]}`;
+                str += `;${j}=${simplifyRecordValue(rec[i].args[2][j])}`;
             }
         }
         str += "]\r\n";
@@ -528,13 +534,30 @@ function simplifyRecord(rec) {
     }
     return str;
 }
+function simplifyRecordValue(val, isInitial = true) {
+    if (Array.isArray(val)) {
+        for (let i = 0; i < val.length; i++) val[i] = simplifyRecordValue(val[i], false);
+        if (isInitial) return val;
+        else return "(" + val + ")";
+    } else return val;
+}
+function readSimplifiedRecord(lines) {
+    record=[];
+    for(let i of lines){
+        if(i.indexOf("[Setup")==0){
+
+        }
+    }
+}
+function sliceParams(line){
+    
+}
 function getNearestRefresh(rec, i) {
     for (let j = i - 1; j >= 0; j--) if (rec[j].refresh) return rec[j].refresh;
     return getDefaultProperties(players);
 }
 function compare(before, after) {
     let arr = [];
-    console.log(before, after);
     for (let i of Object.keys(after)) if (typeof after[i] != "object" && before[i] != after[i]) arr.push({
         "property": [i],
         "value": after[i]
@@ -583,7 +606,7 @@ function sendOutPkmn(pkmn) {
     }
     getPkmn(true).revealed = true;
     addMainText("others", "go", {
-        "pokemon": [getL10n("pokemon", pkmn)],
+        "pokemon": [["pokemon", pkmn]],
         "isEnemy": ((viewpoint == -1) ? false : (playerToMove != viewpoint))
     });
 }
@@ -597,14 +620,12 @@ function addTooltip(elementGroup, i, player = playerToMove) {
         elementGroup[i].parentElement.insertBefore(tooltip, elementGroup[i]);
     }
     tooltip = elementGroup[i].parentElement.querySelector(".tooltip");
-    tooltip.querySelector(".tip-name").innerText = getL10n("pokemon", elementGroup[i]
-        .dataset.for);
+    tooltip.querySelector(".tip-name").innerText = getL10n("pokemon", elementGroup[i].dataset.for);
     let stats = getStats(elementGroup[i].dataset.for);
     tooltip.querySelector(".img-left").style.background = "url(pokemonicons-sheet.png) no-repeat scroll -" +
         (ICONS[elementGroup[i].dataset.for].cell - 1) * 40 + "px -" + (
             ICONS[elementGroup[i].dataset.for].row - 1) * 30 + "px";
-    tooltip.querySelector(".tip-desc").innerText = getL10n("pkmnDesc", elementGroup[i]
-        .dataset.for);
+    tooltip.querySelector(".tip-desc").innerText = getL10n("pkmnDesc", elementGroup[i].dataset.for);
     for (let j of [0, 1]) {
         if (!stats.type[j]) {
             tooltip.querySelectorAll(".type")[j].classList.add("hide");
@@ -731,28 +752,28 @@ function dealDmg(isSelf, dmg) {
     if (arguments[2]?.opposingSubstitute && getPkmn(!isSelf).substituteHp > 0) {
         getPkmn(!isSelf).substituteHp -= Math.min(dmg, getPkmn(!isSelf).substituteHp);
         if (getPkmn(!isSelf).substituteHp == 0) addSmallText("others", "substituteFade", {
-            "pokemon": [getName(getPkmn(!isSelf), false)],
+            "pokemon": [getName(getPkmn(!isSelf), false, true)],
             "isEnemy": ((viewpoint == -1) ? isSelf : (((!isSelf) == playerToMove) != viewpoint))
         });
         else addSmallText("others", "substituteTakeDamage", {
-            "pokemon": [getName(getPkmn(!isSelf), false)],
+            "pokemon": [getName(getPkmn(!isSelf), false, true)],
             "isEnemy": ((viewpoint == -1) ? isSelf : (((!isSelf) == playerToMove) != viewpoint))
         });
     } else if (getPkmn(isSelf).substituteHp > 0 && !arguments[2]?.ignoreSubstitute) {
         getPkmn(isSelf).substituteHp -= Math.min(dmg, getPkmn(isSelf).substituteHp);
         if (getPkmn(isSelf).substituteHp == 0) addSmallText("others", "substituteFade", {
-            "pokemon": [getName(getPkmn(isSelf), false)],
+            "pokemon": [getName(getPkmn(isSelf), false, true)],
             "isEnemy": ((viewpoint == -1) ? !isSelf : ((isSelf == playerToMove) != viewpoint))
         });
         else addSmallText("others", "substituteTakeDamage", {
-            "pokemon": [getName(getPkmn(isSelf), false)],
+            "pokemon": [getName(getPkmn(isSelf), false, true)],
             "isEnemy": ((viewpoint == -1) ? !isSelf : ((isSelf == playerToMove) != viewpoint))
         });
     } else {
         dmg = Math.min(dmg, getPkmn(isSelf).hp);
         getPkmn(isSelf).hp -= dmg;
         addSmallText("others", "loseHealth", {
-            "pokemon": [getName(getPkmn(isSelf), false)],
+            "pokemon": [getName(getPkmn(isSelf), false, true)],
             "percentage": [(dmg / getPkmn(isSelf).maxHp * 100).toFixed(0)],
             "isEnemy": ((viewpoint == -1) ? false : ((isSelf == playerToMove) != viewpoint)),
             "hardcoreHide": true
@@ -784,7 +805,7 @@ let nextPlayerEffect = [{
     "condition": function () { return getPkmn(true).status == "par" && Math.random() < 1 / 4; },
     "effect": function () {
         addMainText("others", "unableToMove", {
-            "pokemon": [getName(getPkmn(true), false)],
+            "pokemon": [getName(getPkmn(true), false, true)],
             "isEnemy": playerToMove != viewpoint
         });
         return { "continue": true };
@@ -795,7 +816,7 @@ let nextPlayerEffect = [{
     "exclude": "par",
     "effect": function () {
         addMainText("others", "frozenSolid", {
-            "pokemon": [getName(getPkmn(true), false)],
+            "pokemon": [getName(getPkmn(true), false, true)],
             "isEnemy": playerToMove != viewpoint
         });
         return { "continue": true };
@@ -831,12 +852,12 @@ let nextPlayerEffect = [{
         getPkmn(true).sleepTurns--;
         if (getPkmn(true).sleepTurns > 0) {
             addMainText("others", "fastAsleep", {
-                "pokemon": [getName(getPkmn(true), false)],
+                "pokemon": [getName(getPkmn(true), false, true)],
                 "isEnemy": playerToMove != viewpoint
             });
         } else if (getPkmn(true).sleepTurns == 0) {
             addSmallText("others", "wakeUp", {
-                "pokemon": [getName(getPkmn(true), false)],
+                "pokemon": [getName(getPkmn(true), false, true)],
                 "isEnemy": playerToMove != viewpoint
             });
             getPkmn(true).status = "";
@@ -849,7 +870,7 @@ let nextPlayerEffect = [{
     "exclude": "slp",
     "effect": function () {
         addSmallText("others", "confused", {
-            "pokemon": [getName(getPkmn(true), false)],
+            "pokemon": [getName(getPkmn(true), false, true)],
             "isEnemy": ((viewpoint == -1) ? false : (playerToMove != viewpoint))
         });
         getPkmn(true).tempEffect.confused--;
@@ -921,7 +942,7 @@ function nextTurn() {
         if (!getPkmn(true) || !getPkmn(false)) continue;
         if (i.type == "switch") {
             addMainText("others", "comeBack", {
-                "pokemon": [getName(getPkmn(true), false)],
+                "pokemon": [getName(getPkmn(true), false, true)],
                 "isEnemy": ((viewpoint == -1) ? false : (playerToMove != viewpoint))
             });
             sendOutPkmn(i.pkmn);
@@ -929,8 +950,8 @@ function nextTurn() {
         }
         if (nextPlayerInfo?.continue) continue;
         addMainText("others", "use", {
-            "pokemon": [getName(getPkmn(true), false)],
-            "moves": [getL10n("moves", i.move)],
+            "pokemon": [getName(getPkmn(true), false, true)],
+            "moves": [["moves", i.move]],
             "isEnemy": ((viewpoint == -1) ? false : (playerToMove != viewpoint)),
             //"notation":i.move
         });
@@ -947,7 +968,7 @@ function nextTurn() {
             if (k.category != "status" && Math.random() > k.acc * ACC_STAGE_MULTIPLIER[getPkmn(true).accStage] *
                 ACC_STAGE_MULTIPLIER[getPkmn(false).evaStage] / 100) {
                 addSmallText("others", "attackMiss", {
-                    "pokemon": [getName(getPkmn(true), false)],
+                    "pokemon": [getName(getPkmn(true), false, true)],
                     "isEnemy": playerToMove != viewpoint
                 });
                 if (k.missEffect) k.missEffect();
@@ -989,7 +1010,7 @@ function nextTurn() {
     attacks = [];
     for (let i of [true, false]) if (getPkmn(i)?.status == "brn") {
         addSmallText("others", "hurtByBurn", {
-            "pokemon": [getName(getPkmn(i), false)],
+            "pokemon": [getName(getPkmn(i), false, true)],
             "isEnemy": (i == playerToMove) != viewpoint
         });
         dealDmg(i, getPkmn(i).maxHp / 16, { ignoreSubstitute: true });
@@ -1042,15 +1063,21 @@ function getPkmn(isSelf) {
     else return battleInfo[(playerToMove == 0) ? 1 : 0].build[battleInfo[(playerToMove == 0) ? 1 : 0].currentPokemon];
 }
 function getType(isSelf) {
-    if (getPkmn(isSelf).tempType.length) return getPkmn(isSelf).tempType;
+    if (getPkmn(isSelf)?.tempType.length) return getPkmn(isSelf).tempType;
     else return getStats(getPkmn(isSelf).name).type;
 }
-function getName(pkmn, showSpeciesName) {
+function getName(pkmn, showSpeciesName, returnArr) {
+    let arr = [];
     if (pkmn.nick) {
-        if (showSpeciesName) return pkmn.nick + "(" + getL10n("pokemon", pkmn.name) + ")";
+        if (showSpeciesName) arr = ["others", "nick", {
+            "nick": [pkmn.nick],
+            "pokemon": [getL10n("pokemon", pkmn.name)]
+        }];
         else return pkmn.nick;
     }
-    else return getL10n("pokemon", pkmn.name);
+    else arr = ["pokemon", pkmn.name];
+    if (returnArr) return arr;
+    else return getL10n(...arr);
 }
 function attack(move) {
     for (let k of MOVES) if (k.name == move) {
@@ -1077,7 +1104,7 @@ function attack(move) {
                     break;
                 case 0:
                     addSmallText("others", "noEffect", {
-                        "pokemon": [getName(getPkmn(false), false)],
+                        "pokemon": [getName(getPkmn(false), false, true)],
                         "isEnemy": !playerToMove != viewpoint
                     });
             }
@@ -1200,7 +1227,7 @@ function judgeHP() {
         let faintedPkmn = getPkmn(false);
         battleInfo[(playerToMove == 0) ? 1 : 0].currentPokemon = -1;
         addMainText("others", "faint", {
-            "pokemon": [getName(faintedPkmn, false)],
+            "pokemon": [getName(faintedPkmn, false, true)],
             "isEnemy": ((viewpoint == -1) ? true : (!playerToMove != viewpoint))
         });
     }
@@ -1209,7 +1236,7 @@ function judgeHP() {
         let faintedPkmn = getPkmn(true);
         battleInfo[playerToMove].currentPokemon = -1;
         addMainText("others", "faint", {
-            "pokemon": [getName(faintedPkmn, false)],
+            "pokemon": [getName(faintedPkmn, false, true)],
             "isEnemy": ((viewpoint == -1) ? false : (playerToMove != viewpoint))
         });
     }
@@ -1336,8 +1363,8 @@ function modifyStats(isSelf, stat, delta, prob) {
         else if (delta == -1) word = "fall";
         else word = "harshlyFall";
         addSmallText("others", word, {
-            "pokemon": [getName(getPkmn(isSelf), false)],
-            "stats": [getL10n("stats", stat)],
+            "pokemon": [getName(getPkmn(isSelf), false, true)],
+            "stats": [["stats", stat]],
             "isEnemy": (playerToMove == isSelf) != viewpoint
         });
     }
@@ -1350,7 +1377,7 @@ function modifyStatus(status, prob) {
     if (rand >= prob) return;
     if (getPkmn(false).status == status) {
         if (status == "par") addSmallText("others", "alreadyParalyzed", {
-            "pokemon": [getName(getPkmn(false), false)],
+            "pokemon": [getName(getPkmn(false), false, true)],
             "isEnemy": !playerToMove != viewpoint
         });
         return;
@@ -1366,7 +1393,7 @@ function modifyStatus(status, prob) {
     };
     for (let i of Object.keys(SMALL_TEXT_KEY)) if (status == i) {
         addSmallText("others", SMALL_TEXT_KEY[i], {
-            "pokemon": [getName(getPkmn(false), false)],
+            "pokemon": [getName(getPkmn(false), false, true)],
             "isEnemy": !playerToMove != viewpoint
         });
         break;
@@ -1376,7 +1403,7 @@ function putToSleep(isSelf, turns) {
     getPkmn(isSelf).status = "slp";
     getPkmn(isSelf).sleepTurns = turns;
     addSmallText("others", "fallAsleep", {
-        "pokemon": [getName(getPkmn(isSelf), false)],
+        "pokemon": [getName(getPkmn(isSelf), false, true)],
         "isEnemy": ((viewpoint == -1) ? !isSelf : ((isSelf == playerToMove) != viewpoint))
     });
 }
@@ -1384,11 +1411,11 @@ function addTempEffect(isSelf, effect, turns, prob) {
     if (Math.random() < prob) {
         getPkmn(isSelf).tempEffect[effect] = turns;
         if (effect == "confused") addSmallText("others", "becomeConfused", {
-            "pokemon": [getName(getPkmn(isSelf), false)],
+            "pokemon": [getName(getPkmn(isSelf), false, true)],
             "isEnemy": ((viewpoint == -1) ? !isSelf : ((isSelf == playerToMove) != viewpoint))
         });
         else if (effect == "reflect" || effect == "light screen") addSmallText("others", "gainArmor", {
-            "pokemon": [getName(getPkmn(isSelf), false)],
+            "pokemon": [getName(getPkmn(isSelf), false, true)],
             "isEnemy": ((viewpoint == -1) ? !isSelf : ((isSelf == playerToMove) != viewpoint))
         });
     }

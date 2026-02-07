@@ -410,7 +410,7 @@ const MOVES = [{
     "priority": 0,
     "effect": function (e) {
         addSmallText("others", "damagedByRecoil", {
-            "pokemon": [getName(getPkmn(true), false)],
+            "pokemon": [getName(getPkmn(true), false, true)],
             "isEnemy": playerToMove != viewpoint
         });
         dealDmg(true, e.totalDmg / 4);
@@ -1208,7 +1208,7 @@ const MOVES = [{
         if (hpLost != 255 && hpLost != 511) {
             getPkmn(true).hp += Math.min(getPkmn(true).maxHp / 2, hpLost);
             addSmallText("others", "hpRestored", {
-                "pokemon": [getName(getPkmn(true), false)],
+                "pokemon": [getName(getPkmn(true), false, true)],
                 "isEnemy": playerToMove != viewpoint
             });
         }
@@ -1237,7 +1237,7 @@ const MOVES = [{
         if (hpLost != 255 && hpLost != 511) {
             getPkmn(true).hp = getPkmn(true).maxHp;
             addSmallText("others", "sleepHealthy", {
-                "pokemon": [getName(getPkmn(true), false)],
+                "pokemon": [getName(getPkmn(true), false, true)],
                 "isEnemy": playerToMove != viewpoint
             });
             putToSleep(true, 2);
@@ -1591,7 +1591,7 @@ const MOVES = [{
     "effect": function () {
         if (getPkmn(true).hp >= getPkmn(true).maxHp / 4) {
             addSmallText("others", "putInSubstitute", {
-                "pokemon": [getName(getPkmn(true), false)],
+                "pokemon": [getName(getPkmn(true), false, true)],
                 "isEnemy": playerToMove != viewpoint
             });
             dealDmg(true, getPkmn(true).maxHp / 4);
@@ -1798,7 +1798,7 @@ const MOVES = [{
             getPkmn(true).moves[i] = 5;
         }
         addSmallText("others", "transform", {
-            "pokemon": [getName(getPkmn(true), false), getName(getPkmn(false), false)],
+            "pokemon": [getName(getPkmn(true), false, true), getName(getPkmn(false), false, true)],
             "isEnemy": playerToMove != viewpoint
         });
     }
@@ -3331,13 +3331,14 @@ const TRANSLATION = {
             "unknownMove": "Unknown Move",
             "playerTurn": "[player0]'s turn",
             "recordUnavailable": "Record is unavailable, because you are on Hardcore Mode. Turn it off to reveal battle records.",
-            "hardcoreMode":"Hardcore Mode",
-            "effectivenessIndicator":"Effectiveness Indicator",
-            "darkMode":"Dark Mode",
-            "keyboardControls":"Keyboard Controls"
+            "hardcoreMode": "Hardcore Mode",
+            "effectivenessIndicator": "Effectiveness Indicator",
+            "darkMode": "Dark Mode",
+            "keyboardControls": "Keyboard Controls"
         },
         "others": {
             "turn": "Turn [number0]",
+            "nick": "[nick0] ([pokemon0])",
             "crit": "A critical hit!",
             "use": "[pokemon0] used <strong>[moves0]</strong>!",
             "use-enemy": "The opposing [pokemon0] used <strong>[moves0]</strong>!",
@@ -4115,13 +4116,14 @@ const TRANSLATION = {
             "unknownMove": "未知招式",
             "playerTurn": "[player0] 的回合",
             "recordUnavailable": "记录不可用，因为你正处于硬核模式。将其关闭以显示对战记录。",
-            "hardcoreMode":"硬核模式",
-            "effectivenessIndicator":"效果指示器",
-            "darkMode":"暗黑模式",
-            "keyboardControls":"键盘控制"
+            "hardcoreMode": "硬核模式",
+            "effectivenessIndicator": "效果指示器",
+            "darkMode": "暗黑模式",
+            "keyboardControls": "键盘控制"
         },
         "others": {
             "turn": "第 [number0] 回合",
+            "nick": "[nick0]（[pokemon0]）",
             "crit": "击中了要害！",
             "use": "[pokemon0]使出了<strong>[moves0]</strong>！",
             "use-enemy": "对手的[pokemon0]使出了<strong>[moves0]</strong>！",
