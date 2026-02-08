@@ -1547,17 +1547,17 @@ document.addEventListener("keypress", function (e) {
 });
 document.getElementById("navFirst").addEventListener("click", function () {
     recordPosition = 0;
-    renderFull(record[recordPosition].refresh);
+    renderFull((record[recordPosition].refresh) ? record[recordPosition].refresh : getNearestRefresh(record, recordPosition));
 });
 document.getElementById("navPrev").addEventListener("click", function () {
     if (recordPosition != 0) recordPosition--;
-    renderFull(record[recordPosition].refresh);
+    renderFull((record[recordPosition].refresh) ? record[recordPosition].refresh : getNearestRefresh(record, recordPosition));
 });
 document.getElementById("navNext").addEventListener("click", function () {
     if (recordPosition != record.length - 1) recordPosition++;
-    renderFull(record[recordPosition].refresh);
+    renderFull((record[recordPosition].refresh) ? record[recordPosition].refresh : getNearestRefresh(record, recordPosition));
 });
 document.getElementById("navLast").addEventListener("click", function () {
     recordPosition = record.length - 1;
-    renderFull(record[recordPosition].refresh);
+    renderFull((record[recordPosition].refresh) ? record[recordPosition].refresh : getNearestRefresh(record, recordPosition));
 });
