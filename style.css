@@ -849,7 +849,7 @@ button {
     left: calc(10% + 384px);
 }
 
-#bottomOptions {
+.bottom-options {
     padding: 0 9px 3px 9px;
 
     &>div {
@@ -1119,7 +1119,6 @@ option::checkmark {
     left: 9px;
     width: calc(100% - 18px);
     border-top: solid 2px var(--shadow);
-    padding: 6px;
     box-sizing: border-box;
     background-color: var(--bg);
     border-radius: 0 0 9px 9px;
@@ -1130,18 +1129,18 @@ option::checkmark {
         }
     }
 
-    #saveReplay button {
-        width: 100%;
-    }
-
-    button {
+    #navigationInner button {
         font-size: medium;
         padding: 6px 18px;
-        margin: 3px
+        margin: 3px;
+
+        &:hover {
+            border: solid 2px dodgerblue;
+            background-color: var(--button-hover);
+        }
     }
 
-    button:hover {
-        border: solid 2px dodgerblue;
-        background-color: var(--button-hover);
+    #currentStep {
+        font-weight: bold;
     }
 }

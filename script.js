@@ -484,6 +484,8 @@ function refreshSequence() {
     }
     record.push(element);
     recordPosition = record.length - 1;
+    document.getElementById("currentStep").innerText = recordPosition + 1;
+    document.getElementById("totalSteps").innerText = record.length;
     let blo = new Blob([simplifyRecord(record)], {
         type: "application/json"
     });
@@ -1452,7 +1454,7 @@ document.getElementById("viewpoint").addEventListener("click", function () {
         let arr = JSON.parse(i.dataset.content);
         if (arr[2] && Object.keys(arr[2]).includes("isEnemy")) arr[2].isEnemy = !arr[2].isEnemy;
         i.dataset.content = JSON.stringify(arr);
-        i.innerHTML = getL10n(...arr);
+        i.innerHTML = getSequenceL10n(arr);
     }
     document.getElementById("viewpoint").innerText = getL10n("ui", "viewpoint", {
         "player": [battleInfo[viewpoint].name]
@@ -1547,17 +1549,22 @@ document.addEventListener("keypress", function (e) {
 });
 document.getElementById("navFirst").addEventListener("click", function () {
     recordPosition = 0;
-    renderFull((record[recordPosition].refresh) ? record[recordPosition].refresh : getNearestRefresh(record, recordPosition));
+    navigationRefresh();
 });
 document.getElementById("navPrev").addEventListener("click", function () {
     if (recordPosition != 0) recordPosition--;
-    renderFull((record[recordPosition].refresh) ? record[recordPosition].refresh : getNearestRefresh(record, recordPosition));
+    navigationRefresh();
 });
 document.getElementById("navNext").addEventListener("click", function () {
     if (recordPosition != record.length - 1) recordPosition++;
-    renderFull((record[recordPosition].refresh) ? record[recordPosition].refresh : getNearestRefresh(record, recordPosition));
+    navigationRefresh();
 });
 document.getElementById("navLast").addEventListener("click", function () {
     recordPosition = record.length - 1;
-    renderFull((record[recordPosition].refresh) ? record[recordPosition].refresh : getNearestRefresh(record, recordPosition));
+    navigationRefresh();
 });
+function navigationRefresh() {
+    renderFull((record[recordPosition].refresh) ? record[recordPosition].refresh : getNearestRefresh(record, recordPosition));
+    document.getElementById("currentStep").innerText = recordPosition + 1;
+    document.getElementById("totalSteps").innerText = record.length;
+}

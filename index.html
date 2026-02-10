@@ -191,7 +191,7 @@
                 </td>
             </tr>
         </table>
-        <div id="bottomOptions">
+        <div class="bottom-options">
             <div id="playerToMove">Player 1's turn</div>
             <div><button id="viewpoint">Viewpoint: Player 1</button></div>
             <div><button id="forfeit" data-transl-cat="ui" data-transl-key="forfeit">Forfeit</button></div>
@@ -489,9 +489,15 @@
                     <button id="navFirst">&lt;&lt;</button><button id="navPrev">&lt;</button><button
                         id="navNext">&gt;</button><button id="navLast">&gt;&gt;</button>
                 </div>
-                <a id="saveReplay" download="Replay.mcm">
-                    <button>Save Replay</button>
-                </a>
+                <div class="bottom-options">
+                    <div><span id="currentStep">0</span>/<span id="totalSteps">0</span></div>
+                    <div>
+                        <a id="saveReplay" download="Replay.mcm">
+                            <button>Save</button>
+                        </a>
+                    </div>
+                    <div><button>Load</button></div>
+                </div>
             </div>
         </div>
         <div data-for="settings" class="tab-content" id="settings">
