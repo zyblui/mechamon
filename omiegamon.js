@@ -6,7 +6,7 @@ const POKEMON_OMIEGA = [{
     "def": 50,
     "sp": 50,
     "spe": 50,
-    "moves": ["raging tide","pretend"]
+    "moves": ["raging tide", "pretend"]
 }, {
     "name": "semenshooter",
     "type": ["grass"],
@@ -32,16 +32,17 @@ const MOVES_OMIEGA = [{
             } else break;
         }
     }
-},{
+}, {
     "name": "pretend",
     "type": "normal",
     "category": "physical",
-    "power": 40,
+    "power": 0,
     "acc": 100,
     "pp": 20,
     "priority": 0,
     "effect": function (e) {
-        
+        if (getPkmn(false).defStage > -3) modifyStats(false, "def", -1, 1);
+        else dealDmg(false, 40);
     }
 }];
 const TRANSLATION_OMIEGA = {
@@ -52,10 +53,11 @@ const TRANSLATION_OMIEGA = {
         },
         "moves": {
             "raging tide": "Raging Tide",
-            "pretend":"Pretend"
+            "pretend": "Pretend"
         },
         "moveDesc": {
-            "raging tide": ""
+            "raging tide": "",
+            "pretend": ""
         }
     },
     "zh": {
@@ -64,10 +66,12 @@ const TRANSLATION_OMIEGA = {
             "masterat": "老鼠大师"
         },
         "moves": {
-            "raging tide": "群鼠狂潮"
+            "raging tide": "群鼠狂潮",
+            "pretend": "假动作"
         },
         "moveDesc": {
-            "raging tide": ""
+            "raging tide": "发动一轮或多轮的攻势，每次的命中率依次递减。",
+            "pretend": "向对手做假动作，降低对手的防御。时机成熟时再发动攻击。"
         }
     }
 };
