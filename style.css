@@ -1144,3 +1144,17 @@ option::checkmark {
         font-weight: bold;
     }
 }
+
+.main-text,
+.small-text,
+.turn-number {
+    transition: opacity 0.1s;
+
+    #recordContent &.navigation-hide {
+        opacity: 0.3;
+    }
+
+    #text &.navigation-hide {
+        display: none;
+    }
+}

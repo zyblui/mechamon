@@ -460,32 +460,12 @@ function refreshSequence() {
     if (refreshSequenceIsRunning || !sequence.length) return;
     refreshSequenceIsRunning = true;
     let element = sequence.shift();
-    function insertElementWithClass(elementName, text, parentId, ...className) {
-        let tempElement = document.createElement(elementName);
-        tempElement.innerHTML = text;
-        tempElement.classList.add(...className);
-        tempElement.dataset.content = JSON.stringify(element.args);
-        document.getElementById(parentId).appendChild(tempElement);
-    }
-    let str = getSequenceL10n(element.args);
-    if (element.type == "main") {
-        document.getElementById("text").innerHTML = "";
-        insertElementWithClass("div", str, "text", "main-text");
-        insertElementWithClass("div", str, "recordContent", "main-text");
-        renderFull(element.refresh);
-    } else if (element.type == "small") {
-        if (element.args[2]?.hardcoreHide) insertElementWithClass("div", str, "text", "small-text", "hardcore-hide");
-        else insertElementWithClass("div", str, "text", "small-text");
-        insertElementWithClass("div", str, "recordContent", "small-text");
-        renderFull(element.refresh);
-    } else if (element.type == "turn") {
-        document.getElementById("turnNumber").innerText = str;
-        insertElementWithClass("h2", str, "recordContent", "turn-number");
-    }
     record.push(element);
     recordPosition = record.length - 1;
     document.getElementById("currentStep").innerText = recordPosition + 1;
     document.getElementById("totalSteps").innerText = record.length;
+    insertText(element, true);
+    if (element.type == "main" || element.type == "small") renderFull(element.refresh);
     let blo = new Blob([simplifyRecord(record)], {
         type: "application/json"
     });
@@ -538,11 +518,12 @@ function simplifyRecord(rec) {
     return str;
 }
 function simplifyRecordValue(val, isInitial = true) {
-    if (Array.isArray(val)) {
-        for (let i = 0; i < val.length; i++) val[i] = simplifyRecordValue(val[i], false);
-        if (isInitial) return val;
-        else return "(" + val + ")";
-    } else return val;
+    let tempVal = structuredClone(val);
+    if (Array.isArray(tempVal)) {
+        for (let i = 0; i < tempVal.length; i++) tempVal[i] = simplifyRecordValue(tempVal[i], false);
+        if (isInitial) return tempVal;
+        else return "(" + tempVal + ")";
+    } else return tempVal;
 }
 function readSimplifiedRecord(lines) {
     record = [];
@@ -1567,4 +1548,55 @@ function navigationRefresh() {
     renderFull((record[recordPosition].refresh) ? record[recordPosition].refresh : getNearestRefresh(record, recordPosition));
     document.getElementById("currentStep").innerText = recordPosition + 1;
     document.getElementById("totalSteps").innerText = record.length;
+    let tempTurnNumber = 0;
+    for (let j = recordPosition; j >= 0; j--) if (record[j].type == "turn") {
+        tempTurnNumber = record[j].args[2].number;
+        break;
+    }
+    document.getElementById("turnNumber").innerText = getL10n("others", "turn", {
+        "number": [tempTurnNumber]
+    });
+    let mainTextRangeLeft = 0, mainTextRangeRight = record.length - 1;
+    for (let j = recordPosition; j >= 0; j--) if (record[j].type == "main") {
+        mainTextRangeLeft = j;
+        break;
+    }
+    for (let j = recordPosition + 1; j < record.length; j++) if (record[j].type == "main") {
+        mainTextRangeRight = j - 1;
+        break;
+    }
+    let stepOfMainTextInText = document.querySelector("#text [data-step].main-text").dataset.step;
+    if (stepOfMainTextInText > mainTextRangeRight || stepOfMainTextInText < mainTextRangeLeft) {
+        document.getElementById("text").innerHTML = "";
+        for (let i = mainTextRangeLeft; i <= mainTextRangeRight; i++) {
+            insertText(record[i], false, i);
+        }
+    }
+    for (let i of document.querySelectorAll("[data-step]")) {
+        if (i.dataset.step > recordPosition) i.classList.add("navigation-hide");
+        else i.classList.remove("navigation-hide");
+    }
+}
+function insertElementWithClass(elementName, item, parentId, classList, step = recordPosition) {
+    let tempElement = document.createElement(elementName);
+    tempElement.innerHTML = getSequenceL10n(item.args);
+    tempElement.classList.add(...classList);
+    tempElement.dataset.content = JSON.stringify(item.args);
+    tempElement.dataset.step = step;
+    document.getElementById(parentId).appendChild(tempElement);
+}
+function insertText(recordItem, insertRecordContent, step = recordPosition) {
+    if (recordItem.type == "main") {
+        document.getElementById("text").innerHTML = "";
+        insertElementWithClass("div", recordItem, "text", ["main-text"], step);
+        if (insertRecordContent) insertElementWithClass("div", recordItem, "recordContent", ["main-text"], step);
+    } else if (recordItem.type == "small") {
+        if (recordItem.args[2]?.hardcoreHide) insertElementWithClass("div", recordItem, "text", ["small-text",
+            "hardcore-hide"], step);
+        else insertElementWithClass("div", recordItem, "text", ["small-text"], step);
+        if (insertRecordContent) insertElementWithClass("div", recordItem, "recordContent", ["small-text"], step);
+    } else if (recordItem.type == "turn") {
+        document.getElementById("turnNumber").innerText = getSequenceL10n(recordItem.args);
+        if (insertRecordContent) insertElementWithClass("h2", recordItem, "recordContent", ["turn-number"], step);
+    }
 }
