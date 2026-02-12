@@ -36,6 +36,7 @@ let settings = {
     "darkMode": false,
     "omiegamon": false
 };
+let cries = {};
 const PROPERTIES = ["atk", "def", "sp", "spe"];
 if (localStorage.getItem("mechamonSettings")) {
     for (let i in settings) if (!Object.keys(JSON.parse(localStorage.getItem("mechamonSettings"))).includes(i)) {
@@ -222,6 +223,9 @@ mergeTranslationData(TRANSLATION_OMIEGA, TRANSLATION);
 mergeIconData(ICONS_OMIEGA, ICONS);
 mergeMovePkmnData(MOVES_OMIEGA, MOVES, "omiega");
 mergeMovePkmnData(POKEMON_OMIEGA, POKEMON, "omiega");
+for (let i of POKEMON) {
+    cries[i.name] = new Audio(`cry/${i.name}.mp3`);
+}
 for (let i of POKEMON) {
     let div = document.createElement("div");
     div.classList.add("listButton");
@@ -468,6 +472,7 @@ function refreshSequence() {
     insertText(element, true);
     if (element.type == "main" || element.type == "small") renderFull(element.refresh);
     else if (element.type == "turn") document.getElementById("turnNumber").innerText = getSequenceL10n(element.args);
+    if (element.args[2]?.cry) cries[element.args[2].cry].play();
     let blo = new Blob([/*simplifyRecord(record)*/simplifyRecordJSON(record)], {
         type: "application/json"
     });
@@ -662,7 +667,8 @@ function sendOutPkmn(pkmn) {
     getPkmn(true).revealed = true;
     addMainText("others", "go", {
         "pokemon": [["pokemon", pkmn]],
-        "isEnemy": ((viewpoint == -1) ? false : (playerToMove != viewpoint))
+        "isEnemy": ((viewpoint == -1) ? false : (playerToMove != viewpoint)),
+        "cry": pkmn
     });
 }
 function addTooltip(elementGroup, i, player = playerToMove) {
@@ -1283,7 +1289,8 @@ function judgeHP() {
         battleInfo[(playerToMove == 0) ? 1 : 0].currentPokemon = -1;
         addMainText("others", "faint", {
             "pokemon": [getName(faintedPkmn, false, true)],
-            "isEnemy": ((viewpoint == -1) ? true : (!playerToMove != viewpoint))
+            "isEnemy": ((viewpoint == -1) ? true : (!playerToMove != viewpoint)),
+            "cry": faintedPkmn.name
         });
     }
     if (getPkmn(true)?.hp <= 0) {
@@ -1292,7 +1299,8 @@ function judgeHP() {
         battleInfo[playerToMove].currentPokemon = -1;
         addMainText("others", "faint", {
             "pokemon": [getName(faintedPkmn, false, true)],
-            "isEnemy": ((viewpoint == -1) ? false : (playerToMove != viewpoint))
+            "isEnemy": ((viewpoint == -1) ? false : (playerToMove != viewpoint)),
+            "cry": faintedPkmn.name
         });
     }
 }
