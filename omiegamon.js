@@ -16,6 +16,15 @@ const POKEMON_OMIEGA = [{
     "sp": 1,
     "spe": 480,
     "moves": []
+}, {
+    "name": "squash",
+    "type": ["grass"],
+    "hp": 45,
+    "atk": 90,
+    "def": 45,
+    "sp": 45,
+    "spe": 45,
+    "moves": ["squashy stomp"]
 }];
 const MOVES_OMIEGA = [{
     "name": "raging tide",
@@ -44,6 +53,17 @@ const MOVES_OMIEGA = [{
         if (getPkmn(false).defStage > -3) modifyStats(false, "def", -1, 1);
         else dealDmg(false, 40);
     }
+}, {
+    "name": "squashy stomp",
+    "type": "fighting",
+    "category": "physical",
+    "power": 0,
+    "acc": 90,
+    "pp": 5,
+    "priority": 0,
+    "effect": function (e) {
+        if (getPkmn(false).name == "pikachu" || getPkmn(false).name == "raichu" || getPkmn(false).name == "masterat") dealDmg(false, 65536);
+    }
 }];
 const TRANSLATION_OMIEGA = {
     "en": {
@@ -53,7 +73,8 @@ const TRANSLATION_OMIEGA = {
         },
         "moves": {
             "raging tide": "Raging Tide",
-            "pretend": "Pretend"
+            "pretend": "Pretend",
+            "squashy stomp":"Squashy Stomp"
         },
         "moveDesc": {
             "raging tide": "",

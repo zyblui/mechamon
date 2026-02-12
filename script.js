@@ -1494,6 +1494,7 @@ document.getElementById("forfeit").addEventListener("click", function () {
 });
 document.getElementById("viewpoint").addEventListener("click", function () {
     viewpoint = Number(!viewpoint);
+    renderFull();
     for (let i of document.querySelectorAll("[data-content]")) {
         let arr = JSON.parse(i.dataset.content);
         if (arr[2] && Object.keys(arr[2]).includes("isEnemy")) arr[2].isEnemy = !arr[2].isEnemy;
