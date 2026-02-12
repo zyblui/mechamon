@@ -456,6 +456,7 @@ function getSequenceL10n(args) {
         j++) if (Array.isArray(tempArgs[2][i][j])) tempArgs[2][i][j] = getSequenceL10n(tempArgs[2][i][j]);
     return getL10n(...tempArgs);
 }
+let bloURL = "";
 function refreshSequence() {
     if (refreshSequenceIsRunning || !sequence.length) return;
     refreshSequenceIsRunning = true;
@@ -466,14 +467,16 @@ function refreshSequence() {
     document.getElementById("totalSteps").innerText = record.length;
     insertText(element, true);
     if (element.type == "main" || element.type == "small") renderFull(element.refresh);
-    let blo = new Blob([simplifyRecord(record)], {
+    else if (element.type == "turn") document.getElementById("turnNumber").innerText = getSequenceL10n(element.args);
+    let blo = new Blob([/*simplifyRecord(record)*/simplifyRecordJSON(record)], {
         type: "application/json"
     });
-    let bloURL = URL.createObjectURL(blo);
+    URL.revokeObjectURL(bloURL);
+    bloURL = URL.createObjectURL(blo);
     document.getElementById("saveReplay").setAttribute("href", bloURL);
 
-    document.getElementById("record").scroll({
-        top: document.getElementById("record").scrollHeight,
+    document.getElementById("recordContent").scroll({
+        top: document.getElementById("recordContent").scrollHeight,
         left: 0,
         behavior: "smooth"
     });
@@ -494,6 +497,47 @@ function refreshSequence() {
     }
 
     judgeHP();
+}
+function simplifyRecordJSON(rec) {
+    let tempRec = structuredClone(rec);
+    for (let i = 0; i < tempRec.length; i++) {
+        if (tempRec[i].refresh) {
+            tempRec[i].delta = compare(getNearestRefresh(tempRec, i), tempRec[i].refresh);
+            tempRec[i].refresh = undefined;
+        }
+    }
+    return JSON.stringify(tempRec);
+}
+function readSimplifiedRecordJSON(lines) {
+    let tempRec = JSON.parse(lines);
+    for (let element of tempRec) {
+        if (element.delta) {
+            element.refresh = structuredClone(getNearestRefresh(record, record.length - 1));
+            for (let j of element.delta) {
+                modifyValue(element.refresh, j.property, j.value);
+            }
+        }
+    }
+    return tempRec;
+}
+document.getElementById("file").addEventListener("change", function () {
+    READER.readAsText(document.getElementById("file").files[0]);
+});
+const READER = new FileReader();
+READER.addEventListener("load", function () {
+    record = readSimplifiedRecordJSON(READER.result);
+    for (let i = 0; i < record.length; i++) insertText(record[i], true, i);
+    recordPosition = record.length - 1;
+    navigationRefresh();
+    battleInfo = (record[recordPosition].refresh) ? record[recordPosition].refresh : getNearestRefresh(record, recordPosition);
+});
+
+function modifyValue(object, keys, value) {
+    let tempObject = object;
+    for (let i = 0; i < keys.length - 1; i++) {
+        tempObject = tempObject[keys[i]];
+    }
+    tempObject[keys[keys.length - 1]] = value;
 }
 function simplifyRecord(rec) {
     let str = "";
@@ -531,18 +575,29 @@ function readSimplifiedRecord(lines) {
         let params = sliceParams(i);
         switch (params[0].type) {
             case "setup":
-                for (let i = 1; i < params.length; i++) {
-                    players[params[0].args[0]].build[params[0].args[1]][params[i].param] = params[i].val;
+                for (let j = 1; j < params.length; j++) {
+                    players[params[0].args[0]].build[params[0].args[1]][params[j].param] = params[j].val;
                 }
                 battleInfo = getDefaultProperties(players);
+                break;
+            case "main":
+            case "small": {
+                let json = { "type": params[0].type };
+                for (let j = 1; j < params.length; j++) {
+                    json[j.param] = j.val;
+                }
+                record.push(json);
+                break;
+            }
+            case "effect":
         }
     }
 }
 function sliceParams(line) {
-    let arr = line.slice(1).split(";");
+    let arr = line.slice(1, -1).split(";");
     arr[0] = {
-        "type": arr[i].split(" ")[0].toLowerCase(),
-        "args": arr[i].split(" ").slice(1)
+        "type": arr[0].split(" ")[0].toLowerCase(),
+        "args": arr[0].split(" ").slice(1)
     };
     for (let i = 1; i < arr.length; i++) {
         arr[i] = {
@@ -1550,7 +1605,7 @@ function navigationRefresh() {
     document.getElementById("totalSteps").innerText = record.length;
     let tempTurnNumber = 0;
     for (let j = recordPosition; j >= 0; j--) if (record[j].type == "turn") {
-        tempTurnNumber = record[j].args[2].number;
+        tempTurnNumber = record[j].args[2].number[0];
         break;
     }
     document.getElementById("turnNumber").innerText = getL10n("others", "turn", {
@@ -1596,7 +1651,6 @@ function insertText(recordItem, insertRecordContent, step = recordPosition) {
         else insertElementWithClass("div", recordItem, "text", ["small-text"], step);
         if (insertRecordContent) insertElementWithClass("div", recordItem, "recordContent", ["small-text"], step);
     } else if (recordItem.type == "turn") {
-        document.getElementById("turnNumber").innerText = getSequenceL10n(recordItem.args);
         if (insertRecordContent) insertElementWithClass("h2", recordItem, "recordContent", ["turn-number"], step);
     }
 }

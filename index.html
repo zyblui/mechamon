@@ -57,7 +57,7 @@
             <div id="p2Ball6" class="ball"></div>
         </div>
         <div id="text">
-            <div class="main-text">Player 2 would like to battle!</div>
+            <div class="main-text" data-step="-1">Player 2 would like to battle!</div>
         </div>
     </div>
     <div id="decisionPanel">
@@ -492,11 +492,12 @@
                 <div class="bottom-options">
                     <div><span id="currentStep">0</span>/<span id="totalSteps">0</span></div>
                     <div>
-                        <a id="saveReplay" download="Replay.mcm">
+                        <a id="saveReplay" download="Replay.mjson">
                             <button>Save</button>
                         </a>
                     </div>
-                    <div><button>Load</button></div>
+                    <div><input type="file" title="Upload file" name="file" id="file" /><label
+                            for="file">Load</label></div>
                 </div>
             </div>
         </div>

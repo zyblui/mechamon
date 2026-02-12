@@ -438,6 +438,11 @@ table {
     padding: 9px;
     overflow-y: auto;
 
+    & #recordContent {
+        height: 90%;
+        overflow-y: auto;
+    }
+
     &>*,
     & #recordContent>* {
         animation: 0.15s fade-in;
@@ -855,7 +860,8 @@ button {
     &>div {
         display: inline-block;
 
-        & button {
+        & button,
+        & label {
             margin-bottom: 3px;
             font-family: Inter, sans-serif;
             font-size: medium;
@@ -1122,21 +1128,21 @@ option::checkmark {
     box-sizing: border-box;
     background-color: var(--bg);
     border-radius: 0 0 9px 9px;
+    height: 10%;
 
     & #navigationInner {
+        height: calc(100% - 35px);
+
         & button {
             width: calc(25% - 6px);
-        }
-    }
+            font-size: medium;
+            margin: 3px;
+            height: calc(100% - 6px);
 
-    #navigationInner button {
-        font-size: medium;
-        padding: 6px 18px;
-        margin: 3px;
-
-        &:hover {
-            border: solid 2px dodgerblue;
-            background-color: var(--button-hover);
+            &:hover {
+                border: solid 2px dodgerblue;
+                background-color: var(--button-hover);
+            }
         }
     }
 
@@ -1157,4 +1163,8 @@ option::checkmark {
     #text &.navigation-hide {
         display: none;
     }
+}
+
+input[type="file"] {
+    display: none;
 }
