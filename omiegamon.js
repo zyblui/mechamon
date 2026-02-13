@@ -64,6 +64,18 @@ const MOVES_OMIEGA = [{
     "effect": function (e) {
         if (getPkmn(false).name == "pikachu" || getPkmn(false).name == "raichu" || getPkmn(false).name == "masterat") dealDmg(false, 65536);
     }
+},{
+    "name":"ashley's ritual",
+    "type": "ghost",
+    "category": "status",
+    "power": 0,
+    "acc": 100,
+    "pp": 15,
+    "priority": 0,
+    "effect":function(e){
+        modifyStatus("frz", 1);
+        modifyStats(true, "sp", -1, 1);
+    }
 }];
 const TRANSLATION_OMIEGA = {
     "en": {
@@ -74,7 +86,8 @@ const TRANSLATION_OMIEGA = {
         "moves": {
             "raging tide": "Raging Tide",
             "pretend": "Pretend",
-            "squashy stomp":"Squashy Stomp"
+            "squashy stomp":"Squashy Stomp",
+            "ashley's ritual":"Ashley's Ritual"
         },
         "moveDesc": {
             "raging tide": "",
@@ -92,7 +105,8 @@ const TRANSLATION_OMIEGA = {
         },
         "moveDesc": {
             "raging tide": "发动一轮或多轮的攻势，每次的命中率依次递减。",
-            "pretend": "向对手做假动作，降低对手的防御。时机成熟时再发动攻击。"
+            "pretend": "向对手做假动作，降低对手的防御。时机成熟时再发动攻击。",
+            "ashley's ritual":""
         }
     }
 };

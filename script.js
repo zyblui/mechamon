@@ -168,9 +168,11 @@ function setDelay(isSelf, func, turns) {
     });
 }
 function render(info = battleInfo) {
-    if (info[Number(viewpoint != 0)].currentPokemon != -1) document.getElementById("p1Pokemon").style.backgroundImage =
+    if (info[Number(viewpoint != 0)].currentPokemon == -1) document.getElementById("p1Pokemon").style.backgroundImage = "none";
+    else document.getElementById("p1Pokemon").style.backgroundImage =
         "url('back/" + players[Number(viewpoint != 0)].build[info[Number(viewpoint != 0)].currentPokemon].name + ".png')";
-    if (info[Number(viewpoint != 1)].currentPokemon != -1) document.getElementById("p2Pokemon").style.backgroundImage =
+    if (info[Number(viewpoint != 1)].currentPokemon == -1) document.getElementById("p2Pokemon").style.backgroundImage = "none";
+    else document.getElementById("p2Pokemon").style.backgroundImage =
         "url('front/" + players[Number(viewpoint != 1)].build[info[Number(viewpoint != 1)].currentPokemon].name + ".png')";
     if (info[Number(viewpoint != 0)].currentPokemon != -1) document.getElementById("p1Name").innerText =
         getName(players[Number(viewpoint != 0)].build[info[Number(viewpoint != 0)].currentPokemon], false);
@@ -180,8 +182,6 @@ function render(info = battleInfo) {
 function renderFull(info = battleInfo) {
     render(info);
     renderHP(info);
-    if (info[0].currentPokemon == -1) document.getElementById("p1Pokemon").style.backgroundImage = "none";
-    else if (info[1].currentPokemon == -1) document.getElementById("p2Pokemon").style.backgroundImage = "none";
 }
 
 function getL10n(type, str) {
@@ -1361,26 +1361,20 @@ function renderHP(info = battleInfo) {
     for (let i of [0, 1]) if (info[Number(i != viewpoint)].currentPokemon != -1) {
         insertEffects(info[Number(i != viewpoint)].build[info[Number(i != viewpoint)].currentPokemon], document.getElementById(`p${i + 1}Status`), false);
     }
-    for (let i of [0, 1]) {
-        for (let j = 0; j < 6; j++) {
-            let ballElement = document.getElementById("p" + (i + 1) + "Ball" + (j + 1));
-            if (!info[Number(i != viewpoint)].build[j].revealed) {
-                ballElement.style.backgroundImage = "url(pokemonicons-pokeball-sheet.png)";
-                ballElement.style.backgroundPosition = "0 0";
-                ballElement.dataset.for = "";
-            } else {
-                ballElement.style.backgroundImage = "url(pokemonicons-sheet.png)";
-                ballElement.style.backgroundPosition = (-(ICONS[info[Number(i != viewpoint)].build[j]
-                    .name].cell - 1) * 40) + "px " + (-(ICONS[info[Number(i != viewpoint)].build[j].name].row - 1) * 30) + "px";
-
-                if (info[Number(i != viewpoint)].build[j].hp <= 0) {
-                    ballElement.classList.add("faint");
-                } else {
-                    ballElement.classList.remove("faint");
-                }
-                ballElement.dataset.for = info[Number(i != viewpoint)].build[j].name;
-            }
+    for (let i of [0, 1]) for (let j = 0; j < 6; j++) {
+        let ballElement = document.getElementById("p" + (i + 1) + "Ball" + (j + 1));
+        if (info[Number(i != viewpoint)].build[j].revealed) {
+            ballElement.style.backgroundImage = "url(pokemonicons-sheet.png)";
+            ballElement.style.backgroundPosition = (-(ICONS[info[Number(i != viewpoint)].build[j]
+                .name].cell - 1) * 40) + "px " + (-(ICONS[info[Number(i != viewpoint)].build[j].name].row - 1) * 30) + "px";
+            ballElement.dataset.for = info[Number(i != viewpoint)].build[j].name;
+        } else {
+            ballElement.style.backgroundImage = "url(pokemonicons-pokeball-sheet.png)";
+            ballElement.style.backgroundPosition = "0 0";
+            ballElement.dataset.for = "";
         }
+        if (info[Number(i != viewpoint)].build[j].hp <= 0) ballElement.classList.add("faint");
+        else ballElement.classList.remove("faint");
     }
 }
 function renderTable() {
@@ -1494,7 +1488,7 @@ document.getElementById("forfeit").addEventListener("click", function () {
 });
 document.getElementById("viewpoint").addEventListener("click", function () {
     viewpoint = Number(!viewpoint);
-    renderFull();
+    renderFull((record[recordPosition].refresh) ? record[recordPosition].refresh : getNearestRefresh(record, recordPosition));
     for (let i of document.querySelectorAll("[data-content]")) {
         let arr = JSON.parse(i.dataset.content);
         if (arr[2] && Object.keys(arr[2]).includes("isEnemy")) arr[2].isEnemy = !arr[2].isEnemy;
