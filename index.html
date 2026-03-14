@@ -469,6 +469,7 @@
                 <div class="wrap">
                     <button class="back right-button">Back</button>
                     <p class="dim">Select a Pokémon...</p>
+                    <button id="clearPkmn" class="right-button float-right">Clear</button>
                 </div>
             </div>
             <div class="list" id="movesList">
@@ -493,11 +494,11 @@
                     <div><span id="currentStep">0</span>/<span id="totalSteps">0</span></div>
                     <div>
                         <a id="saveReplay" download="Replay.mjson">
-                            <button>Save</button>
+                            <button data-transl-cat="ui" data-transl-key="save">Save</button>
                         </a>
                     </div>
-                    <div><input type="file" title="Upload file" name="file" id="file" /><label
-                            for="file">Load</label></div>
+                    <div><input type="file" title="Upload file" name="file" id="file" /><label for="file"
+                            data-transl-cat="ui" data-transl-key="load">Load</label></div>
                 </div>
             </div>
         </div>
@@ -555,12 +556,40 @@
                             classmates and teachers in senior high.</p>
                     </div>
                 </label>
-                <div class="wrap">Background Music: <select title="Background Music">
+                <div class="wrap">
+                    Background Music: <select title="Background Music">
                         <option>Random</option>
                         <option>Random: Intense</option>
                         <option>Random: Relaxing</option>
-                    </select></div>
+                    </select>
+                </div>
+                <div class="wrap">
+                    <label>
+                        BGM Volume
+                        <div><input type="range" value="100" /> <span>100</span>
+                        </div>
+                    </label>
+                </div>
+                <div class="wrap">
+                    <label>
+                        SFX Volume
+                        <div><input type="range" value="100" /> <span>100</span>
+                        </div>
+                    </label>
+                </div>
+                <div class="wrap">
+                    <button id="whatsNewButton">What's New</button>
+                </div>
             </div>
+        </div>
+    </div>
+    <div id="dialogOuter">
+        <div id="dialogBg"></div>
+        <div id="dialogContainer">
+            <h2>What's New</h2>
+            <div id="whatsNewContent"></div>
+            <p class="explanation">This panel can be accessed later by clicking Settings -&gt; What's New.</p>
+            <button id="close" class="right-button float-right">Close</button>
         </div>
     </div>
     <script src="data.js"></script>

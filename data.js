@@ -1906,6 +1906,32 @@ const MOVES = [{
         setUncontrollable(false, "", turns);
     }
 }];
+const MOVES_ANIM = {
+    "absorb": function (p) {
+        let ball = document.createElement("div");
+        ball.style.width = "30px";
+        ball.style.height = "30px";
+        ball.style.borderRadius = "15px";
+        ball.style.backgroundColor = "yellow";
+        ball.style.border = "solid 2px #880";
+        document.getElementById("battlePanel").appendChild(ball);
+        ball.style.position = "absolute";
+        ball.style.right = "10%";
+        ball.style.top = "0";
+        ball.animate([{
+            "right": "10%",
+            "top": "0"
+        }, {
+            "right": "90%",
+            "top": "100%"
+        }], {
+            "duration": 300
+        });
+        setTimeout(function () {
+            ball.remove();
+        }, 300);
+    }
+};
 const POKEMON = [{
     "name": "abra",
     "type": ["psychic"],
@@ -3334,7 +3360,9 @@ const TRANSLATION = {
             "hardcoreMode": "Hardcore Mode",
             "effectivenessIndicator": "Effectiveness Indicator",
             "darkMode": "Dark Mode",
-            "keyboardControls": "Keyboard Controls"
+            "keyboardControls": "Keyboard Controls",
+            "save": "Save",
+            "load": "Load"
         },
         "others": {
             "turn": "Turn [number0]",
@@ -4119,7 +4147,9 @@ const TRANSLATION = {
             "hardcoreMode": "硬核模式",
             "effectivenessIndicator": "效果指示器",
             "darkMode": "暗黑模式",
-            "keyboardControls": "键盘控制"
+            "keyboardControls": "键盘控制",
+            "save": "保存",
+            "load": "载入"
         },
         "others": {
             "turn": "第 [number0] 回合",

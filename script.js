@@ -34,10 +34,28 @@ let settings = {
     "keyboardControls": false,
     "effectivenessIndicator": false,
     "darkMode": false,
-    "omiegamon": false
+    "omiegamon": false,
+    "whatsNew": `We sincerely invite the people (or just the <strong>person</strong>?) who are viewing our website to play the best .io game ever, <a href='https://hornex.pro'>hornex.pro</a> (even better than <s>florr.io</s>)!
+    <ul>
+        <li><a href='https://hornex.pro'>Go go go!!</a> </li>
+        <li><a href='javascript:closePage()'>No. Fuck you.</a></li>
+    </ul>
+    Additionally, here are the updates made since <strong>you</strong> last visited the site:
+    <ul>
+        <li>Every mons now have their cries!! Custom Omiegamon haven't received their own sounds, though.</li>
+        <li>Save your battle on your computer by clicking (or tapping) Record -&gt; Save.</li>
+        <li>This "What's New" dialog itself. This dialog is automatically displayed the first time you visit the site since the text here is changed by @zyblui.</li>
+    </ul>`
 };
+document.getElementById("whatsNewContent").innerHTML = settings.whatsNew;
+if (settings.whatsNew != JSON.parse(localStorage.getItem("mechamonSettings")).whatsNew) {
+    document.getElementById("dialogOuter").classList.add("show");
+}
 let cries = {};
 const PROPERTIES = ["atk", "def", "sp", "spe"];
+let tempSettings = JSON.parse(localStorage.getItem("mechamonSettings"));
+tempSettings.whatsNew = settings.whatsNew;
+localStorage.setItem("mechamonSettings", JSON.stringify(tempSettings));
 if (localStorage.getItem("mechamonSettings")) {
     for (let i in settings) if (!Object.keys(JSON.parse(localStorage.getItem("mechamonSettings"))).includes(i)) {
         localStorage.setItem("mechamonSettings", JSON.stringify(settings));
@@ -1641,6 +1659,10 @@ function insertElementWithClass(elementName, item, parentId, classList, step = r
     tempElement.classList.add(...classList);
     tempElement.dataset.content = JSON.stringify(item.args);
     tempElement.dataset.step = step;
+    tempElement.addEventListener("click", function () {
+        recordPosition = step;
+        navigationRefresh();
+    });
     document.getElementById(parentId).appendChild(tempElement);
 }
 function insertText(recordItem, insertRecordContent, step = recordPosition) {
@@ -1657,3 +1679,14 @@ function insertText(recordItem, insertRecordContent, step = recordPosition) {
         if (insertRecordContent) insertElementWithClass("h2", recordItem, "recordContent", ["turn-number"], step);
     }
 }
+function getImagePosition() {
+
+}
+function closePage() {
+    document.getElementById("dialogOuter").classList.remove("show");
+}
+document.getElementById("close").addEventListener("click", closePage);
+document.getElementById("dialogBg").addEventListener("click", closePage);
+document.getElementById("whatsNewButton").addEventListener("click",function(){
+    document.getElementById("dialogOuter").classList.add("show");
+})
