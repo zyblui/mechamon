@@ -42,7 +42,7 @@ let settings = {
     </ul>
     Additionally, here are the updates made since <strong>you</strong> last visited the site:
     <ul>
-        <li>Every mons now have their cries!! Custom Omiegamon haven't received their own sounds, though.</li>
+        <li>All mons now have their cries!! Custom Omiegamon haven't received their own sounds, though.</li>
         <li>Save your battle on your computer by clicking (or tapping) Record -&gt; Save.</li>
         <li>This "What's New" dialog itself. This dialog is automatically displayed the first time you visit the site since the text here is changed by @zyblui.</li>
     </ul>`
