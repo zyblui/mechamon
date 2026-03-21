@@ -3358,9 +3358,19 @@ const TRANSLATION = {
             "playerTurn": "[player0]'s turn",
             "recordUnavailable": "Record is unavailable, because you are on Hardcore Mode. Turn it off to reveal battle records.",
             "hardcoreMode": "Hardcore Mode",
+            "hardcoreMode-desc":"Hides all information not shown ingame.",
             "effectivenessIndicator": "Effectiveness Indicator",
+            "effectivenessIndicator-descP":"When it is on, the effectiveness of each move will be displayed as:",
+            "effectivenessIndicator-descUl":`<li>Doubly Super-Effective (DSE)</li>
+<li>Super-Effective (SE)</li>
+<li>Effective (E)</li>
+<li>Not Very Effective (NVE)</li>
+<li>Doubly Not Very Effective (DNVE)</li>
+<li>No Effect (NE)</li>`,
             "darkMode": "Dark Mode",
+            "darkMode-desc":"Determines the overall color scheme.",
             "keyboardControls": "Keyboard Controls",
+            "keyboardControls-desc":"Press [1][2][3][4] for 4 moves, and press [Z][X][C][V][B][N] for 6 Pokémon.",
             "save": "Save",
             "load": "Load"
         },
@@ -4145,9 +4155,19 @@ const TRANSLATION = {
             "playerTurn": "[player0] 的回合",
             "recordUnavailable": "记录不可用，因为你正处于硬核模式。将其关闭以显示对战记录。",
             "hardcoreMode": "硬核模式",
+            "hardcoreMode-desc": "隐藏所有游戏内不显示的信息。",
             "effectivenessIndicator": "效果指示器",
+            "effectivenessIndicator-descP": "启用后，招式效果将显示为：",
+            "effectivenessIndicator-descUl": `<li>双倍效果绝佳（DSE）</li>
+<li>效果绝佳（SE）</li>
+<li>有效果（E）</li>
+<li>效果不好（NVE）</li>
+<li>双倍效果不好（DNVE）</li>
+<li>无效果（NE）</li>`,
             "darkMode": "暗黑模式",
+            "darkMode-desc":"变更页面颜色主题。",
             "keyboardControls": "键盘控制",
+            "keyboardControls-desc":"按[1][2][3][4]键以选用4种招式，按[Z][X][C][V][B][N]键以选用6种宝可梦。",
             "save": "保存",
             "load": "载入"
         },

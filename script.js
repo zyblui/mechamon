@@ -35,9 +35,11 @@ let settings = {
     "effectivenessIndicator": false,
     "darkMode": false,
     "omiegamon": false,
-    "whatsNew": `
+    "whatsNew": `I've updated a lot of stuff, as promised! Here are the updates:
 <ul>
-    <li>Favicon updated. We're not planning to add a homepage to this project, by the way.</li>
+    <li>Favicon updated (why all Pokémon-related websites use Poké Balls as their favicons?). We're not planning to add a homepage to this project, by the way.</li>
+    <li>More ingame text (in the "Settings" tab) received its own localization.</li>
+    <li>Pokémon out of moves can choose Struggle now, though that situation is unlikely to happen. Didn't even know what Struggle is? Go learn yourself. (English: <a href="https://bulbapedia.bulbagarden.net/wiki/Struggle_(move)">Bulbapedia</a>; Chinese: <a href="https://wiki.52poke.com/wiki/%E6%8C%A3%E6%89%8E%EF%BC%88%E6%8B%9B%E5%BC%8F%EF%BC%89">52poke</a>)</li>
 </ul>`
 };
 document.getElementById("whatsNewContent").innerHTML = settings.whatsNew;
@@ -1070,6 +1072,11 @@ function nextTurn() {
             judgeHP();
             if (getPkmn(true)) {
                 getPkmn(true).moves[k.name]--;
+                let outOfMoves = true;
+                for (let m in getPkmn(true).moves) {
+                    if (getPkmn(true).moves[m]) outOfMoves = false;
+                }
+                if (outOfMoves) setUncontrollable(true, "struggle", Infinity);
                 if (effect?.flinch) {
                     nextTurn();
                 }
@@ -1512,7 +1519,7 @@ document.getElementById("viewpoint").addEventListener("click", function () {
 });
 function refreshLang() {
     for (let i of document.querySelectorAll("[data-transl-cat]")) {
-        i.innerText = TRANSLATION[settings.lang][i.dataset.translCat][i.dataset.translKey];
+        i.innerHTML = TRANSLATION[settings.lang][i.dataset.translCat][i.dataset.translKey];
     }
 }
 refreshLang();
@@ -1680,6 +1687,6 @@ function closePage() {
 }
 document.getElementById("close").addEventListener("click", closePage);
 document.getElementById("dialogBg").addEventListener("click", closePage);
-document.getElementById("whatsNewButton").addEventListener("click",function(){
+document.getElementById("whatsNewButton").addEventListener("click", function () {
     document.getElementById("dialogOuter").classList.add("show");
-})
+});
