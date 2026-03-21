@@ -35,17 +35,10 @@ let settings = {
     "effectivenessIndicator": false,
     "darkMode": false,
     "omiegamon": false,
-    "whatsNew": `We sincerely invite the people (or just the <strong>person</strong>?) who are viewing our website to play the best .io game ever, <a href='https://hornex.pro'>hornex.pro</a> (even better than <s>florr.io</s>)!
-    <ul>
-        <li><a href='https://hornex.pro'>Go go go!!</a> </li>
-        <li><a href='javascript:closePage()'>No. Fuck you.</a></li>
-    </ul>
-    Additionally, here are the updates made since <strong>you</strong> last visited the site:
-    <ul>
-        <li>All mons now have their cries!! Custom Omiegamon haven't received their own sounds, though.</li>
-        <li>Save your battle on your computer by clicking (or tapping) Record -&gt; Save.</li>
-        <li>This "What's New" dialog itself. This dialog is automatically displayed the first time you visit the site since the text here is changed by @zyblui.</li>
-    </ul>`
+    "whatsNew": `
+<ul>
+    <li>Favicon updated. We're not planning to add a homepage to this project, by the way.</li>
+</ul>`
 };
 document.getElementById("whatsNewContent").innerHTML = settings.whatsNew;
 if (settings.whatsNew != JSON.parse(localStorage.getItem("mechamonSettings")).whatsNew) {
