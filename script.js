@@ -35,11 +35,14 @@ let settings = {
     "effectivenessIndicator": false,
     "darkMode": false,
     "omiegamon": false,
-    "whatsNew": `I've updated a lot of stuff, as promised! Here are the updates:
+    "sfxVolume": 100,
+    "bgmVolume": 100,
+    "whatsNew": `I've updated a bunch of stuff, as promised! Here are the updates:
 <ul>
     <li>Favicon updated (why all Pokémon-related websites use Poké Balls as their favicons?). We're not planning to add a homepage to this project, by the way.</li>
     <li>More ingame text (in the "Settings" tab) received its own localization.</li>
     <li>Pokémon out of moves can choose Struggle now, though that situation is unlikely to happen. Didn't even know what Struggle is? Go learn yourself. (English: <a href="https://bulbapedia.bulbagarden.net/wiki/Struggle_(move)">Bulbapedia</a>; Chinese: <a href="https://wiki.52poke.com/wiki/%E6%8C%A3%E6%89%8E%EF%BC%88%E6%8B%9B%E5%BC%8F%EF%BC%89">52poke</a>)</li>
+    <li>The "SFX Volume" option is now working! Set its value to 0 to get rid of the annoying Pokémon noise!</li>
 </ul>`
 };
 document.getElementById("whatsNewContent").innerHTML = settings.whatsNew;
@@ -1690,3 +1693,18 @@ document.getElementById("dialogBg").addEventListener("click", closePage);
 document.getElementById("whatsNewButton").addEventListener("click", function () {
     document.getElementById("dialogOuter").classList.add("show");
 });
+function refreshRange(element) {
+    element.style.backgroundImage =
+        "linear-gradient(90deg, dodgerblue 0%, dodgerblue " + element.value + "%, lightgray " + element.value + "%)";
+    //if (element.classList.contains("settingRange")) {
+    element.parentNode.querySelector(".range-value").innerHTML = Math.floor(element.value);
+    settings[element.dataset.for] = Math.floor(element.value);
+    localStorage.setItem("mechamonSettings", JSON.stringify(settings));
+    //}
+}
+for (let i of document.querySelectorAll("input[type='range']")) {
+    i.addEventListener("input", function () {
+        refreshRange(i);
+        for (let j in cries) cries[j].volume = settings.sfxVolume / 100;
+    });
+}
