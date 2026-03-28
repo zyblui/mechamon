@@ -35,15 +35,17 @@ let settings = {
     "effectivenessIndicator": false,
     "darkMode": false,
     "omiegamon": false,
+    "backgroundImage": "none",
     "sfxVolume": 100,
     "bgmVolume": 100,
-    "whatsNew": `I've updated a bunch of stuff, as promised! Here are the updates:
+    "whatsNew": `This week's updates:
 <ul>
-    <li>Favicon updated (why all Pokémon-related websites use Poké Balls as their favicons?). We're not planning to add a homepage to this project, by the way.</li>
-    <li>More ingame text (in the "Settings" tab) received its own localization.</li>
-    <li>Pokémon out of moves can choose Struggle now, though that situation is unlikely to happen. Didn't even know what Struggle is? Go learn yourself. (English: <a href="https://bulbapedia.bulbagarden.net/wiki/Struggle_(move)">Bulbapedia</a>; Chinese: <a href="https://wiki.52poke.com/wiki/%E6%8C%A3%E6%89%8E%EF%BC%88%E6%8B%9B%E5%BC%8F%EF%BC%89">52poke</a>)</li>
-    <li>The "SFX Volume" option is now working! Set its value to 0 to get rid of the annoying Pokémon noise!</li>
-</ul>`
+    <li>Some text in the "Clauses" section and the "Settings" tab received its own localization.</li>
+    <li>Species Clause, OHKO Clause, and Evasion Clause are now working.</li>
+    <li>Due to Alyns's request, the "Background Image" Option is now available. Only 2 backgrounds are selectable for now. (There's more to come!)</li>
+    <li>Some styling modifications.</li>
+</ul>
+Enough changes for the week! Yay!!`
 };
 document.getElementById("whatsNewContent").innerHTML = settings.whatsNew;
 if (settings.whatsNew != JSON.parse(localStorage.getItem("mechamonSettings")).whatsNew) {
@@ -51,6 +53,10 @@ if (settings.whatsNew != JSON.parse(localStorage.getItem("mechamonSettings")).wh
 }
 let cries = {};
 const PROPERTIES = ["atk", "def", "sp", "spe"];
+const MOVE_BAN_LIST = {
+    "ohkoClause": ["fissure", "horn drill", "guillotine", "sheer cold"],
+    "evasionClause": ["double team", "minimize"]
+};
 let tempSettings = JSON.parse(localStorage.getItem("mechamonSettings"));
 tempSettings.whatsNew = settings.whatsNew;
 localStorage.setItem("mechamonSettings", JSON.stringify(tempSettings));
@@ -458,6 +464,8 @@ function getDefaultProperties(playersInfo) {
     return arr;
 }
 document.getElementById("startGame").addEventListener("click", function () {
+    if (settings.backgroundImage == "none") document.getElementById("battlePanel").style.backgroundImage = "none";
+    else document.getElementById("battlePanel").style.backgroundImage = `url("bg/bg-${settings.backgroundImage}.png")`;
     document.getElementById("recordContent").innerHTML = "";
     turn = 0;
     record = [];
@@ -1412,6 +1420,8 @@ function renderTable() {
             }
         }
     }
+    if (checkBuildValidity()) document.getElementById("startGame").disabled = "";
+    else document.getElementById("startGame").disabled = "disabled";
 }
 renderTable();
 for (let i of document.getElementsByClassName("tab")) {
@@ -1708,3 +1718,15 @@ for (let i of document.querySelectorAll("input[type='range']")) {
         for (let j in cries) cries[j].volume = settings.sfxVolume / 100;
     });
 }
+function checkBuildValidity() {
+    if (settings.speciesClause) {
+        if (players[0].build.length != new Set(players[0].build.map((x) => x.name)).size || players[1].build.length != new Set(players[1].build
+            .map((x) => x.name)).size) return false;
+    }
+    for (let l of Object.keys(MOVE_BAN_LIST)) if (settings[l]) for (let i of [0, 1]) for (let j = 0; j < 6; j++) for (let k of MOVE_BAN_LIST[l])
+        if (players[i].build[j].moves.includes(k)) return false;
+    return true;
+}
+for (let i of document.getElementsByClassName("clause-checkbox")) i.addEventListener("change", function () {
+    renderTable();
+});

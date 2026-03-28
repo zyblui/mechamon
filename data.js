@@ -3345,9 +3345,12 @@ const TRANSLATION = {
             "settings": "Settings",
             "sleepClause": "Sleep Clause",
             "speciesClause": "Species Clause",
+            "speciesClause-desc":"Each Pokémon on a player's team must be of different species or National Pokédex number.",
             "ohkoClause": "OHKO clause",
+            "ohkoClause-desc":"OHKO moves, i.e. Fissure, Horn Drill, and Guillotine, are banned.",
             "freezeClause": "Freeze Clause",
             "evasionClause": "Evasion Clause",
+            "evasionClause-desc":"Moves that increases Evasion, i.e. Double Team and Minimize, are banned.",
             "selfKoClause": "Self-KO Clause",
             "power": "Power",
             "accuracy": "Accuracy",
@@ -3372,7 +3375,9 @@ const TRANSLATION = {
             "keyboardControls": "Keyboard Controls",
             "keyboardControls-desc":"Press [1][2][3][4] for 4 moves, and press [Z][X][C][V][B][N] for 6 Pokémon.",
             "save": "Save",
-            "load": "Load"
+            "load": "Load",
+            "sfxVolume":"SFX Volume",
+            "whatsNew":"What's New"
         },
         "others": {
             "turn": "Turn [number0]",
@@ -4142,9 +4147,12 @@ const TRANSLATION = {
             "settings": "设置",
             "sleepClause": "催眠条款",
             "speciesClause": "种族条款",
+            "speciesClause-desc":"队伍不得拥有两个全国图鉴编号相同的宝可梦。",
             "ohkoClause": "一击必杀条款",
+            "ohkoClause-desc":"不可使用一击必杀的招式，即地裂、角钻和断头钳。",
             "freezeClause": "冰冻条款",
             "evasionClause": "闪避条款",
+            "evasionClause-desc":"不可使用提升闪避率的招式，即影子分身和变小。",
             "selfKoClause": "自杀条款",
             "power": "威力",
             "accuracy": "命中",
@@ -4169,7 +4177,9 @@ const TRANSLATION = {
             "keyboardControls": "键盘控制",
             "keyboardControls-desc":"按[1][2][3][4]键以选用4种招式，按[Z][X][C][V][B][N]键以选用6种宝可梦。",
             "save": "保存",
-            "load": "载入"
+            "load": "载入",
+            "sfxVolume":"音效音量",
+            "whatsNew":"本次更新"
         },
         "others": {
             "turn": "第 [number0] 回合",
