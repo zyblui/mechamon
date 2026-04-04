@@ -38,7 +38,7 @@ let settings = {
     "backgroundImage": "none",
     "sfxVolume": 100,
     "bgmVolume": 100,
-    "whatsNew": `<div style="position:fixed;width:100%;height:100%;top:0;left:0;background-color:white;padding: 30px 90px;box-sizing:border-box" id="specialScreen" onclick="document.getElementById('specialScreen').style.display='none'">We are sorry to inform you that the site has been shut down. We sincerely apologize for any inconvenience caused.
+    "whatsNew": `<div style="position:fixed;width:100%;height:100%;top:0;left:0;background-color:var(--bg);color:var(--text);padding: 30px 90px;box-sizing:border-box" id="specialScreen" onclick="document.getElementById('specialScreen').style.display='none'">We are sorry to inform you that the site has been shut down. We sincerely apologize for any inconvenience caused.
 Time to say goodbye to Mechamon, which has accompanied us for around 8 months. Thank you for your support.
 <br/><br/>
 Yblui
