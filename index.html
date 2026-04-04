@@ -99,7 +99,7 @@
             </div>
         </div>
     </div>
-                        <button class="decisionMove">
+                        <button class="decisionMove" disabled>
                             <div class="keyboard-shortcut hide">[1]</div>
                             <span class="move-text">Move #1</span>
                             <div class="move-side">
@@ -107,7 +107,7 @@
                                 <div class="pp"><span class="pp-remaining">0</span><span class="sub">/0</span></div>
                             </div>
                             <div class="effectiveness hide">Effectiveness</div>
-                        </button></div><div class="move-container"><button class="decisionMove">
+                        </button></div><div class="move-container"><button class="decisionMove" disabled>
                             <div class="keyboard-shortcut hide">[2]</div>
                             <span class="move-text">Move #2</span>
                             <div class="move-side">
@@ -115,7 +115,7 @@
                                 <div class="pp"><span class="pp-remaining">0</span><span class="sub">/0</span></div>
                             </div>
                             <div class="effectiveness hide">Effectiveness</div>
-                        </button></div><div class="move-container"><button class="decisionMove">
+                        </button></div><div class="move-container"><button class="decisionMove" disabled>
                             <div class="keyboard-shortcut hide">[3]</div>
                             <span class="move-text">Move #3</span>
                             <div class="move-side">
@@ -123,7 +123,7 @@
                                 <div class="pp"><span class="pp-remaining">0</span><span class="sub">/0</span></div>
                             </div>
                             <div class="effectiveness hide">Effectiveness</div>
-                        </button></div><div class="move-container"><button class="decisionMove">
+                        </button></div><div class="move-container"><button class="decisionMove" disabled>
                             <div class="keyboard-shortcut hide">[4]</div>
                             <span class="move-text">Move #4</span>
                             <div class="move-side">
@@ -181,12 +181,12 @@
                 <div class="pp"><span class="pp-remaining">?</span><span class="sub">/?</span></div>
             </div>
         </div>
-    </div><button class="decisionSwitch"><div class="keyboard-shortcut hide">[Z]</div>
-        <div class="decision-content">Pokémon #1</div></button></div><div class="switch-container"><button class="decisionSwitch"><div class="keyboard-shortcut hide">[X]</div>
-        <div class="decision-content">Pokémon #2</div></button></div><div class="switch-container"><button class="decisionSwitch"><div class="keyboard-shortcut hide">[C]</div>
-        <div class="decision-content">Pokémon #3</div></button></div><div class="switch-container"><button class="decisionSwitch"><div class="keyboard-shortcut hide">[V]</div>
-        <div class="decision-content">Pokémon #4</div></button></div><div class="switch-container"><button class="decisionSwitch"><div class="keyboard-shortcut hide">[B]</div>
-        <div class="decision-content">Pokémon #5</div></button></div><div class="switch-container"><button class="decisionSwitch"><div class="keyboard-shortcut hide">[N]</div>
+    </div><button class="decisionSwitch" disabled><div class="keyboard-shortcut hide">[Z]</div>
+        <div class="decision-content">Pokémon #1</div></button></div><div class="switch-container"><button class="decisionSwitch" disabled><div class="keyboard-shortcut hide">[X]</div>
+        <div class="decision-content">Pokémon #2</div></button></div><div class="switch-container"><button class="decisionSwitch" disabled><div class="keyboard-shortcut hide">[C]</div>
+        <div class="decision-content">Pokémon #3</div></button></div><div class="switch-container"><button class="decisionSwitch" disabled><div class="keyboard-shortcut hide">[V]</div>
+        <div class="decision-content">Pokémon #4</div></button></div><div class="switch-container"><button class="decisionSwitch" disabled><div class="keyboard-shortcut hide">[B]</div>
+        <div class="decision-content">Pokémon #5</div></button></div><div class="switch-container"><button class="decisionSwitch" disabled><div class="keyboard-shortcut hide">[N]</div>
         <div class="decision-content">Pokémon #6</div></button></div>
                     <!--NOFORMAT--><!--end-->
                 </td>
@@ -207,7 +207,8 @@
                 <div class="wrap">
                     <p class="dim">Welcome to the world of Mechamon!</p>
                     <button id="mechaButton" class="right-button float-right">Mechamon</button>
-                    <button id="startGame" class="right-button float-right">Start Game</button>
+                    <button id="startGame" class="right-button float-right" data-transl-cat="ui"
+                        data-transl-key="startGame">Start Game</button>
                 </div>
                 Player 1:
                 <div class="team">
@@ -425,7 +426,8 @@
                         <input type="checkbox" data-settings="sleepClause" class="clause-checkbox" />
                         <span data-transl-cat="ui" data-transl-key="sleepClause" class="checkbox-key">Sleep
                             Clause</span>
-                        <p class="explanation">Each player can only have one Pokémon asleep at a time.</p>
+                        <p class="explanation" data-transl-cat="ui" data-transl-key="sleepClause-desc">Each player can
+                            only have one Pokémon asleep at a time.</p>
                     </div>
                 </label><label>
                     <div class="wrap">
@@ -433,8 +435,7 @@
                         <span data-transl-cat="ui" data-transl-key="speciesClause" class="checkbox-key">Species
                             Clause</span>
                         <p class="explanation" data-transl-cat="ui" data-transl-key="speciesClause-desc">Each Pokémon on
-                            a player's team must be of different species or National
-                            Pokédex number.</p>
+                            a player's team must be of different species or National Pokédex number.</p>
                     </div>
                 </label><label>
                     <div class="wrap">
@@ -448,7 +449,8 @@
                         <input type="checkbox" data-settings="freezeClause" class="clause-checkbox" />
                         <span data-transl-cat="ui" data-transl-key="freezeClause" class="checkbox-key">Freeze
                             Clause</span>
-                        <p class="explanation">Each player can only have one Pokémon frozen at a time.</p>
+                        <p class="explanation" data-transl-cat="ui" data-transl-key="freezeClause-desc">Each player can
+                            only have one Pokémon frozen at a time.</p>
                     </div>
                 </label><label>
                     <div class="wrap">
@@ -565,13 +567,26 @@
                 </label>
                 <div class="wrap">
                     Background Image: <select title="Background Image" data-settings="backgroundImage">
-                        <option data-for="none">None (Default)</option>
-                        <option data-for="beach">Beach
-                            <img src="bg/bg-beach.png" alt=""/>
-                        </option>
-                        <option data-for="beachshore">Beachshore
-                            <img src="bg/bg-beachshore.png" alt=""/>
-                        </option>
+                        <option value="none">None (Default)</option>
+                        <option value="beach">Beach</option>
+                        <option value="beachshore">Beachshore</option>
+                        <option value="city">City</option>
+                        <option value="dampcave">Damp Cave</option>
+                        <option value="deepsea">Deep Sea</option>
+                        <option value="desert">Desert</option>
+                        <option value="earthycave">Earthy Cave</option>
+                        <option value="forest">Forest</option>
+                        <option value="icecave">Ice Cave</option>
+                        <option value="meadow">Meadow</option>
+                        <option value="mountain">Mountain</option>
+                        <option value="npa">NPA</option>
+                        <option value="river">River</option>
+                        <option value="route">Route</option>
+                        <option value="scl">SCL</option>
+                        <option value="space">Space</option>
+                        <option value="spl">SPL</option>
+                        <option value="thunderplains">Thunder Plains</option>
+                        <option value="volcanocave">Volcano Cave</option>
                     </select>
                 </div>
                 <hr />
@@ -602,7 +617,8 @@
                 </label>
                 <hr />
                 <div class="wrap">
-                    <button id="whatsNewButton" class="wide-button right-button" data-transl-cat="ui" data-transl-key="whatsNew">What's New</button>
+                    <button id="whatsNewButton" class="wide-button right-button" data-transl-cat="ui"
+                        data-transl-key="whatsNew">What's New</button>
                 </div>
             </div>
         </div>
@@ -612,8 +628,9 @@
         <div id="dialogContainer">
             <h2 data-transl-cat="ui" data-transl-key="whatsNew">What's New</h2>
             <div id="whatsNewContent"></div>
-            <p class="explanation">This panel can be accessed later by clicking Settings -&gt; What's New.</p>
-            <button id="close" class="right-button float-right">Close</button>
+            <p class="explanation" data-transl-cat="ui" data-transl-key="accessLater">Access this dialog later by
+                clicking Settings -&gt; What's New.</p>
+            <button id="close" class="right-button float-right" data-transl-cat="ui" data-transl-key="close">Close</button>
         </div>
     </div>
     <script src="data.js"></script>

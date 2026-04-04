@@ -38,17 +38,27 @@ let settings = {
     "backgroundImage": "none",
     "sfxVolume": 100,
     "bgmVolume": 100,
-    "whatsNew": `This week's updates:
+    "whatsNew": `<div style="position:fixed;width:100%;height:100%;top:0;left:0;background-color:white;padding: 30px 90px;box-sizing:border-box" id="specialScreen" onclick="document.getElementById('specialScreen').style.display='none'">We are sorry to inform you that the site has been shut down. We sincerely apologize for any inconvenience caused.
+Time to say goodbye to Mechamon, which has accompanied us for around 8 months. Thank you for your support.
+<br/><br/>
+Yblui
+<br/>
+April 4, 2026
+<br/><br/>
+<i>(Tap the screen to close the tab.)</i>
+</div>
+...Actually, that was not true! This week's updates are as follows.
 <ul>
-    <li>Some text in the "Clauses" section and the "Settings" tab received its own localization.</li>
-    <li>Species Clause, OHKO Clause, and Evasion Clause are now working.</li>
-    <li>Due to Alyns's request, the "Background Image" Option is now available. Only 2 backgrounds are selectable for now. (There's more to come!)</li>
-    <li>Some styling modifications.</li>
+    <li>Bugfix: A severe issue that prevented this site working properly for users who had not visited it before.</li>
+    <li>Hardcore Mode setting is immediately applied to Party UI when changed, making it only to display Poké Ball icons rather than the Pokémon they contain, even if the contents are revealed.</li>
+    <li>Sleep Clause and Freeze Clause is now functioning.</li>
+    <li>More backgrounds available.</li>
+    <li>More localization and minor styling changes.</li>
 </ul>
-Enough changes for the week! Yay!!`
+`
 };
 document.getElementById("whatsNewContent").innerHTML = settings.whatsNew;
-if (settings.whatsNew != JSON.parse(localStorage.getItem("mechamonSettings")).whatsNew) {
+if (!localStorage.getItem("mechamonSettings") || settings.whatsNew != JSON.parse(localStorage.getItem("mechamonSettings")).whatsNew) {
     document.getElementById("dialogOuter").classList.add("show");
 }
 let cries = {};
@@ -57,10 +67,10 @@ const MOVE_BAN_LIST = {
     "ohkoClause": ["fissure", "horn drill", "guillotine", "sheer cold"],
     "evasionClause": ["double team", "minimize"]
 };
-let tempSettings = JSON.parse(localStorage.getItem("mechamonSettings"));
-tempSettings.whatsNew = settings.whatsNew;
-localStorage.setItem("mechamonSettings", JSON.stringify(tempSettings));
 if (localStorage.getItem("mechamonSettings")) {
+    let tempSettings = JSON.parse(localStorage.getItem("mechamonSettings"));
+    tempSettings.whatsNew = settings.whatsNew;
+    localStorage.setItem("mechamonSettings", JSON.stringify(tempSettings));
     for (let i in settings) if (!Object.keys(JSON.parse(localStorage.getItem("mechamonSettings"))).includes(i)) {
         localStorage.setItem("mechamonSettings", JSON.stringify(settings));
         break;
@@ -464,8 +474,13 @@ function getDefaultProperties(playersInfo) {
     return arr;
 }
 document.getElementById("startGame").addEventListener("click", function () {
-    if (settings.backgroundImage == "none") document.getElementById("battlePanel").style.backgroundImage = "none";
-    else document.getElementById("battlePanel").style.backgroundImage = `url("bg/bg-${settings.backgroundImage}.png")`;
+    if (settings.backgroundImage == "none") {
+        document.getElementById("battlePanel").style.backgroundImage = "none";
+        document.getElementById("battlePanel").classList.remove("text-stroke");
+    } else {
+        document.getElementById("battlePanel").style.backgroundImage = `url("bg/bg-${settings.backgroundImage}.png")`;
+        document.getElementById("battlePanel").classList.add("text-stroke");
+    }
     document.getElementById("recordContent").innerHTML = "";
     turn = 0;
     record = [];
@@ -1390,9 +1405,12 @@ function renderHP(info = battleInfo) {
     for (let i of [0, 1]) if (info[Number(i != viewpoint)].currentPokemon != -1) {
         insertEffects(info[Number(i != viewpoint)].build[info[Number(i != viewpoint)].currentPokemon], document.getElementById(`p${i + 1}Status`), false);
     }
+    refreshBalls(info);
+}
+function refreshBalls(info) {
     for (let i of [0, 1]) for (let j = 0; j < 6; j++) {
         let ballElement = document.getElementById("p" + (i + 1) + "Ball" + (j + 1));
-        if (info[Number(i != viewpoint)].build[j].revealed) {
+        if (info[Number(i != viewpoint)].build[j].revealed && !settings.hardcoreMode) {
             ballElement.style.backgroundImage = "url(pokemonicons-sheet.png)";
             ballElement.style.backgroundPosition = (-(ICONS[info[Number(i != viewpoint)].build[j]
                 .name].cell - 1) * 40) + "px " + (-(ICONS[info[Number(i != viewpoint)].build[j].name].row - 1) * 30) + "px";
@@ -1461,6 +1479,15 @@ function modifyStatus(status, prob) {
     if ((getStats(getPkmn(false).name).type.includes("poison") && (status == "tox" || status == "psn"))
         || (getStats(getPkmn(false).name).type.includes("fire") && status == "brn")
         || (getStats(getPkmn(false).name).type.includes("ice") && status == "frz")) return;
+    if (status == "frz" && settings.freezeClause) {
+        for (let i = 0; i < 6; i++) {
+            if (battleInfo[!playerToMove][i].status == "frz") return;
+        }
+    } else if (status == "slp" && settings.sleepClause) {
+        for (let i = 0; i < 6; i++) {
+            if (battleInfo[!playerToMove][i].status == "slp") return;
+        }
+    }
     let rand = Math.random();
     if (rand >= prob) return;
     if (getPkmn(false).status == status) {
@@ -1571,6 +1598,7 @@ function applySetting(key) {
                 document.getElementById("hardcoreTip").classList.add("hide");
                 document.querySelector("body").classList.remove("hardcore-hide-container");
             }
+            if (battleInfo.length) refreshBalls(battleInfo);
             break;
         case "darkMode":
             if (settings.darkMode) {

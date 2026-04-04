@@ -3343,12 +3343,15 @@ const TRANSLATION = {
             "setup": "Setup",
             "record": "Record",
             "settings": "Settings",
+            "startGame":"Start Game",
             "sleepClause": "Sleep Clause",
+            "sleepClause-desc":"Each player can only have one Pokémon asleep at a time.",
             "speciesClause": "Species Clause",
             "speciesClause-desc":"Each Pokémon on a player's team must be of different species or National Pokédex number.",
             "ohkoClause": "OHKO clause",
             "ohkoClause-desc":"OHKO moves, i.e. Fissure, Horn Drill, and Guillotine, are banned.",
             "freezeClause": "Freeze Clause",
+            "freezeClause-desc":"Each player can only have one Pokémon frozen at a time.",
             "evasionClause": "Evasion Clause",
             "evasionClause-desc":"Moves that increases Evasion, i.e. Double Team and Minimize, are banned.",
             "selfKoClause": "Self-KO Clause",
@@ -3377,7 +3380,9 @@ const TRANSLATION = {
             "save": "Save",
             "load": "Load",
             "sfxVolume":"SFX Volume",
-            "whatsNew":"What's New"
+            "whatsNew":"What's New",
+            "accessLater":"Access this dialog later by clicking Settings -&gt; What's New.",
+            "close":"Close"
         },
         "others": {
             "turn": "Turn [number0]",
@@ -4145,12 +4150,15 @@ const TRANSLATION = {
             "setup": "摆局",
             "record": "记录",
             "settings": "设置",
+            "startGame":"开始对局",
             "sleepClause": "催眠条款",
+            "sleepClause-desc":"每方最多只能有一个处于睡眠状态的宝可梦。",
             "speciesClause": "种族条款",
             "speciesClause-desc":"队伍不得拥有两个全国图鉴编号相同的宝可梦。",
             "ohkoClause": "一击必杀条款",
             "ohkoClause-desc":"不可使用一击必杀的招式，即地裂、角钻和断头钳。",
             "freezeClause": "冰冻条款",
+            "freezeClause-desc":"每方最多只能有一个处于冰冻状态的宝可梦。",
             "evasionClause": "闪避条款",
             "evasionClause-desc":"不可使用提升闪避率的招式，即影子分身和变小。",
             "selfKoClause": "自杀条款",
@@ -4179,7 +4187,9 @@ const TRANSLATION = {
             "save": "保存",
             "load": "载入",
             "sfxVolume":"音效音量",
-            "whatsNew":"本次更新"
+            "whatsNew":"本次更新",
+            "accessLater":"下次，点击设置 -&gt; 本次更新以再次打开该对话框。",
+            "close":"关闭"
         },
         "others": {
             "turn": "第 [number0] 回合",
