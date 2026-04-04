@@ -51,7 +51,7 @@ April 4, 2026
 <ul>
     <li>Bugfix: A severe issue that prevented this site working properly for users who had not visited it before.</li>
     <li>Hardcore Mode setting is immediately applied to Party UI when changed, making it only to display Poké Ball icons rather than the Pokémon they contain, even if the contents are revealed.</li>
-    <li>Sleep Clause and Freeze Clause is now functioning.</li>
+    <li>Sleep Clause and Freeze Clause are now functioning.</li>
     <li>More backgrounds available.</li>
     <li>More localization and minor styling changes.</li>
 </ul>
