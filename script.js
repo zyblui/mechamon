@@ -38,23 +38,7 @@ let settings = {
     "backgroundImage": "none",
     "sfxVolume": 100,
     "bgmVolume": 100,
-    "whatsNew": `<div style="position:fixed;width:100%;height:100%;top:0;left:0;background-color:var(--bg);color:var(--text);padding: 30px 90px;box-sizing:border-box" id="specialScreen" onclick="document.getElementById('specialScreen').style.display='none'">We are sorry to inform you that the site has been shut down. We sincerely apologize for any inconvenience caused.
-Time to say goodbye to Mechamon, which has accompanied us for around 8 months. Thank you for your support.
-<br/><br/>
-Yblui
-<br/>
-April 4, 2026
-<br/><br/>
-<i>(Tap the screen to close the tab.)</i>
-</div>
-...Actually, that was not true! This week's updates are as follows.
-<ul>
-    <li>Bugfix: A severe issue that prevented this site working properly for users who had not visited it before.</li>
-    <li>Hardcore Mode setting is immediately applied to Party UI when changed, making it only to display Poké Ball icons rather than the Pokémon they contain, even if the contents are revealed.</li>
-    <li>Sleep Clause and Freeze Clause are now functioning.</li>
-    <li>More backgrounds available.</li>
-    <li>More localization and minor styling changes.</li>
-</ul>
+    "whatsNew": `Nothing. But I would like you to visit my new repo, <a href="https://zyblui.github.io/florr-dps-calc/">Florr.io DPS Calculator</a> (incomplete)!
 `
 };
 document.getElementById("whatsNewContent").innerHTML = settings.whatsNew;
