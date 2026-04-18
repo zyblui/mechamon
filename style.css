@@ -921,9 +921,15 @@ button {
         color: var(--text-dim);
     }
 
-    & .nick::before {
-        content: "Nickname: ";
-        color: var(--text-dim);
+    & .nick {
+        &::before {
+            content: "Nickname: ";
+            color: var(--text-dim);
+        }
+
+        html[lang="zh"] &::before {
+            content: "昵称：";
+        }
     }
 
     & .ev::before {

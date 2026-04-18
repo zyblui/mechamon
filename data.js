@@ -485,6 +485,7 @@ const MOVES = [{
     "priority": 0,
     "effect": function () {
         dealDmg(true, getPkmn(true).hp, { "ignoreSubstitute": true });
+        setLastSelfKoMoveUser(playerToMove);
     }
 }, {
     "name": "fire blast",
@@ -1334,6 +1335,7 @@ const MOVES = [{
     "priority": 0,
     "effect": function () {
         dealDmg(true, getPkmn(true).hp, { "ignoreSubstitute": true });
+        setLastSelfKoMoveUser(playerToMove);
     }
 }, {
     "name": "sharpen",
@@ -3343,18 +3345,19 @@ const TRANSLATION = {
             "setup": "Setup",
             "record": "Record",
             "settings": "Settings",
-            "startGame":"Start Game",
+            "startGame": "Start Game",
             "sleepClause": "Sleep Clause",
-            "sleepClause-desc":"Each player can only have one Pokémon asleep at a time.",
+            "sleepClause-desc": "Each player can only have one Pokémon asleep at a time.",
             "speciesClause": "Species Clause",
-            "speciesClause-desc":"Each Pokémon on a player's team must be of different species or National Pokédex number.",
+            "speciesClause-desc": "Each Pokémon on a player's team must be of different species or National Pokédex number.",
             "ohkoClause": "OHKO clause",
-            "ohkoClause-desc":"OHKO moves, i.e. Fissure, Horn Drill, and Guillotine, are banned.",
+            "ohkoClause-desc": "OHKO moves, i.e. Fissure, Horn Drill, and Guillotine, are banned.",
             "freezeClause": "Freeze Clause",
-            "freezeClause-desc":"Each player can only have one Pokémon frozen at a time.",
+            "freezeClause-desc": "Each player can only have one Pokémon frozen at a time.",
             "evasionClause": "Evasion Clause",
-            "evasionClause-desc":"Moves that increases Evasion, i.e. Double Team and Minimize, are banned.",
+            "evasionClause-desc": "Moves that increases Evasion, i.e. Double Team and Minimize, are banned.",
             "selfKoClause": "Self-KO Clause",
+            "selfKoClause-desc": "The player automatically loses if their last Pokémon uses Self-Destruct or Explosion.",
             "power": "Power",
             "accuracy": "Accuracy",
             "priority": "Priority",
@@ -3364,25 +3367,25 @@ const TRANSLATION = {
             "playerTurn": "[player0]'s turn",
             "recordUnavailable": "Record is unavailable, because you are on Hardcore Mode. Turn it off to reveal battle records.",
             "hardcoreMode": "Hardcore Mode",
-            "hardcoreMode-desc":"Hides all information not shown ingame.",
+            "hardcoreMode-desc": "Hides all information not shown ingame.",
             "effectivenessIndicator": "Effectiveness Indicator",
-            "effectivenessIndicator-descP":"When it is on, the effectiveness of each move will be displayed as:",
-            "effectivenessIndicator-descUl":`<li>Doubly Super-Effective (DSE)</li>
+            "effectivenessIndicator-descP": "When it is on, the effectiveness of each move will be displayed as:",
+            "effectivenessIndicator-descUl": `<li>Doubly Super-Effective (DSE)</li>
 <li>Super-Effective (SE)</li>
 <li>Effective (E)</li>
 <li>Not Very Effective (NVE)</li>
 <li>Doubly Not Very Effective (DNVE)</li>
 <li>No Effect (NE)</li>`,
             "darkMode": "Dark Mode",
-            "darkMode-desc":"Determines the overall color scheme.",
+            "darkMode-desc": "Determines the overall color scheme.",
             "keyboardControls": "Keyboard Controls",
-            "keyboardControls-desc":"Press [1][2][3][4] for 4 moves, and press [Z][X][C][V][B][N] for 6 Pokémon.",
+            "keyboardControls-desc": "Press [1][2][3][4] for 4 moves, and press [Z][X][C][V][B][N] for 6 Pokémon.",
             "save": "Save",
             "load": "Load",
-            "sfxVolume":"SFX Volume",
-            "whatsNew":"What's New",
-            "accessLater":"Access this dialog later by clicking Settings -&gt; What's New.",
-            "close":"Close"
+            "sfxVolume": "SFX Volume",
+            "whatsNew": "What's New",
+            "accessLater": "Access this dialog later by clicking Settings -&gt; What's New.",
+            "close": "Close"
         },
         "others": {
             "turn": "Turn [number0]",
@@ -4150,18 +4153,19 @@ const TRANSLATION = {
             "setup": "摆局",
             "record": "记录",
             "settings": "设置",
-            "startGame":"开始对局",
+            "startGame": "开始对局",
             "sleepClause": "催眠条款",
-            "sleepClause-desc":"每方最多只能有一个处于睡眠状态的宝可梦。",
+            "sleepClause-desc": "每方最多只能有一个处于睡眠状态的宝可梦。",
             "speciesClause": "种族条款",
-            "speciesClause-desc":"队伍不得拥有两个全国图鉴编号相同的宝可梦。",
+            "speciesClause-desc": "队伍不得拥有两个全国图鉴编号相同的宝可梦。",
             "ohkoClause": "一击必杀条款",
-            "ohkoClause-desc":"不可使用一击必杀的招式，即地裂、角钻和断头钳。",
+            "ohkoClause-desc": "不可使用一击必杀的招式，即地裂、角钻和断头钳。",
             "freezeClause": "冰冻条款",
-            "freezeClause-desc":"每方最多只能有一个处于冰冻状态的宝可梦。",
+            "freezeClause-desc": "每方最多只能有一个处于冰冻状态的宝可梦。",
             "evasionClause": "闪避条款",
-            "evasionClause-desc":"不可使用提升闪避率的招式，即影子分身和变小。",
+            "evasionClause-desc": "不可使用提升闪避率的招式，即影子分身和变小。",
             "selfKoClause": "自杀条款",
+            "selfKoClause-desc": "最后一个宝可梦使用自爆或大爆炸的一方自动输掉对战。",
             "power": "威力",
             "accuracy": "命中",
             "priority": "优先度",
@@ -4181,15 +4185,15 @@ const TRANSLATION = {
 <li>双倍效果不好（DNVE）</li>
 <li>无效果（NE）</li>`,
             "darkMode": "暗黑模式",
-            "darkMode-desc":"变更页面颜色主题。",
+            "darkMode-desc": "变更页面颜色主题。",
             "keyboardControls": "键盘控制",
-            "keyboardControls-desc":"按[1][2][3][4]键以选用4种招式，按[Z][X][C][V][B][N]键以选用6种宝可梦。",
+            "keyboardControls-desc": "按[1][2][3][4]键以选用4种招式，按[Z][X][C][V][B][N]键以选用6种宝可梦。",
             "save": "保存",
             "load": "载入",
-            "sfxVolume":"音效音量",
-            "whatsNew":"本次更新",
-            "accessLater":"下次，点击设置 -&gt; 本次更新以再次打开该对话框。",
-            "close":"关闭"
+            "sfxVolume": "音效音量",
+            "whatsNew": "本次更新",
+            "accessLater": "下次，点击设置 -&gt; 本次更新以再次打开该对话框。",
+            "close": "关闭"
         },
         "others": {
             "turn": "第 [number0] 回合",

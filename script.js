@@ -38,7 +38,11 @@ let settings = {
     "backgroundImage": "none",
     "sfxVolume": 100,
     "bgmVolume": 100,
-    "whatsNew": `Nothing. But I would like you to visit my new repo, <a href="https://zyblui.github.io/florr-dps-calc/">Florr.io DPS Calculator</a> (incomplete)!
+    "whatsNew": `
+<ul>
+    <li>Self-KO Clause is now working. Finally the 6 clauses are all functioning!</li>
+    <li>This update also includes localization.</li>
+</ul>
 `
 };
 document.getElementById("whatsNewContent").innerHTML = settings.whatsNew;
@@ -63,6 +67,7 @@ if (localStorage.getItem("mechamonSettings")) {
 } else {
     localStorage.setItem("mechamonSettings", JSON.stringify(settings));
 }
+document.querySelector("html").lang=settings.lang;
 let players = [{
     "name": "Player 1",
     "build": [{
@@ -1107,17 +1112,26 @@ function nextTurn() {
     judgeHP();
     endTurn();
 }
+
+let lastSelfKoMoveUser = -1;
+function setLastSelfKoMoveUser(user) {
+    lastSelfKoMoveUser = user;
+}
+
 function endTurn() {
-    for (let i = 0; i <= 1; i++) {
-        let allFaint = true;
-        for (let j of battleInfo[i].build) if (j.hp > 0) allFaint = false;
-        if (allFaint) {
-            addMainText("others", "winBattle", {
-                "player": [battleInfo[Number(!i)].name]
-            });
-            refreshSequence();
-            return;
-        }
+    let allFaint = [true, true], winner = -1;
+    for (let i of [0, 1]) for (let j of battleInfo[i].build) if (j.hp > 0) allFaint[i] = false;
+    for (let i of [0, 1]) if (allFaint[i] && !allFaint[!i]) winner = !i;
+    if (allFaint[0] && allFaint[1]) {
+        if (settings.selfKoClause && lastSelfKoMoveUser != -1) winner = Number(!lastSelfKoMoveUser);
+        else winner = 0;
+    }
+    if (winner != -1) {
+        addMainText("others", "winBattle", {
+            "player": [battleInfo[winner].name]
+        });
+        refreshSequence();
+        return;
     }
     if (battleInfo[0].currentPokemon == -1) {
         refreshPlayerToMove(0);
