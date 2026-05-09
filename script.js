@@ -40,8 +40,7 @@ let settings = {
     "bgmVolume": 100,
     "whatsNew": `
 <ul>
-    <li>Self-KO Clause is now working. Finally the 6 clauses are all functioning!</li>
-    <li>This update also includes localization.</li>
+    <li>STAB (Same-type Attack Bonus) is implemented.</li>
 </ul>
 `
 };
@@ -67,7 +66,7 @@ if (localStorage.getItem("mechamonSettings")) {
 } else {
     localStorage.setItem("mechamonSettings", JSON.stringify(settings));
 }
-document.querySelector("html").lang=settings.lang;
+document.querySelector("html").lang = settings.lang;
 let players = [{
     "name": "Player 1",
     "build": [{
@@ -315,9 +314,12 @@ for (let i of document.querySelectorAll(".back")) i.addEventListener("click", fu
     document.querySelector(".list.show").classList.remove("show");
     document.getElementById("setupTable").classList.add("show");
 });
-function calculateDmg(power, atk, def, lv, attackType, defenseType) {
+function calculateDmg(power, atk, def, lv, attackType, defenseType, userType) {
     let effectiveness = calculateEffectiveness(attackType, defenseType);
-    return ((2 * lv + 10) / 250 * atk / def * power + 2) * effectiveness;
+    let stab = 1;
+    if (userType.includes(attackType)) stab = 1.5;
+    let random = (Math.floor(Math.random() * (256 - 217)) + 217) / 255;
+    return ((2 * lv + 10) / 250 * atk / def * power + 2) * effectiveness * stab * random;
 }
 function calculateEffectiveness(attackType, defenseType) {
     let effectiveness = 1;
@@ -965,7 +967,7 @@ let nextPlayerEffect = [{
         getPkmn(true).tempEffect.confused--;
         if (Math.random() < 0.5) {
             dealDmg(true, calculateDmg(40, getAttack(true), getDefense(true, true), getPkmn(true).lv, "",
-                getType(true)), { opposingSubstitute: true });
+                getType(true), getType(true)), { opposingSubstitute: true });
             addMainText("others", "hurtConfusion");
             return { "continue": true };//!
         }
@@ -1193,8 +1195,8 @@ function attack(move) {
             .spe / 512);
         let dmg = 0, totalDmg = 0;
         if (k.category == "physical") dmg = calculateDmg(k.power, getAttack(true), getDefense(false, isCrit), getPkmn(true).lv,
-            k.type, getType(false));
-        else dmg = calculateDmg(k.power, getSp(true, isCrit), getSp(false, isCrit), getPkmn(true).lv, k.type, getType(false));
+            k.type, getType(false), getType(true));
+        else dmg = calculateDmg(k.power, getSp(true, isCrit), getSp(false, isCrit), getPkmn(true).lv, k.type, getType(false), getType(true));
         if (k.category != "status") {
             switch (calculateEffectiveness(k.type, getType(false))) {
                 case 4:
