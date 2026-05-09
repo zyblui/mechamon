@@ -41,6 +41,8 @@ let settings = {
     "whatsNew": `
 <ul>
     <li>STAB (Same-type Attack Bonus) is implemented.</li>
+    <li>Save file is much smaller than before.</li>
+    <li>Critical bugfix: Battles cannot be ended normally in some cases.</li>
 </ul>
 `
 };
