@@ -503,7 +503,7 @@ function refreshSequence() {
     if (element.type == "main" || element.type == "small") renderFull(element.refresh);
     else if (element.type == "turn") document.getElementById("turnNumber").innerText = getSequenceL10n(element.args);
     if (element.args[2]?.cry) cries[element.args[2].cry].play();
-    let blo = new Blob([/*simplifyRecord(record)*/simplifyRecordJSON(record)], {
+    let blo = new Blob([simplifyRecordJSON(record)], {
         type: "application/json"
     });
     URL.revokeObjectURL(bloURL);
@@ -538,29 +538,32 @@ function simplifyRecordJSON(rec) {
     for (let i = 0; i < tempRec.length; i++) {
         if (tempRec[i].refresh) {
             tempRec[i].delta = compare(getNearestRefresh(tempRec, i), tempRec[i].refresh);
-            tempRec[i].refresh = undefined;
         }
     }
+    for (const recordItem of tempRec) delete recordItem.refresh;
     return JSON.stringify(tempRec);
 }
 function readSimplifiedRecordJSON(lines) {
-    let tempRec = JSON.parse(lines);
-    for (let element of tempRec) {
+    record = [];
+    let recordJSON = JSON.parse(lines);
+    for (let element of recordJSON) {
         if (element.delta) {
-            element.refresh = structuredClone(getNearestRefresh(record, record.length - 1));
+            element.refresh = structuredClone(getNearestRefresh(record, record.length));
             for (let j of element.delta) {
                 modifyValue(element.refresh, j.property, j.value);
             }
+            delete element.delta;
         }
+        record.push(element);
     }
-    return tempRec;
 }
 document.getElementById("file").addEventListener("change", function () {
     READER.readAsText(document.getElementById("file").files[0]);
 });
 const READER = new FileReader();
 READER.addEventListener("load", function () {
-    record = readSimplifiedRecordJSON(READER.result);
+    console.log(JSON.parse(READER.result));
+    /*record = */readSimplifiedRecordJSON(READER.result);
     for (let i = 0; i < record.length; i++) insertText(record[i], true, i);
     recordPosition = record.length - 1;
     navigationRefresh();
@@ -1123,7 +1126,7 @@ function setLastSelfKoMoveUser(user) {
 function endTurn() {
     let allFaint = [true, true], winner = -1;
     for (let i of [0, 1]) for (let j of battleInfo[i].build) if (j.hp > 0) allFaint[i] = false;
-    for (let i of [0, 1]) if (allFaint[i] && !allFaint[!i]) winner = !i;
+    for (let i of [0, 1]) if (allFaint[i] && !allFaint[!i]) winner = Number(!i);
     if (allFaint[0] && allFaint[1]) {
         if (settings.selfKoClause && lastSelfKoMoveUser != -1) winner = Number(!lastSelfKoMoveUser);
         else winner = 0;
