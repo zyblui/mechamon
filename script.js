@@ -40,9 +40,8 @@ let settings = {
     "bgmVolume": 100,
     "whatsNew": `
 <ul>
-    <li>STAB (Same-type Attack Bonus) is implemented.</li>
-    <li>Save file is much smaller than before.</li>
-    <li>Critical bugfix: Battles cannot be ended normally in some cases.</li>
+    <li>SPE Range of each Pkmn can be calculated properly now.</li>
+    <li>Bugfix: Mechamon can memorize your Volume settings now.</li>
 </ul>
 `
 };
@@ -768,6 +767,9 @@ function addTooltip(elementGroup, i, player = playerToMove) {
     }
     tooltip.querySelector(".hp-remaining").innerText = (battleInfo[player].build[i].hp / battleInfo[player]
         .build[i].maxHp * 100).toFixed(0) + "%";
+    tooltip.querySelector(".spe-range").innerText = (Math.floor(0.01 * (2 * (getStats(battleInfo[player].build[i].name).spe + 0) + Math.floor(0.25 *
+        0)) * battleInfo[player].build[i].lv) + 5) + "~" + (Math.floor(0.01 * (2 * (getStats(battleInfo[player].build[i].name).spe + 15) + Math
+            .floor(0.25 * 252)) * battleInfo[player].build[i].lv) + 5);
     if (player == playerToMove) tooltip.querySelector(".hp .sub").innerText = ", " + battleInfo[player].build[i].hp
         .toFixed(0) + "/" + battleInfo[player].build[i].maxHp;
     else tooltip.querySelector(".hp .sub").innerText = "";
@@ -1570,9 +1572,14 @@ function refreshLang() {
 refreshLang();
 for (let i of document.querySelectorAll("[data-settings]")) {
     if (i.tagName.toLowerCase() == "select") i.value = settings[i.dataset.settings];
+    else if (i.tagName.toLowerCase() == "input" && i.type == "range") {
+        i.value = settings[i.dataset.settings];
+        refreshRange(i);
+    }
     else i.checked = settings[i.dataset.settings];
     i.addEventListener("change", function () {
         if (i.tagName.toLowerCase() == "select") settings[i.dataset.settings] = i.value;
+        else if (i.tagName.toLowerCase() == "input" && i.type == "range") settings[i.dataset.settings] = Math.floor(Number(i.value));
         else settings[i.dataset.settings] = i.checked;
         localStorage.setItem("mechamonSettings", JSON.stringify(settings));
         applySetting(i.dataset.settings);
@@ -1739,11 +1746,9 @@ document.getElementById("whatsNewButton").addEventListener("click", function () 
 function refreshRange(element) {
     element.style.backgroundImage =
         "linear-gradient(90deg, dodgerblue 0%, dodgerblue " + element.value + "%, lightgray " + element.value + "%)";
-    //if (element.classList.contains("settingRange")) {
     element.parentNode.querySelector(".range-value").innerHTML = Math.floor(element.value);
-    settings[element.dataset.for] = Math.floor(element.value);
+    //settings[element.dataset.settings] = Math.floor(Number(element.value));
     localStorage.setItem("mechamonSettings", JSON.stringify(settings));
-    //}
 }
 for (let i of document.querySelectorAll("input[type='range']")) {
     i.addEventListener("input", function () {
