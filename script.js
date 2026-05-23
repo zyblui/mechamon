@@ -1751,6 +1751,7 @@ function refreshRange(element) {
     localStorage.setItem("mechamonSettings", JSON.stringify(settings));
 }
 for (let i of document.querySelectorAll("input[type='range']")) {
+    for (let j in cries) cries[j].volume = settings.sfxVolume / 100;
     i.addEventListener("input", function () {
         refreshRange(i);
         for (let j in cries) cries[j].volume = settings.sfxVolume / 100;
