@@ -9,11 +9,8 @@
 <circle cx="1124" cy="256" r="89" stroke-width="18" fill="transparent" stroke="#000000"/>
 <line x1="1213" y1="256" x2="1362" y2="256" stroke="#000000" stroke-width="18"/>
 
-    <text x="18" y="512" font-size="256" text-anchor="start" dominant-baseline="hanging" font-family="Inter" font-weight="bold">for Pokémon</text>
+    <text x="18" y="512" font-size="256" text-anchor="start" dominant-baseline="hanging" font-family="Inter" font-weight="bold">for Coromon</text>
 
-    <path d="M3268 88 A237.59 237.59 180 1 0 2932 424 Z" fill="#1e90ff"/>
-    <path d="M3268 88 A237.59 237.59 180 1 1 2932 424 Z" fill="#ffffff"/>
     <circle cx="3100" cy="256" r="238" stroke-width="18" fill="#00000000" stroke="#000000"/>
-    <line x1="3270" y1="88" x2="2932" y2="424" stroke="#000000" stroke-width="18"/>
-    <circle cx="3100" cy="256" r="89" stroke-width="18" fill="#ffffff" stroke="#000000"/>
+    <circle cx="3100" cy="256" r="89" stroke-width="18" fill="#ff781e" stroke="#000000"/>
 </svg>

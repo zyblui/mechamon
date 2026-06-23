@@ -10,7 +10,16 @@
     <link rel="icon" href="favicon.png" />
 </head>
 
-<body id="body" class="light">
+<body id="body" class="light theme-pokemon">
+    <div id="modeSelectBg" class="show">
+        <div id="modeSelect">
+            <p data-transl-cat="ui" data-transl-key="selectMode">Select a mode.</p>
+            <div data-transl-cat="ui" data-transl-key="pokemon" class="mode-btn selected" data-mode="pokemon">
+                Pokémon</div>
+            <div data-transl-cat="ui" data-transl-key="coromon" class="mode-btn" data-mode="coromon">Coromon
+            </div>
+        </div>
+    </div>
     <div id="battlePanel">
         <div id="turnNumber">Turn 0</div>
         <div class="gauge" id="p1Gauge">
@@ -69,36 +78,36 @@
                     <!--NOFORMAT--><!--start-->
                     <div class="move-container">
                         <div class="tooltip-move">
-        <div class="container">
-            <div class="tip-name">Thunderbolt</span></div>
-            <div class="tip-cat cat-special">SPECIAL</span></div>
-        </div>
-        <div class="type"><img src="types/electric.png" class="type-img" alt="">
-            <div class="type-text">ELECTRIC</div>
-        </div>
+                            <div class="container">
+                                <div class="tip-name">Thunderbolt</span></div>
+                                <div class="tip-cat cat-special">SPECIAL</span></div>
+                            </div>
+                            <div class="type"><img src="types/electric.png" class="type-img" alt="">
+                                <div class="type-text">ELECTRIC</div>
+                            </div>
 
-        <div class="tip-desc">A strong electric blast crashes down on the target. This may also leave the target
-            with paralysis.</div>
-        <div class="stats">
-            <div class="stat">
-                <div class="small" data-transl-cat="ui" data-transl-key="power">POWER</div>
-                <div class="number tip-pow">90</div>
-            </div>
-            <div class="stat">
-                <div class="small" data-transl-cat="ui" data-transl-key="accuracy">ACCURACY</div>
-                <div class="number tip-acc">100%</div>
-            </div>
-            <div class="stat">
-                <div class="small" data-transl-cat="ui" data-transl-key="priority">PRIORITY</div>
-                <div class="number tip-priority">0</div>
-            </div>
-            <div class="stat">
-                <div class="small" data-transl-cat="ui" data-transl-key="pp">PP</div>
-                <div class="number tip-pp"><span class="main">15</span><div class="sub">/15</div>
-                </div>
-            </div>
-        </div>
-    </div>
+                            <div class="tip-desc">A strong electric blast crashes down on the target. This may also
+                                leave the target
+                                with paralysis.</div>
+                            <div class="stats">
+                                <div class="stat">
+                                    <div class="small" data-transl-cat="ui" data-transl-key="power">POWER</div>
+                                    <div class="number tip-pow">90</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="small" data-transl-cat="ui" data-transl-key="accuracy">ACCURACY</div>
+                                    <div class="number tip-acc">100%</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="small" data-transl-cat="ui" data-transl-key="priority">PRIORITY</div>
+                                    <div class="number tip-priority">0</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="small" data-transl-cat="ui" data-transl-key="pp">PP</div>
+                                    <div class="number tip-pp"><span class="main">15</span><div class="sub">/15</div></div>
+                                </div>
+                            </div>
+                        </div>
                         <button class="decisionMove" disabled>
                             <div class="keyboard-shortcut hide">[1]</div>
                             <span class="move-text">Move #1</span>
@@ -107,7 +116,8 @@
                                 <div class="pp"><span class="pp-remaining">0</span><span class="sub">/0</span></div>
                             </div>
                             <div class="effectiveness hide">Effectiveness</div>
-                        </button></div><div class="move-container"><button class="decisionMove" disabled>
+                        </button>
+                    </div><div class="move-container"><button class="decisionMove" disabled>
                             <div class="keyboard-shortcut hide">[2]</div>
                             <span class="move-text">Move #2</span>
                             <div class="move-side">
@@ -140,54 +150,77 @@
                 <th data-transl-cat="ui" data-transl-key="switch">Switch to:</th>
                 <td>
                     <!--NOFORMAT--><!--start-->
-                    <div class="switch-container"><div class="tooltip"><div><div class="img-left" style="background:url(pokemonicons-sheet.png) no-repeat scroll -40px -60px"></div><div class="outer-container">
-                <div class="container">
-                    <div class="tip-name">Pikachu</div>
-                    <div class="tip-status"><span class="par">[PARALYZED]</span></div>
-                </div>
-                <div class="type"><img src="types/electric.png" class="type-img" alt=""><div class="type-text">ELECTRIC</div>
-                </div>
-                <div class="type"><img src="types/electric.png" class="type-img" alt=""><div class="type-text">ELECTRIC</div>
-                </div>
-                <div class="tip-desc">It keeps its tail raised to monitor its surroundings. If you yank its tail, it
-                    will try to bite you.</div>
-            </div>
-        </div>
-        <div class="stats">
-            <div class="stat">
-                <div class="small">HP</div>
-                <div class="number hp"><span class="hp-remaining">100%</span><span class="sub">, 300/300</span></div>
-            </div>
-            <div class="stat">
-                <div class="small">SPE</div>
-                <div class="number spe-range">185~279</div>
-            </div>
-        </div>
-        <div class="moves">
-            <div class="move">
-                <div class="move-name">Quick Attack</div>
-                <div class="pp"><span class="pp-remaining">29</span><span class="sub">/30</span></div>
-            </div>
-            <div class="move">
-                <div class="move-name">Thunderbolt</div>
-                <div class="pp"><span class="pp-remaining">14</span><span class="sub">/15</span></div>
-            </div>
-            <div class="move">
-                <div class="move-name unknown">Unknown Move</div>
-                <div class="pp"><span class="pp-remaining">?</span><span class="sub">/?</span></div>
-            </div>
-            <div class="move">
-                <div class="move-name unknown">Unknown Move</div>
-                <div class="pp"><span class="pp-remaining">?</span><span class="sub">/?</span></div>
-            </div>
-        </div>
-    </div><button class="decisionSwitch" disabled><div class="keyboard-shortcut hide">[Z]</div>
-        <div class="decision-content">Pokémon #1</div></button></div><div class="switch-container"><button class="decisionSwitch" disabled><div class="keyboard-shortcut hide">[X]</div>
-        <div class="decision-content">Pokémon #2</div></button></div><div class="switch-container"><button class="decisionSwitch" disabled><div class="keyboard-shortcut hide">[C]</div>
-        <div class="decision-content">Pokémon #3</div></button></div><div class="switch-container"><button class="decisionSwitch" disabled><div class="keyboard-shortcut hide">[V]</div>
-        <div class="decision-content">Pokémon #4</div></button></div><div class="switch-container"><button class="decisionSwitch" disabled><div class="keyboard-shortcut hide">[B]</div>
-        <div class="decision-content">Pokémon #5</div></button></div><div class="switch-container"><button class="decisionSwitch" disabled><div class="keyboard-shortcut hide">[N]</div>
-        <div class="decision-content">Pokémon #6</div></button></div>
+                    <div class="switch-container">
+                        <div class="tooltip">
+                            <div>
+                                <div class="img-left"
+                                style="background:url(pokemonicons-sheet.png) no-repeat scroll -40px -60px"></div><div class="outer-container">
+                                    <div class="container">
+                                        <div class="tip-name">Pikachu</div>
+                                        <div class="tip-status"><span class="par">[PARALYZED]</span></div>
+                                    </div>
+                                    <div class="type"><img src="types/electric.png" class="type-img" alt="">
+                                        <div class="type-text">ELECTRIC</div>
+                                    </div>
+                                    <div class="type"><img src="types/electric.png" class="type-img" alt="">
+                                        <div class="type-text">ELECTRIC</div>
+                                    </div>
+                                    <div class="tip-desc">It keeps its tail raised to monitor its surroundings. If you
+                                        yank its tail, it
+                                        will try to bite you.</div>
+                                </div>
+                            </div>
+                            <div class="stats">
+                                <div class="stat">
+                                    <div class="small">HP</div>
+                                    <div class="number hp"><span class="hp-remaining">100%</span><span class="sub">,
+                                            300/300</span></div>
+                                </div>
+                                <div class="stat">
+                                    <div class="small">SPE</div>
+                                    <div class="number spe-range">185~279</div>
+                                </div>
+                            </div>
+                            <div class="moves">
+                                <div class="move">
+                                    <div class="move-name">Quick Attack</div>
+                                    <div class="pp"><span class="pp-remaining">29</span><span class="sub">/30</span>
+                                    </div>
+                                </div>
+                                <div class="move">
+                                    <div class="move-name">Thunderbolt</div>
+                                    <div class="pp"><span class="pp-remaining">14</span><span class="sub">/15</span>
+                                    </div>
+                                </div>
+                                <div class="move">
+                                    <div class="move-name unknown">Unknown Move</div>
+                                    <div class="pp"><span class="pp-remaining">?</span><span class="sub">/?</span></div>
+                                </div>
+                                <div class="move">
+                                    <div class="move-name unknown">Unknown Move</div>
+                                    <div class="pp"><span class="pp-remaining">?</span><span class="sub">/?</span></div>
+                                </div>
+                            </div>
+                        </div><button class="decisionSwitch" disabled>
+                            <div class="keyboard-shortcut hide">[Z]</div>
+                            <div class="decision-content">Pokémon #1</div>
+                        </button>
+                    </div><div class="switch-container"><button class="decisionSwitch" disabled>
+                            <div class="keyboard-shortcut hide">[X]</div>
+                            <div class="decision-content">Pokémon #2</div>
+                        </button></div><div class="switch-container"><button class="decisionSwitch" disabled>
+                            <div class="keyboard-shortcut hide">[C]</div>
+                            <div class="decision-content">Pokémon #3</div>
+                        </button></div><div class="switch-container"><button class="decisionSwitch" disabled>
+                            <div class="keyboard-shortcut hide">[V]</div>
+                            <div class="decision-content">Pokémon #4</div>
+                        </button></div><div class="switch-container"><button class="decisionSwitch" disabled>
+                            <div class="keyboard-shortcut hide">[B]</div>
+                            <div class="decision-content">Pokémon #5</div>
+                        </button></div><div class="switch-container"><button class="decisionSwitch" disabled>
+                            <div class="keyboard-shortcut hide">[N]</div>
+                            <div class="decision-content">Pokémon #6</div>
+                        </button></div>
                     <!--NOFORMAT--><!--end-->
                 </td>
             </tr>
@@ -565,43 +598,66 @@
                             classmates and teachers in senior high.</p>
                     </div>
                 </label>
-                <div class="wrap">
-                    Background Image: <select title="Background Image" data-settings="backgroundImage">
-                        <option value="none">None (Default)</option>
-                        <option value="beach">Beach</option>
-                        <option value="beachshore">Beachshore</option>
-                        <option value="city">City</option>
-                        <option value="dampcave">Damp Cave</option>
-                        <option value="deepsea">Deep Sea</option>
-                        <option value="desert">Desert</option>
-                        <option value="earthycave">Earthy Cave</option>
-                        <option value="forest">Forest</option>
-                        <option value="icecave">Ice Cave</option>
-                        <option value="meadow">Meadow</option>
-                        <option value="mountain">Mountain</option>
-                        <option value="npa">NPA</option>
-                        <option value="river">River</option>
-                        <option value="route">Route</option>
-                        <option value="scl">SCL</option>
-                        <option value="space">Space</option>
-                        <option value="spl">SPL</option>
-                        <option value="thunderplains">Thunder Plains</option>
-                        <option value="volcanocave">Volcano Cave</option>
-                    </select>
-                </div>
+                <label>
+                    <div class="wrap">
+                        Background Image
+                        <select title="Background Image" data-settings="backgroundImage">
+                            <option value="none">None (Default)</option>
+                            <option value="beach">Beach</option>
+                            <option value="beachshore">Beachshore</option>
+                            <option value="city">City</option>
+                            <option value="dampcave">Damp Cave</option>
+                            <option value="deepsea">Deep Sea</option>
+                            <option value="desert">Desert</option>
+                            <option value="earthycave">Earthy Cave</option>
+                            <option value="forest">Forest</option>
+                            <option value="icecave">Ice Cave</option>
+                            <option value="meadow">Meadow</option>
+                            <option value="mountain">Mountain</option>
+                            <option value="npa">NPA</option>
+                            <option value="river">River</option>
+                            <option value="route">Route</option>
+                            <option value="scl">SCL</option>
+                            <option value="space">Space</option>
+                            <option value="spl">SPL</option>
+                            <option value="thunderplains">Thunder Plains</option>
+                            <option value="volcanocave">Volcano Cave</option>
+                        </select>
+                    </div>
+                </label>
                 <hr />
-                <div class="wrap">
-                    Background Music: <select title="Background Music">
-                        <option>Random</option>
-                        <option>Random: Intense</option>
-                        <option>Random: Relaxing</option>
-                    </select>
-                </div>
+                <label>
+                    <div class="wrap" data-modes-applicable="pokemon">
+                        Background Music
+                        <select title="Background Music">
+                            <option>Random</option>
+                            <option>Random: Intense</option>
+                            <option>Random: Relaxing</option>
+                        </select>
+                    </div>
+                </label>
+                <label>
+                    <div class="wrap" data-modes-applicable="coromon">
+                        <div>
+                            <span>Background Music</span>
+                            <div class="tag">Coromon</div>
+                        </div>
+                        <p class="setting-value">
+                            <select title="Background Music" data-settings="coromonBgm">
+                                <option value="none" data-transl-cat="ui" data-transl-key="none">None</option>
+                                <option value="battle-grass" data-transl-cat="ui" data-transl-key="friendOrFoe">Friend
+                                    or Foe</option>
+                            </select>
+                        </p>
+                    </div>
+                </label>
                 <label>
                     <div class="wrap">
                         <!--NOFORMAT-->
-                        <div class="range-title">BGM Volume</div><div class="range-container">
-                            <input type="range" value="100" data-settings="bgmVolume" /> <span class="range-value">100</span>
+                        <div class="range-title">BGM Volume</div>
+                        <div class="range-container">
+                            <input type="range" value="100" data-settings="bgmVolume" /> <span
+                                class="range-value">100</span>
                         </div>
                         <!--NOFORMAT-->
                     </div>
@@ -609,8 +665,10 @@
                 <label>
                     <div class="wrap">
                         <!--NOFORMAT-->
-                        <div class="range-title" data-transl-cat="ui" data-transl-key="sfxVolume">SFX Volume</div><div class="range-container">
-                            <input type="range" value="100" data-settings="sfxVolume" /> <span class="range-value">100</span>
+                        <div class="range-title" data-transl-cat="ui" data-transl-key="sfxVolume">SFX Volume</div>
+                        <div class="range-container">
+                            <input type="range" value="100" data-settings="sfxVolume" /> <span
+                                class="range-value">100</span>
                         </div>
                         <!--NOFORMAT-->
                     </div>

@@ -24,6 +24,7 @@ document.getElementById("mechaButton").addEventListener("click", function () {
 
 let settings = {
     "lang": "zh",
+    "mode": "pokemon",
     "sleepClause": false,
     "speciesClause": false,
     "ohkoClause": false,
@@ -36,8 +37,10 @@ let settings = {
     "darkMode": false,
     "omiegamon": false,
     "backgroundImage": "none",
+    "backgroundMusic": "none",
     "sfxVolume": 100,
     "bgmVolume": 100,
+    "coromonBgm": "battle-grass",
     "whatsNew": `
 <ul>
     <li>SPE Range of each Pkmn can be calculated properly now.</li>
@@ -45,6 +48,7 @@ let settings = {
 </ul>
 `
 };
+
 document.getElementById("whatsNewContent").innerHTML = settings.whatsNew;
 if (!localStorage.getItem("mechamonSettings") || settings.whatsNew != JSON.parse(localStorage.getItem("mechamonSettings")).whatsNew) {
     document.getElementById("dialogOuter").classList.add("show");
@@ -465,7 +469,11 @@ function getDefaultProperties(playersInfo) {
     }
     return arr;
 }
-document.getElementById("startGame").addEventListener("click", function () {
+const BGM_SETTINGS = {
+    "pokemon": "backgroundMusic",
+    "coromon": "coromonBgm"
+};
+function startGame() {
     if (settings.backgroundImage == "none") {
         document.getElementById("battlePanel").style.backgroundImage = "none";
         document.getElementById("battlePanel").classList.remove("text-stroke");
@@ -483,6 +491,32 @@ document.getElementById("startGame").addEventListener("click", function () {
     sendOutPkmn(battleInfo[1].build[0].name);
     nextTurn();
     render();
+}
+document.getElementById("startGame").addEventListener("click", function () {
+    if (settings[BGM_SETTINGS[settings.mode]] == "none") {
+        startGame();
+    } else {
+        let intro = new Audio(SOUNDS[settings.mode][settings[BGM_SETTINGS[settings.mode]]].intro);
+        let loop = new Audio(SOUNDS[settings.mode][settings[BGM_SETTINGS[settings.mode]]].loop);
+        loop.loop = true;
+        audioAvailable = 0;
+        function prepareAudio() {
+            audioAvailable++;
+            if (audioAvailable == 2) {
+                intro.play();
+                setTimeout(function () {
+                    loop.play();
+                }, intro.duration * 1000);
+                startGame();
+            }
+        }
+        intro.addEventListener("canplaythrough", function () {
+            prepareAudio();
+        });
+        loop.addEventListener("canplaythrough", function () {
+            prepareAudio();
+        });
+    }
 });
 let sequence = [], refreshSequenceIsRunning = false;
 function getSequenceL10n(args) {
@@ -1195,6 +1229,7 @@ function attack(move) {
     for (let k of MOVES) if (k.name == move) {
         let criticalHitRatioMultiplier = 1;
         let preCritEffect;
+        let substitutePreDmg = (getPkmn(false).substituteHp > 0);
         if (k.preCritEffect) preCritEffect = k.preCritEffect();
         if (preCritEffect?.isHighCritRatio) criticalHitRatioMultiplier = 8;
         if (arguments[1]?.forceCrit) criticalHitRatioMultiplier = Infinity;
@@ -1230,7 +1265,11 @@ function attack(move) {
             getPkmn(false).lastDmgTakenType = k.type;
         }
         let effect;
-        if (k.effect) effect = k.effect({ totalDmg: totalDmg });
+        let opponentHasSubstitute2 = (getPkmn(false).substituteHp > 0);
+        if (k.effect) effect = k.effect({
+            totalDmg: totalDmg,
+            substitutePreDmg: substitutePreDmg
+        });
         return effect;
     }
 }
@@ -1326,11 +1365,14 @@ function charge(move, turns) {
     };
 }
 function repeatAttack(dmg, count) {
-    for (let i = 0; i < count; i++) {
+    let hasSubstitutePreDmg = (getPkmn(false).substituteHp > 0);
+    let i = 0;
+    for (; i < count; i++) {
+        if (hasSubstitutePreDmg && getPkmn(false).substituteHp <= 0) break;
         dealDmg(false, dmg);
     }
     addSmallText("others", "hitTimes", {
-        "number": [count + 1]
+        "number": [i + 1]
     });
 }
 function judgeHP() {
@@ -1769,3 +1811,15 @@ function checkBuildValidity() {
 for (let i of document.getElementsByClassName("clause-checkbox")) i.addEventListener("change", function () {
     renderTable();
 });
+for (let i of document.querySelectorAll(".mode-btn")) {
+    i.addEventListener("mouseover", function () {
+        document.querySelector("body").classList.remove("theme-pokemon", "theme-coromon");
+        document.querySelector("body").classList.add("theme-" + i.dataset.mode);
+        document.querySelector(".mode-btn.selected").classList.remove("selected");
+        i.classList.add("selected");
+    });
+    i.addEventListener("click", function () {
+        settings.mode = i.dataset.mode;
+        document.getElementById("modeSelectBg").classList.remove("show");
+    });
+}

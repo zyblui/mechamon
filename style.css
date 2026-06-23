@@ -25,6 +25,15 @@ body {
     --rock: #c8b686;
     --water: #3692dc;
     --fs-medium: 2.3vmin;
+    --stamina: #9C3FDF;
+
+    &.theme-pokemon {
+        --theme: dodgerblue;
+    }
+
+    &.theme-coromon {
+        --theme: #ff781e;
+    }
 
     &.dark {
         --black: #888;
@@ -35,7 +44,11 @@ body {
         --main-text-bg: rgb(43, 43, 43, 0.7);
         --right-panel-bg: #0c0c0c;
         --button-bg: #333;
-        --button-hover: rgb(42, 79, 112);
+
+        &.theme-pokemon {
+            --button-hover: rgb(42, 79, 112);
+        }
+
         --option-hover-bg: #333;
         --text-dim: #999;
         --text-dim-dark: #ccc;
@@ -51,7 +64,11 @@ body {
         --main-text-bg: rgb(226, 226, 226, 0.7);
         --right-panel-bg: white;
         --button-bg: white;
-        --button-hover: rgb(224, 239, 255);
+
+        &.theme-pokemon {
+            --button-hover: rgb(224, 239, 255);
+        }
+
         --option-hover-bg: #eee;
         --text-dim: gray;
         --text-dim-dark: #333;
@@ -77,6 +94,10 @@ ul {
     &.explanation {
         color: var(--text-dim);
         margin: 3px 0 0 20px;
+    }
+
+    &.setting-value {
+        margin: 3px 0 0 0px;
     }
 }
 
@@ -213,7 +234,9 @@ ul {
 }
 
 .inner-bar {
-    width: 300px;
+    width: 42.956vmin
+        /*300px*/
+    ;
     height: 15px;
     background-color: green;
     transition: 0.15s;
@@ -318,7 +341,7 @@ table {
     font-size: medium;
 
     &:hover {
-        border: solid 2px dodgerblue;
+        border: solid 2px var(--theme);
         background-color: var(--button-hover);
     }
 
@@ -339,7 +362,7 @@ table {
     border-radius: 9px;
 
     &:not(:disabled):hover {
-        border: solid 2px dodgerblue;
+        border: solid 2px var(--theme);
         background-color: var(--button-hover);
     }
 }
@@ -352,7 +375,7 @@ table {
     width: calc(100% - 4px);
 
     &.selected {
-        border: solid 2px dodgerblue;
+        border: solid 2px var(--theme);
     }
 }
 
@@ -415,7 +438,7 @@ table {
         left: 0;
         top: 0;
         bottom: 0;
-        background-color: dodgerblue;
+        background-color: var(--theme);
         height: calc(100% - 20px);
         border-radius: 2px;
     }
@@ -494,7 +517,7 @@ table {
         font-weight: bold;
 
         &&::after {
-            background-color: dodgerblue;
+            background-color: var(--theme);
             width: 100%;
         }
     }
@@ -856,13 +879,13 @@ button {
 #p2Balls {
     position: absolute;
     top: 30px;
-    right: calc(10% + 384px);
+    right: calc(10% + 42.956vmin / 2 + 27.5vmin);
 }
 
 #p1Balls {
     position: absolute;
     bottom: 30px;
-    left: calc(10% + 384px);
+    left: calc(10% + 42.956vmin / 2 + 27.5vmin);
 }
 
 .bottom-options {
@@ -912,7 +935,7 @@ button {
         display: inline-block;
 
         &:hover {
-            border: solid 2px dodgerblue;
+            border: solid 2px var(--theme);
         }
     }
 
@@ -978,8 +1001,8 @@ input[type="checkbox"] {
     margin: 0;
 
     &:checked {
-        background-color: dodgerblue;
-        border: solid 1px dodgerblue;
+        background-color: var(--theme);
+        border: solid 1px var(--theme);
 
         &::before {
             width: 15px;
@@ -1062,7 +1085,7 @@ select {
 select:hover,
 select:focus {
     background: var(--button-hover);
-    border-color: dodgerblue;
+    border-color: var(--theme);
 }
 
 select::picker-icon {
@@ -1082,7 +1105,7 @@ select:open::picker-icon {
     box-shadow: 0 0 9px var(--shadow);
     opacity: 0;
     transition: all 0.1s allow-discrete;
-    top: calc(anchor(bottom) + 1px);
+    /*top: calc(anchor(bottom) + 1px);*/
     block-size: fit-content;
     max-block-size: 100vh;
     overflow: auto;
@@ -1123,7 +1146,7 @@ option::checkmark {
     left: 0;
     top: 0;
     bottom: 0;
-    background-color: dodgerblue;
+    background-color: var(--theme);
     height: calc(100% - 20px);
     border-radius: 2px;
 }
@@ -1159,7 +1182,7 @@ option::checkmark {
             height: calc(100% - 6px);
 
             &:hover {
-                border: solid 2px dodgerblue;
+                border: solid 2px var(--theme);
                 background-color: var(--button-hover);
             }
         }
@@ -1191,7 +1214,7 @@ input[type="file"] {
 input[type="range"] {
     appearance: none;
     width: 70%;
-    background-image: linear-gradient(90deg, dodgerblue 0%, dodgerblue 100%, lightgray 100%);
+    background-image: linear-gradient(90deg, var(--theme) 0%, var(--theme) 100%, lightgray 100%);
     border-radius: 2.5px;
     outline: none;
     vertical-align: middle;
@@ -1208,7 +1231,7 @@ input[type="range"] {
         position: relative;
         bottom: 4.5px;
         background-color: var(--button-bg);
-        border: solid 2px dodgerblue;
+        border: solid 2px var(--theme);
         border-radius: 7px;
     }
 
@@ -1273,7 +1296,7 @@ input[type="range"] {
 }
 
 a {
-    color: dodgerblue;
+    color: var(--theme);
 }
 
 hr {
@@ -1298,4 +1321,77 @@ option img {
         -webkit-text-stroke: 2px var(--button-bg);
         paint-order: stroke fill;
     }
+}
+
+@keyframes open-mode-select {
+    from {
+        opacity: 0;
+        scale: 3;
+    }
+
+    to {
+        opacity: 1;
+        scale: 1;
+    }
+}
+
+#modeSelectBg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--theme);
+    transition: background-color 0.1s;
+    text-align: center;
+    z-index: 999;
+    color: white;
+    animation-duration: 0.3s;
+    animation-timing-function: cubic-bezier(0, 1, 0, 1);
+    animation-delay: 0s;
+    animation-iteration-count: 1;
+    animation-direction: normal;
+    animation-fill-mode: none;
+    animation-play-state: running;
+    animation-name: open-mode-select;
+    display: none;
+
+    &.show {
+        display: block;
+    }
+
+    & #modeSelect {
+        width: 100%;
+        max-width: 600px;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+        height: fit-content;
+
+        & .mode-btn {
+            padding: 30px;
+            margin: 15px;
+            border-radius: 30px;
+            text-align: left;
+            font-size: large;
+
+            /*&:hover,*/
+            &.selected {
+                background-color: white;
+                color: var(--theme);
+            }
+        }
+    }
+}
+
+.tag {
+    background-color: var(--button-hover);
+    color: var(--theme);
+    display: inline-block;
+    border-radius: 9px;
+    padding: 3px 9px;
+    margin-left: 3px;
 }

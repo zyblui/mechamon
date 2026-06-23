@@ -7,7 +7,10 @@ const MOVES = [{
     "pp": 20,
     "priority": 0,
     "effect": function (e) {
-        getPkmn(true).hp += Math.min(e.totalDmg / 2, getPkmn(true).maxHp - getPkmn(true).hp);
+        //If this move breaks the target's substitute, the user does not recover any HP.
+        if (e.substitutePreDmg && getPkmn(false).substituteHp <= 0) return;
+        //The user recovers 1/2 the HP lost by the target, rounded down.
+        getPkmn(true).hp += Math.min(Math.floor(e.totalDmg / 2), getPkmn(true).maxHp - getPkmn(true).hp);
     }
 }, {
     "name": "acid",
@@ -18,6 +21,7 @@ const MOVES = [{
     "pp": 30,
     "priority": 0,
     "effect": function () {
+        //Has a 33% chance to lower the target's Defense by 1 stage.
         modifyStats(false, "def", -1, 1 / 3);
     }
 }, {
@@ -73,6 +77,7 @@ const MOVES = [{
     "pp": 20,
     "priority": 0,
     "effect": function (e) {
+        if (e.substitutePreDmg && getPkmn(false).substituteHp <= 0) return;
         let num = Math.random();
         if (num < 3 / 8) repeatAttack(e.totalDmg, 1);
         else if (num < 6 / 8) repeatAttack(e.totalDmg, 2);
@@ -180,6 +185,7 @@ const MOVES = [{
     "pp": 10,
     "priority": 0,
     "effect": function (e) {
+        if (e.substitutePreDmg && getPkmn(false).substituteHp <= 0) return;
         repeatAttack(e.totalDmg, 1);
     }
 }, {
@@ -230,6 +236,7 @@ const MOVES = [{
     "pp": 15,
     "priority": 0,
     "effect": function (e) {
+        if (e.substitutePreDmg && getPkmn(false).substituteHp <= 0) return;
         let num = Math.random();
         if (num < 3 / 8) repeatAttack(e.totalDmg, 1);
         else if (num < 6 / 8) repeatAttack(e.totalDmg, 2);
@@ -372,6 +379,7 @@ const MOVES = [{
     "pp": 30,
     "priority": 0,
     "effect": function (e) {
+        if (e.substitutePreDmg && getPkmn(false).substituteHp <= 0) return;
         repeatAttack(e.totalDmg, 1);
     }
 }, {
@@ -383,6 +391,7 @@ const MOVES = [{
     "pp": 10,
     "priority": 0,
     "effect": function (e) {
+        if (e.substitutePreDmg && getPkmn(false).substituteHp <= 0) return;
         let num = Math.random();
         if (num < 3 / 8) repeatAttack(e.totalDmg, 1);
         else if (num < 6 / 8) repeatAttack(e.totalDmg, 2);
@@ -594,6 +603,7 @@ const MOVES = [{
     "pp": 20,
     "priority": 0,
     "effect": function (e) {
+        if (e.substitutePreDmg && getPkmn(false).substituteHp <= 0) return;
         let num = Math.random();
         if (num < 3 / 8) repeatAttack(e.totalDmg, 1);
         else if (num < 6 / 8) repeatAttack(e.totalDmg, 2);
@@ -609,6 +619,7 @@ const MOVES = [{
     "pp": 15,
     "priority": 0,
     "effect": function (e) {
+        if (e.substitutePreDmg && getPkmn(false).substituteHp <= 0) return;
         let num = Math.random();
         if (num < 3 / 8) repeatAttack(e.totalDmg, 1);
         else if (num < 6 / 8) repeatAttack(e.totalDmg, 2);
@@ -1073,6 +1084,7 @@ const MOVES = [{
     "pp": 20,
     "priority": 0,
     "effect": function (e) {
+        if (e.substitutePreDmg && getPkmn(false).substituteHp <= 0) return;
         let num = Math.random();
         if (num < 3 / 8) repeatAttack(e.totalDmg, 1);
         else if (num < 6 / 8) repeatAttack(e.totalDmg, 2);
@@ -1489,6 +1501,7 @@ const MOVES = [{
     "pp": 15,
     "priority": 0,
     "effect": function (e) {
+        if (e.substitutePreDmg && getPkmn(false).substituteHp <= 0) return;
         let num = Math.random();
         if (num < 3 / 8) repeatAttack(e.totalDmg, 1);
         else if (num < 6 / 8) repeatAttack(e.totalDmg, 2);
@@ -1822,6 +1835,8 @@ const MOVES = [{
     "pp": 20,
     "priority": 0,
     "effect": function (e) {
+        //Hits twice, with the second hit having a 20% chance to poison the target. If the first hit breaks the target's substitute, the move ends.
+        if (e.substitutePreDmg && getPkmn(false).substituteHp <= 0) return;
         repeatAttack(e.totalDmg, 1);
         modifyStatus("psn", 0.2);
     }
@@ -3385,7 +3400,12 @@ const TRANSLATION = {
             "sfxVolume": "SFX Volume",
             "whatsNew": "What's New",
             "accessLater": "Access this dialog later by clicking Settings -&gt; What's New.",
-            "close": "Close"
+            "close": "Close",
+            "selectMode": "Select a mode.",
+            "pokemon": "Pokémon",
+            "coromon": "Coromon",
+            "none": "None",
+            "friendOrFoe": "Friend or Foe"
         },
         "others": {
             "turn": "Turn [number0]",
@@ -4193,7 +4213,12 @@ const TRANSLATION = {
             "sfxVolume": "音效音量",
             "whatsNew": "本次更新",
             "accessLater": "下次，点击设置 -&gt; 本次更新以再次打开该对话框。",
-            "close": "关闭"
+            "close": "关闭",
+            "selectMode": "选择模式。",
+            "pokemon": "宝可梦",
+            "coromon": "科洛蒙",
+            "none": "无",
+            "friendOrFoe": "是敌是友"
         },
         "others": {
             "turn": "第 [number0] 回合",
@@ -5640,4 +5665,13 @@ const ICONS = {
     "dragonite": { "row": 13, "cell": 6 },
     "mewtwo": { "row": 13, "cell": 7 },
     "mew": { "row": 13, "cell": 8 }
+};
+const SOUNDS = {
+    "pokemon": [],
+    "coromon": {
+        "battle-grass": {
+            "intro": "coromon/music/battle_grass_intro.wav",
+            "loop": "coromon/music/battle_grass.wav"
+        }
+    }
 };
