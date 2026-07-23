@@ -1,4 +1,4 @@
-importScripts("data.js");
+/*importScripts("data.js");
 
 onmessage = function (e) {
     if (e.data.type == "computerPlay") {
@@ -448,3 +448,4 @@ function addTempEffect(isSelf, effect, turns, prob) {
         getPkmn(isSelf).tempEffect[effect] = turns;
     }
 }
+*/

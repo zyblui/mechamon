@@ -35,6 +35,10 @@ body {
         --theme: #ff781e;
     }
 
+    &.theme-roco-kingdom {
+        --theme: rgb(70, 214, 70);
+    }
+
     &.dark {
         --black: #888;
         --shadow: #666;
@@ -1054,6 +1058,7 @@ label .wrap {
     font-size: small;
     position: absolute;
     opacity: 0.6;
+    top: 7px;
 }
 
 .effectiveness {

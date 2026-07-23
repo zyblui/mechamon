@@ -1,4 +1,32 @@
-const RK_PETS = [{
+type RkPetType = "normal" | "ground" | "mecha" | "ghost" | "water" | "light" | "fire" | "dragon" | "poison" | "bug" | "flying" | "grass" | "ice" | "dark" | "fighting" | "cute" | "psychic" | "electric";
+interface RkPet {
+    "name": string,
+    "type": RkPetType[],
+    "hp": number,
+    "atk": number,
+    "spa": number,
+    "def": number,
+    "spd": number,
+    "spe": number,
+    "trait": string,
+    "skills": string[];
+}
+interface RkTrait {
+    "name": string,
+    "desc": string;
+}
+interface RkSkill {
+    "name": string,
+    "type": RkPetType,
+    "cat": string,
+    "cost": number,
+    "power": number,
+    "desc": string;
+}
+interface MultiplierMod {
+    [key: number]: number;
+}
+const RK_PETS: RkPet[] = [{
     "name": "迪莫",
     "type": ["light"],
     "hp": 120,
@@ -3817,7 +3845,7 @@ const RK_PETS = [{
     "skills": ["魔法增效", "鸣叫", "针状物", "风隐", "先发制人", "乘风", "大爆炸", "超维投射", "回旋风暴", "二律背反", "坍缩", "翼击", "错乱"]
 }
 ];
-const RK_TRAITS = [{
+const RK_TRAITS: RkTrait[] = [{
     "name": "最好的伙伴",
     "desc": "造成克制伤害后，获得攻防速+20%，并回复2能量。"
 }, {
@@ -4272,7 +4300,7 @@ const RK_TRAITS = [{
     "desc": "触发星陨时消耗一半层数，仍造成满层伤害。"
 }
 ];
-const RK_SKILLS = [{
+const RK_SKILLS: RkSkill[] = [{
     "name": "猛烈撞击",
     "type": "normal",
     "cat": "physical",
@@ -7137,36 +7165,42 @@ const RK_SKILLS = [{
     "desc": "造成魔伤，应对状态：下次技能无需蓄力。"
 }, {
     "name": "电弧",
+    "type": "electric",
     "cost": 3,
     "cat": "physical",
     "power": 80,
     "desc": "造成物伤，迸发：本次技能威力+40。"
 }, {
     "name": "麻痹",
+    "type": "electric",
     "cost": 2,
     "cat": "status",
     "power": 0,
     "desc": "敌方先手-1，应对防御：额外使敌方获得双攻-70%。"
 }, {
     "name": "飞踢",
+    "type": "normal",
     "cost": 3,
     "cat": "physical",
     "power": 110,
     "desc": "对敌方精灵造成物理伤害。"
 }, {
     "name": "导电撞击",
+    "type": "electric",
     "cost": 0,
     "cat": "physical",
     "power": 40,
     "desc": "对敌方精灵造成物理伤害。"
 }, {
     "name": "引雷",
+    "type": "electric",
     "cost": 3,
     "cat": "special",
     "power": 35,
     "desc": "造成魔伤，2连击，迸发：本次技能威力+20。"
 }, {
     "name": "加大功率",
+    "type": "electric",
     "cost": 4,
     "cat": "status",
     "power": 0,
@@ -7508,7 +7542,7 @@ const RK_SKILLS = [{
     "power": 75,
     "desc": "造成魔伤，每次击败敌方，本技能威力永久翻倍。"
 }];
-const RK_MULTIPLIER = {
+const RK_MULTIPLIER: Multiplier = {
     "normal": {
         "normal": 1,
         "ground": 0.5,
@@ -7853,9 +7887,8 @@ const RK_MULTIPLIER = {
         "electric": 0.5
     }
 };
-
 //In RK World, the actual multiplier for doubly-super-effective moves is 3, not 4.
-const RK_MULTIPLIER_MODIFIER = {
+const RK_MULTIPLIER_MODIFIER:MultiplierMod = {
     4: 3,
     2: 2,
     1: 1,

@@ -8,15 +8,19 @@
     <link rel="stylesheet" href="font/inter.css" />
     <link rel="stylesheet" href="style.css" />
     <link rel="icon" href="favicon.png" />
+    <script src="data.js"></script>
+    <script src="data-rk.js"></script>
 </head>
 
-<body id="body" class="light theme-pokemon">
+<body class="light theme-pokemon">
     <div id="modeSelectBg" class="show">
         <div id="modeSelect">
             <p data-transl-cat="ui" data-transl-key="selectMode">Select a mode.</p>
             <div data-transl-cat="ui" data-transl-key="pokemon" class="mode-btn selected" data-mode="pokemon">
                 Pokémon</div>
             <div data-transl-cat="ui" data-transl-key="coromon" class="mode-btn" data-mode="coromon">Coromon
+            </div>
+            <div class="mode-btn" data-mode="roco kingdom">Roco Kingdom
             </div>
         </div>
     </div>
@@ -159,12 +163,8 @@
                                         <div class="tip-name">Pikachu</div>
                                         <div class="tip-status"><span class="par">[PARALYZED]</span></div>
                                     </div>
-                                    <div class="type"><img src="types/electric.png" class="type-img" alt="">
-                                        <div class="type-text">ELECTRIC</div>
-                                    </div>
-                                    <div class="type"><img src="types/electric.png" class="type-img" alt="">
-                                        <div class="type-text">ELECTRIC</div>
-                                    </div>
+                                    <div class="type"><img src="types/electric.png" class="type-img" alt=""><div class="type-text">ELECTRIC</div></div>
+                                    <div class="type"><img src="types/electric.png" class="type-img" alt=""><div class="type-text">ELECTRIC</div></div>
                                     <div class="tip-desc">It keeps its tail raised to monitor its surroundings. If you
                                         yank its tail, it
                                         will try to bite you.</div>
@@ -692,7 +692,6 @@
                 data-transl-key="close">Close</button>
         </div>
     </div>
-    <script src="data.js"></script>
     <script src="omiegamon.js"></script>
     <script src="script.js"></script>
 </body>

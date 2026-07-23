@@ -1,12 +1,60 @@
-const MOVES = [{
+type pkmnType = "bug" | "dragon" | "electric" | "fighting" | "fire" | "flying" | "ghost" | "grass" | "ground" | "ice" | "normal" | "poison" | "psychic" | "rock" | "water";
+interface effectParam {
+    "totalDmg": number,
+    "substitutePreDmg": boolean,
+    [key: string]: any;
+};
+interface PkmnMove {
+    "name": string,
+    "type": string,
+    "cat": string,
+    "power": number,
+    "acc": number,
+    "pp": number,
+    "priority": number,
+    "effect"?: Function,
+    "preDmgEffect"?: Function;
+    "missEffect"?: Function;
+    "preCritEffect"?: Function;
+};
+interface Pkmn {
+    "name": string,
+    "type": pkmnType[],
+    "hp": number,
+    "atk": number,
+    "def": number,
+    "sp": number,
+    "spe": number,
+    "moves": string[];
+    tag?: string;
+}
+interface Translation {
+    [lang: string]: {
+        [cat: string]: {
+            [key: string]: string;
+        };
+    };
+}
+interface Multiplier {
+    [atkType: string]: {
+        [defType: string]: number;
+    };
+}
+interface Icons {
+    [monName: string]: {
+        "row": number,
+        "cell": number;
+    };
+}
+const MOVES: PkmnMove[] = [{
     "name": "absorb",
     "type": "grass",
-    "category": "special",
+    "cat": "special",
     "power": 20,
     "acc": 100,
     "pp": 20,
     "priority": 0,
-    "effect": function (e) {
+    "effect": function (e: effectParam) {
         //If this move breaks the target's substitute, the user does not recover any HP.
         if (e.substitutePreDmg && getPkmn(false).substituteHp <= 0) return;
         //The user recovers 1/2 the HP lost by the target, rounded down.
@@ -15,7 +63,7 @@ const MOVES = [{
 }, {
     "name": "acid",
     "type": "poison",
-    "category": "physical",
+    "cat": "physical",
     "power": 40,
     "acc": 100,
     "pp": 30,
@@ -27,7 +75,7 @@ const MOVES = [{
 }, {
     "name": "acid armor",
     "type": "poison",
-    "category": "status",
+    "cat": "status",
     "power": 0,
     "acc": Infinity,
     "pp": 40,
@@ -38,7 +86,7 @@ const MOVES = [{
 }, {
     "name": "agility",
     "type": "psychic",
-    "category": "status",
+    "cat": "status",
     "power": 0,
     "acc": Infinity,
     "pp": 30,
@@ -49,7 +97,7 @@ const MOVES = [{
 }, {
     "name": "amnesia",
     "type": "psychic",
-    "category": "status",
+    "cat": "status",
     "power": 0,
     "acc": Infinity,
     "pp": 20,
@@ -60,7 +108,7 @@ const MOVES = [{
 }, {
     "name": "aurora beam",
     "type": "ice",
-    "category": "special",
+    "cat": "special",
     "power": 65,
     "acc": 100,
     "pp": 20,
@@ -71,12 +119,12 @@ const MOVES = [{
 }, {
     "name": "barrage",
     "type": "normal",
-    "category": "physical",
+    "cat": "physical",
     "power": 15,
     "acc": 85,
     "pp": 20,
     "priority": 0,
-    "effect": function (e) {
+    "effect": function (e: effectParam) {
         if (e.substitutePreDmg && getPkmn(false).substituteHp <= 0) return;
         let num = Math.random();
         if (num < 3 / 8) repeatAttack(e.totalDmg, 1);
@@ -87,7 +135,7 @@ const MOVES = [{
 }, {
     "name": "barrier",
     "type": "psychic",
-    "category": "status",
+    "cat": "status",
     "power": 0,
     "acc": Infinity,
     "pp": 30,
@@ -98,7 +146,7 @@ const MOVES = [{
 }, {
     "name": "bide",
     "type": "normal",
-    "category": "physical",
+    "cat": "physical",
     "power": 0,
     "acc": Infinity,
     "pp": 10,
@@ -118,12 +166,12 @@ const MOVES = [{
 }, {
     "name": "bind",
     "type": "normal",
-    "category": "physical",
+    "cat": "physical",
     "power": 15,
     "acc": 75,
     "pp": 20,
     "priority": 0,
-    "effect": function (e) {
+    "effect": function () {
         let num = Math.random(), turns = 0;
         if (num < 3 / 8) turns = 1;
         else if (num < 6 / 8) turns = 2;
@@ -135,7 +183,7 @@ const MOVES = [{
 }, {
     "name": "bite",
     "type": "normal",
-    "category": "physical",
+    "cat": "physical",
     "power": 60,
     "acc": 100,
     "pp": 25,
@@ -146,7 +194,7 @@ const MOVES = [{
 }, {
     "name": "blizzard",
     "type": "ice",
-    "category": "special",
+    "cat": "special",
     "power": 120,
     "acc": 90,
     "pp": 5,
@@ -157,7 +205,7 @@ const MOVES = [{
 }, {
     "name": "body slam",
     "type": "normal",
-    "category": "physical",
+    "cat": "physical",
     "power": 85,
     "acc": 100,
     "pp": 15,
@@ -168,7 +216,7 @@ const MOVES = [{
 }, {
     "name": "bone club",
     "type": "ground",
-    "category": "physical",
+    "cat": "physical",
     "power": 65,
     "acc": 85,
     "pp": 20,
@@ -179,19 +227,19 @@ const MOVES = [{
 }, {
     "name": "bonemerang",
     "type": "ground",
-    "category": "physical",
+    "cat": "physical",
     "power": 50,
     "acc": 90,
     "pp": 10,
     "priority": 0,
-    "effect": function (e) {
+    "effect": function (e: effectParam) {
         if (e.substitutePreDmg && getPkmn(false).substituteHp <= 0) return;
         repeatAttack(e.totalDmg, 1);
     }
 }, {
     "name": "bubble",
     "type": "water",
-    "category": "special",
+    "cat": "special",
     "power": 20,
     "acc": 100,
     "pp": 30,
@@ -202,7 +250,7 @@ const MOVES = [{
 }, {
     "name": "bubble beam",
     "type": "water",
-    "category": "special",
+    "cat": "special",
     "power": 65,
     "acc": 100,
     "pp": 20,
@@ -213,12 +261,12 @@ const MOVES = [{
 }, {
     "name": "clamp",
     "type": "water",
-    "category": "special",
+    "cat": "special",
     "power": 35,
     "acc": 75,
     "pp": 10,
     "priority": 0,
-    "effect": function (e) {
+    "effect": function () {
         let num = Math.random(), turns = 0;
         if (num < 3 / 8) turns = 1;
         else if (num < 6 / 8) turns = 2;
@@ -230,12 +278,12 @@ const MOVES = [{
 }, {
     "name": "comet punch",
     "type": "normal",
-    "category": "physical",
+    "cat": "physical",
     "power": 18,
     "acc": 85,
     "pp": 15,
     "priority": 0,
-    "effect": function (e) {
+    "effect": function (e: effectParam) {
         if (e.substitutePreDmg && getPkmn(false).substituteHp <= 0) return;
         let num = Math.random();
         if (num < 3 / 8) repeatAttack(e.totalDmg, 1);
@@ -246,7 +294,7 @@ const MOVES = [{
 }, {
     "name": "confuse ray",
     "type": "ghost",
-    "category": "status",
+    "cat": "status",
     "power": 0,
     "acc": 100,
     "pp": 10,
@@ -257,7 +305,7 @@ const MOVES = [{
 }, {
     "name": "confusion",
     "type": "psychic",
-    "category": "special",
+    "cat": "special",
     "power": 50,
     "acc": 100,
     "pp": 25,
@@ -268,7 +316,7 @@ const MOVES = [{
 }, {
     "name": "constrict",
     "type": "normal",
-    "category": "physical",
+    "cat": "physical",
     "power": 10,
     "acc": 100,
     "pp": 35,
@@ -279,18 +327,18 @@ const MOVES = [{
 }, {
     "name": "conversion",
     "type": "normal",
-    "category": "status",
+    "cat": "status",
     "power": 0,
     "acc": Infinity,
     "pp": 30,
     "priority": 0,
     "effect": function () {
-        getPkmn(true).tempType = getStats(getPkmn(false).name).type;
+        getPkmn(true).tempType = getStats(getPkmn(false).name)!.type;
     }
 }, {
     "name": "counter",
     "type": "fighting",
-    "category": "physical",
+    "cat": "physical",
     "power": 1,
     "acc": 100,
     "pp": 20,
@@ -303,7 +351,7 @@ const MOVES = [{
 }, {
     "name": "crabhammer",
     "type": "water",
-    "category": "special",
+    "cat": "special",
     "power": 90,
     "acc": 85,
     "pp": 10,
@@ -314,7 +362,7 @@ const MOVES = [{
 }, {
     "name": "cut",
     "type": "normal",
-    "category": "physical",
+    "cat": "physical",
     "power": 50,
     "acc": 95,
     "pp": 30,
@@ -323,7 +371,7 @@ const MOVES = [{
 }, {
     "name": "defense curl",
     "type": "normal",
-    "category": "status",
+    "cat": "status",
     "power": 0,
     "acc": Infinity,
     "pp": 40,
@@ -334,7 +382,7 @@ const MOVES = [{
 }, {
     "name": "dig",
     "type": "ground",
-    "category": "physical",
+    "cat": "physical",
     "power": 100,
     "acc": 100,
     "pp": 10,
@@ -346,7 +394,7 @@ const MOVES = [{
 }, {
     "name": "disable",
     "type": "normal",
-    "category": "status",
+    "cat": "status",
     "power": 0,
     "acc": 55,
     "pp": 20,
@@ -364,7 +412,7 @@ const MOVES = [{
 }, {
     "name": "dizzy punch",
     "type": "normal",
-    "category": "physical",
+    "cat": "physical",
     "power": 70,
     "acc": 100,
     "pp": 10,
@@ -373,24 +421,24 @@ const MOVES = [{
 }, {
     "name": "double kick",
     "type": "fighting",
-    "category": "physical",
+    "cat": "physical",
     "power": 30,
     "acc": 100,
     "pp": 30,
     "priority": 0,
-    "effect": function (e) {
+    "effect": function (e: effectParam) {
         if (e.substitutePreDmg && getPkmn(false).substituteHp <= 0) return;
         repeatAttack(e.totalDmg, 1);
     }
 }, {
     "name": "double slap",
     "type": "normal",
-    "category": "physical",
+    "cat": "physical",
     "power": 15,
     "acc": 85,
     "pp": 10,
     "priority": 0,
-    "effect": function (e) {
+    "effect": function (e: effectParam) {
         if (e.substitutePreDmg && getPkmn(false).substituteHp <= 0) return;
         let num = Math.random();
         if (num < 3 / 8) repeatAttack(e.totalDmg, 1);
@@ -401,7 +449,7 @@ const MOVES = [{
 }, {
     "name": "double team",
     "type": "normal",
-    "category": "status",
+    "cat": "status",
     "power": 0,
     "acc": Infinity,
     "pp": 15,
@@ -412,12 +460,12 @@ const MOVES = [{
 }, {
     "name": "double-edge",
     "type": "normal",
-    "category": "physical",
+    "cat": "physical",
     "power": 100,
     "acc": 100,
     "pp": 15,
     "priority": 0,
-    "effect": function (e) {
+    "effect": function (e: effectParam) {
         addSmallText("others", "damagedByRecoil", {
             "pokemon": [getName(getPkmn(true), false, true)],
             "isEnemy": playerToMove != viewpoint
@@ -427,7 +475,7 @@ const MOVES = [{
 }, {
     "name": "dragon rage",
     "type": "dragon",
-    "category": "special",
+    "cat": "special",
     "power": 1,
     "acc": 100,
     "pp": 10,
@@ -438,18 +486,18 @@ const MOVES = [{
 }, {
     "name": "dream eater",
     "type": "psychic",
-    "category": "special",
+    "cat": "special",
     "power": 100,
     "acc": 100,
     "pp": 15,
     "priority": 0,
-    "effect": function (e) {
+    "effect": function (e: effectParam) {
         if (getPkmn(false).status == "slp") getPkmn(true).hp += Math.min(e.totalDmg / 2, getPkmn(true).maxHp - getPkmn(true).hp);
     }
 }, {
     "name": "drill peck",
     "type": "flying",
-    "category": "physical",
+    "cat": "physical",
     "power": 80,
     "acc": 100,
     "pp": 20,
@@ -458,7 +506,7 @@ const MOVES = [{
 }, {
     "name": "earthquake",
     "type": "ground",
-    "category": "physical",
+    "cat": "physical",
     "power": 100,
     "acc": 100,
     "pp": 10,
@@ -467,7 +515,7 @@ const MOVES = [{
 }, {
     "name": "egg bomb",
     "type": "normal",
-    "category": "physical",
+    "cat": "physical",
     "power": 100,
     "acc": 75,
     "pp": 10,
@@ -476,7 +524,7 @@ const MOVES = [{
 }, {
     "name": "ember",
     "type": "fire",
-    "category": "special",
+    "cat": "special",
     "power": 40,
     "acc": 100,
     "pp": 25,
@@ -487,7 +535,7 @@ const MOVES = [{
 }, {
     "name": "explosion",
     "type": "normal",
-    "category": "physical",
+    "cat": "physical",
     "power": 170,
     "acc": 100,
     "pp": 5,
@@ -499,7 +547,7 @@ const MOVES = [{
 }, {
     "name": "fire blast",
     "type": "fire",
-    "category": "special",
+    "cat": "special",
     "power": 120,
     "acc": 85,
     "pp": 5,
@@ -510,7 +558,7 @@ const MOVES = [{
 }, {
     "name": "fire punch",
     "type": "fire",
-    "category": "special",
+    "cat": "special",
     "power": 75,
     "acc": 100,
     "pp": 15,
@@ -521,12 +569,12 @@ const MOVES = [{
 }, {
     "name": "fire spin",
     "type": "fire",
-    "category": "special",
+    "cat": "special",
     "power": 15,
     "acc": 70,
     "pp": 15,
     "priority": 0,
-    "effect": function (e) {
+    "effect": function (e: effectParam) {
         let num = Math.random(), turns = 0;
         if (num < 3 / 8) turns = 1;
         else if (num < 6 / 8) turns = 2;
@@ -538,20 +586,20 @@ const MOVES = [{
 }, {
     "name": "fissure",
     "type": "ground",
-    "category": "physical",
+    "cat": "physical",
     "power": 0,
     "acc": 30,
     "pp": 5,
     "priority": 0,
     "effect": function () {
-        if (getStats(getPkmn(false).name).spe <= getStats(getPkmn(true).name).spe) {
+        if (getStats(getPkmn(false).name)!.spe <= getStats(getPkmn(true).name)!.spe) {
             dealDmg(false, getPkmn(false).hp, { "ignoreSubstitute": true });
         }
     }
 }, {
     "name": "flamethrower",
     "type": "fire",
-    "category": "special",
+    "cat": "special",
     "power": 95,
     "acc": 100,
     "pp": 15,
@@ -562,7 +610,7 @@ const MOVES = [{
 }, {
     "name": "flash",
     "type": "normal",
-    "category": "status",
+    "cat": "status",
     "power": 0,
     "acc": 70,
     "pp": 20,
@@ -574,7 +622,7 @@ const MOVES = [{
 }, {
     "name": "fly",
     "type": "flying",
-    "category": "physical",
+    "cat": "physical",
     "power": 70,
     "acc": 95,
     "pp": 15,
@@ -586,7 +634,7 @@ const MOVES = [{
 }, {
     "name": "focus energy",
     "type": "normal",
-    "category": "status",
+    "cat": "status",
     "power": 0,
     "acc": Infinity,
     "pp": 30,
@@ -597,12 +645,12 @@ const MOVES = [{
 }, {
     "name": "fury attack",
     "type": "normal",
-    "category": "physical",
+    "cat": "physical",
     "power": 15,
     "acc": 85,
     "pp": 20,
     "priority": 0,
-    "effect": function (e) {
+    "effect": function (e: effectParam) {
         if (e.substitutePreDmg && getPkmn(false).substituteHp <= 0) return;
         let num = Math.random();
         if (num < 3 / 8) repeatAttack(e.totalDmg, 1);
@@ -613,12 +661,12 @@ const MOVES = [{
 }, {
     "name": "fury swipes",
     "type": "normal",
-    "category": "physical",
+    "cat": "physical",
     "power": 18,
     "acc": 80,
     "pp": 15,
     "priority": 0,
-    "effect": function (e) {
+    "effect": function (e: effectParam) {
         if (e.substitutePreDmg && getPkmn(false).substituteHp <= 0) return;
         let num = Math.random();
         if (num < 3 / 8) repeatAttack(e.totalDmg, 1);
@@ -629,7 +677,7 @@ const MOVES = [{
 }, {
     "name": "glare",
     "type": "normal",
-    "category": "status",
+    "cat": "status",
     "power": 0,
     "acc": 75,
     "pp": 30,
@@ -640,7 +688,7 @@ const MOVES = [{
 }, {
     "name": "growl",
     "type": "normal",
-    "category": "status",
+    "cat": "status",
     "power": 0,
     "acc": 100,
     "pp": 40,
@@ -651,7 +699,7 @@ const MOVES = [{
 }, {
     "name": "growth",
     "type": "normal",
-    "category": "status",
+    "cat": "status",
     "power": 0,
     "acc": Infinity,
     "pp": 40,
@@ -662,20 +710,20 @@ const MOVES = [{
 }, {
     "name": "guillotine",
     "type": "normal",
-    "category": "physical",
+    "cat": "physical",
     "power": 0,
     "acc": 30,
     "pp": 5,
     "priority": 0,
     "effect": function () {
-        if (getStats(getPkmn(false).name).spe <= getStats(getPkmn(true).name).spe) {
+        if (getStats(getPkmn(false).name)!.spe <= getStats(getPkmn(true).name)!.spe) {
             dealDmg(false, getPkmn(false).hp, { "ignoreSubstitute": true });
         }
     }
 }, {
     "name": "gust",
     "type": "normal",
-    "category": "physical",
+    "cat": "physical",
     "power": 40,
     "acc": 100,
     "pp": 35,
@@ -684,7 +732,7 @@ const MOVES = [{
 }, {
     "name": "harden",
     "type": "normal",
-    "category": "status",
+    "cat": "status",
     "power": 0,
     "acc": Infinity,
     "pp": 30,
@@ -695,7 +743,7 @@ const MOVES = [{
 }, {
     "name": "haze",
     "type": "ice",
-    "category": "status",
+    "cat": "status",
     "power": 0,
     "acc": Infinity,
     "pp": 30,
@@ -708,7 +756,7 @@ const MOVES = [{
 }, {
     "name": "headbutt",
     "type": "normal",
-    "category": "physical",
+    "cat": "physical",
     "power": 70,
     "acc": 100,
     "pp": 15,
@@ -719,7 +767,7 @@ const MOVES = [{
 }, {
     "name": "high jump kick",
     "type": "fighting",
-    "category": "physical",
+    "cat": "physical",
     "power": 85,
     "acc": 90,
     "pp": 20,
@@ -730,7 +778,7 @@ const MOVES = [{
 }, {
     "name": "horn attack",
     "type": "normal",
-    "category": "physical",
+    "cat": "physical",
     "power": 65,
     "acc": 100,
     "pp": 25,
@@ -739,20 +787,20 @@ const MOVES = [{
 }, {
     "name": "horn drill",
     "type": "normal",
-    "category": "physical",
+    "cat": "physical",
     "power": 0,
     "acc": 30,
     "pp": 5,
     "priority": 0,
     "effect": function () {
-        if (getStats(getPkmn(false).name).spe <= getStats(getPkmn(true).name).spe) {
+        if (getStats(getPkmn(false).name)!.spe <= getStats(getPkmn(true).name)!.spe) {
             dealDmg(false, getPkmn(false).hp, { "ignoreSubstitute": true });
         }
     }
 }, {
     "name": "hydro pump",
     "type": "water",
-    "category": "special",
+    "cat": "special",
     "power": 120,
     "acc": 80,
     "pp": 5,
@@ -761,7 +809,7 @@ const MOVES = [{
 }, {
     "name": "hyper beam",
     "type": "normal",
-    "category": "physical",
+    "cat": "physical",
     "power": 150,
     "acc": 90,
     "pp": 5,
@@ -772,7 +820,7 @@ const MOVES = [{
 }, {
     "name": "hyper fang",
     "type": "normal",
-    "category": "physical",
+    "cat": "physical",
     "power": 80,
     "acc": 90,
     "pp": 15,
@@ -783,7 +831,7 @@ const MOVES = [{
 }, {
     "name": "hypnosis",
     "type": "psychic",
-    "category": "status",
+    "cat": "status",
     "power": 0,
     "acc": 60,
     "pp": 20,
@@ -794,7 +842,7 @@ const MOVES = [{
 }, {
     "name": "ice beam",
     "type": "ice",
-    "category": "special",
+    "cat": "special",
     "power": 95,
     "acc": 100,
     "pp": 10,
@@ -805,7 +853,7 @@ const MOVES = [{
 }, {
     "name": "ice punch",
     "type": "ice",
-    "category": "special",
+    "cat": "special",
     "power": 75,
     "acc": 100,
     "pp": 15,
@@ -816,7 +864,7 @@ const MOVES = [{
 }, {
     "name": "jump kick",
     "type": "fighting",
-    "category": "physical",
+    "cat": "physical",
     "power": 70,
     "acc": 95,
     "pp": 25,
@@ -827,7 +875,7 @@ const MOVES = [{
 }, {
     "name": "karate chop",
     "type": "normal",
-    "category": "physical",
+    "cat": "physical",
     "power": 50,
     "acc": 100,
     "pp": 25,
@@ -838,7 +886,7 @@ const MOVES = [{
 }, {
     "name": "kinesis",
     "type": "psychic",
-    "category": "",
+    "cat": "",
     "power": 0,
     "acc": 80,
     "pp": 15,
@@ -850,18 +898,18 @@ const MOVES = [{
 }, {
     "name": "leech life",
     "type": "bug",
-    "category": "physical",
+    "cat": "physical",
     "power": 20,
     "acc": 100,
     "pp": 15,
     "priority": 0,
-    "effect": function (e) {
+    "effect": function (e: effectParam) {
         getPkmn(true).hp += Math.min(e.totalDmg / 2, getPkmn(true).maxHp - getPkmn(true).hp);
     }
 }, {
     "name": "leech seed",
     "type": "grass",
-    "category": "status",
+    "cat": "status",
     "power": 0,
     "acc": 90,
     "pp": 10,
@@ -872,7 +920,7 @@ const MOVES = [{
 }, {
     "name": "leer",
     "type": "normal",
-    "category": "status",
+    "cat": "status",
     "power": 0,
     "acc": 100,
     "pp": 30,
@@ -883,7 +931,7 @@ const MOVES = [{
 }, {
     "name": "lick",
     "type": "ghost",
-    "category": "physical",
+    "cat": "physical",
     "power": 20,
     "acc": 100,
     "pp": 30,
@@ -894,7 +942,7 @@ const MOVES = [{
 }, {
     "name": "light screen",
     "type": "psychic",
-    "category": "status",
+    "cat": "status",
     "power": 0,
     "acc": Infinity,
     "pp": 30,
@@ -905,7 +953,7 @@ const MOVES = [{
 }, {
     "name": "lovely kiss",
     "type": "normal",
-    "category": "status",
+    "cat": "status",
     "power": 0,
     "acc": 75,
     "pp": 10,
@@ -916,7 +964,7 @@ const MOVES = [{
 }, {
     "name": "low kick",
     "type": "fighting",
-    "category": "physical",
+    "cat": "physical",
     "power": 50,
     "acc": 90,
     "pp": 20,
@@ -927,7 +975,7 @@ const MOVES = [{
 }, {
     "name": "meditate",
     "type": "psychic",
-    "category": "status",
+    "cat": "status",
     "power": 0,
     "acc": Infinity,
     "pp": 40,
@@ -938,18 +986,18 @@ const MOVES = [{
 }, {
     "name": "mega drain",
     "type": "grass",
-    "category": "special",
+    "cat": "special",
     "power": 40,
     "acc": 100,
     "pp": 10,
     "priority": 0,
-    "effect": function (e) {
+    "effect": function (e: effectParam) {
         getPkmn(true).hp += Math.min(e.totalDmg / 2, getPkmn(true).maxHp - getPkmn(true).hp);
     }
 }, {
     "name": "mega kick",
     "type": "normal",
-    "category": "physical",
+    "cat": "physical",
     "power": 120,
     "acc": 75,
     "pp": 5,
@@ -958,7 +1006,7 @@ const MOVES = [{
 }, {
     "name": "mega punch",
     "type": "normal",
-    "category": "physical",
+    "cat": "physical",
     "power": 80,
     "acc": 85,
     "pp": 20,
@@ -967,7 +1015,7 @@ const MOVES = [{
 }, {
     "name": "metronome",
     "type": "normal",
-    "category": "status",
+    "cat": "status",
     "power": 0,
     "acc": Infinity,
     "pp": 10,
@@ -983,19 +1031,18 @@ const MOVES = [{
 }, {
     "name": "mimic",
     "type": "normal",
-    "category": "status",
+    "cat": "status",
     "power": 0,
     "acc": 100,
     "pp": 10,
     "priority": 0,
     "effect": function () {
-        getPkmn(true).mimicMove = Object.keys(getPkmn(false).moves)[Math.floor(Object.keys(getPkmn(false).moves).length * Math
-            .random())].name;
+        getPkmn(true).mimicMove = Object.keys(getPkmn(false).moves)[Math.floor(Object.keys(getPkmn(false).moves).length * Math.random())];
     }
 }, {
     "name": "minimize",
     "type": "normal",
-    "category": "status",
+    "cat": "status",
     "power": 0,
     "acc": Infinity,
     "pp": 20,
@@ -1006,7 +1053,7 @@ const MOVES = [{
 }, {
     "name": "mirror move",
     "type": "flying",
-    "category": "status",
+    "cat": "status",
     "power": 0,
     "acc": Infinity,
     "pp": 20,
@@ -1017,7 +1064,7 @@ const MOVES = [{
 }, {
     "name": "mist",
     "type": "ice",
-    "category": "status",
+    "cat": "status",
     "power": 0,
     "acc": Infinity,
     "pp": 30,
@@ -1028,7 +1075,7 @@ const MOVES = [{
 }, {
     "name": "night shade",
     "type": "ghost",
-    "category": "physical",
+    "cat": "physical",
     "power": 1,
     "acc": 100,
     "pp": 15,
@@ -1039,7 +1086,7 @@ const MOVES = [{
 }, {
     "name": "pay day",
     "type": "normal",
-    "category": "physical",
+    "cat": "physical",
     "power": 40,
     "acc": 100,
     "pp": 20,
@@ -1048,7 +1095,7 @@ const MOVES = [{
 }, {
     "name": "peck",
     "type": "flying",
-    "category": "physical",
+    "cat": "physical",
     "power": 35,
     "acc": 100,
     "pp": 35,
@@ -1057,7 +1104,7 @@ const MOVES = [{
 }, {
     "name": "petal dance",
     "type": "grass",
-    "category": "special",
+    "cat": "special",
     "power": 70,
     "acc": 100,
     "pp": 20,
@@ -1078,12 +1125,12 @@ const MOVES = [{
 }, {
     "name": "pin missile",
     "type": "bug",
-    "category": "physical",
+    "cat": "physical",
     "power": 14,
     "acc": 85,
     "pp": 20,
     "priority": 0,
-    "effect": function (e) {
+    "effect": function (e: effectParam) {
         if (e.substitutePreDmg && getPkmn(false).substituteHp <= 0) return;
         let num = Math.random();
         if (num < 3 / 8) repeatAttack(e.totalDmg, 1);
@@ -1094,7 +1141,7 @@ const MOVES = [{
 }, {
     "name": "poison gas",
     "type": "poison",
-    "category": "status",
+    "cat": "status",
     "power": 0,
     "acc": 55,
     "pp": 40,
@@ -1105,7 +1152,7 @@ const MOVES = [{
 }, {
     "name": "poison powder",
     "type": "poison",
-    "category": "status",
+    "cat": "status",
     "power": 0,
     "acc": 75,
     "pp": 35,
@@ -1116,7 +1163,7 @@ const MOVES = [{
 }, {
     "name": "poison sting",
     "type": "poison",
-    "category": "physical",
+    "cat": "physical",
     "power": 15,
     "acc": 100,
     "pp": 35,
@@ -1127,7 +1174,7 @@ const MOVES = [{
 }, {
     "name": "pound",
     "type": "normal",
-    "category": "physical",
+    "cat": "physical",
     "power": 40,
     "acc": 100,
     "pp": 35,
@@ -1136,7 +1183,7 @@ const MOVES = [{
 }, {
     "name": "psybeam",
     "type": "psychic",
-    "category": "special",
+    "cat": "special",
     "power": 65,
     "acc": 100,
     "pp": 20,
@@ -1147,7 +1194,7 @@ const MOVES = [{
 }, {
     "name": "psychic",
     "type": "psychic",
-    "category": "special",
+    "cat": "special",
     "power": 90,
     "acc": 100,
     "pp": 10,
@@ -1158,7 +1205,7 @@ const MOVES = [{
 }, {
     "name": "psywave",
     "type": "psychic",
-    "category": "special",
+    "cat": "special",
     "power": 1,
     "acc": 80,
     "pp": 15,
@@ -1169,7 +1216,7 @@ const MOVES = [{
 }, {
     "name": "quick attack",
     "type": "normal",
-    "category": "physical",
+    "cat": "physical",
     "power": 40,
     "acc": 100,
     "pp": 30,
@@ -1177,7 +1224,7 @@ const MOVES = [{
 }, {
     "name": "rage",
     "type": "normal",
-    "category": "physical",
+    "cat": "physical",
     "power": 20,
     "acc": 100,
     "pp": 20,
@@ -1189,7 +1236,7 @@ const MOVES = [{
 }, {
     "name": "razor leaf",
     "type": "grass",
-    "category": "special",
+    "cat": "special",
     "power": 55,
     "acc": 95,
     "pp": 25,
@@ -1200,7 +1247,7 @@ const MOVES = [{
 }, {
     "name": "razor wind",
     "type": "normal",
-    "category": "physical",
+    "cat": "physical",
     "power": 80,
     "acc": 75,
     "pp": 10,
@@ -1211,7 +1258,7 @@ const MOVES = [{
 }, {
     "name": "recover",
     "type": "normal",
-    "category": "status",
+    "cat": "status",
     "power": 0,
     "acc": Infinity,
     "pp": 20,
@@ -1229,7 +1276,7 @@ const MOVES = [{
 }, {
     "name": "reflect",
     "type": "psychic",
-    "category": "status",
+    "cat": "status",
     "power": 0,
     "acc": Infinity,
     "pp": 20,
@@ -1240,7 +1287,7 @@ const MOVES = [{
 }, {
     "name": "rest",
     "type": "psychic",
-    "category": "status",
+    "cat": "status",
     "power": 0,
     "acc": Infinity,
     "pp": 10,
@@ -1259,7 +1306,7 @@ const MOVES = [{
 }, {
     "name": "roar",
     "type": "normal",
-    "category": "status",
+    "cat": "status",
     "power": 0,
     "acc": 100,
     "pp": 20,
@@ -1268,7 +1315,7 @@ const MOVES = [{
 }, {
     "name": "rock slide",
     "type": "rock",
-    "category": "physical",
+    "cat": "physical",
     "power": 75,
     "acc": 90,
     "pp": 10,
@@ -1277,7 +1324,7 @@ const MOVES = [{
 }, {
     "name": "rock throw",
     "type": "rock",
-    "category": "physical",
+    "cat": "physical",
     "power": 50,
     "acc": 65,
     "pp": 15,
@@ -1286,7 +1333,7 @@ const MOVES = [{
 }, {
     "name": "rolling kick",
     "type": "fighting",
-    "category": "physical",
+    "cat": "physical",
     "power": 60,
     "acc": 85,
     "pp": 15,
@@ -1297,7 +1344,7 @@ const MOVES = [{
 }, {
     "name": "sand attack",
     "type": "normal",
-    "category": "status",
+    "cat": "status",
     "power": 0,
     "acc": 100,
     "pp": 15,
@@ -1309,7 +1356,7 @@ const MOVES = [{
 }, {
     "name": "scratch",
     "type": "normal",
-    "category": "physical",
+    "cat": "physical",
     "power": 40,
     "acc": 100,
     "pp": 35,
@@ -1318,7 +1365,7 @@ const MOVES = [{
 }, {
     "name": "screech",
     "type": "normal",
-    "category": "status",
+    "cat": "status",
     "power": 0,
     "acc": 85,
     "pp": 40,
@@ -1329,7 +1376,7 @@ const MOVES = [{
 }, {
     "name": "seismic toss",
     "type": "fighting",
-    "category": "physical",
+    "cat": "physical",
     "power": 1,
     "acc": 100,
     "pp": 20,
@@ -1340,7 +1387,7 @@ const MOVES = [{
 }, {
     "name": "self-destruct",
     "type": "normal",
-    "category": "physical",
+    "cat": "physical",
     "power": 130,
     "acc": 100,
     "pp": 5,
@@ -1352,7 +1399,7 @@ const MOVES = [{
 }, {
     "name": "sharpen",
     "type": "normal",
-    "category": "status",
+    "cat": "status",
     "power": 0,
     "acc": Infinity,
     "pp": 30,
@@ -1363,7 +1410,7 @@ const MOVES = [{
 }, {
     "name": "sing",
     "type": "normal",
-    "category": "status",
+    "cat": "status",
     "power": 0,
     "acc": 55,
     "pp": 15,
@@ -1374,7 +1421,7 @@ const MOVES = [{
 }, {
     "name": "skull bash",
     "type": "normal",
-    "category": "physical",
+    "cat": "physical",
     "power": 100,
     "acc": 100,
     "pp": 15,
@@ -1385,7 +1432,7 @@ const MOVES = [{
 }, {
     "name": "sky attack",
     "type": "flying",
-    "category": "physical",
+    "cat": "physical",
     "power": 140,
     "acc": 90,
     "pp": 5,
@@ -1396,7 +1443,7 @@ const MOVES = [{
 }, {
     "name": "slam",
     "type": "normal",
-    "category": "physical",
+    "cat": "physical",
     "power": 80,
     "acc": 75,
     "pp": 20,
@@ -1405,7 +1452,7 @@ const MOVES = [{
 }, {
     "name": "slash",
     "type": "normal",
-    "category": "physical",
+    "cat": "physical",
     "power": 70,
     "acc": 100,
     "pp": 20,
@@ -1416,7 +1463,7 @@ const MOVES = [{
 }, {
     "name": "sleep powder",
     "type": "grass",
-    "category": "status",
+    "cat": "status",
     "power": 0,
     "acc": 75,
     "pp": 15,
@@ -1427,7 +1474,7 @@ const MOVES = [{
 }, {
     "name": "sludge",
     "type": "poison",
-    "category": "physical",
+    "cat": "physical",
     "power": 65,
     "acc": 100,
     "pp": 20,
@@ -1438,7 +1485,7 @@ const MOVES = [{
 }, {
     "name": "smog",
     "type": "poison",
-    "category": "physical",
+    "cat": "physical",
     "power": 20,
     "acc": 70,
     "pp": 20,
@@ -1449,7 +1496,7 @@ const MOVES = [{
 }, {
     "name": "smokescreen",
     "type": "normal",
-    "category": "status",
+    "cat": "status",
     "power": 0,
     "acc": 100,
     "pp": 20,
@@ -1461,7 +1508,7 @@ const MOVES = [{
 }, {
     "name": "soft-boiled",
     "type": "normal",
-    "category": "status",
+    "cat": "status",
     "power": 0,
     "acc": Infinity,
     "pp": 10,
@@ -1473,7 +1520,7 @@ const MOVES = [{
 }, {
     "name": "solar beam",
     "type": "grass",
-    "category": "special",
+    "cat": "special",
     "power": 120,
     "acc": 100,
     "pp": 10,
@@ -1484,7 +1531,7 @@ const MOVES = [{
 }, {
     "name": "sonic boom",
     "type": "normal",
-    "category": "physical",
+    "cat": "physical",
     "power": 1,
     "acc": 90,
     "pp": 20,
@@ -1495,12 +1542,12 @@ const MOVES = [{
 }, {
     "name": "spike cannon",
     "type": "normal",
-    "category": "physical",
+    "cat": "physical",
     "power": 20,
     "acc": 100,
     "pp": 15,
     "priority": 0,
-    "effect": function (e) {
+    "effect": function (e: effectParam) {
         if (e.substitutePreDmg && getPkmn(false).substituteHp <= 0) return;
         let num = Math.random();
         if (num < 3 / 8) repeatAttack(e.totalDmg, 1);
@@ -1511,7 +1558,7 @@ const MOVES = [{
 }, {
     "name": "splash",
     "type": "normal",
-    "category": "status",
+    "cat": "status",
     "power": 0,
     "acc": Infinity,
     "pp": 40,
@@ -1523,7 +1570,7 @@ const MOVES = [{
 }, {
     "name": "spore",
     "type": "grass",
-    "category": "status",
+    "cat": "status",
     "power": 0,
     "acc": 100,
     "pp": 15,
@@ -1534,7 +1581,7 @@ const MOVES = [{
 }, {
     "name": "stomp",
     "type": "normal",
-    "category": "physical",
+    "cat": "physical",
     "power": 65,
     "acc": 100,
     "pp": 20,
@@ -1545,7 +1592,7 @@ const MOVES = [{
 }, {
     "name": "strength",
     "type": "normal",
-    "category": "physical",
+    "cat": "physical",
     "power": 80,
     "acc": 100,
     "pp": 15,
@@ -1554,7 +1601,7 @@ const MOVES = [{
 }, {
     "name": "string shot",
     "type": "bug",
-    "category": "status",
+    "cat": "status",
     "power": 0,
     "acc": 95,
     "pp": 40,
@@ -1565,18 +1612,18 @@ const MOVES = [{
 }, {
     "name": "struggle",
     "type": "normal",
-    "category": "physical",
+    "cat": "physical",
     "power": 50,
     "acc": 100,
     "pp": 10,
     "priority": 0,
-    "effect": function (e) {
+    "effect": function (e: effectParam) {
         dealDmg(true, e.totalDmg / 4);
     }
 }, {
     "name": "stun spore",
     "type": "grass",
-    "category": "status",
+    "cat": "status",
     "power": 0,
     "acc": 75,
     "pp": 30,
@@ -1587,18 +1634,18 @@ const MOVES = [{
 }, {
     "name": "submission",
     "type": "fighting",
-    "category": "physical",
+    "cat": "physical",
     "power": 80,
     "acc": 80,
     "pp": 25,
     "priority": 0,
-    "effect": function (e) {
+    "effect": function (e: effectParam) {
         dealDmg(true, e.totalDmg / 4);
     }
 }, {
     "name": "substitute",
     "type": "normal",
-    "category": "status",
+    "cat": "status",
     "power": 0,
     "acc": Infinity,
     "pp": 10,
@@ -1616,7 +1663,7 @@ const MOVES = [{
 }, {
     "name": "super fang",
     "type": "normal",
-    "category": "physical",
+    "cat": "physical",
     "power": 1,
     "acc": 90,
     "pp": 10,
@@ -1627,7 +1674,7 @@ const MOVES = [{
 }, {
     "name": "supersonic",
     "type": "normal",
-    "category": "status",
+    "cat": "status",
     "power": 0,
     "acc": 55,
     "pp": 20,
@@ -1638,7 +1685,7 @@ const MOVES = [{
 }, {
     "name": "surf",
     "type": "water",
-    "category": "special",
+    "cat": "special",
     "power": 95,
     "acc": 100,
     "pp": 15,
@@ -1647,7 +1694,7 @@ const MOVES = [{
 }, {
     "name": "swift",
     "type": "normal",
-    "category": "physical",
+    "cat": "physical",
     "power": 60,
     "acc": Infinity,
     "pp": 20,
@@ -1658,7 +1705,7 @@ const MOVES = [{
 }, {
     "name": "swords dance",
     "type": "normal",
-    "category": "status",
+    "cat": "status",
     "power": 0,
     "acc": Infinity,
     "pp": 30,
@@ -1669,7 +1716,7 @@ const MOVES = [{
 }, {
     "name": "tackle",
     "type": "normal",
-    "category": "physical",
+    "cat": "physical",
     "power": 35,
     "acc": 95,
     "pp": 35,
@@ -1678,7 +1725,7 @@ const MOVES = [{
 }, {
     "name": "tail whip",
     "type": "normal",
-    "category": "status",
+    "cat": "status",
     "power": 0,
     "acc": 100,
     "pp": 30,
@@ -1689,18 +1736,18 @@ const MOVES = [{
 }, {
     "name": "take down",
     "type": "normal",
-    "category": "physical",
+    "cat": "physical",
     "power": 90,
     "acc": 85,
     "pp": 20,
     "priority": 0,
-    "effect": function (e) {
+    "effect": function (e: effectParam) {
         dealDmg(true, e.totalDmg / 4);
     }
 }, {
     "name": "teleport",
     "type": "psychic",
-    "category": "status",
+    "cat": "status",
     "power": 0,
     "acc": Infinity,
     "pp": 20,
@@ -1709,7 +1756,7 @@ const MOVES = [{
 }, {
     "name": "thrash",
     "type": "normal",
-    "category": "physical",
+    "cat": "physical",
     "power": 90,
     "acc": 100,
     "pp": 20,
@@ -1732,7 +1779,7 @@ const MOVES = [{
 }, {
     "name": "thunder",
     "type": "electric",
-    "category": "special",
+    "cat": "special",
     "power": 120,
     "acc": 70,
     "pp": 10,
@@ -1743,7 +1790,7 @@ const MOVES = [{
 }, {
     "name": "thunder punch",
     "type": "electric",
-    "category": "special",
+    "cat": "special",
     "power": 75,
     "acc": 100,
     "pp": 15,
@@ -1754,7 +1801,7 @@ const MOVES = [{
 }, {
     "name": "thunder shock",
     "type": "electric",
-    "category": "special",
+    "cat": "special",
     "power": 40,
     "acc": 100,
     "pp": 30,
@@ -1765,7 +1812,7 @@ const MOVES = [{
 }, {
     "name": "thunder wave",
     "type": "electric",
-    "category": "status",
+    "cat": "status",
     "power": 0,
     "acc": 100,
     "pp": 20,
@@ -1776,7 +1823,7 @@ const MOVES = [{
 }, {
     "name": "thunderbolt",
     "type": "electric",
-    "category": "special",
+    "cat": "special",
     "power": 95,
     "acc": 100,
     "pp": 15,
@@ -1787,7 +1834,7 @@ const MOVES = [{
 }, {
     "name": "toxic",
     "type": "poison",
-    "category": "status",
+    "cat": "status",
     "power": 0,
     "acc": 85,
     "pp": 10,
@@ -1798,7 +1845,7 @@ const MOVES = [{
 }, {
     "name": "transform",
     "type": "normal",
-    "category": "status",
+    "cat": "status",
     "power": 0,
     "acc": Infinity,
     "pp": 10,
@@ -1820,7 +1867,7 @@ const MOVES = [{
 }, {
     "name": "tri attack",
     "type": "normal",
-    "category": "physical",
+    "cat": "physical",
     "power": 80,
     "acc": 100,
     "pp": 10,
@@ -1829,12 +1876,12 @@ const MOVES = [{
 }, {
     "name": "twineedle",
     "type": "bug",
-    "category": "physical",
+    "cat": "physical",
     "power": 25,
     "acc": 100,
     "pp": 20,
     "priority": 0,
-    "effect": function (e) {
+    "effect": function (e: effectParam) {
         //Hits twice, with the second hit having a 20% chance to poison the target. If the first hit breaks the target's substitute, the move ends.
         if (e.substitutePreDmg && getPkmn(false).substituteHp <= 0) return;
         repeatAttack(e.totalDmg, 1);
@@ -1843,7 +1890,7 @@ const MOVES = [{
 }, {
     "name": "vice grip",
     "type": "normal",
-    "category": "physical",
+    "cat": "physical",
     "power": 55,
     "acc": 100,
     "pp": 30,
@@ -1852,7 +1899,7 @@ const MOVES = [{
 }, {
     "name": "vine whip",
     "type": "grass",
-    "category": "special",
+    "cat": "special",
     "power": 35,
     "acc": 100,
     "pp": 10,
@@ -1861,7 +1908,7 @@ const MOVES = [{
 }, {
     "name": "water gun",
     "type": "water",
-    "category": "special",
+    "cat": "special",
     "power": 40,
     "acc": 100,
     "pp": 25,
@@ -1870,7 +1917,7 @@ const MOVES = [{
 }, {
     "name": "waterfall",
     "type": "water",
-    "category": "special",
+    "cat": "special",
     "power": 80,
     "acc": 100,
     "pp": 15,
@@ -1879,7 +1926,7 @@ const MOVES = [{
 }, {
     "name": "whirlwind",
     "type": "normal",
-    "category": "status",
+    "cat": "status",
     "power": 0,
     "acc": 85,
     "pp": 20,
@@ -1888,7 +1935,7 @@ const MOVES = [{
 }, {
     "name": "wing attack",
     "type": "flying",
-    "category": "physical",
+    "cat": "physical",
     "power": 35,
     "acc": 100,
     "pp": 35,
@@ -1897,7 +1944,7 @@ const MOVES = [{
 }, {
     "name": "withdraw",
     "type": "water",
-    "category": "status",
+    "cat": "status",
     "power": 0,
     "acc": Infinity,
     "pp": 40,
@@ -1908,12 +1955,12 @@ const MOVES = [{
 }, {
     "name": "wrap",
     "type": "normal",
-    "category": "physical",
+    "cat": "physical",
     "power": 15,
     "acc": 85,
     "pp": 20,
     "priority": 0,
-    "effect": function (e) {
+    "effect": function (e: effectParam) {
         let num = Math.random(), turns = 0;
         if (num < 3 / 8) turns = 1;
         else if (num < 6 / 8) turns = 2;
@@ -1924,14 +1971,14 @@ const MOVES = [{
     }
 }];
 const MOVES_ANIM = {
-    "absorb": function (p) {
+    "absorb": function () {
         let ball = document.createElement("div");
         ball.style.width = "30px";
         ball.style.height = "30px";
         ball.style.borderRadius = "15px";
         ball.style.backgroundColor = "yellow";
         ball.style.border = "solid 2px #880";
-        document.getElementById("battlePanel").appendChild(ball);
+        document.getElementById("battlePanel")!.appendChild(ball);
         ball.style.position = "absolute";
         ball.style.right = "10%";
         ball.style.top = "0";
@@ -1949,7 +1996,7 @@ const MOVES_ANIM = {
         }, 300);
     }
 };
-const POKEMON = [{
+const POKEMON: Pkmn[] = [{
     "name": "abra",
     "type": ["psychic"],
     "hp": 25,
@@ -3312,7 +3359,7 @@ const POKEMON = [{
     "spe": 55,
     "moves": ["bide", "bite", "confuse ray", "double-edge", "double team", "haze", "leech life", "mega drain", "mimic", "rage", "razor wind", "rest", "substitute", "supersonic", "swift", "take down", "toxic", "whirlwind", "wing attack"]
 }];
-const TRANSLATION = {
+const TRANSLATION: Translation = {
     "en": {
         "types": {
             "bug": "Bug",
@@ -5270,7 +5317,7 @@ const TRANSLATION = {
         }
     }
 };
-const MULTIPLIER = {
+const MULTIPLIER: Multiplier = {
     "bug": {
         "bug": 1,
         "dragon": 1,
@@ -5513,7 +5560,7 @@ const MULTIPLIER = {
         "water": 1 / 2
     }
 };
-const ICONS = {
+const ICONS: Icons = {
     "bulbasaur": { "row": 1, "cell": 2 },
     "ivysaur": { "row": 1, "cell": 3 },
     "venusaur": { "row": 1, "cell": 4 },
@@ -5666,7 +5713,14 @@ const ICONS = {
     "mewtwo": { "row": 13, "cell": 7 },
     "mew": { "row": 13, "cell": 8 }
 };
-const SOUNDS = {
+const SOUNDS: {
+    [mode: string]: {
+        [key: string]: {
+            "intro": string,
+            "loop": string;
+        };
+    };
+} = {
     "pokemon": {},
     "coromon": {
         "battle-grass": {
@@ -5674,5 +5728,5 @@ const SOUNDS = {
             "loop": "coromon/music/battle_grass.wav"
         }
     },
-    "roco kingdom":{}
+    "roco kingdom": {}
 };
