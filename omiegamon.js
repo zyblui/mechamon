@@ -1,113 +1,119 @@
+"use strict";
 const POKEMON_OMIEGA = [{
-    "name": "masterat",
-    "type": ["grass"],
-    "hp": 50,
-    "atk": 50,
-    "def": 50,
-    "sp": 50,
-    "spe": 50,
-    "moves": ["raging tide", "pretend"]
-}, {
-    "name": "semenshooter",
-    "type": ["grass"],
-    "hp": 1,
-    "atk": 1,
-    "def": 1,
-    "sp": 1,
-    "spe": 480,
-    "moves": []
-}, {
-    "name": "squash",
-    "type": ["grass"],
-    "hp": 45,
-    "atk": 90,
-    "def": 45,
-    "sp": 45,
-    "spe": 45,
-    "moves": ["squashy stomp"]
-}, {
-    "name": "florr",
-    "type": ["grass"],
-    "hp": 45,
-    "atk": 90,
-    "def": 45,
-    "sp": 45,
-    "spe": 45,
-    "moves": ["stinger","poker chip"]
-}];
+        "name": "masterat",
+        "type": ["grass"],
+        "hp": 50,
+        "atk": 50,
+        "def": 50,
+        "sp": 50,
+        "spe": 50,
+        "moves": ["raging tide", "pretend"]
+    }, {
+        "name": "semenshooter",
+        "type": ["grass"],
+        "hp": 1,
+        "atk": 1,
+        "def": 1,
+        "sp": 1,
+        "spe": 480,
+        "moves": []
+    }, {
+        "name": "squash",
+        "type": ["grass"],
+        "hp": 45,
+        "atk": 90,
+        "def": 45,
+        "sp": 45,
+        "spe": 45,
+        "moves": ["squashy stomp"]
+    }, {
+        "name": "florr",
+        "type": ["grass"],
+        "hp": 45,
+        "atk": 90,
+        "def": 45,
+        "sp": 45,
+        "spe": 45,
+        "moves": ["stinger", "poker chip"]
+    }];
 const MOVES_OMIEGA = [{
-    "name": "raging tide",
-    "type": "water",
-    "category": "special",
-    "power": 40,
-    "acc": 90,
-    "pp": 10,
-    "priority": 0,
-    "effect": function (e) {
-        for (let acc = 80; ; acc -= 10) {
-            if (Math.random() < acc / 100) {
-                dealDmg(false, e.totalDmg);
-            } else break;
+        "name": "raging tide",
+        "type": "water",
+        "cat": "special",
+        "power": 40,
+        "acc": 90,
+        "pp": 10,
+        "priority": 0,
+        "effect": function (e) {
+            for (let acc = 80;; acc -= 10) {
+                if (Math.random() < acc / 100) {
+                    dealDmg(false, e.totalDmg);
+                }
+                else
+                    break;
+            }
         }
-    }
-}, {
-    "name": "pretend",
-    "type": "normal",
-    "category": "physical",
-    "power": 0,
-    "acc": 100,
-    "pp": 20,
-    "priority": 0,
-    "effect": function (e) {
-        if (getPkmn(false).defStage > -3) modifyStats(false, "def", -1, 1);
-        else dealDmg(false, 40);
-    }
-}, {
-    "name": "squashy stomp",
-    "type": "fighting",
-    "category": "physical",
-    "power": 0,
-    "acc": 90,
-    "pp": 5,
-    "priority": 0,
-    "effect": function (e) {
-        if (getPkmn(false).name == "pikachu" || getPkmn(false).name == "raichu" || getPkmn(false).name == "masterat") dealDmg(false, 65536);
-    }
-}, {
-    "name": "ashley's ritual",
-    "type": "ghost",
-    "category": "status",
-    "power": 0,
-    "acc": 100,
-    "pp": 15,
-    "priority": 0,
-    "effect": function (e) {
-        modifyStatus("frz", 1);
-        modifyStats(true, "sp", -1, 1);
-    }
-}, {
-    "name": "stinger",
-    "type": "fighting",
-    "category": "physical",
-    "power": 90,
-    "acc": 100,
-    "pp": 15,
-    "priority": 0,
-    "effect": function (e) {
-        putToSleep(true, 3);
-    }
-}, {
-    "name": "poker chip",
-    "type": "normal",
-    "category": "physical",
-    "power": 20,
-    "acc": 100,
-    "pp": 25,
-    "priority": 0,
-    "effect": function (e) {
-        modifyStats(true, "eva", -1, 1);
-    }
-}];
+    }, {
+        "name": "pretend",
+        "type": "normal",
+        "cat": "physical",
+        "power": 0,
+        "acc": 100,
+        "pp": 20,
+        "priority": 0,
+        "effect": function () {
+            if (getPkmn(false).defStage > -3)
+                modifyStats(false, "def", -1, 1);
+            else
+                dealDmg(false, 40);
+        }
+    }, {
+        "name": "squashy stomp",
+        "type": "fighting",
+        "cat": "physical",
+        "power": 0,
+        "acc": 90,
+        "pp": 5,
+        "priority": 0,
+        "effect": function () {
+            if (getPkmn(false).name == "pikachu" || getPkmn(false).name == "raichu" || getPkmn(false).name == "masterat")
+                dealDmg(false, 65536);
+        }
+    }, {
+        "name": "ashley's ritual",
+        "type": "ghost",
+        "cat": "status",
+        "power": 0,
+        "acc": 100,
+        "pp": 15,
+        "priority": 0,
+        "effect": function () {
+            modifyStatus("frz", 1);
+            modifyStats(true, "sp", -1, 1);
+        }
+    }, {
+        "name": "stinger",
+        "type": "fighting",
+        "cat": "physical",
+        "power": 90,
+        "acc": 100,
+        "pp": 15,
+        "priority": 0,
+        "effect": function () {
+            putToSleep(true, 3);
+        }
+    }, {
+        "name": "poker chip",
+        "type": "normal",
+        "cat": "physical",
+        "power": 20,
+        "acc": 100,
+        "pp": 25,
+        "priority": 0,
+        "effect": function () {
+            modifyStats(true, "eva", -1, 1);
+        }
+    }];
 const TRANSLATION_OMIEGA = {
     "en": {
         "pokemon": {
@@ -120,7 +126,7 @@ const TRANSLATION_OMIEGA = {
             "squashy stomp": "Squashy Stomp",
             "ashley's ritual": "Ashley's Ritual",
             "stinger": "Stinger",
-            "poker chip":"Poker Chip"
+            "poker chip": "Poker Chip"
         },
         "moveDesc": {
             "raging tide": "",
