@@ -1394,18 +1394,17 @@ function decisionNextPlayer() {
 }
 for (let i = 0; i < 4; i++) {
     let decisionMove = document.querySelectorAll(".decisionMove");
-    let decisionMoveFor = decisionMove[i].dataset.for;
     decisionMove[i].addEventListener("click", function () {
-        makeMove(decisionMoveFor);
+        makeMove(decisionMove[i].dataset.for);
     });
     decisionMove[i].addEventListener("mouseover", function () {
+        let decisionMoveFor = decisionMove[i].dataset.for;
         if (!getMoveStats(decisionMoveFor))
             return;
         let tooltipMove;
         if (!decisionMove[i].parentElement.querySelector(".tooltip-move")) {
             tooltipMove = document.querySelector(".tooltip-move").cloneNode(true);
-            decisionMove[i].parentElement.insertBefore(tooltipMove, document
-                .getElementsByClassName("decisionMove")[i]);
+            decisionMove[i].parentElement.insertBefore(tooltipMove, document.getElementsByClassName("decisionMove")[i]);
         }
         tooltipMove = decisionMove[i].parentElement.querySelector(".tooltip-move");
         tooltipMove.querySelector(".tip-name").innerText = getL10n("moves", decisionMoveFor);
