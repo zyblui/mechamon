@@ -7888,7 +7888,7 @@ const RK_MULTIPLIER: Multiplier = {
     }
 };
 //In RK World, the actual multiplier for doubly-super-effective moves is 3, not 4.
-const RK_MULTIPLIER_MODIFIER:MultiplierMod = {
+const RK_MULTIPLIER_MODIFIER: MultiplierMod = {
     4: 3,
     2: 2,
     1: 1,

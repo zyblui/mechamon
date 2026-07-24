@@ -247,19 +247,19 @@ let record: RecordItem[] = [], recordPosition = 0, viewpoint = 0;
 function refreshRecord() {
 
 }
-function setUncontrollable(isSelf: boolean, move: string, turns: number) {
+function setUncontrollable(isSelf: boolean, move: string, turns: number): void {
     getPkmn(isSelf).uncontrollable = {
         move: move,
         turns: turns
     };
 }
-function setDelay(isSelf: boolean, func: Function, turns: number) {
+function setDelay(isSelf: boolean, func: Function, turns: number): void {
     getPkmn(isSelf).delay.push({
         "effect": func,
         "turns": turns
     });
 }
-function render(info = battleInfo) {
+function render(info = battleInfo): void {
     if (info[Number(viewpoint != 0)].currentPokemon == -1) document.getElementById("p1Pokemon")!.style.backgroundImage = "none";
     else document.getElementById("p1Pokemon")!.style.backgroundImage =
         "url('back/" + players[Number(viewpoint != 0)].build[info[Number(viewpoint != 0)].currentPokemon].name + ".png')";
@@ -271,16 +271,16 @@ function render(info = battleInfo) {
     if (info[Number(viewpoint != 1)].currentPokemon != -1) document.getElementById("p2Name")!.innerText =
         getName(players[Number(viewpoint != 1)].build[info[Number(viewpoint != 1)].currentPokemon], false);
 }
-function renderFull(info = battleInfo) {
+function renderFull(info = battleInfo): void {
     render(info);
     renderHP(info);
 }
 
-function getL10n(type: string, str: string, additionalParam?: { [key: string]: any; }) {
-    let returnValue = TRANSLATION[settings.lang][type][str + ((additionalParam?.isEnemy) ? "-enemy" : "")];
+function getL10n(type: string, str: string, additionalParam?: { [key: string]: any; }): string {
+    let returnValue: string = TRANSLATION[settings.lang][type][str + ((additionalParam?.isEnemy) ? "-enemy" : "")];
     if (additionalParam) for (let i in additionalParam) {
         if (i == "isEnemy") continue;
-        for (let j = 0; j < additionalParam[i].length; j++) {
+        for (let j: number = 0; j < additionalParam[i].length; j++) {
             returnValue = returnValue.replace("[" + i + j + "]", additionalParam[i][j]);
         }
     }
@@ -636,7 +636,6 @@ function refreshSequence() {
         renderFull();
         refreshDecision();
     }
-
     judgeHP();
 }
 function simplifyRecordJSON(rec: RecordItem[]): string {
@@ -760,7 +759,7 @@ function compare(before: any, after: any) {
         "property": (number | string)[],
         "value": any;
     }[] = [];
-    for (let i of [0, 1]) {
+    for (let i of Object.keys(after)) {
         if (typeof after[i] != "object" && before[i] != after[i]) arr.push({
             "property": [i],
             "value": after[i]
@@ -1090,14 +1089,13 @@ let nextPlayerEffect: {
             "pokemon": [getName(getPkmn(true), false, true)],
             "isEnemy": ((viewpoint == -1) ? false : (playerToMove != viewpoint))
         });
-        getPkmn(true).tempEffect.confused--;
+        //getPkmn(true).tempEffect.confused--;
         if (Math.random() < 0.5) {
             dealDmg(true, calculateDmg(40, getAttack(true), getDefense(true, true), getPkmn(true).lv, "",
                 getType(true), getType(true)), { opposingSubstitute: true });
             addMainText("others", "hurtConfusion");
             return { "continue": true };//!
         }
-        //getPkmn(true).tempEffect.confused--;
     }
 }];
 function nextPlayer(player: number) {
@@ -1154,6 +1152,13 @@ function nextTurn() {
             else return 0;
         } else return 0;
     });
+
+    for (let i of [true, false]) {
+        for (let index in getPkmn(i).tempEffect) {
+            if (getPkmn(i).tempEffect[index] > 0) getPkmn(i).tempEffect[index]--;
+        }
+    }
+
     outer: for (let i of attacks) {
         let nextPlayerInfo = nextPlayer(i.user);
         if (!getPkmn(true) || !getPkmn(false)) continue;
@@ -1278,7 +1283,6 @@ function endTurn() {
         });
         refreshPlayerToMove(0);
     }
-
     refreshSequence();
 }
 function getStats(name: string): Pkmn | void {

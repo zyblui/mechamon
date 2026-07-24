@@ -723,7 +723,7 @@ function getNearestRefresh(rec, i) {
 }
 function compare(before, after) {
     let arr = [];
-    for (let i of [0, 1]) {
+    for (let i of Object.keys(after)) {
         if (typeof after[i] != "object" && before[i] != after[i])
             arr.push({
                 "property": [i],
@@ -1057,13 +1057,12 @@ let nextPlayerEffect = [{
                 "pokemon": [getName(getPkmn(true), false, true)],
                 "isEnemy": ((viewpoint == -1) ? false : (playerToMove != viewpoint))
             });
-            getPkmn(true).tempEffect.confused--;
+            //getPkmn(true).tempEffect.confused--;
             if (Math.random() < 0.5) {
                 dealDmg(true, calculateDmg(40, getAttack(true), getDefense(true, true), getPkmn(true).lv, "", getType(true), getType(true)), { opposingSubstitute: true });
                 addMainText("others", "hurtConfusion");
                 return { "continue": true }; //!
             }
-            //getPkmn(true).tempEffect.confused--;
         }
     }];
 function nextPlayer(player) {
@@ -1138,6 +1137,12 @@ function nextTurn() {
         else
             return 0;
     });
+    for (let i of [true, false]) {
+        for (let index in getPkmn(i).tempEffect) {
+            if (getPkmn(i).tempEffect[index] > 0)
+                getPkmn(i).tempEffect[index]--;
+        }
+    }
     outer: for (let i of attacks) {
         let nextPlayerInfo = nextPlayer(i.user);
         if (!getPkmn(true) || !getPkmn(false))

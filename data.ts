@@ -390,6 +390,10 @@ const MOVES: PkmnMove[] = [{
     "preDmgEffect": function () {
         charge("dig", 1);
         addTempEffect(true, "semiInvulnerable", 1, 1);
+        addSmallText("others", "digHole", {
+            "pokemon": [getName(getPkmn(true), false, true)],
+            "isEnemy": playerToMove != viewpoint
+        });
     }
 }, {
     "name": "disable",
@@ -630,6 +634,10 @@ const MOVES: PkmnMove[] = [{
     "preDmgEffect": function () {
         charge("fly", 1);
         addTempEffect(true, "semiInvulnerable", 1, 1);
+        addSmallText("others", "flyHigh", {
+            "pokemon": [getName(getPkmn(true), false, true)],
+            "isEnemy": playerToMove != viewpoint
+        });
     }
 }, {
     "name": "focus energy",
@@ -3530,7 +3538,11 @@ const TRANSLATION: Translation = {
             "burn": "[pokemon0] was burned!",
             "burn-enemy": "The opposing [pokemon0] was burned!",
             "hurtByBurn": "[pokemon0] was hurt by its burn!",
-            "hurtByBurn-enemy": "The opposing [pokemon0] was hurt by its burn!"
+            "hurtByBurn-enemy": "The opposing [pokemon0] was hurt by its burn!",
+            "digHole": "[pokemon0] dug a hole!",
+            "digHole-enemy": "The opposing [pokemon0] dug a hole!",
+            "flyHigh": "[pokemon0] flew up high!",
+            "flyHigh-enemy": "The opposing [pokemon0] flew up high!"
         },
         "pokemon": {
             "abra": "Abra",
@@ -4343,7 +4355,11 @@ const TRANSLATION: Translation = {
             "burn": "[pokemon0]被灼伤了！",
             "burn-enemy": "对手的[pokemon0]被灼伤了！",
             "hurtByBurn": "[pokemon0]受到了灼伤的伤害！",
-            "hurtByBurn-enemy": "对手的[pokemon0]受到了灼伤的伤害！"
+            "hurtByBurn-enemy": "对手的[pokemon0]受到了灼伤的伤害！",
+            "digHole": "[pokemon0]钻入了地里！",
+            "digHole-enemy": "对手的[pokemon0]钻入了地里！",
+            "flyHigh": "[pokemon0]飞向了高空！",
+            "flyHigh-enemy": "对手的[pokemon0]飞向了高空！"
         },
         "pokemon": {
             "abra": "凯西",
