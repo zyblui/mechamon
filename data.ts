@@ -1,5 +1,5 @@
-type pkmnType = "bug" | "dragon" | "electric" | "fighting" | "fire" | "flying" | "ghost" | "grass" | "ground" | "ice" | "normal" | "poison" | "psychic" | "rock" | "water";
-interface effectParam {
+type PkmnType = "bug" | "dragon" | "electric" | "fighting" | "fire" | "flying" | "ghost" | "grass" | "ground" | "ice" | "normal" | "poison" | "psychic" | "rock" | "water";
+interface EffectParam {
     "totalDmg": number,
     "substitutePreDmg": boolean,
     [key: string]: any;
@@ -19,7 +19,7 @@ interface PkmnMove {
 };
 interface Pkmn {
     "name": string,
-    "type": pkmnType[],
+    "type": PkmnType[],
     "hp": number,
     "atk": number,
     "def": number,
@@ -54,11 +54,15 @@ const MOVES: PkmnMove[] = [{
     "acc": 100,
     "pp": 20,
     "priority": 0,
-    "effect": function (e: effectParam) {
+    "effect": function (e: EffectParam) {
         //If this move breaks the target's substitute, the user does not recover any HP.
         if (e.substitutePreDmg && getPkmn(false).substituteHp <= 0) return;
         //The user recovers 1/2 the HP lost by the target, rounded down.
         getPkmn(true).hp += Math.min(Math.floor(e.totalDmg / 2), getPkmn(true).maxHp - getPkmn(true).hp);
+        addSmallText("others", "energyDrained", {
+            "pokemon": [getName(getPkmn(false), false, true)],
+            "isEnemy": Number(!playerToMove) != viewpoint
+        });
     }
 }, {
     "name": "acid",
@@ -124,7 +128,7 @@ const MOVES: PkmnMove[] = [{
     "acc": 85,
     "pp": 20,
     "priority": 0,
-    "effect": function (e: effectParam) {
+    "effect": function (e: EffectParam) {
         if (e.substitutePreDmg && getPkmn(false).substituteHp <= 0) return;
         let num = Math.random();
         if (num < 3 / 8) repeatAttack(e.totalDmg, 1);
@@ -232,7 +236,7 @@ const MOVES: PkmnMove[] = [{
     "acc": 90,
     "pp": 10,
     "priority": 0,
-    "effect": function (e: effectParam) {
+    "effect": function (e: EffectParam) {
         if (e.substitutePreDmg && getPkmn(false).substituteHp <= 0) return;
         repeatAttack(e.totalDmg, 1);
     }
@@ -283,7 +287,7 @@ const MOVES: PkmnMove[] = [{
     "acc": 85,
     "pp": 15,
     "priority": 0,
-    "effect": function (e: effectParam) {
+    "effect": function (e: EffectParam) {
         if (e.substitutePreDmg && getPkmn(false).substituteHp <= 0) return;
         let num = Math.random();
         if (num < 3 / 8) repeatAttack(e.totalDmg, 1);
@@ -430,7 +434,7 @@ const MOVES: PkmnMove[] = [{
     "acc": 100,
     "pp": 30,
     "priority": 0,
-    "effect": function (e: effectParam) {
+    "effect": function (e: EffectParam) {
         if (e.substitutePreDmg && getPkmn(false).substituteHp <= 0) return;
         repeatAttack(e.totalDmg, 1);
     }
@@ -442,7 +446,7 @@ const MOVES: PkmnMove[] = [{
     "acc": 85,
     "pp": 10,
     "priority": 0,
-    "effect": function (e: effectParam) {
+    "effect": function (e: EffectParam) {
         if (e.substitutePreDmg && getPkmn(false).substituteHp <= 0) return;
         let num = Math.random();
         if (num < 3 / 8) repeatAttack(e.totalDmg, 1);
@@ -469,7 +473,7 @@ const MOVES: PkmnMove[] = [{
     "acc": 100,
     "pp": 15,
     "priority": 0,
-    "effect": function (e: effectParam) {
+    "effect": function (e: EffectParam) {
         addSmallText("others", "damagedByRecoil", {
             "pokemon": [getName(getPkmn(true), false, true)],
             "isEnemy": playerToMove != viewpoint
@@ -495,7 +499,7 @@ const MOVES: PkmnMove[] = [{
     "acc": 100,
     "pp": 15,
     "priority": 0,
-    "effect": function (e: effectParam) {
+    "effect": function (e: EffectParam) {
         if (getPkmn(false).status == "slp") getPkmn(true).hp += Math.min(e.totalDmg / 2, getPkmn(true).maxHp - getPkmn(true).hp);
     }
 }, {
@@ -578,7 +582,7 @@ const MOVES: PkmnMove[] = [{
     "acc": 70,
     "pp": 15,
     "priority": 0,
-    "effect": function (e: effectParam) {
+    "effect": function (e: EffectParam) {
         let num = Math.random(), turns = 0;
         if (num < 3 / 8) turns = 1;
         else if (num < 6 / 8) turns = 2;
@@ -658,7 +662,7 @@ const MOVES: PkmnMove[] = [{
     "acc": 85,
     "pp": 20,
     "priority": 0,
-    "effect": function (e: effectParam) {
+    "effect": function (e: EffectParam) {
         if (e.substitutePreDmg && getPkmn(false).substituteHp <= 0) return;
         let num = Math.random();
         if (num < 3 / 8) repeatAttack(e.totalDmg, 1);
@@ -674,7 +678,7 @@ const MOVES: PkmnMove[] = [{
     "acc": 80,
     "pp": 15,
     "priority": 0,
-    "effect": function (e: effectParam) {
+    "effect": function (e: EffectParam) {
         if (e.substitutePreDmg && getPkmn(false).substituteHp <= 0) return;
         let num = Math.random();
         if (num < 3 / 8) repeatAttack(e.totalDmg, 1);
@@ -911,7 +915,7 @@ const MOVES: PkmnMove[] = [{
     "acc": 100,
     "pp": 15,
     "priority": 0,
-    "effect": function (e: effectParam) {
+    "effect": function (e: EffectParam) {
         getPkmn(true).hp += Math.min(e.totalDmg / 2, getPkmn(true).maxHp - getPkmn(true).hp);
     }
 }, {
@@ -999,7 +1003,7 @@ const MOVES: PkmnMove[] = [{
     "acc": 100,
     "pp": 10,
     "priority": 0,
-    "effect": function (e: effectParam) {
+    "effect": function (e: EffectParam) {
         getPkmn(true).hp += Math.min(e.totalDmg / 2, getPkmn(true).maxHp - getPkmn(true).hp);
     }
 }, {
@@ -1138,7 +1142,7 @@ const MOVES: PkmnMove[] = [{
     "acc": 85,
     "pp": 20,
     "priority": 0,
-    "effect": function (e: effectParam) {
+    "effect": function (e: EffectParam) {
         if (e.substitutePreDmg && getPkmn(false).substituteHp <= 0) return;
         let num = Math.random();
         if (num < 3 / 8) repeatAttack(e.totalDmg, 1);
@@ -1555,7 +1559,7 @@ const MOVES: PkmnMove[] = [{
     "acc": 100,
     "pp": 15,
     "priority": 0,
-    "effect": function (e: effectParam) {
+    "effect": function (e: EffectParam) {
         if (e.substitutePreDmg && getPkmn(false).substituteHp <= 0) return;
         let num = Math.random();
         if (num < 3 / 8) repeatAttack(e.totalDmg, 1);
@@ -1625,7 +1629,7 @@ const MOVES: PkmnMove[] = [{
     "acc": 100,
     "pp": 10,
     "priority": 0,
-    "effect": function (e: effectParam) {
+    "effect": function (e: EffectParam) {
         dealDmg(true, e.totalDmg / 4);
     }
 }, {
@@ -1647,7 +1651,7 @@ const MOVES: PkmnMove[] = [{
     "acc": 80,
     "pp": 25,
     "priority": 0,
-    "effect": function (e: effectParam) {
+    "effect": function (e: EffectParam) {
         dealDmg(true, e.totalDmg / 4);
     }
 }, {
@@ -1749,7 +1753,7 @@ const MOVES: PkmnMove[] = [{
     "acc": 85,
     "pp": 20,
     "priority": 0,
-    "effect": function (e: effectParam) {
+    "effect": function (e: EffectParam) {
         dealDmg(true, e.totalDmg / 4);
     }
 }, {
@@ -1889,7 +1893,7 @@ const MOVES: PkmnMove[] = [{
     "acc": 100,
     "pp": 20,
     "priority": 0,
-    "effect": function (e: effectParam) {
+    "effect": function (e: EffectParam) {
         //Hits twice, with the second hit having a 20% chance to poison the target. If the first hit breaks the target's substitute, the move ends.
         if (e.substitutePreDmg && getPkmn(false).substituteHp <= 0) return;
         repeatAttack(e.totalDmg, 1);
@@ -1968,7 +1972,7 @@ const MOVES: PkmnMove[] = [{
     "acc": 85,
     "pp": 20,
     "priority": 0,
-    "effect": function (e: effectParam) {
+    "effect": function (e: EffectParam) {
         let num = Math.random(), turns = 0;
         if (num < 3 / 8) turns = 1;
         else if (num < 6 / 8) turns = 2;
@@ -3407,6 +3411,14 @@ const TRANSLATION: Translation = {
             "par": "Paralysed",
             "slp": "Asleep"
         },
+        "tempEffects": {
+            "rage": "Rage",
+            "semiInvulnerable": "Semi-invulnerable",
+            "confused": "Confused",
+            "reflect": "Reflect",
+            "light screen": "Light Screen",
+            "mist": "Mist"
+        },
         "ui": {
             "moves": "Moves: ",
             "switch": "Switch to: ",
@@ -3542,7 +3554,11 @@ const TRANSLATION: Translation = {
             "digHole": "[pokemon0] dug a hole!",
             "digHole-enemy": "The opposing [pokemon0] dug a hole!",
             "flyHigh": "[pokemon0] flew up high!",
-            "flyHigh-enemy": "The opposing [pokemon0] flew up high!"
+            "flyHigh-enemy": "The opposing [pokemon0] flew up high!",
+            "energyDrained": "[pokemon0] had its energy drained!",
+            "energyDrained-enemy": "The opposing [pokemon0] had its energy drained!",
+            "rageBuilding": "[pokemon0]'s Rage is building!",
+            "rageBuilding-enemy": "The opposing [pokemon0]'s Rage is building!"
         },
         "pokemon": {
             "abra": "Abra",
@@ -4224,6 +4240,14 @@ const TRANSLATION: Translation = {
             "par": "麻痹",
             "slp": "睡眠"
         },
+        "tempEffects": {
+            "rage": "愤怒",
+            "semiInvulnerable": "半无敌",
+            "confused": "混乱",
+            "reflect": "反射壁",
+            "light screen": "光墙",
+            "mist": "白雾"
+        },
         "ui": {
             "moves": "招式：",
             "switch": "替换：",
@@ -4359,7 +4383,11 @@ const TRANSLATION: Translation = {
             "digHole": "[pokemon0]钻入了地里！",
             "digHole-enemy": "对手的[pokemon0]钻入了地里！",
             "flyHigh": "[pokemon0]飞向了高空！",
-            "flyHigh-enemy": "对手的[pokemon0]飞向了高空！"
+            "flyHigh-enemy": "对手的[pokemon0]飞向了高空！",
+            "energyDrained": "从[pokemon0]那里吸取了体力！",
+            "energyDrained-enemy": "从对手的[pokemon0]那里吸取了体力！",
+            "rageBuilding": "[pokemon0]的怒气正在上升！",
+            "rageBuilding-enemy": "对手的[pokemon0]的怒气正在上升！"
         },
         "pokemon": {
             "abra": "凯西",

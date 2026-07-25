@@ -899,7 +899,7 @@ function insertEffects(pkmn, outputArea, showFull) {
     for (let j in pkmn.tempEffect) {
         if (pkmn.tempEffect[j]) {
             let tempEffectSpan = document.createElement("span");
-            tempEffectSpan.innerText = "[" + ((showFull) ? j.toUpperCase() : capitalize(j)) + "]";
+            tempEffectSpan.innerText = "[" + ((showFull) ? getL10n("tempEffects", j).toUpperCase() : getL10n("tempEffects", j)) + "]";
             tempEffectSpan.classList.add("debuff");
             outputArea.appendChild(tempEffectSpan);
         }
@@ -1191,8 +1191,13 @@ function nextTurn() {
                     if (getPkmn(false).tempEffect.semiInvulnerable > 0 && !preDmgEffect.nullifySemiInvulnerable)
                         break;
                     effect = attack(k.name);
-                    if (getPkmn(false)?.tempEffect.rage > 0)
+                    if (getPkmn(false)?.tempEffect.rage > 0) {
+                        addSmallText("others", "rageBuilding", {
+                            "pokemon": [getName(getPkmn(false), false, true)],
+                            "isEnemy": Number(!playerToMove) != viewpoint
+                        });
                         modifyStats(false, "atk", 1, 1);
+                    }
                 }
                 if (getPkmn(true)?.status == "psn")
                     dealDmg(true, getPkmn(true).maxHp / 16, { ignoreSubstitute: true });
@@ -1990,8 +1995,8 @@ const THEME_CLASSNAMES = {
 };
 for (let i of document.querySelectorAll(".mode-btn")) {
     i.addEventListener("mouseover", function () {
-        for (let i in THEME_CLASSNAMES)
-            document.body.classList.remove(THEME_CLASSNAMES[i]);
+        for (let j in THEME_CLASSNAMES)
+            document.body.classList.remove(THEME_CLASSNAMES[j]);
         document.body.classList.add(THEME_CLASSNAMES[i.dataset.mode]);
         document.querySelector(".mode-btn.selected").classList.remove("selected");
         i.classList.add("selected");

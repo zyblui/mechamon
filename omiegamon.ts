@@ -43,7 +43,7 @@ const MOVES_OMIEGA: PkmnMove[] = [{
     "acc": 90,
     "pp": 10,
     "priority": 0,
-    "effect": function (e: effectParam) {
+    "effect": function (e: EffectParam) {
         for (let acc = 80; ; acc -= 10) {
             if (Math.random() < acc / 100) {
                 dealDmg(false, e.totalDmg);
