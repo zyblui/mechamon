@@ -65,81 +65,7 @@ const FEATURES = {
     "pokemon": [],
     "rk": []
 };
-const POOLS = {
-    "pokemon": {
-        "mons": POKEMON,
-        "moves": MOVES,
-        "multiplier": MULTIPLIER,
-        "icons": ICONS
-    },
-    "coromon": {
-
-    },
-    "roco kingdom": {
-        "mons": RK_PETS,
-        "moves": RK_SKILLS,
-        "multiplier": RK_MULTIPLIER,
-        "multiplierMod": RK_MULTIPLIER_MODIFIER
-    }
-};
-let settings: {
-    [key: string]: any;
-} = {
-    "lang": "zh",
-    "mode": "pokemon",
-    "sleepClause": false,
-    "speciesClause": false,
-    "ohkoClause": false,
-    "freezeClause": false,
-    "evasionClause": false,
-    "selfKoClause": false,
-    "hardcoreMode": false,
-    "keyboardControls": false,
-    "effectivenessIndicator": false,
-    "darkMode": false,
-    "omiegamon": false,
-    "backgroundImage": "none",
-    "backgroundMusic": "none",
-    "sfxVolume": 100,
-    "bgmVolume": 100,
-    "coromonBgm": "battle-grass",
-    "rocoKingdomBgm": "none",
-    "whatsNew": `
-<ul>
-    <li>SPE Range of each Pkmn can be calculated properly now.</li>
-    <li>Bugfix: Mechamon can memorize your Volume settings now.</li>
-</ul>
-`
-};
-
-document.getElementById("whatsNewContent")!.innerHTML = settings.whatsNew;
-if (!localStorage.getItem("mechamonSettings") || settings.whatsNew != JSON.parse(localStorage.getItem("mechamonSettings") as string).whatsNew) {
-    document.getElementById("dialogOuter")!.classList.add("show");
-}
-let cries: {
-    [monName: string]: HTMLAudioElement;
-} = {};
-const PROPERTIES: string[] = ["atk", "def", "sp", "spe"];
-const MOVE_BAN_LIST: {
-    [key: string]: string[];
-} = {
-    "ohkoClause": ["fissure", "horn drill", "guillotine", "sheer cold"],
-    "evasionClause": ["double team", "minimize"]
-};
-if (localStorage.getItem("mechamonSettings")) {
-    let tempSettings = JSON.parse(localStorage.getItem("mechamonSettings") as string);
-    tempSettings.whatsNew = settings.whatsNew;
-    localStorage.setItem("mechamonSettings", JSON.stringify(tempSettings));
-    for (let i in settings) if (!Object.keys(JSON.parse(localStorage.getItem("mechamonSettings") as string)).includes(i)) {
-        localStorage.setItem("mechamonSettings", JSON.stringify(settings));
-        break;
-    }
-    settings = JSON.parse(localStorage.getItem("mechamonSettings") as string);
-} else {
-    localStorage.setItem("mechamonSettings", JSON.stringify(settings));
-}
-document.querySelector("html")!.lang = settings.lang;
-let players: Player[] = [{
+const PKMN_INIT_BUILD = [{
     "name": "Player 1",
     "build": [{
         "name": "geodude",
@@ -230,6 +156,88 @@ let players: Player[] = [{
         "nick": ""
     }]
 }];
+const POOLS = {
+    "pokemon": {
+        "mons": POKEMON,
+        "moves": MOVES,
+        "multiplier": MULTIPLIER,
+        "icons": ICONS,
+        "iconLocation": "pokemonicons-sheet.png"
+    },
+    "coromon": {
+
+    },
+    "roco kingdom": {
+        "mons": RK_PETS,
+        "moves": RK_SKILLS,
+        "multiplier": RK_MULTIPLIER,
+        "multiplierMod": RK_MULTIPLIER_MODIFIER,
+        "icons": RK_ICONS,
+        "iconLocation": "roco kingdom/iconsheet.png"
+    }
+};
+
+function $(...args: [...modes: string[], func: () => void]) {
+    for (let i = 0; i < args.length - 1; i++) if (args[i] == settings.mode) (args[args.length - 1] as Function)();
+}
+
+let settings: {
+    [key: string]: any;
+} = {
+    "lang": "zh",
+    "mode": "pokemon",
+    "sleepClause": false,
+    "speciesClause": false,
+    "ohkoClause": false,
+    "freezeClause": false,
+    "evasionClause": false,
+    "selfKoClause": false,
+    "hardcoreMode": false,
+    "keyboardControls": false,
+    "effectivenessIndicator": false,
+    "darkMode": false,
+    "omiegamon": false,
+    "backgroundImage": "none",
+    "backgroundMusic": "none",
+    "sfxVolume": 100,
+    "bgmVolume": 100,
+    "coromonBgm": "battle-grass",
+    "rocoKingdomBgm": "none",
+    "whatsNew": `
+<ul>
+    <li>SPE Range of each Pkmn can be calculated properly now.</li>
+    <li>Bugfix: Mechamon can memorize your Volume settings now.</li>
+</ul>
+`
+};
+document.getElementById("whatsNewContent")!.innerHTML = settings.whatsNew;
+if (!localStorage.getItem("mechamonSettings") || settings.whatsNew != JSON.parse(localStorage.getItem("mechamonSettings") as string).whatsNew) {
+    document.getElementById("dialogOuter")!.classList.add("show");
+}
+let cries: {
+    [monName: string]: HTMLAudioElement;
+} = {};
+const PROPERTIES: string[] = ["atk", "def", "sp", "spe"];
+const MOVE_BAN_LIST: {
+    [key: string]: string[];
+} = {
+    "ohkoClause": ["fissure", "horn drill", "guillotine", "sheer cold"],
+    "evasionClause": ["double team", "minimize"]
+};
+if (localStorage.getItem("mechamonSettings")) {
+    let tempSettings = JSON.parse(localStorage.getItem("mechamonSettings") as string);
+    tempSettings.whatsNew = settings.whatsNew;
+    localStorage.setItem("mechamonSettings", JSON.stringify(tempSettings));
+    for (let i in settings) if (!Object.keys(JSON.parse(localStorage.getItem("mechamonSettings") as string)).includes(i)) {
+        localStorage.setItem("mechamonSettings", JSON.stringify(settings));
+        break;
+    }
+    settings = JSON.parse(localStorage.getItem("mechamonSettings") as string);
+} else {
+    localStorage.setItem("mechamonSettings", JSON.stringify(settings));
+}
+document.querySelector("html")!.lang = settings.lang;
+let players: Player[] = structuredClone(PKMN_INIT_BUILD);
 document.getElementById("p1Pokemon")!.style.backgroundImage = "url('back/" + players[0].build[0].name + ".png')";
 document.getElementById("p2Pokemon")!.style.backgroundImage = "url('front/" + players[1].build[0].name + ".png')";
 document.getElementById("p1Name")!.innerText = getL10n("pokemon", players[0].build[0].name);
@@ -534,6 +542,10 @@ function getDefaultProperties(playersInfo: Player[]): BattleInfo {
         for (let k of j.moves) for (let l of MOVES) if (l.name == k) json[k] = l.pp;
         j.moves = json;
         j.revealed = false;
+
+        $("roco kingdom", () => {
+            j.energy = 10;
+        });
     }
     return arr;
 }
@@ -1934,7 +1946,7 @@ const THEME_CLASSNAMES: {
     "coromon": "theme-coromon",
     "roco kingdom": "theme-roco-kingdom"
 };
-for (let i of (document.querySelectorAll(".mode-btn") as NodeListOf<HTMLDivElement>)) {
+for (let i of (document.querySelectorAll<HTMLDivElement>(".mode-btn"))) {
     i.addEventListener("mouseover", function () {
         for (let j in THEME_CLASSNAMES) document.body.classList.remove(THEME_CLASSNAMES[j]);
         document.body.classList.add(THEME_CLASSNAMES[i.dataset.mode as string]);

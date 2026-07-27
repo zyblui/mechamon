@@ -5000,7 +5000,10 @@ const RK_SKILLS = [{
         "cat": "physical",
         "cost": 3,
         "power": 50,
-        "desc": "造成物伤，敌方 2 回合无法更换精灵。"
+        "desc": "造成物伤，敌方 2 回合无法更换精灵。",
+        "effect": function () {
+            addTempEffect(false, "stoneLock", 2, 1);
+        }
     }, {
         "name": "遁地",
         "type": "ground",

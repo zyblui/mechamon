@@ -18,6 +18,11 @@ const POOLS = {
         "multiplierMod": RK_MULTIPLIER_MODIFIER
     }
 };
+function $(...args) {
+    for (let i = 0; i < args.length - 1; i++)
+        if (args[i] == settings.mode)
+            args[args.length - 1]();
+}
 let settings = {
     "lang": "zh",
     "mode": "pokemon",
@@ -489,6 +494,9 @@ function getDefaultProperties(playersInfo) {
                         json[k] = l.pp;
             j.moves = json;
             j.revealed = false;
+            $("roco kingdom", () => {
+                j.energy = 10;
+            });
         }
     return arr;
 }
@@ -1993,7 +2001,7 @@ const THEME_CLASSNAMES = {
     "coromon": "theme-coromon",
     "roco kingdom": "theme-roco-kingdom"
 };
-for (let i of document.querySelectorAll(".mode-btn")) {
+for (let i of (document.querySelectorAll(".mode-btn"))) {
     i.addEventListener("mouseover", function () {
         for (let j in THEME_CLASSNAMES)
             document.body.classList.remove(THEME_CLASSNAMES[j]);
