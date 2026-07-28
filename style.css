@@ -6,6 +6,7 @@ body {
     background-color: var(--bg);
     -webkit-user-select: none;
     user-select: none;
+    font-size: 16px;
     --special: #7799DD;
     --physical: #EE7700;
     --status: #999;
@@ -48,11 +49,7 @@ body {
         --main-text-bg: rgb(43, 43, 43, 0.7);
         --right-panel-bg: #0c0c0c;
         --button-bg: #333;
-
-        &.theme-pokemon {
-            --button-hover: rgb(42, 79, 112);
-        }
-
+        --button-hover: color-mix(in srgb, var(--theme) 30%, black);
         --option-hover-bg: #333;
         --text-dim: #999;
         --text-dim-dark: #ccc;
@@ -68,11 +65,7 @@ body {
         --main-text-bg: rgb(226, 226, 226, 0.7);
         --right-panel-bg: white;
         --button-bg: white;
-
-        &.theme-pokemon {
-            --button-hover: rgb(224, 239, 255);
-        }
-
+        --button-hover: color-mix(in srgb, var(--theme) 15%, white);
         --option-hover-bg: #eee;
         --text-dim: gray;
         --text-dim-dark: #333;
@@ -302,7 +295,7 @@ ul {
     }
 }
 
-.percentage {
+.gauge-float-right {
     float: right;
 }
 
@@ -330,8 +323,8 @@ table {
     padding: 3px;
 
     &:hover {
-        border: solid 2px rgba(30, 144, 255, 0.5);
-        background-color: rgba(30, 144, 255, 0.2);
+        border: solid 2px color-mix(in srgb, var(--theme) 50%, transparent);
+        background-color: color-mix(in srgb, var(--theme) 20%, transparent);
         cursor: pointer;
     }
 }
@@ -924,7 +917,7 @@ button {
     transition: 0.1s;
 
     &:hover {
-        background-color: rgba(30, 144, 255, 0.2);
+        background-color: color-mix(in srgb, var(--theme) 20%, transparent);
     }
 
     &>div {
@@ -1110,7 +1103,6 @@ select:open::picker-icon {
     box-shadow: 0 0 9px var(--shadow);
     opacity: 0;
     transition: all 0.1s allow-discrete;
-    /*top: calc(anchor(bottom) + 1px);*/
     block-size: fit-content;
     max-block-size: 100vh;
     overflow: auto;
@@ -1399,4 +1391,82 @@ option img {
     border-radius: 9px;
     padding: 3px 9px;
     margin-left: 3px;
+}
+
+.side-button {
+    width: 80px;
+    height: 80px;
+    position: absolute;
+    bottom: 40px;
+    right: 30px;
+    border-radius: 50%;
+}
+
+.side-button-inner {
+    width: 80px;
+    height: 80px;
+    background-color: var(--button-bg);
+    anchor-name: --side-button-inner;
+    border-radius: 50%;
+    border: solid 3px var(--shadow);
+
+    & svg {
+        width: 56px;
+        height: 56px;
+        position: fixed;
+        position-anchor: --side-button-inner;
+        justify-self: anchor-center;
+        position-area: center;
+    }
+
+    &:hover {
+        border: solid 3px var(--theme);
+        background-color: var(--button-hover);
+    }
+}
+
+.side-button-text {
+    background-color: rgba(0, 0, 0, 0.9);
+    color: white;
+    border-radius: 9px;
+    padding: 5px 9px;
+    width: max-content;
+    text-align: center;
+    position-anchor: --side-button-inner;
+    top: calc(anchor(bottom) - 9px);
+    justify-self: anchor-center;
+    position: fixed;
+    display: none;
+
+    .side-button:hover & {
+        display: block;
+    }
+}
+
+.energy-container {
+    background-color: rgba(0, 0, 0, 0.9);
+    color: white;
+    border-radius: 9999px;
+    padding: 0 6px;
+    display: none;
+
+    .theme-roco-kingdom &,
+    .theme-coromon & {
+        display: inline-block;
+    }
+}
+
+.inline-star {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+}
+
+#energyButton {
+    display: none;
+
+    .theme-roco-kingdom & {
+        display: block;
+    }
 }

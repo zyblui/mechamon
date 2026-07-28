@@ -36,7 +36,16 @@
             </div>
             <div>
                 <span class="gauge-lv" id="p1Lv">Lv 5</span>
-                <span class="percentage" id="p1Percentage">100%</span>
+                <div class="gauge-float-right">
+                    <div class="energy-container">
+                        <svg viewBox="-3 -3 56 56" class="inline-star">
+                            <path d="M25 1 L32 15 L48 18 L36 29 L39 44 L25 37 L11 44 L14 29 L2 18 L18 15 Z"
+                                fill="transparent" stroke-width="6" stroke="var(--theme)" stroke-linejoin="round" />
+                        </svg>
+                        <span>10</span>
+                    </div>
+                    <span class="percentage" id="p1Percentage">100%</span>
+                </div>
             </div>
         </div>
         <div id="p1Pokemon"></div>
@@ -58,7 +67,16 @@
             </div>
             <div>
                 <span class="gauge-lv" id="p2Lv">Lv 5</span>
-                <span class="percentage" id="p2Percentage">100%</span>
+                <div class="gauge-float-right">
+                    <div class="energy-container">
+                        <svg viewBox="-3 -3 56 56" class="inline-star">
+                            <path d="M25 1 L32 15 L48 18 L36 29 L39 44 L25 37 L11 44 L14 29 L2 18 L18 15 Z"
+                                fill="transparent" stroke-width="6" stroke="var(--theme)" stroke-linejoin="round" />
+                        </svg>
+                        <span>10</span>
+                    </div>
+                    <span class="percentage" id="p2Percentage">100%</span>
+                </div>
             </div>
         </div>
         <div id="p2Pokemon"></div>
@@ -72,6 +90,22 @@
         </div>
         <div id="text">
             <div class="main-text" data-step="-1">Player 2 would like to battle!</div>
+        </div>
+        <div id="energyButton" class="side-button">
+            <div class="side-button-inner">
+                <svg viewBox="-3 -3 56 56">
+                    <clipPath id="starClip" clipPathUnits="userSpaceOnUse">
+                        <!-- <path d="M-6 -6 L50 -6 L50 22 L22 22 L22 50 L-6 50 Z" /> -->
+                        <path
+                            d="M-6 -6 L56 -6 L56 56 L-6 56 Z M21 33 L21 41 L33 41 L33 53 L41 53 L41 41 L53 41 L53 33 L41 33 L41 21 L33 21 L33 33 Z" />
+                    </clipPath>
+                    <path d="M25 1 L32 15 L48 18 L36 29 L39 44 L25 37 L11 44 L14 29 L2 18 L18 15 Z" fill="transparent"
+                        stroke-width="2" stroke="var(--text)" stroke-linejoin="round" clip-path="url(#starClip)" />
+                    <path d="M25 37 L49 37 M37 25 L37 49" stroke-width="2" stroke="var(--theme)"
+                        stroke-linecap="round" />
+                </svg>
+            </div>
+            <div class="side-button-text">Focus Energy</div>
         </div>
     </div>
     <div id="decisionPanel">
