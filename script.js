@@ -3,79 +3,7 @@ const FEATURES = {
     "pokemon": [],
     "rk": []
 };
-const POOLS = {
-    "pokemon": {
-        "mons": POKEMON,
-        "moves": MOVES,
-        "multiplier": MULTIPLIER,
-        "icons": ICONS
-    },
-    "coromon": {},
-    "roco kingdom": {
-        "mons": RK_PETS,
-        "moves": RK_SKILLS,
-        "multiplier": RK_MULTIPLIER,
-        "multiplierMod": RK_MULTIPLIER_MODIFIER
-    }
-};
-function $(...args) {
-    for (let i = 0; i < args.length - 1; i++)
-        if (args[i] == settings.mode)
-            args[args.length - 1]();
-}
-let settings = {
-    "lang": "zh",
-    "mode": "pokemon",
-    "sleepClause": false,
-    "speciesClause": false,
-    "ohkoClause": false,
-    "freezeClause": false,
-    "evasionClause": false,
-    "selfKoClause": false,
-    "hardcoreMode": false,
-    "keyboardControls": false,
-    "effectivenessIndicator": false,
-    "darkMode": false,
-    "omiegamon": false,
-    "backgroundImage": "none",
-    "backgroundMusic": "none",
-    "sfxVolume": 100,
-    "bgmVolume": 100,
-    "coromonBgm": "battle-grass",
-    "rocoKingdomBgm": "none",
-    "whatsNew": `
-<ul>
-    <li>SPE Range of each Pkmn can be calculated properly now.</li>
-    <li>Bugfix: Mechamon can memorize your Volume settings now.</li>
-</ul>
-`
-};
-document.getElementById("whatsNewContent").innerHTML = settings.whatsNew;
-if (!localStorage.getItem("mechamonSettings") || settings.whatsNew != JSON.parse(localStorage.getItem("mechamonSettings")).whatsNew) {
-    document.getElementById("dialogOuter").classList.add("show");
-}
-let cries = {};
-const PROPERTIES = ["atk", "def", "sp", "spe"];
-const MOVE_BAN_LIST = {
-    "ohkoClause": ["fissure", "horn drill", "guillotine", "sheer cold"],
-    "evasionClause": ["double team", "minimize"]
-};
-if (localStorage.getItem("mechamonSettings")) {
-    let tempSettings = JSON.parse(localStorage.getItem("mechamonSettings"));
-    tempSettings.whatsNew = settings.whatsNew;
-    localStorage.setItem("mechamonSettings", JSON.stringify(tempSettings));
-    for (let i in settings)
-        if (!Object.keys(JSON.parse(localStorage.getItem("mechamonSettings"))).includes(i)) {
-            localStorage.setItem("mechamonSettings", JSON.stringify(settings));
-            break;
-        }
-    settings = JSON.parse(localStorage.getItem("mechamonSettings"));
-}
-else {
-    localStorage.setItem("mechamonSettings", JSON.stringify(settings));
-}
-document.querySelector("html").lang = settings.lang;
-let players = [{
+const PKMN_INIT_BUILD = [{
         "name": "Player 1",
         "build": [{
                 "name": "geodude",
@@ -166,6 +94,95 @@ let players = [{
                 "nick": ""
             }]
     }];
+const POOLS = {
+    "pokemon": {
+        "mons": POKEMON,
+        "moves": MOVES,
+        "multiplier": MULTIPLIER,
+        "multiplierMod": {},
+        "icons": ICONS,
+        "iconLocation": "pokemonicons-sheet.png"
+    },
+    "coromon": {
+        "mons": [],
+        "moves": [],
+        "multiplier": [],
+        "multiplierMod": {},
+        "icons": {},
+        "iconLocation": "roco kingdom/iconsheet.png"
+    },
+    "roco kingdom": {
+        "mons": RK_PETS,
+        "moves": RK_SKILLS,
+        "multiplier": RK_MULTIPLIER,
+        "multiplierMod": RK_MULTIPLIER_MODIFIER,
+        "icons": RK_ICONS,
+        "iconLocation": "roco kingdom/iconsheet.png"
+    }
+};
+function $(...args) {
+    if (args.length > 1) {
+        for (let i = 0; i < args.length - 1; i++)
+            if (args[i] == settings.mode)
+                args[args.length - 1]();
+    }
+    else {
+        return POOLS[settings.mode][args[0]];
+    }
+}
+let settings = {
+    "lang": "zh",
+    "mode": "pokemon",
+    "sleepClause": false,
+    "speciesClause": false,
+    "ohkoClause": false,
+    "freezeClause": false,
+    "evasionClause": false,
+    "selfKoClause": false,
+    "hardcoreMode": false,
+    "keyboardControls": false,
+    "effectivenessIndicator": false,
+    "darkMode": false,
+    "omiegamon": false,
+    "backgroundImage": "none",
+    "backgroundMusic": "none",
+    "sfxVolume": 100,
+    "bgmVolume": 100,
+    "coromonBgm": "battle-grass",
+    "rocoKingdomBgm": "none",
+    "whatsNew": `
+<ul>
+    <li>SPE Range of each Pkmn can be calculated properly now.</li>
+    <li>Bugfix: Mechamon can memorize your Volume settings now.</li>
+</ul>
+`
+};
+document.getElementById("whatsNewContent").innerHTML = settings.whatsNew;
+if (!localStorage.getItem("mechamonSettings") || settings.whatsNew != JSON.parse(localStorage.getItem("mechamonSettings")).whatsNew) {
+    document.getElementById("dialogOuter").classList.add("show");
+}
+let cries = {};
+const PROPERTIES = ["atk", "def", "sp", "spe"];
+const MOVE_BAN_LIST = {
+    "ohkoClause": ["fissure", "horn drill", "guillotine", "sheer cold"],
+    "evasionClause": ["double team", "minimize"]
+};
+if (localStorage.getItem("mechamonSettings")) {
+    let tempSettings = JSON.parse(localStorage.getItem("mechamonSettings"));
+    tempSettings.whatsNew = settings.whatsNew;
+    localStorage.setItem("mechamonSettings", JSON.stringify(tempSettings));
+    for (let i in settings)
+        if (!Object.keys(JSON.parse(localStorage.getItem("mechamonSettings"))).includes(i)) {
+            localStorage.setItem("mechamonSettings", JSON.stringify(settings));
+            break;
+        }
+    settings = JSON.parse(localStorage.getItem("mechamonSettings"));
+}
+else {
+    localStorage.setItem("mechamonSettings", JSON.stringify(settings));
+}
+document.querySelector("html").lang = settings.lang;
+let players = structuredClone(PKMN_INIT_BUILD);
 document.getElementById("p1Pokemon").style.backgroundImage = "url('back/" + players[0].build[0].name + ".png')";
 document.getElementById("p2Pokemon").style.backgroundImage = "url('front/" + players[1].build[0].name + ".png')";
 document.getElementById("p1Name").innerText = getL10n("pokemon", players[0].build[0].name);
@@ -1963,9 +1980,8 @@ document.getElementById("whatsNewButton").addEventListener("click", function () 
 });
 function refreshRange(element) {
     element.style.backgroundImage =
-        "linear-gradient(90deg, dodgerblue 0%, dodgerblue " + element.value + "%, lightgray " + element.value + "%)";
+        "linear-gradient(90deg, var(--theme) 0%, var(--theme) " + element.value + "%, lightgray " + element.value + "%)";
     element.parentNode.querySelector(".range-value").innerHTML = Math.floor(Number(element.value)).toString();
-    //settings[element.dataset.settings] = Math.floor(Number(element.value));
     localStorage.setItem("mechamonSettings", JSON.stringify(settings));
 }
 for (let i of document.querySelectorAll("input[type='range']")) {

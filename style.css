@@ -37,7 +37,7 @@ body {
     }
 
     &.theme-roco-kingdom {
-        --theme: rgb(70, 214, 70);
+        --theme: #42ca42;
     }
 
     &.dark {
@@ -873,15 +873,15 @@ button {
     }
 }
 
-#p2Balls {
+#p2BallOuterContainer {
     position: absolute;
-    top: 30px;
+    top: 40px;
     right: calc(10% + 42.956vmin / 2 + 27.5vmin);
 }
 
-#p1Balls {
+#p1BallOuterContainer {
     position: absolute;
-    bottom: 30px;
+    bottom: 40px;
     left: calc(10% + 42.956vmin / 2 + 27.5vmin);
 }
 
@@ -1456,17 +1456,26 @@ option img {
     }
 }
 
-.inline-star {
+.inline-svg {
     display: inline-block;
     width: 16px;
     height: 16px;
     vertical-align: middle;
 }
 
-#energyButton {
+#energyButton,
+.magic-container {
     display: none;
 
     .theme-roco-kingdom & {
         display: block;
+    }
+}
+
+.magic {
+    display: inline-block;
+    & svg {
+        width: 40px;
+        height: 30px;
     }
 }

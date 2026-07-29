@@ -156,16 +156,26 @@ const PKMN_INIT_BUILD = [{
         "nick": ""
     }]
 }];
-const POOLS = {
+const POOLS: {
+    [mode: string]: {
+        [key: string]: any;
+    };
+} = {
     "pokemon": {
         "mons": POKEMON,
         "moves": MOVES,
         "multiplier": MULTIPLIER,
+        "multiplierMod": {},
         "icons": ICONS,
         "iconLocation": "pokemonicons-sheet.png"
     },
     "coromon": {
-
+        "mons": [],
+        "moves": [],
+        "multiplier": [],
+        "multiplierMod": {},
+        "icons": {},
+        "iconLocation": "roco kingdom/iconsheet.png"
     },
     "roco kingdom": {
         "mons": RK_PETS,
@@ -177,8 +187,12 @@ const POOLS = {
     }
 };
 
-function $(...args: [...modes: string[], func: () => void]) {
-    for (let i = 0; i < args.length - 1; i++) if (args[i] == settings.mode) (args[args.length - 1] as Function)();
+function $(...args: [...modes: string[], func: () => void] | [key: string]) {
+    if (args.length > 1) {
+        for (let i = 0; i < args.length - 1; i++) if (args[i] == settings.mode) (args[args.length - 1] as Function)();
+    } else {
+        return POOLS[settings.mode][args[0] as string];
+    }
 }
 
 let settings: {
@@ -1915,9 +1929,8 @@ document.getElementById("whatsNewButton")!.addEventListener("click", function ()
 });
 function refreshRange(element: HTMLInputElement) {
     element.style.backgroundImage =
-        "linear-gradient(90deg, dodgerblue 0%, dodgerblue " + element.value + "%, lightgray " + element.value + "%)";
+        "linear-gradient(90deg, var(--theme) 0%, var(--theme) " + element.value + "%, lightgray " + element.value + "%)";
     element.parentNode!.querySelector(".range-value")!.innerHTML = Math.floor(Number(element.value)).toString();
-    //settings[element.dataset.settings] = Math.floor(Number(element.value));
     localStorage.setItem("mechamonSettings", JSON.stringify(settings));
 }
 for (let i of document.querySelectorAll<HTMLInputElement>("input[type='range']")) {
