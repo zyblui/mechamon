@@ -45,9 +45,19 @@ type BattleInfo = {
 }[];
 interface Player {
     "name": string,
-    "build": Mon[];
+    "build": BuildMon[];
 }
 interface Mon {
+    "name": string,
+    "type": string[],
+    "hp": number,
+    "atk": number,
+    "def": number,
+    "spe": number,
+    "moves": string[];
+    [key: string]: any;
+}
+interface BuildMon {
     "name": string,
     "moves": string[],
     "lv": number,
@@ -65,135 +75,120 @@ const FEATURES = {
     "pokemon": [],
     "rk": []
 };
-const PKMN_INIT_BUILD = [{
-    "name": "Player 1",
-    "build": [{
-        "name": "geodude",
-        "moves": ["earthquake", "rock slide", "body slam", "explosion"],
-        "lv": 5,
-        "ev": 252,
-        "dv": 15,
-        "nick": ""
-    }, {
-        "name": "staryu",
-        "moves": ["surf", "thunderbolt", "blizzard", "thunder wave"],
-        "lv": 5,
-        "ev": 252,
-        "dv": 15,
-        "nick": ""
-    }, {
-        "name": "koffing",
-        "moves": ["sludge", "fire blast", "thunderbolt", "explosion"],
-        "lv": 5,
-        "ev": 252,
-        "dv": 15,
-        "nick": ""
-    }, {
-        "name": "tentacool",
-        "moves": ["surf", "blizzard", "mega drain", "hydro pump"],
-        "lv": 5,
-        "ev": 252,
-        "dv": 15,
-        "nick": ""
-    }, {
-        "name": "machop",
-        "moves": ["submission", "earthquake", "rock slide", "body slam"],
-        "lv": 5,
-        "ev": 252,
-        "dv": 15,
-        "nick": ""
-    }, {
-        "name": "eevee",
-        "moves": ["substitute", "reflect", "body slam", "double-edge"],
-        "lv": 5,
-        "ev": 252,
-        "dv": 15,
-        "nick": ""
-    }]
-}, {
-    "name": "Player 2",
-    "build": [{
-        "name": "eevee",
-        "moves": ["rage", "body slam", "double-edge", "quick attack"],
-        "lv": 5,
-        "ev": 252,
-        "dv": 15,
-        "nick": ""
-    }, {
-        "name": "vulpix",
-        "moves": ["flamethrower", "body slam", "confuse ray", "substitute"],
-        "lv": 5,
-        "ev": 252,
-        "dv": 15,
-        "nick": ""
-    }, {
-        "name": "ponyta",
-        "moves": ["toxic", "agility", "fire blast", "body slam"],
-        "lv": 5,
-        "ev": 252,
-        "dv": 15,
-        "nick": ""
-    }, {
-        "name": "growlithe",
-        "moves": ["agility", "body slam", "fire blast", "double-edge"],
-        "lv": 5,
-        "ev": 252,
-        "dv": 15,
-        "nick": ""
-    }, {
-        "name": "psyduck",
-        "moves": ["surf", "mega kick", "blizzard", "rage"],
-        "lv": 5,
-        "ev": 252,
-        "dv": 15,
-        "nick": ""
-    }, {
-        "name": "poliwag",
-        "moves": ["hypnosis", "amnesia", "surf", "psychic"],
-        "lv": 5,
-        "ev": 252,
-        "dv": 15,
-        "nick": ""
-    }]
-}];
 const POOLS: {
     [mode: string]: {
         [key: string]: any;
     };
 } = {
     "pokemon": {
+        "space": "",
         "mons": POKEMON,
         "moves": MOVES,
         "multiplier": MULTIPLIER,
-        "multiplierMod": {},
+        "multiplierMod": MULTIPLIER_MODIFIER,
         "icons": ICONS,
-        "iconLocation": "pokemonicons-sheet.png"
+        "iconLocation": "pokemonicons-sheet.png",
+        "initBuild": INIT_BUILD,
+        "cryLocation": "cry",
+        "transl": TRANSLATION
     },
     "coromon": {
+        "space": "coromon/",
         "mons": [],
         "moves": [],
         "multiplier": [],
         "multiplierMod": {},
         "icons": {},
-        "iconLocation": "roco kingdom/iconsheet.png"
+        "iconLocation": "roco kingdom/iconsheet.png",
+        "initBuild": [],
+        "cryLocation": "",
+        "transl": []
     },
     "roco kingdom": {
+        "space": "roco kingdom/",
         "mons": RK_PETS,
         "moves": RK_SKILLS,
         "multiplier": RK_MULTIPLIER,
         "multiplierMod": RK_MULTIPLIER_MODIFIER,
         "icons": RK_ICONS,
-        "iconLocation": "roco kingdom/iconsheet.png"
+        "iconLocation": "roco kingdom/iconsheet.png",
+        "initBuild": RK_INIT_BUILD,
+        "cryLocation": "roco kingdom/cry",
+        "transl": RK_TRANSLATION
     }
 };
-
-function $(...args: [...modes: string[], func: () => void] | [key: string]) {
-    if (args.length > 1) {
-        for (let i = 0; i < args.length - 1; i++) if (args[i] == settings.mode) (args[args.length - 1] as Function)();
-    } else {
-        return POOLS[settings.mode][args[0] as string];
-    }
-}
+const BGM_SETTINGS: {
+    [key: string]: string;
+} = {
+    "pokemon": "backgroundMusic",
+    "coromon": "coromonBgm",
+    "roco kingdom": "rocoKingdomBgm"
+};
+const TOOLTIP_PLAYER: {
+    [key: string]: any;
+} = {
+    ".decisionSwitch": undefined,
+    "#p1Balls .ball": 0,
+    "#p2Balls .ball": 1
+};
+const STAGE_MULTIPLIER: {
+    [key: string | number]: number;
+} = {
+    "-6": 2 / 8,
+    "-5": 2 / 7,
+    "-4": 2 / 6,
+    "-3": 2 / 5,
+    "-2": 2 / 4,
+    "-1": 2 / 3,
+    "0": 1,
+    "1": 3 / 2,
+    "2": 4 / 2,
+    "3": 5 / 2,
+    "4": 6 / 2,
+    "5": 7 / 2,
+    "6": 8 / 2
+};
+const ACC_STAGE_MULTIPLIER: {
+    [key: string | number]: number;
+} = {
+    "-6": 9 / 3,
+    "-5": 8 / 3,
+    "-4": 7 / 3,
+    "-3": 6 / 3,
+    "-2": 5 / 3,
+    "-1": 4 / 3,
+    "0": 1,
+    "1": 3 / 4,
+    "2": 3 / 5,
+    "3": 3 / 6,
+    "4": 3 / 7,
+    "5": 3 / 8,
+    "6": 3 / 9
+};
+const STAT_NAMES = {
+    "def": "Defense",
+    "atk": "Attack",
+    "sp": "Special",
+    "spe": "Speed",
+    "eva": "Evasion",
+    "acc": "Accuracy"
+};
+const SMALL_TEXT_KEY: {
+    [key: string]: string;
+} = {
+    "par": "paralyzed",
+    "frz": "frozenSolid",
+    "psn": "poisoned",
+    "tox": "badlyPoisoned",
+    "brn": "burn"
+};
+const THEME_CLASSNAMES: {
+    [key: string]: string;
+} = {
+    "pokemon": "theme-pokemon",
+    "coromon": "theme-coromon",
+    "roco kingdom": "theme-roco-kingdom"
+};
 
 let settings: {
     [key: string]: any;
@@ -238,6 +233,7 @@ const MOVE_BAN_LIST: {
     "ohkoClause": ["fissure", "horn drill", "guillotine", "sheer cold"],
     "evasionClause": ["double team", "minimize"]
 };
+let players: Player[];
 if (localStorage.getItem("mechamonSettings")) {
     let tempSettings = JSON.parse(localStorage.getItem("mechamonSettings") as string);
     tempSettings.whatsNew = settings.whatsNew;
@@ -251,11 +247,6 @@ if (localStorage.getItem("mechamonSettings")) {
     localStorage.setItem("mechamonSettings", JSON.stringify(settings));
 }
 document.querySelector("html")!.lang = settings.lang;
-let players: Player[] = structuredClone(PKMN_INIT_BUILD);
-document.getElementById("p1Pokemon")!.style.backgroundImage = "url('back/" + players[0].build[0].name + ".png')";
-document.getElementById("p2Pokemon")!.style.backgroundImage = "url('front/" + players[1].build[0].name + ".png')";
-document.getElementById("p1Name")!.innerText = getL10n("pokemon", players[0].build[0].name);
-document.getElementById("p2Name")!.innerText = getL10n("pokemon", players[1].build[0].name);
 document.getElementById("turnNumber")!.innerText = getL10n("others", "turn", {
     "number": [0]
 });
@@ -266,114 +257,11 @@ document.getElementById("viewpoint")!.innerText = getL10n("ui", "viewpoint", {
     "player": ["Player 1"]
 });
 let record: RecordItem[] = [], recordPosition = 0, viewpoint = 0;
-function refreshRecord() {
-
-}
-function setUncontrollable(isSelf: boolean, move: string, turns: number): void {
-    getPkmn(isSelf).uncontrollable = {
-        move: move,
-        turns: turns
-    };
-}
-function setDelay(isSelf: boolean, func: Function, turns: number): void {
-    getPkmn(isSelf).delay.push({
-        "effect": func,
-        "turns": turns
-    });
-}
-function render(info = battleInfo): void {
-    if (info[Number(viewpoint != 0)].currentPokemon == -1) document.getElementById("p1Pokemon")!.style.backgroundImage = "none";
-    else document.getElementById("p1Pokemon")!.style.backgroundImage =
-        "url('back/" + players[Number(viewpoint != 0)].build[info[Number(viewpoint != 0)].currentPokemon].name + ".png')";
-    if (info[Number(viewpoint != 1)].currentPokemon == -1) document.getElementById("p2Pokemon")!.style.backgroundImage = "none";
-    else document.getElementById("p2Pokemon")!.style.backgroundImage =
-        "url('front/" + players[Number(viewpoint != 1)].build[info[Number(viewpoint != 1)].currentPokemon].name + ".png')";
-    if (info[Number(viewpoint != 0)].currentPokemon != -1) document.getElementById("p1Name")!.innerText =
-        getName(players[Number(viewpoint != 0)].build[info[Number(viewpoint != 0)].currentPokemon], false);
-    if (info[Number(viewpoint != 1)].currentPokemon != -1) document.getElementById("p2Name")!.innerText =
-        getName(players[Number(viewpoint != 1)].build[info[Number(viewpoint != 1)].currentPokemon], false);
-}
-function renderFull(info = battleInfo): void {
-    render(info);
-    renderHP(info);
-}
-function getL10n(type: string, str: string, additionalParam?: { [key: string]: any; }): string {
-    let returnValue: string = TRANSLATION[settings.lang][type][str + ((additionalParam?.isEnemy) ? "-enemy" : "")];
-    if (additionalParam) for (let i in additionalParam) {
-        if (i == "isEnemy") continue;
-        for (let j: number = 0; j < additionalParam[i].length; j++) {
-            returnValue = returnValue.replace("[" + i + j + "]", additionalParam[i][j]);
-        }
-    }
-    return returnValue;
-}
-function capitalize(str: string) {
-    let tempArr: string[] = str.split(" ");
-    for (let i = 0; i < tempArr.length; i++) {
-        if (tempArr[i].length) tempArr[i] = tempArr[i][0].toUpperCase() + tempArr[i].slice(1);
-    }
-    let tempStr: string = tempArr.join(" ");
-    tempArr = tempStr.split("-");
-    for (let i = 0; i < tempArr.length; i++) {
-        if (tempArr[i].length) tempArr[i] = tempArr[i][0].toUpperCase() + tempArr[i].slice(1);
-    }
-    tempStr = tempArr.join("-");
-    return tempStr;
-}
-function mergeTranslationData(from: Translation, to: Translation) {
-    for (let i in from) for (let j in from[i]) for (let k in from[i][j]) {
-        to[i][j][k] = from[i][j][k];
-    }
-}
-function mergeIconData(from: Icons, to: Icons) {
-    for (let i in from) to[i] = from[i];
-}
-function mergeMovePkmnData(from: any[], to: any[], tag: string) {
-    for (let i of from) i.tag = tag;
-    to.push(...from);
-}
 mergeTranslationData(TRANSLATION_OMIEGA, TRANSLATION);
 mergeIconData(ICONS_OMIEGA, ICONS);
 mergeMovePkmnData(MOVES_OMIEGA, MOVES, "omiega");
 mergeMovePkmnData(POKEMON_OMIEGA, POKEMON, "omiega");
-for (let i of POKEMON) {
-    cries[i.name] = new Audio(`cry/${i.name}.mp3`);
-}
-for (let i of POKEMON) {
-    let div = document.createElement("div");
-    div.classList.add("listButton");
-    div.innerHTML = getL10n("pokemon", i.name);
-    if (i.tag) div.dataset.tag = i.tag;
-    div.addEventListener("click", function () {
-        players[Number((document.querySelector(".pkmnName.selected") as HTMLDivElement).dataset.player) - 1].build[Number((document.querySelector(
-            ".pkmnName.selected") as HTMLDivElement).dataset.no) - 1].name = i.name;
-        for (let j = 0; j < 4; j++) {
-            if (!i.moves.includes(players[Number((document.querySelector(".pkmnName.selected") as HTMLDivElement).dataset.player) - 1].build[Number(
-                (document.querySelector(".pkmnName.selected") as HTMLDivElement).dataset.no) - 1].moves[j])) {
-                players[Number((document.querySelector(".pkmnName.selected") as HTMLDivElement).dataset.player) - 1].build[Number((document
-                    .querySelector(".pkmnName.selected") as HTMLDivElement).dataset.no) - 1].moves[j] = "";
-            }
-        }
-        renderTable();
-        document.getElementById("pokemonList")!.classList.remove("show");
-        document.getElementById("setupTable")!.classList.add("show");
-    });
-    document.getElementById("pokemonList")!.appendChild(div);
-}
-for (let i of MOVES) {
-    let div = document.createElement("div");
-    div.classList.add("listButton");
-    div.innerHTML = getL10n("moves", i.name);
-    div.addEventListener("click", function () {
-        players[Number((document.querySelector(".move.selected") as HTMLDivElement).dataset.player) - 1].build[Number((document.querySelector(
-            ".move.selected") as HTMLDivElement).dataset.no) - 1].moves[Number((document.querySelector(".move.selected") as HTMLDivElement).dataset.moveNo) - 1] = i.name;
-        renderTable();
-        document.getElementById("movesList")!.classList.remove("show");
-        document.getElementById("setupTable")!.classList.add("show");
-    });
-    div.dataset.for = i.name;
-    document.getElementById("movesListInner")!.appendChild(div);
-}
+switchMode("pokemon");
 for (let i of document.getElementsByClassName("pkmnName")) {
     i.addEventListener("click", function () {
         document.querySelector(".pkmnName.selected")?.classList.remove("selected");
@@ -407,6 +295,463 @@ for (let i of document.querySelectorAll(".back")) i.addEventListener("click", fu
     document.querySelector(".list.show")!.classList.remove("show");
     document.getElementById("setupTable")!.classList.add("show");
 });
+let turn: number = 0, playerToMove: number = 0, battleInfo: BattleInfo = [];
+document.getElementById("startGame")!.addEventListener("click", function () {
+    if (settings[BGM_SETTINGS[settings.mode]] == "none") {
+        startGame();
+    } else {
+        let intro = new Audio(SOUNDS[settings.mode][settings[BGM_SETTINGS[settings.mode]]].intro);
+        let loop = new Audio(SOUNDS[settings.mode][settings[BGM_SETTINGS[settings.mode]]].loop);
+        loop.loop = true;
+        let audioAvailable = 0;
+        function prepareAudio() {
+            audioAvailable++;
+            if (audioAvailable == 2) {
+                intro.play();
+                setTimeout(function () {
+                    loop.play();
+                }, intro.duration * 1000);
+                startGame();
+            }
+        }
+        intro.addEventListener("canplaythrough", function () {
+            prepareAudio();
+        });
+        loop.addEventListener("canplaythrough", function () {
+            prepareAudio();
+        });
+    }
+});
+let sequence: RecordItem[] = [], refreshSequenceIsRunning = false;
+document.getElementById("file")!.addEventListener("change", function () {
+    READER.readAsText(((document.getElementById("file") as HTMLInputElement).files as FileList)[0]);
+});
+const READER = new FileReader();
+READER.addEventListener("load", function () {
+    console.log(JSON.parse(READER.result as string));
+    /*record = */readSimplifiedRecordJSON(READER.result as string);
+    for (let i = 0; i < record.length; i++) insertText(record[i], true, i);
+    recordPosition = record.length - 1;
+    navigationRefresh();
+    battleInfo = (record[recordPosition].refresh) ? record[recordPosition].refresh as BattleInfo : getNearestRefresh(record, recordPosition);
+});
+for (let i = 0; i < 6; i++) {
+    document.querySelectorAll(".decisionSwitch")[i].addEventListener("click", function () {
+        switchPkmn(document.querySelectorAll<HTMLElement>(".decisionSwitch")[i].dataset.for as string);
+    });
+    for (let j in TOOLTIP_PLAYER) {
+        document.querySelectorAll(j)[i].addEventListener("mouseover", function () {
+            addTooltip(document.querySelectorAll(j), i, TOOLTIP_PLAYER[j]);
+        });
+        document.querySelectorAll(j)[i].addEventListener("mouseout", function () {
+            document.querySelectorAll(j)[i].parentElement!.querySelector(".tooltip")?.classList.remove("show");
+        });
+    }
+}
+let isNewTurn = false;
+let nextPlayerEffect: {
+    "name": string,
+    "condition": () => boolean,
+    "effect": Function,
+    exclude?: string;
+}[] = [{
+    "name": "delay",
+    "condition": function () { return true; },
+    "effect": function () {
+        for (let i = 0; i < getPkmn(true).delay.length; i++) {
+            if (getPkmn(true).delay[i].turns > 0) getPkmn(true).delay[i].turns--;
+            else {
+                getPkmn(true).delay[i].effect();
+                getPkmn(true).delay.splice(i, 1);
+                i--;
+            }
+        }
+    }
+}, {
+    "name": "disable",
+    "condition": function () { return true; },
+    "effect": function () {
+        if (getPkmn(true).disable.turns > 0) getPkmn(true).disable.turns--;
+        else getPkmn(true).disable.move = "";
+    }
+}, {
+    "name": "par",
+    "condition": function () { return getPkmn(true).status == "par" && Math.random() < 1 / 4; },
+    "effect": function () {
+        addMainText("others", "unableToMove", {
+            "pokemon": [getName(getPkmn(true), false, true)],
+            "isEnemy": playerToMove != viewpoint
+        });
+        return { "continue": true };
+    }
+}, {
+    "name": "frz",
+    "condition": function () { return getPkmn(true).status == "frz"; },
+    "exclude": "par",
+    "effect": function () {
+        addMainText("others", "frozenSolid", {
+            "pokemon": [getName(getPkmn(true), false, true)],
+            "isEnemy": playerToMove != viewpoint
+        });
+        return { "continue": true };
+    }
+}, {
+    "name": "charge",
+    "condition": function () { return getPkmn(true).charge.turns > 0; },
+    "exclude": "frz",
+    "effect": function () {
+        getPkmn(true).charge.turns--;
+        if (getPkmn(true).charge.move && getPkmn(true).charge.turns == 0 && getPkmn(true).charge.move) {
+            attack(getPkmn(true).charge.move);
+            getPkmn(true).charge.move = "";
+        } else {
+            return { "continue": true };
+        }
+    }
+}, {
+    "name": "uncontrollable",
+    "condition": function () { return getPkmn(true).uncontrollable.turns > 0; },
+    "exclude": "charge",
+    "effect": function () {
+        getPkmn(true).uncontrollable.turns--;
+        if (getPkmn(true).uncontrollable.move && getPkmn(true).uncontrollable.turns == 0) {
+            getPkmn(true).uncontrollable.move = "";
+        }
+    }
+}, {
+    "name": "slp",
+    "condition": function () { return getPkmn(true).status == "slp"; },
+    "exclude": "uncontrollable",
+    "effect": function () {
+        getPkmn(true).sleepTurns--;
+        if (getPkmn(true).sleepTurns > 0) {
+            addMainText("others", "fastAsleep", {
+                "pokemon": [getName(getPkmn(true), false, true)],
+                "isEnemy": playerToMove != viewpoint
+            });
+        } else if (getPkmn(true).sleepTurns == 0) {
+            addSmallText("others", "wakeUp", {
+                "pokemon": [getName(getPkmn(true), false, true)],
+                "isEnemy": playerToMove != viewpoint
+            });
+            getPkmn(true).status = "";
+        }
+        return { "continue": true };
+    }
+}, {
+    "name": "confused",
+    "condition": function () { return getPkmn(true).tempEffect.confused > 0; },
+    "exclude": "slp",
+    "effect": function () {
+        addSmallText("others", "confused", {
+            "pokemon": [getName(getPkmn(true), false, true)],
+            "isEnemy": ((viewpoint == -1) ? false : (playerToMove != viewpoint))
+        });
+        //getPkmn(true).tempEffect.confused--;
+        if (Math.random() < 0.5) {
+            dealDmg(true, calculateDmg(40, getAttack(true), getDefense(true, true), getPkmn(true).lv, "",
+                getType(true), getType(true)), { opposingSubstitute: true });
+            addMainText("others", "hurtConfusion");
+            return { "continue": true };//!
+        }
+    }
+}];
+let lastSelfKoMoveUser = -1;
+let attacks: ({
+    "user": number,
+    "type": "move",
+    "move": string,
+    dirAttack?: boolean;
+} | {
+    "user": number,
+    "type": "switch",
+    "pkmn": string;
+})[] = [];
+for (let i = 0; i < 4; i++) {
+    let decisionMove = document.querySelectorAll<HTMLElement>(".decisionMove");
+    decisionMove[i].addEventListener("click", function () {
+        makeMove(decisionMove[i].dataset.for as string);
+    });
+    decisionMove[i].addEventListener("mouseover", function () {
+        let decisionMoveFor: string = decisionMove[i].dataset.for as string;
+        if (!getMoveStats(decisionMoveFor)) return;
+        let tooltipMove: HTMLDivElement;
+        if (!decisionMove[i].parentElement!.querySelector(".tooltip-move")) {
+            tooltipMove = document.querySelector(".tooltip-move")!.cloneNode(true) as HTMLDivElement;
+            decisionMove[i].parentElement!.insertBefore(tooltipMove, document.getElementsByClassName("decisionMove")[i]);
+        }
+        tooltipMove = decisionMove[i].parentElement!.querySelector(".tooltip-move") as HTMLDivElement;
+        tooltipMove.querySelector<HTMLElement>(".tip-name")!.innerText = getL10n("moves", decisionMoveFor);
+        let moveStats: PkmnMove = getMoveStats(decisionMoveFor) as PkmnMove;
+        tooltipMove.querySelector<HTMLElement>(".tip-cat")!.innerText = getL10n("cat", moveStats.cat).toUpperCase();
+        tooltipMove.querySelector<HTMLElement>(".tip-cat")!.classList.remove("cat-physical", "cat-special", "cat-status");
+        tooltipMove.querySelector<HTMLElement>(".tip-cat")!.classList.add("cat-" + moveStats.cat);
+        tooltipMove.querySelector<HTMLElement>(".tip-desc")!.innerText = getL10n("moveDesc", decisionMoveFor);
+        tooltipMove.querySelector<HTMLElement>(".type-text")!.innerText = getL10n("types", moveStats.type).toUpperCase();
+        tooltipMove.querySelector(".type-text")!.classList.remove(
+            "type-bug",
+            "type-dragon",
+            "type-electric",
+            "type-fighting",
+            "type-fire",
+            "type-flying",
+            "type-ghost",
+            "type-grass",
+            "type-ground",
+            "type-ice",
+            "type-normal",
+            "type-poison",
+            "type-psychic",
+            "type-rock",
+            "type-water");
+        tooltipMove.querySelector(".type-text")!.classList.add("type-" + moveStats.type);
+        tooltipMove.querySelector<HTMLElement>(".tip-pow")!.innerText = moveStats.power.toString();
+        $("pokemon", () => {
+            tooltipMove.querySelector<HTMLElement>(".tip-priority")!.innerText = moveStats.priority.toString();
+            tooltipMove.querySelector<HTMLElement>(".tip-pp .main")!.innerText = decisionMove[i]
+                .querySelector<HTMLElement>(".pp-remaining")!.innerText;
+            tooltipMove.querySelector<HTMLElement>(".tip-pp .sub")!.innerText = "/" + moveStats.pp;
+        });
+        $("pokemon", "coromon", () => {
+            tooltipMove.querySelector<HTMLElement>(".tip-acc")!.innerText = (moveStats.acc == Infinity) ? "∞" : moveStats.acc + "%";
+        });
+        tooltipMove.querySelector<HTMLImageElement>(".type-img")!.src = `${$("space")}types/` + moveStats.type + ".png";
+        tooltipMove.classList.add("show");
+    });
+    decisionMove[i].addEventListener("mouseout", function () {
+        decisionMove[i].parentElement!.querySelector(".tooltip-move")?.classList.remove("show");
+    });
+}
+renderTable();
+for (let i of document.getElementsByClassName("tab") as HTMLCollectionOf<HTMLButtonElement>) {
+    i.addEventListener("click", function () {
+        document.querySelector(".tab.tab-selected")!.classList.remove("tab-selected");
+        i.classList.add("tab-selected");
+        document.querySelector(".tab-content.tab-show")!.classList.remove("tab-show");
+        document.querySelector(".tab-content[data-for='" + i.dataset.for + "']")!.classList.add("tab-show");
+    });
+}
+document.getElementById("forfeit")!.addEventListener("click", function () {
+    addSmallText("others", "forfeit", {
+        "player": [battleInfo[playerToMove].name]
+    });
+    addMainText("others", "winBattle", {
+        "player": [battleInfo[Number(!playerToMove)].name]
+    });
+    refreshSequence();
+});
+document.getElementById("viewpoint")!.addEventListener("click", function () {
+    viewpoint = Number(!viewpoint);
+    renderFull((record[recordPosition].refresh) ? record[recordPosition].refresh : getNearestRefresh(record, recordPosition));
+    for (let i of document.querySelectorAll<HTMLDivElement | HTMLHeadingElement>("[data-content]")) {
+        let arr = JSON.parse(i.dataset.content as string);
+        if (arr[2] && Object.keys(arr[2]).includes("isEnemy")) arr[2].isEnemy = !arr[2].isEnemy;
+        i.dataset.content = JSON.stringify(arr);
+        i.innerHTML = getSequenceL10n(arr);
+    }
+    document.getElementById("viewpoint")!.innerText = getL10n("ui", "viewpoint", {
+        "player": [battleInfo[viewpoint].name]
+    });
+});
+refreshLang();
+for (let i of document.querySelectorAll<HTMLInputElement | HTMLSelectElement>("[data-settings]")) {
+    let datasetSettings = i.dataset.settings as string;
+    if (i.tagName.toLowerCase() == "select") i.value = settings[datasetSettings];
+    else if (i.tagName.toLowerCase() == "input" && i.type == "range") {
+        i.value = settings[datasetSettings];
+        refreshRange(i);
+    }
+    else (i as HTMLInputElement).checked = settings[datasetSettings];
+    i.addEventListener("change", function () {
+        if (i.tagName.toLowerCase() == "select") settings[datasetSettings] = i.value;
+        else if (i.tagName.toLowerCase() == "input" && i.type == "range") settings[datasetSettings] = Math.floor(Number(i.value));
+        else settings[datasetSettings] = (i as HTMLInputElement).checked;
+        localStorage.setItem("mechamonSettings", JSON.stringify(settings));
+        applySetting(datasetSettings);
+    });
+    applySetting(datasetSettings);
+}
+for (let i of document.querySelectorAll(".nick") as NodeListOf<HTMLDivElement>) i.addEventListener("blur", function () {
+    players[Number(i.dataset.player) - 1].build[Number(i.dataset.no) - 1].nick = i.innerText;
+});
+addUpdateValueListener("lv", 1, 100);
+addUpdateValueListener("ev", 0, 252);
+addUpdateValueListener("dv", 0, 15);
+document.addEventListener("keypress", function (e) {
+    if (settings.keyboardControls) {
+        if (e.key == "1" || e.key == "2" || e.key == "3" || e.key == "4") document.querySelectorAll<HTMLButtonElement>(".decisionMove")[Number(e
+            .key) - 1].click();
+        else {
+            let keys = ["z", "x", "c", "v", "b", "n"];
+            if (keys.includes(e.key.toLowerCase())) document.querySelectorAll<HTMLButtonElement>(".decisionSwitch")[keys.indexOf(e.key
+                .toLowerCase())].click();
+        }
+    }
+});
+document.getElementById("navFirst")!.addEventListener("click", function () {
+    recordPosition = 0;
+    navigationRefresh();
+});
+document.getElementById("navPrev")!.addEventListener("click", function () {
+    if (recordPosition != 0) recordPosition--;
+    navigationRefresh();
+});
+document.getElementById("navNext")!.addEventListener("click", function () {
+    if (recordPosition != record.length - 1) recordPosition++;
+    navigationRefresh();
+});
+document.getElementById("navLast")!.addEventListener("click", function () {
+    recordPosition = record.length - 1;
+    navigationRefresh();
+});
+document.getElementById("close")!.addEventListener("click", closePage);
+document.getElementById("dialogBg")!.addEventListener("click", closePage);
+document.getElementById("whatsNewButton")!.addEventListener("click", function () {
+    document.getElementById("dialogOuter")!.classList.add("show");
+});
+for (let i of document.getElementsByClassName("clause-checkbox")) i.addEventListener("change", function () {
+    renderTable();
+});
+for (let i of (document.querySelectorAll<HTMLDivElement>(".mode-btn"))) {
+    i.addEventListener("mouseover", function () {
+        for (let j in THEME_CLASSNAMES) document.body.classList.remove(THEME_CLASSNAMES[j]);
+        document.body.classList.add(THEME_CLASSNAMES[i.dataset.mode as string]);
+        document.querySelector(".mode-btn.selected")!.classList.remove("selected");
+        i.classList.add("selected");
+    });
+    i.addEventListener("click", function () {
+        switchMode(i.dataset.mode as string);
+        document.getElementById("modeSelectBg")!.classList.remove("show");
+    });
+}
+
+function $(...args: [...modes: string[], func: () => void] | [key: string]): void | any {
+    if (args.length > 1) {
+        for (let i = 0; i < args.length - 1; i++) if (args[i] == settings.mode) (args[args.length - 1] as Function)();
+    } else {
+        return POOLS[settings.mode][args[0] as string];
+    }
+}
+function setUncontrollable(isSelf: boolean, move: string, turns: number): void {
+    getPkmn(isSelf).uncontrollable = {
+        move: move,
+        turns: turns
+    };
+}
+function setDelay(isSelf: boolean, func: Function, turns: number): void {
+    getPkmn(isSelf).delay.push({
+        "effect": func,
+        "turns": turns
+    });
+}
+function render(info = battleInfo): void {
+    if (info[Number(viewpoint != 0)].currentPokemon == -1) document.getElementById("p1Pokemon")!.style.backgroundImage = "none";
+    else document.getElementById("p1Pokemon")!.style.backgroundImage =
+        `url('${$("space")}back/` + players[Number(viewpoint != 0)].build[info[Number(viewpoint != 0)].currentPokemon].name + ".png')";
+    if (info[Number(viewpoint != 1)].currentPokemon == -1) document.getElementById("p2Pokemon")!.style.backgroundImage = "none";
+    else document.getElementById("p2Pokemon")!.style.backgroundImage =
+        `url('${$("space")}front/` + players[Number(viewpoint != 1)].build[info[Number(viewpoint != 1)].currentPokemon].name + ".png')";
+    if (info[Number(viewpoint != 0)].currentPokemon != -1) document.getElementById("p1Name")!.innerText =
+        getName(players[Number(viewpoint != 0)].build[info[Number(viewpoint != 0)].currentPokemon], false);
+    if (info[Number(viewpoint != 1)].currentPokemon != -1) document.getElementById("p2Name")!.innerText =
+        getName(players[Number(viewpoint != 1)].build[info[Number(viewpoint != 1)].currentPokemon], false);
+}
+function renderFull(info = battleInfo): void {
+    render(info);
+    renderHP(info);
+}
+function getL10n(type: string, str: string, additionalParam?: { [key: string]: any; }): string {
+    let returnValue: string = $("transl")[settings.lang][type][str + ((additionalParam?.isEnemy) ? "-enemy" : "")];
+    if (additionalParam) for (let i in additionalParam) {
+        if (i == "isEnemy") continue;
+        for (let j: number = 0; j < additionalParam[i].length; j++) {
+            returnValue = returnValue.replace("[" + i + j + "]", additionalParam[i][j]);
+        }
+    }
+    return returnValue;
+}
+function capitalize(str: string) {
+    let tempArr: string[] = str.split(" ");
+    for (let i = 0; i < tempArr.length; i++) {
+        if (tempArr[i].length) tempArr[i] = tempArr[i][0].toUpperCase() + tempArr[i].slice(1);
+    }
+    let tempStr: string = tempArr.join(" ");
+    tempArr = tempStr.split("-");
+    for (let i = 0; i < tempArr.length; i++) {
+        if (tempArr[i].length) tempArr[i] = tempArr[i][0].toUpperCase() + tempArr[i].slice(1);
+    }
+    tempStr = tempArr.join("-");
+    return tempStr;
+}
+function mergeTranslationData(from: Translation, to: Translation) {
+    for (let i in from) for (let j in from[i]) for (let k in from[i][j]) {
+        to[i][j][k] = from[i][j][k];
+    }
+}
+function mergeIconData(from: Icons, to: Icons) {
+    for (let i in from) to[i] = from[i];
+}
+function mergeMovePkmnData(from: any[], to: any[], tag: string) {
+    for (let i of from) i.tag = tag;
+    to.push(...from);
+}
+function switchMode(mode: string) {
+    settings.mode = mode;
+
+    players = structuredClone($("initBuild"));
+    document.getElementById("p1Pokemon")!.style.backgroundImage = `url('${$("space")}back/` + players[0].build[0].name + ".png')";
+    document.getElementById("p2Pokemon")!.style.backgroundImage = `url('${$("space")}front/` + players[1].build[0].name + ".png')";
+    document.getElementById("p1Name")!.innerText = getL10n("pokemon", players[0].build[0].name);
+    document.getElementById("p2Name")!.innerText = getL10n("pokemon", players[1].build[0].name);
+
+    for (let i of $("mons")) {
+        cries[i.name] = new Audio(`${$("cryLocation")}/${i.name}.mp3`);
+    }
+    for (let i of $("mons")) {
+        let div = document.createElement("div");
+        div.classList.add("listButton");
+        div.innerHTML = getL10n("pokemon", i.name);
+        if (i.tag) div.dataset.tag = i.tag;
+        div.addEventListener("click", function () {
+            players[Number((document.querySelector(".pkmnName.selected") as HTMLDivElement).dataset.player) - 1].build[Number((document.querySelector(
+                ".pkmnName.selected") as HTMLDivElement).dataset.no) - 1].name = i.name;
+            for (let j = 0; j < 4; j++) {
+                if (!i.moves.includes(players[Number((document.querySelector(".pkmnName.selected") as HTMLDivElement).dataset.player) - 1].build[Number(
+                    (document.querySelector(".pkmnName.selected") as HTMLDivElement).dataset.no) - 1].moves[j])) {
+                    players[Number((document.querySelector(".pkmnName.selected") as HTMLDivElement).dataset.player) - 1].build[Number((document
+                        .querySelector(".pkmnName.selected") as HTMLDivElement).dataset.no) - 1].moves[j] = "";
+                }
+            }
+            renderTable();
+            document.getElementById("pokemonList")!.classList.remove("show");
+            document.getElementById("setupTable")!.classList.add("show");
+        });
+        document.getElementById("pokemonList")!.appendChild(div);
+    }
+
+    for (let i of document.querySelectorAll<HTMLInputElement>("input[type='range']")) {
+        for (let j in cries) cries[j].volume = settings.sfxVolume / 100;
+        i.addEventListener("input", function () {
+            refreshRange(i);
+            for (let j in cries) cries[j].volume = settings.sfxVolume / 100;
+        });
+    }
+
+    for (let i of $("moves")) {
+        let div = document.createElement("div");
+        div.classList.add("listButton");
+        div.innerHTML = getL10n("moves", i.name);
+        div.addEventListener("click", function () {
+            players[Number((document.querySelector(".move.selected") as HTMLDivElement).dataset.player) - 1].build[Number((document.querySelector(
+                ".move.selected") as HTMLDivElement).dataset.no) - 1].moves[Number((document.querySelector(".move.selected") as HTMLDivElement).dataset.moveNo) - 1] = i.name;
+            renderTable();
+            document.getElementById("movesList")!.classList.remove("show");
+            document.getElementById("setupTable")!.classList.add("show");
+        });
+        div.dataset.for = i.name;
+        document.getElementById("movesListInner")!.appendChild(div);
+    }
+}
 function calculateDmg(power: number, atk: number, def: number, lv: number, attackType: string, defenseType: string, userType: string[]) {
     let effectiveness = calculateEffectiveness(attackType, defenseType);
     let stab = 1;
@@ -418,7 +763,7 @@ function calculateEffectiveness(attackType: string, defenseType: string) {
     let effectiveness = 1;
     if (!attackType) return effectiveness;
     for (let i of defenseType) {
-        effectiveness *= MULTIPLIER[attackType][i];
+        effectiveness *= $("multiplierMod")[$("multiplier")[attackType][i]];
     }
     return effectiveness;
 }
@@ -438,33 +783,28 @@ function refreshDecision() {
             let tempMove = "";
             if (Object.keys(getPkmn(true).moves)[i] == "mimic" && getPkmn(true).mimicMove) tempMove = getPkmn(true).mimicMove;
             else tempMove = Object.keys(getPkmn(true).moves)[i];
-            (button.querySelector(".move-text") as HTMLSpanElement).innerText = getL10n("moves", tempMove);
-            button.querySelector<HTMLElement>(".pp-remaining")!.innerText = Object.values<number>(getPkmn(true).moves)[i].toString();
-            button.querySelector<HTMLElement>(".sub")!.innerText = "/" + getMoveStats(Object.keys(getPkmn(true).moves)[i])!.pp;
-            button.querySelector<HTMLElement>(".move-type")!.innerText = getL10n("types",
-                getMoveStats(tempMove)!.type);
             button.dataset.for = tempMove;
-
-            displayEffectiveness(button, tempMove);
+            $("pokemon", () => {
+                modifyDecisionMoveBtn(button, getL10n("moves", tempMove), Object.values<number>(getPkmn(true).moves)[i].toString(), getMoveStats(Object.keys(getPkmn(true)
+                    .moves)[i])!.pp, getL10n("types", getMoveStats(tempMove)!.type), tempMove);
+            });
+            $("roco kingdom", () => {
+                button.querySelector<HTMLElement>(".move-text")!.innerText = getL10n("moves", tempMove);
+                button.querySelector<HTMLElement>(".move-type")!.innerText = getL10n("types", getMoveStats(tempMove)!.type);
+                button.querySelector<HTMLElement>(".cost")!.innerText = getMoveStats(tempMove)!.cost;
+                displayEffectiveness(button, tempMove);
+            });
         }
     } else if (battleInfo[playerToMove].currentPokemon == -1) for (let i = 0; i < 4; i++) {
         document.querySelectorAll<HTMLButtonElement>(".decisionMove")[i].disabled = true;
-        displayEffectiveness(document.querySelectorAll(".decisionMove")[i] as HTMLButtonElement, "");
+        displayEffectiveness(document.querySelectorAll<HTMLButtonElement>(".decisionMove")[i], "");
     } else {
         let moveButtonGroup = document.querySelectorAll<HTMLButtonElement>(".decisionMove");
         moveButtonGroup[0].disabled = false;
-        (moveButtonGroup[0].querySelector(".move-text") as HTMLSpanElement).innerText = "Pass";
-        moveButtonGroup[0].querySelector<HTMLElement>(".pp-remaining")!.innerText = "-";
-        moveButtonGroup[0].querySelector<HTMLElement>(".sub")!.innerText = "/-";
-        moveButtonGroup[0].querySelector<HTMLElement>(".move-type")!.innerText = "-";
-        displayEffectiveness(moveButtonGroup[0], getPkmn(true).uncontrollable.move);
+        modifyDecisionMoveBtn(moveButtonGroup[0], "Pass", "-", "-", "-", getPkmn(true).uncontrollable.move);
         for (let i = 1; i < 4; i++) {
-            (moveButtonGroup[i] as HTMLButtonElement).disabled = true;
-            moveButtonGroup[i].querySelector<HTMLElement>(".move-text")!.innerText = "-";
-            moveButtonGroup[i].querySelector<HTMLElement>(".pp-remaining")!.innerText = "-";
-            moveButtonGroup[i].querySelector<HTMLElement>(".sub")!.innerText = "/-";
-            moveButtonGroup[i].querySelector<HTMLElement>(".move-type")!.innerText = "-";
-            displayEffectiveness(moveButtonGroup[i], "");
+            moveButtonGroup[i].disabled = true;
+            modifyDecisionMoveBtn(moveButtonGroup[i], "-", "-", "-", "-", "");
         }
     }
     let switchButtons = document.querySelectorAll<HTMLButtonElement>(".decisionSwitch");
@@ -479,6 +819,13 @@ function refreshDecision() {
         } else switchButtons[i].disabled = false;
         switchButtons[i].dataset.for = players[playerToMove].build[i].name;
     }
+}
+function modifyDecisionMoveBtn(element: HTMLButtonElement, displayName: string, ppRemaining: string | number, ppTotal: string | number, type: string, moveName: string) {
+    element.querySelector<HTMLElement>(".move-text")!.innerText = displayName;
+    element.querySelector<HTMLElement>(".pp-remaining")!.innerText = ppRemaining.toString();
+    element.querySelector<HTMLElement>(".sub")!.innerText = `/${ppTotal}`;
+    element.querySelector<HTMLElement>(".move-type")!.innerText = type;
+    displayEffectiveness(element, moveName);
 }
 function displayEffectiveness(button: HTMLButtonElement, move: string) {
     const EFFECTIVENESS_ABBR: {
@@ -495,22 +842,33 @@ function displayEffectiveness(button: HTMLButtonElement, move: string) {
     else button.querySelector<HTMLElement>(".effectiveness")!.innerText = EFFECTIVENESS_ABBR[calculateEffectiveness(getMoveStats(move)!.type,
         getType(false))];
 }
-let turn: number = 0, playerToMove: number = 0, battleInfo: BattleInfo = [];
 function getDefaultProperties(playersInfo: Player[]): BattleInfo {
     let arr: any = structuredClone(playersInfo);
     arr[0].currentPokemon = -1;
     arr[1].currentPokemon = -1;
     for (let i of arr) for (let j of i.build) {
-        for (let k of POKEMON) {
+        for (let k of $("mons")) {
             if (k.name == j.name) {
-                j.maxHp = Math.floor(0.01 * (2 * (k.hp + j.dv) + Math.floor(0.25 * j.ev)) * j.lv) + j.lv + 10;
+                $("pokemon", () => {
+                    j.maxHp = Math.floor(0.01 * (2 * (k.hp + j.dv) + Math.floor(0.25 * j.ev)) * j.lv) + j.lv + 10;
+                });
+                $("roco kingdom", () => {
+                    j.maxHp = Math.round(Math.round(k.hp * 1.7 + j.dv * 0.85 + 70) + 100);
+                });
                 j.hp = j.maxHp;
                 break;
             }
         }
-        for (let k of ["atk", "def", "sp", "spe"]) {
-            j[k] = Math.floor(0.01 * (2 * ((getStats(j.name) as Pkmn)[k as "atk" | "def" | "sp" | "spe"] + j.dv) + Math.floor(0.25 * j.ev)) * j.lv) + 5;
-        }
+        $("pokemon", () => {
+            for (let k of ["atk", "def", "sp", "spe"]) {
+                j[k] = Math.floor(0.01 * (2 * ((getStats(j.name) as Pkmn)[k] + j.dv) + Math.floor(0.25 * j.ev)) * j.lv) + 5;
+            }
+        });
+        $("roco kingdom", () => {
+            for (let k of ["atk", "def", "spa", "spd", "spe"]) {
+                j[k] = Math.round(Math.round((getStats(j.name) as RkPet)[k] * 1.1 + j.dv * 0.55 + 10) + 50);
+            }
+        });
         j.transformPkmn = "";
         j.mimicMove = "";
         j.atkStage = 0;
@@ -553,7 +911,7 @@ function getDefaultProperties(playersInfo: Player[]): BattleInfo {
         let json: {
             [moveName: string]: number;
         } = {};
-        for (let k of j.moves) for (let l of MOVES) if (l.name == k) json[k] = l.pp;
+        for (let k of j.moves) for (let l of $("moves")) if (l.name == k) json[k] = l.pp;
         j.moves = json;
         j.revealed = false;
 
@@ -563,13 +921,6 @@ function getDefaultProperties(playersInfo: Player[]): BattleInfo {
     }
     return arr;
 }
-const BGM_SETTINGS: {
-    [key: string]: string;
-} = {
-    "pokemon": "backgroundMusic",
-    "coromon": "coromonBgm",
-    "roco kingdom": "rocoKingdomBgm"
-};
 function startGame() {
     if (settings.backgroundImage == "none") {
         document.getElementById("battlePanel")!.style.backgroundImage = "none";
@@ -589,33 +940,6 @@ function startGame() {
     nextTurn();
     render();
 }
-document.getElementById("startGame")!.addEventListener("click", function () {
-    if (settings[BGM_SETTINGS[settings.mode]] == "none") {
-        startGame();
-    } else {
-        let intro = new Audio(SOUNDS[settings.mode][settings[BGM_SETTINGS[settings.mode]]].intro);
-        let loop = new Audio(SOUNDS[settings.mode][settings[BGM_SETTINGS[settings.mode]]].loop);
-        loop.loop = true;
-        let audioAvailable = 0;
-        function prepareAudio() {
-            audioAvailable++;
-            if (audioAvailable == 2) {
-                intro.play();
-                setTimeout(function () {
-                    loop.play();
-                }, intro.duration * 1000);
-                startGame();
-            }
-        }
-        intro.addEventListener("canplaythrough", function () {
-            prepareAudio();
-        });
-        loop.addEventListener("canplaythrough", function () {
-            prepareAudio();
-        });
-    }
-});
-let sequence: RecordItem[] = [], refreshSequenceIsRunning = false;
 function getSequenceL10n(args: RecordItemArgs) {
     let tempArgs = structuredClone(args);
     if (tempArgs[2]) for (let i in tempArgs[2]) if (Array.isArray(tempArgs[2][i])) for (let j = 0; j < tempArgs[2][i].length;
@@ -687,19 +1011,6 @@ function readSimplifiedRecordJSON(lines: string): void {
         record.push(element);
     }
 }
-document.getElementById("file")!.addEventListener("change", function () {
-    READER.readAsText(((document.getElementById("file") as HTMLInputElement).files as FileList)[0]);
-});
-const READER = new FileReader();
-READER.addEventListener("load", function () {
-    console.log(JSON.parse(READER.result as string));
-    /*record = */readSimplifiedRecordJSON(READER.result as string);
-    for (let i = 0; i < record.length; i++) insertText(record[i], true, i);
-    recordPosition = record.length - 1;
-    navigationRefresh();
-    battleInfo = (record[recordPosition].refresh) ? record[recordPosition].refresh as BattleInfo : getNearestRefresh(record, recordPosition);
-});
-
 function modifyValue(object: { [index: string | number]: any; }, keys: any[], value: any) {
     let tempObject = object;
     for (let i = 0; i < keys.length - 1; i++) {
@@ -852,9 +1163,9 @@ function addTooltip(elementGroup: NodeListOf<HTMLElement>, i: number, player = p
     tooltip = elementGroup[i].parentElement!.querySelector(".tooltip") as HTMLDivElement;
     tooltip.querySelector<HTMLElement>(".tip-name")!.innerText = getL10n("pokemon", elementGroup[i].dataset.for);
     let stats = getStats(elementGroup[i].dataset.for) as Pkmn;
-    tooltip.querySelector<HTMLElement>(".img-left")!.style.background = "url(pokemonicons-sheet.png) no-repeat scroll -" +
-        (ICONS[elementGroup[i].dataset.for].cell - 1) * 40 + "px -" + (
-            ICONS[elementGroup[i].dataset.for].row - 1) * 30 + "px";
+    tooltip.querySelector<HTMLElement>(".img-left")!.style.background = `url(${$("iconLocation")}) no-repeat scroll -` +
+        ($("icons")[elementGroup[i].dataset.for].cell - 1) * 40 + "px -" + (
+            $("icons")[elementGroup[i].dataset.for].row - 1) * 30 + "px";
     tooltip.querySelector<HTMLElement>(".tip-desc")!.innerText = getL10n("pkmnDesc", elementGroup[i].dataset.for);
     for (let j of [0, 1]) {
         if (!stats.type[j]) {
@@ -880,25 +1191,30 @@ function addTooltip(elementGroup: NodeListOf<HTMLElement>, i: number, player = p
             "type-rock",
             "type-water");
         tooltip.querySelectorAll(".type-text")[j].classList.add("type-" + stats.type[j]);
-        (tooltip.querySelectorAll(".type-img")[j] as HTMLImageElement).src = "types/" + stats.type[j] + ".png";
+        (tooltip.querySelectorAll(".type-img")[j] as HTMLImageElement).src = `${$("space")}types/` + stats.type[j] + ".png";
     }
     let actualPlayer = Number(viewpoint != player);
     insertEffects(battleInfo[actualPlayer].build[i], tooltip.querySelector(".tip-status") as HTMLDivElement, true);
     for (let j = 0; j < 4; j++) {
         let totalPp = getMoveStats(Object.keys(battleInfo[actualPlayer].build[i].moves)[j])?.pp;
-        let ppRemaining = Object.values(battleInfo[actualPlayer].build[i].moves)[j];
-        if (Object.keys(battleInfo[actualPlayer].build[i].moves)[j] && ((actualPlayer != playerToMove && ppRemaining < (totalPp as number)) ||
-            (actualPlayer == playerToMove))) {
-            tooltip.querySelectorAll<HTMLElement>(".move-name")[j].innerText = getL10n("moves", Object.keys(battleInfo[actualPlayer]
-                .build[i].moves)[j]);
-            tooltip.querySelectorAll<HTMLElement>(".pp-remaining")[j].innerText = ppRemaining.toString();
-            tooltip.querySelectorAll<HTMLElement>(".pp .sub")[j].innerText = "/" + totalPp;
-            if (Object.values(battleInfo[actualPlayer].build[i].moves)[j] == getMoveStats(Object
-                .keys(battleInfo[actualPlayer].build[i].moves)[j])!.pp) tooltip.querySelectorAll(".move-name")[j].classList
-                    .add("unknown");
-            else tooltip.querySelectorAll(".move-name")[j].classList.remove("unknown");
-        } else if (actualPlayer == playerToMove) addGrayMove(tooltip, j, "empty", 0, "/0");
-        else addGrayMove(tooltip, j, "unknownMove", "?", "/?");
+        $("pokemon", () => {
+            let ppRemaining = Object.values(battleInfo[actualPlayer].build[i].moves)[j];
+            if (Object.keys(battleInfo[actualPlayer].build[i].moves)[j] && ((actualPlayer != playerToMove && ppRemaining < (totalPp as number)) ||
+                (actualPlayer == playerToMove))) {
+                tooltip.querySelectorAll<HTMLElement>(".move-name")[j].innerText = getL10n("moves", Object.keys(battleInfo[actualPlayer]
+                    .build[i].moves)[j]);
+                tooltip.querySelectorAll<HTMLElement>(".pp-remaining")[j].innerText = ppRemaining.toString();
+                tooltip.querySelectorAll<HTMLElement>(".pp .sub")[j].innerText = "/" + totalPp;
+                if (Object.values(battleInfo[actualPlayer].build[i].moves)[j] == getMoveStats(Object
+                    .keys(battleInfo[actualPlayer].build[i].moves)[j])!.pp) tooltip.querySelectorAll(".move-name")[j].classList
+                        .add("unknown");
+                else tooltip.querySelectorAll(".move-name")[j].classList.remove("unknown");
+            } else if (actualPlayer == playerToMove) addGrayMove(tooltip, j, "empty", 0, "/0");
+            else addGrayMove(tooltip, j, "unknownMove", "?", "/?");
+        });
+        $("roco kingdom", () => {
+
+        });
     }
     tooltip.querySelector<HTMLElement>(".hp-remaining")!.innerText = (battleInfo[actualPlayer].build[i].hp / battleInfo[actualPlayer]
         .build[i].maxHp * 100).toFixed(0) + "%";
@@ -916,26 +1232,6 @@ function addGrayMove(tooltip: HTMLDivElement, j: number, textKey: string, ppRema
     tooltip.querySelectorAll<HTMLElement>(".pp-remaining")[j].innerText = ppRemaining.toString();
     tooltip.querySelectorAll<HTMLElement>(".pp .sub")[j].innerText = subText;
     tooltip.querySelectorAll(".move-name")[j].classList.add("unknown");
-}
-const TOOLTIP_PLAYER: {
-    [key: string]: any;
-} = {
-    ".decisionSwitch": undefined,
-    "#p1Balls .ball": 0,
-    "#p2Balls .ball": 1
-};
-for (let i = 0; i < 6; i++) {
-    document.querySelectorAll(".decisionSwitch")[i].addEventListener("click", function () {
-        switchPkmn(document.querySelectorAll<HTMLElement>(".decisionSwitch")[i].dataset.for as string);
-    });
-    for (let j in TOOLTIP_PLAYER) {
-        document.querySelectorAll(j)[i].addEventListener("mouseover", function () {
-            addTooltip(document.querySelectorAll(j), i, TOOLTIP_PLAYER[j]);
-        });
-        document.querySelectorAll(j)[i].addEventListener("mouseout", function () {
-            document.querySelectorAll(j)[i].parentElement!.querySelector(".tooltip")?.classList.remove("show");
-        });
-    }
 }
 function insertEffects(pkmn: MonInstance, outputArea: HTMLDivElement, showFull: boolean) {
     outputArea.innerHTML = "";
@@ -982,7 +1278,6 @@ function switchPkmn(name: string) {
         decisionNextPlayer();
     }
 }
-let isNewTurn = false;
 function dealDmg(isSelf: boolean, dmg: number, additionalParam?: { [key: string]: any; }) {
     let roundedDmg = Math.max(1, Math.floor(dmg));
     if (additionalParam?.opposingSubstitute && getPkmn(!isSelf).substituteHp > 0) {
@@ -1016,113 +1311,6 @@ function dealDmg(isSelf: boolean, dmg: number, additionalParam?: { [key: string]
         });
     }
 }
-let nextPlayerEffect: {
-    "name": string,
-    "condition": () => boolean,
-    "effect": Function,
-    exclude?: string;
-}[] = [{
-    "name": "delay",
-    "condition": function () { return true; },
-    "effect": function () {
-        for (let i = 0; i < getPkmn(true).delay.length; i++) {
-            if (getPkmn(true).delay[i].turns > 0) getPkmn(true).delay[i].turns--;
-            else {
-                getPkmn(true).delay[i].effect();
-                getPkmn(true).delay.splice(i, 1);
-                i--;
-            }
-        }
-    }
-}, {
-    "name": "disable",
-    "condition": function () { return true; },
-    "effect": function () {
-        if (getPkmn(true).disable.turns > 0) getPkmn(true).disable.turns--;
-        else getPkmn(true).disable.move = "";
-    }
-}, {
-    "name": "par",
-    "condition": function () { return getPkmn(true).status == "par" && Math.random() < 1 / 4; },
-    "effect": function () {
-        addMainText("others", "unableToMove", {
-            "pokemon": [getName(getPkmn(true), false, true)],
-            "isEnemy": playerToMove != viewpoint
-        });
-        return { "continue": true };
-    }
-}, {
-    "name": "frz",
-    "condition": function () { return getPkmn(true).status == "frz"; },
-    "exclude": "par",
-    "effect": function () {
-        addMainText("others", "frozenSolid", {
-            "pokemon": [getName(getPkmn(true), false, true)],
-            "isEnemy": playerToMove != viewpoint
-        });
-        return { "continue": true };
-    }
-}, {
-    "name": "charge",
-    "condition": function () { return getPkmn(true).charge.turns > 0; },
-    "exclude": "frz",
-    "effect": function () {
-        getPkmn(true).charge.turns--;
-        if (getPkmn(true).charge.move && getPkmn(true).charge.turns == 0 && getPkmn(true).charge.move) {
-            attack(getPkmn(true).charge.move);
-            getPkmn(true).charge.move = "";
-        } else {
-            return { "continue": true };
-        }
-    }
-}, {
-    "name": "uncontrollable",
-    "condition": function () { return getPkmn(true).uncontrollable.turns > 0; },
-    "exclude": "charge",
-    "effect": function () {
-        getPkmn(true).uncontrollable.turns--;
-        if (getPkmn(true).uncontrollable.move && getPkmn(true).uncontrollable.turns == 0) {
-            getPkmn(true).uncontrollable.move = "";
-        }
-    }
-}, {
-    "name": "slp",
-    "condition": function () { return getPkmn(true).status == "slp"; },
-    "exclude": "uncontrollable",
-    "effect": function () {
-        getPkmn(true).sleepTurns--;
-        if (getPkmn(true).sleepTurns > 0) {
-            addMainText("others", "fastAsleep", {
-                "pokemon": [getName(getPkmn(true), false, true)],
-                "isEnemy": playerToMove != viewpoint
-            });
-        } else if (getPkmn(true).sleepTurns == 0) {
-            addSmallText("others", "wakeUp", {
-                "pokemon": [getName(getPkmn(true), false, true)],
-                "isEnemy": playerToMove != viewpoint
-            });
-            getPkmn(true).status = "";
-        }
-        return { "continue": true };
-    }
-}, {
-    "name": "confused",
-    "condition": function () { return getPkmn(true).tempEffect.confused > 0; },
-    "exclude": "slp",
-    "effect": function () {
-        addSmallText("others", "confused", {
-            "pokemon": [getName(getPkmn(true), false, true)],
-            "isEnemy": ((viewpoint == -1) ? false : (playerToMove != viewpoint))
-        });
-        //getPkmn(true).tempEffect.confused--;
-        if (Math.random() < 0.5) {
-            dealDmg(true, calculateDmg(40, getAttack(true), getDefense(true, true), getPkmn(true).lv, "",
-                getType(true), getType(true)), { opposingSubstitute: true });
-            addMainText("others", "hurtConfusion");
-            return { "continue": true };//!
-        }
-    }
-}];
 function nextPlayer(player: number) {
     playerToMove = player;
     let matchedConditions = [];
@@ -1278,12 +1466,9 @@ function nextTurn() {
     judgeHP();
     endTurn();
 }
-
-let lastSelfKoMoveUser = -1;
 function setLastSelfKoMoveUser(user: number) {
     lastSelfKoMoveUser = user;
 }
-
 function endTurn() {
     let allFaint = [true, true], winner = -1;
     for (let i of [0, 1]) for (let j of battleInfo[i].build) if (j.hp > 0) allFaint[i] = false;
@@ -1316,13 +1501,13 @@ function endTurn() {
     }
     refreshSequence();
 }
-function getStats(name: string): Pkmn | void {
-    for (let i of POKEMON) {
+function getStats(name: string): Mon | void {
+    for (let i of $("mons")) {
         if (i.name == name) return i;
     }
 }
 function getMoveStats(name: string) {
-    for (let i of MOVES) {
+    for (let i of $("moves")) {
         if (i.name == name) return i;
     }
 }
@@ -1334,7 +1519,7 @@ function getType(isSelf: boolean) {
     if (getPkmn(isSelf).tempType.length) return getPkmn(isSelf).tempType;
     else return getStats(getPkmn(isSelf).name)!.type;
 }
-function getName(pkmn: Mon | MonInstance, showSpeciesName: boolean, returnArr?: boolean) {
+function getName(pkmn: BuildMon | MonInstance, showSpeciesName: boolean, returnArr?: boolean) {
     let arr: [
         type: string,
         str: string,
@@ -1354,7 +1539,7 @@ function getName(pkmn: Mon | MonInstance, showSpeciesName: boolean, returnArr?: 
     else return getL10n(...arr);
 }
 function attack(move: string) {
-    for (let k of MOVES) if (k.name == move) {
+    for (let k of $("moves")) if (k.name == move) {
         let criticalHitRatioMultiplier = 1;
         let preCritEffect;
         let substitutePreDmg = (getPkmn(false).substituteHp > 0);
@@ -1400,16 +1585,6 @@ function attack(move: string) {
         return effect;
     }
 }
-let attacks: ({
-    "user": number,
-    "type": "move",
-    "move": string,
-    dirAttack?: boolean;
-} | {
-    "user": number,
-    "type": "switch",
-    "pkmn": string;
-})[] = [];
 function refreshPlayerToMove(ptm: number) {
     playerToMove = ptm;
     document.getElementById("playerToMove")!.innerText = getL10n("ui", "playerTurn", {
@@ -1423,57 +1598,6 @@ function decisionNextPlayer() {
     } else {
         nextTurn();
     }
-}
-for (let i = 0; i < 4; i++) {
-    let decisionMove = document.querySelectorAll<HTMLElement>(".decisionMove");
-    decisionMove[i].addEventListener("click", function () {
-        makeMove(decisionMove[i].dataset.for as string);
-    });
-    decisionMove[i].addEventListener("mouseover", function () {
-        let decisionMoveFor: string = decisionMove[i].dataset.for as string;
-        if (!getMoveStats(decisionMoveFor)) return;
-        let tooltipMove: HTMLDivElement;
-        if (!decisionMove[i].parentElement!.querySelector(".tooltip-move")) {
-            tooltipMove = document.querySelector(".tooltip-move")!.cloneNode(true) as HTMLDivElement;
-            decisionMove[i].parentElement!.insertBefore(tooltipMove, document.getElementsByClassName("decisionMove")[i]);
-        }
-        tooltipMove = decisionMove[i].parentElement!.querySelector(".tooltip-move") as HTMLDivElement;
-        tooltipMove.querySelector<HTMLElement>(".tip-name")!.innerText = getL10n("moves", decisionMoveFor);
-        let moveStats: PkmnMove = getMoveStats(decisionMoveFor) as PkmnMove;
-        tooltipMove.querySelector<HTMLElement>(".tip-cat")!.innerText = getL10n("cat", moveStats.cat).toUpperCase();
-        tooltipMove.querySelector<HTMLElement>(".tip-cat")!.classList.remove("cat-physical", "cat-special", "cat-status");
-        tooltipMove.querySelector<HTMLElement>(".tip-cat")!.classList.add("cat-" + moveStats.cat);
-        tooltipMove.querySelector<HTMLElement>(".tip-desc")!.innerText = getL10n("moveDesc", decisionMoveFor);
-        tooltipMove.querySelector<HTMLElement>(".type-text")!.innerText = getL10n("types", moveStats.type).toUpperCase();
-        tooltipMove.querySelector(".type-text")!.classList.remove(
-            "type-bug",
-            "type-dragon",
-            "type-electric",
-            "type-fighting",
-            "type-fire",
-            "type-flying",
-            "type-ghost",
-            "type-grass",
-            "type-ground",
-            "type-ice",
-            "type-normal",
-            "type-poison",
-            "type-psychic",
-            "type-rock",
-            "type-water");
-        tooltipMove.querySelector(".type-text")!.classList.add("type-" + moveStats.type);
-        tooltipMove.querySelector<HTMLElement>(".tip-pow")!.innerText = moveStats.power.toString();
-        tooltipMove.querySelector<HTMLElement>(".tip-priority")!.innerText = moveStats.priority.toString();
-        tooltipMove.querySelector<HTMLElement>(".tip-pp .main")!.innerText = decisionMove[i]
-            .querySelector<HTMLElement>(".pp-remaining")!.innerText;
-        tooltipMove.querySelector<HTMLElement>(".tip-pp .sub")!.innerText = "/" + moveStats.pp;
-        tooltipMove.querySelector<HTMLElement>(".tip-acc")!.innerText = (moveStats.acc == Infinity) ? "∞" : moveStats.acc + "%";
-        tooltipMove.querySelector<HTMLImageElement>(".type-img")!.src = "types/" + moveStats.type + ".png";
-        tooltipMove.classList.add("show");
-    });
-    decisionMove[i].addEventListener("mouseout", function () {
-        decisionMove[i].parentElement!.querySelector(".tooltip-move")?.classList.remove("show");
-    });
 }
 function makeMove(name: string) {
     if (getPkmn(true).uncontrollable.turns > 0) {
@@ -1532,40 +1656,6 @@ function judgeHP() {
         });
     }
 }
-const STAGE_MULTIPLIER: {
-    [key: string | number]: number;
-} = {
-    "-6": 2 / 8,
-    "-5": 2 / 7,
-    "-4": 2 / 6,
-    "-3": 2 / 5,
-    "-2": 2 / 4,
-    "-1": 2 / 3,
-    "0": 1,
-    "1": 3 / 2,
-    "2": 4 / 2,
-    "3": 5 / 2,
-    "4": 6 / 2,
-    "5": 7 / 2,
-    "6": 8 / 2
-};
-const ACC_STAGE_MULTIPLIER: {
-    [key: string | number]: number;
-} = {
-    "-6": 9 / 3,
-    "-5": 8 / 3,
-    "-4": 7 / 3,
-    "-3": 6 / 3,
-    "-2": 5 / 3,
-    "-1": 4 / 3,
-    "0": 1,
-    "1": 3 / 4,
-    "2": 3 / 5,
-    "3": 3 / 6,
-    "4": 3 / 7,
-    "5": 3 / 8,
-    "6": 3 / 9
-};
 function renderHP(info = battleInfo) {
     for (let i of [0, 1]) {
         if (info[Number(i != viewpoint)].currentPokemon == -1) {
@@ -1599,9 +1689,9 @@ function refreshBalls(info: BattleInfo) {
     for (let i of [0, 1]) for (let j = 0; j < 6; j++) {
         let ballElement: HTMLDivElement = document.getElementById("p" + (i + 1) + "Ball" + (j + 1)) as HTMLDivElement;
         if (info[Number(i != viewpoint)].build[j].revealed && !settings.hardcoreMode) {
-            ballElement.style.backgroundImage = "url(pokemonicons-sheet.png)";
-            ballElement.style.backgroundPosition = (-(ICONS[info[Number(i != viewpoint)].build[j]
-                .name].cell - 1) * 40) + "px " + (-(ICONS[info[Number(i != viewpoint)].build[j].name].row - 1) * 30) + "px";
+            ballElement.style.backgroundImage = `url(${$("iconLocation")})`;
+            ballElement.style.backgroundPosition = (-($("icons")[info[Number(i != viewpoint)].build[j]
+                .name].cell - 1) * 40) + "px " + (-($("icons")[info[Number(i != viewpoint)].build[j].name].row - 1) * 30) + "px";
             ballElement.dataset.for = info[Number(i != viewpoint)].build[j].name;
         } else {
             ballElement.style.backgroundImage = "url(pokemonicons-pokeball-sheet.png)";
@@ -1629,23 +1719,6 @@ function renderTable() {
     if (checkBuildValidity()) (document.getElementById("startGame") as HTMLButtonElement).disabled = false;
     else (document.getElementById("startGame") as HTMLButtonElement).disabled = true;
 }
-renderTable();
-for (let i of document.getElementsByClassName("tab") as HTMLCollectionOf<HTMLButtonElement>) {
-    i.addEventListener("click", function () {
-        document.querySelector(".tab.tab-selected")!.classList.remove("tab-selected");
-        i.classList.add("tab-selected");
-        document.querySelector(".tab-content.tab-show")!.classList.remove("tab-show");
-        document.querySelector(".tab-content[data-for='" + i.dataset.for + "']")!.classList.add("tab-show");
-    });
-}
-const STAT_NAMES = {
-    "def": "Defense",
-    "atk": "Attack",
-    "sp": "Special",
-    "spe": "Speed",
-    "eva": "Evasion",
-    "acc": "Accuracy"
-};
 function modifyStats(isSelf: boolean, stat: string, delta: number, prob: number) {
     if (getPkmn(isSelf).tempEffect.mist > 0 && delta < 0) return;
     let rand = Math.random();
@@ -1663,15 +1736,6 @@ function modifyStats(isSelf: boolean, stat: string, delta: number, prob: number)
         });
     }
 }
-const SMALL_TEXT_KEY: {
-    [key: string]: string;
-} = {
-    "par": "paralyzed",
-    "frz": "frozenSolid",
-    "psn": "poisoned",
-    "tox": "badlyPoisoned",
-    "brn": "burn"
-};
 function modifyStatus(status: string, prob: number) {
     if ((getStats(getPkmn(false).name)!.type.includes("poison") && (status == "tox" || status == "psn"))
         || (getStats(getPkmn(false).name)!.type.includes("fire") && status == "brn")
@@ -1725,50 +1789,10 @@ function addTempEffect(isSelf: boolean, effect: string, turns: number, prob: num
         });
     }
 }
-document.getElementById("forfeit")!.addEventListener("click", function () {
-    addSmallText("others", "forfeit", {
-        "player": [battleInfo[playerToMove].name]
-    });
-    addMainText("others", "winBattle", {
-        "player": [battleInfo[Number(!playerToMove)].name]
-    });
-    refreshSequence();
-});
-document.getElementById("viewpoint")!.addEventListener("click", function () {
-    viewpoint = Number(!viewpoint);
-    renderFull((record[recordPosition].refresh) ? record[recordPosition].refresh : getNearestRefresh(record, recordPosition));
-    for (let i of document.querySelectorAll<HTMLDivElement | HTMLHeadingElement>("[data-content]")) {
-        let arr = JSON.parse(i.dataset.content as string);
-        if (arr[2] && Object.keys(arr[2]).includes("isEnemy")) arr[2].isEnemy = !arr[2].isEnemy;
-        i.dataset.content = JSON.stringify(arr);
-        i.innerHTML = getSequenceL10n(arr);
-    }
-    document.getElementById("viewpoint")!.innerText = getL10n("ui", "viewpoint", {
-        "player": [battleInfo[viewpoint].name]
-    });
-});
 function refreshLang() {
     for (let i of document.querySelectorAll<HTMLElement>("[data-transl-cat]")) {
         i.innerHTML = TRANSLATION[settings.lang][i.dataset.translCat as string][i.dataset.translKey as string];
     }
-}
-refreshLang();
-for (let i of document.querySelectorAll<HTMLInputElement | HTMLSelectElement>("[data-settings]")) {
-    let datasetSettings = i.dataset.settings as string;
-    if (i.tagName.toLowerCase() == "select") i.value = settings[datasetSettings];
-    else if (i.tagName.toLowerCase() == "input" && i.type == "range") {
-        i.value = settings[datasetSettings];
-        refreshRange(i);
-    }
-    else (i as HTMLInputElement).checked = settings[datasetSettings];
-    i.addEventListener("change", function () {
-        if (i.tagName.toLowerCase() == "select") settings[datasetSettings] = i.value;
-        else if (i.tagName.toLowerCase() == "input" && i.type == "range") settings[datasetSettings] = Math.floor(Number(i.value));
-        else settings[datasetSettings] = (i as HTMLInputElement).checked;
-        localStorage.setItem("mechamonSettings", JSON.stringify(settings));
-        applySetting(datasetSettings);
-    });
-    applySetting(datasetSettings);
 }
 function applySetting(key: string) {
     switch (key) {
@@ -1810,9 +1834,6 @@ function applySetting(key: string) {
             else for (let i of document.querySelectorAll("[data-tag='omiega']")) i.classList.add("hide");
     }
 }
-for (let i of document.querySelectorAll(".nick") as NodeListOf<HTMLDivElement>) i.addEventListener("blur", function () {
-    players[Number(i.dataset.player) - 1].build[Number(i.dataset.no) - 1].nick = i.innerText;
-});
 function addUpdateValueListener(name: string, min: number, max: number) {
     for (let i of document.querySelectorAll("." + name) as NodeListOf<HTMLElement>) i.addEventListener("blur", function () {
         if (Number.isNaN(Number(i.innerText))) {
@@ -1827,36 +1848,6 @@ function addUpdateValueListener(name: string, min: number, max: number) {
         players[Number(i.dataset.player) - 1].build[Number(i.dataset.no) - 1][name] = Number(i.innerText);
     });
 }
-addUpdateValueListener("lv", 1, 100);
-addUpdateValueListener("ev", 0, 252);
-addUpdateValueListener("dv", 0, 15);
-document.addEventListener("keypress", function (e) {
-    if (settings.keyboardControls) {
-        if (e.key == "1" || e.key == "2" || e.key == "3" || e.key == "4") document.querySelectorAll<HTMLButtonElement>(".decisionMove")[Number(e
-            .key) - 1].click();
-        else {
-            let keys = ["z", "x", "c", "v", "b", "n"];
-            if (keys.includes(e.key.toLowerCase())) document.querySelectorAll<HTMLButtonElement>(".decisionSwitch")[keys.indexOf(e.key
-                .toLowerCase())].click();
-        }
-    }
-});
-document.getElementById("navFirst")!.addEventListener("click", function () {
-    recordPosition = 0;
-    navigationRefresh();
-});
-document.getElementById("navPrev")!.addEventListener("click", function () {
-    if (recordPosition != 0) recordPosition--;
-    navigationRefresh();
-});
-document.getElementById("navNext")!.addEventListener("click", function () {
-    if (recordPosition != record.length - 1) recordPosition++;
-    navigationRefresh();
-});
-document.getElementById("navLast")!.addEventListener("click", function () {
-    recordPosition = record.length - 1;
-    navigationRefresh();
-});
 function navigationRefresh() {
     renderFull((record[recordPosition].refresh) ? record[recordPosition].refresh : getNearestRefresh(record, recordPosition));
     document.getElementById("currentStep")!.innerText = (recordPosition + 1).toString();
@@ -1916,29 +1907,14 @@ function insertText(recordItem: RecordItem, insertRecordContent: boolean, step =
         if (insertRecordContent) insertElementWithClass("h2", recordItem, "recordContent", ["turn-number"], step);
     }
 }
-function getImagePosition() {
-
-}
 function closePage() {
     document.getElementById("dialogOuter")!.classList.remove("show");
 }
-document.getElementById("close")!.addEventListener("click", closePage);
-document.getElementById("dialogBg")!.addEventListener("click", closePage);
-document.getElementById("whatsNewButton")!.addEventListener("click", function () {
-    document.getElementById("dialogOuter")!.classList.add("show");
-});
 function refreshRange(element: HTMLInputElement) {
     element.style.backgroundImage =
         "linear-gradient(90deg, var(--theme) 0%, var(--theme) " + element.value + "%, lightgray " + element.value + "%)";
     element.parentNode!.querySelector(".range-value")!.innerHTML = Math.floor(Number(element.value)).toString();
     localStorage.setItem("mechamonSettings", JSON.stringify(settings));
-}
-for (let i of document.querySelectorAll<HTMLInputElement>("input[type='range']")) {
-    for (let j in cries) cries[j].volume = settings.sfxVolume / 100;
-    i.addEventListener("input", function () {
-        refreshRange(i);
-        for (let j in cries) cries[j].volume = settings.sfxVolume / 100;
-    });
 }
 function checkBuildValidity() {
     if (settings.speciesClause) {
@@ -1948,26 +1924,4 @@ function checkBuildValidity() {
     for (let l of Object.keys(MOVE_BAN_LIST)) if (settings[l]) for (let i of [0, 1]) for (let j = 0; j < 6; j++) for (let k of MOVE_BAN_LIST[l])
         if (players[i].build[j].moves.includes(k)) return false;
     return true;
-}
-for (let i of document.getElementsByClassName("clause-checkbox")) i.addEventListener("change", function () {
-    renderTable();
-});
-const THEME_CLASSNAMES: {
-    [key: string]: string;
-} = {
-    "pokemon": "theme-pokemon",
-    "coromon": "theme-coromon",
-    "roco kingdom": "theme-roco-kingdom"
-};
-for (let i of (document.querySelectorAll<HTMLDivElement>(".mode-btn"))) {
-    i.addEventListener("mouseover", function () {
-        for (let j in THEME_CLASSNAMES) document.body.classList.remove(THEME_CLASSNAMES[j]);
-        document.body.classList.add(THEME_CLASSNAMES[i.dataset.mode as string]);
-        document.querySelector(".mode-btn.selected")!.classList.remove("selected");
-        i.classList.add("selected");
-    });
-    i.addEventListener("click", function () {
-        settings.mode = i.dataset.mode;
-        document.getElementById("modeSelectBg")!.classList.remove("show");
-    });
 }

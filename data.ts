@@ -17,7 +17,7 @@ interface PkmnMove {
     "missEffect"?: Function;
     "preCritEffect"?: Function;
 };
-interface Pkmn {
+interface Pkmn extends Mon {
     "name": string,
     "type": PkmnType[],
     "hp": number,
@@ -5773,4 +5773,102 @@ const SOUNDS: {
         }
     },
     "roco kingdom": {}
+};
+const INIT_BUILD: Player[] = [{
+    "name": "Player 1",
+    "build": [{
+        "name": "geodude",
+        "moves": ["earthquake", "rock slide", "body slam", "explosion"],
+        "lv": 5,
+        "ev": 252,
+        "dv": 15,
+        "nick": ""
+    }, {
+        "name": "staryu",
+        "moves": ["surf", "thunderbolt", "blizzard", "thunder wave"],
+        "lv": 5,
+        "ev": 252,
+        "dv": 15,
+        "nick": ""
+    }, {
+        "name": "koffing",
+        "moves": ["sludge", "fire blast", "thunderbolt", "explosion"],
+        "lv": 5,
+        "ev": 252,
+        "dv": 15,
+        "nick": ""
+    }, {
+        "name": "tentacool",
+        "moves": ["surf", "blizzard", "mega drain", "hydro pump"],
+        "lv": 5,
+        "ev": 252,
+        "dv": 15,
+        "nick": ""
+    }, {
+        "name": "machop",
+        "moves": ["submission", "earthquake", "rock slide", "body slam"],
+        "lv": 5,
+        "ev": 252,
+        "dv": 15,
+        "nick": ""
+    }, {
+        "name": "eevee",
+        "moves": ["substitute", "reflect", "body slam", "double-edge"],
+        "lv": 5,
+        "ev": 252,
+        "dv": 15,
+        "nick": ""
+    }]
+}, {
+    "name": "Player 2",
+    "build": [{
+        "name": "eevee",
+        "moves": ["rage", "body slam", "double-edge", "quick attack"],
+        "lv": 5,
+        "ev": 252,
+        "dv": 15,
+        "nick": ""
+    }, {
+        "name": "vulpix",
+        "moves": ["flamethrower", "body slam", "confuse ray", "substitute"],
+        "lv": 5,
+        "ev": 252,
+        "dv": 15,
+        "nick": ""
+    }, {
+        "name": "ponyta",
+        "moves": ["toxic", "agility", "fire blast", "body slam"],
+        "lv": 5,
+        "ev": 252,
+        "dv": 15,
+        "nick": ""
+    }, {
+        "name": "growlithe",
+        "moves": ["agility", "body slam", "fire blast", "double-edge"],
+        "lv": 5,
+        "ev": 252,
+        "dv": 15,
+        "nick": ""
+    }, {
+        "name": "psyduck",
+        "moves": ["surf", "mega kick", "blizzard", "rage"],
+        "lv": 5,
+        "ev": 252,
+        "dv": 15,
+        "nick": ""
+    }, {
+        "name": "poliwag",
+        "moves": ["hypnosis", "amnesia", "surf", "psychic"],
+        "lv": 5,
+        "ev": 252,
+        "dv": 15,
+        "nick": ""
+    }]
+}];
+const MULTIPLIER_MODIFIER: MultiplierMod = {
+    4: 4,
+    2: 2,
+    1: 1,
+    0.5: 0.5,
+    0.25: 0.25
 };

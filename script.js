@@ -3,133 +3,104 @@ const FEATURES = {
     "pokemon": [],
     "rk": []
 };
-const PKMN_INIT_BUILD = [{
-        "name": "Player 1",
-        "build": [{
-                "name": "geodude",
-                "moves": ["earthquake", "rock slide", "body slam", "explosion"],
-                "lv": 5,
-                "ev": 252,
-                "dv": 15,
-                "nick": ""
-            }, {
-                "name": "staryu",
-                "moves": ["surf", "thunderbolt", "blizzard", "thunder wave"],
-                "lv": 5,
-                "ev": 252,
-                "dv": 15,
-                "nick": ""
-            }, {
-                "name": "koffing",
-                "moves": ["sludge", "fire blast", "thunderbolt", "explosion"],
-                "lv": 5,
-                "ev": 252,
-                "dv": 15,
-                "nick": ""
-            }, {
-                "name": "tentacool",
-                "moves": ["surf", "blizzard", "mega drain", "hydro pump"],
-                "lv": 5,
-                "ev": 252,
-                "dv": 15,
-                "nick": ""
-            }, {
-                "name": "machop",
-                "moves": ["submission", "earthquake", "rock slide", "body slam"],
-                "lv": 5,
-                "ev": 252,
-                "dv": 15,
-                "nick": ""
-            }, {
-                "name": "eevee",
-                "moves": ["substitute", "reflect", "body slam", "double-edge"],
-                "lv": 5,
-                "ev": 252,
-                "dv": 15,
-                "nick": ""
-            }]
-    }, {
-        "name": "Player 2",
-        "build": [{
-                "name": "eevee",
-                "moves": ["rage", "body slam", "double-edge", "quick attack"],
-                "lv": 5,
-                "ev": 252,
-                "dv": 15,
-                "nick": ""
-            }, {
-                "name": "vulpix",
-                "moves": ["flamethrower", "body slam", "confuse ray", "substitute"],
-                "lv": 5,
-                "ev": 252,
-                "dv": 15,
-                "nick": ""
-            }, {
-                "name": "ponyta",
-                "moves": ["toxic", "agility", "fire blast", "body slam"],
-                "lv": 5,
-                "ev": 252,
-                "dv": 15,
-                "nick": ""
-            }, {
-                "name": "growlithe",
-                "moves": ["agility", "body slam", "fire blast", "double-edge"],
-                "lv": 5,
-                "ev": 252,
-                "dv": 15,
-                "nick": ""
-            }, {
-                "name": "psyduck",
-                "moves": ["surf", "mega kick", "blizzard", "rage"],
-                "lv": 5,
-                "ev": 252,
-                "dv": 15,
-                "nick": ""
-            }, {
-                "name": "poliwag",
-                "moves": ["hypnosis", "amnesia", "surf", "psychic"],
-                "lv": 5,
-                "ev": 252,
-                "dv": 15,
-                "nick": ""
-            }]
-    }];
 const POOLS = {
     "pokemon": {
+        "space": "",
         "mons": POKEMON,
         "moves": MOVES,
         "multiplier": MULTIPLIER,
-        "multiplierMod": {},
+        "multiplierMod": MULTIPLIER_MODIFIER,
         "icons": ICONS,
-        "iconLocation": "pokemonicons-sheet.png"
+        "iconLocation": "pokemonicons-sheet.png",
+        "initBuild": INIT_BUILD,
+        "cryLocation": "cry",
+        "transl": TRANSLATION
     },
     "coromon": {
+        "space": "coromon/",
         "mons": [],
         "moves": [],
         "multiplier": [],
         "multiplierMod": {},
         "icons": {},
-        "iconLocation": "roco kingdom/iconsheet.png"
+        "iconLocation": "roco kingdom/iconsheet.png",
+        "initBuild": [],
+        "cryLocation": "",
+        "transl": []
     },
     "roco kingdom": {
+        "space": "roco kingdom/",
         "mons": RK_PETS,
         "moves": RK_SKILLS,
         "multiplier": RK_MULTIPLIER,
         "multiplierMod": RK_MULTIPLIER_MODIFIER,
         "icons": RK_ICONS,
-        "iconLocation": "roco kingdom/iconsheet.png"
+        "iconLocation": "roco kingdom/iconsheet.png",
+        "initBuild": RK_INIT_BUILD,
+        "cryLocation": "roco kingdom/cry",
+        "transl": RK_TRANSLATION
     }
 };
-function $(...args) {
-    if (args.length > 1) {
-        for (let i = 0; i < args.length - 1; i++)
-            if (args[i] == settings.mode)
-                args[args.length - 1]();
-    }
-    else {
-        return POOLS[settings.mode][args[0]];
-    }
-}
+const BGM_SETTINGS = {
+    "pokemon": "backgroundMusic",
+    "coromon": "coromonBgm",
+    "roco kingdom": "rocoKingdomBgm"
+};
+const TOOLTIP_PLAYER = {
+    ".decisionSwitch": undefined,
+    "#p1Balls .ball": 0,
+    "#p2Balls .ball": 1
+};
+const STAGE_MULTIPLIER = {
+    "-6": 2 / 8,
+    "-5": 2 / 7,
+    "-4": 2 / 6,
+    "-3": 2 / 5,
+    "-2": 2 / 4,
+    "-1": 2 / 3,
+    "0": 1,
+    "1": 3 / 2,
+    "2": 4 / 2,
+    "3": 5 / 2,
+    "4": 6 / 2,
+    "5": 7 / 2,
+    "6": 8 / 2
+};
+const ACC_STAGE_MULTIPLIER = {
+    "-6": 9 / 3,
+    "-5": 8 / 3,
+    "-4": 7 / 3,
+    "-3": 6 / 3,
+    "-2": 5 / 3,
+    "-1": 4 / 3,
+    "0": 1,
+    "1": 3 / 4,
+    "2": 3 / 5,
+    "3": 3 / 6,
+    "4": 3 / 7,
+    "5": 3 / 8,
+    "6": 3 / 9
+};
+const STAT_NAMES = {
+    "def": "Defense",
+    "atk": "Attack",
+    "sp": "Special",
+    "spe": "Speed",
+    "eva": "Evasion",
+    "acc": "Accuracy"
+};
+const SMALL_TEXT_KEY = {
+    "par": "paralyzed",
+    "frz": "frozenSolid",
+    "psn": "poisoned",
+    "tox": "badlyPoisoned",
+    "brn": "burn"
+};
+const THEME_CLASSNAMES = {
+    "pokemon": "theme-pokemon",
+    "coromon": "theme-coromon",
+    "roco kingdom": "theme-roco-kingdom"
+};
 let settings = {
     "lang": "zh",
     "mode": "pokemon",
@@ -167,6 +138,7 @@ const MOVE_BAN_LIST = {
     "ohkoClause": ["fissure", "horn drill", "guillotine", "sheer cold"],
     "evasionClause": ["double team", "minimize"]
 };
+let players;
 if (localStorage.getItem("mechamonSettings")) {
     let tempSettings = JSON.parse(localStorage.getItem("mechamonSettings"));
     tempSettings.whatsNew = settings.whatsNew;
@@ -182,11 +154,6 @@ else {
     localStorage.setItem("mechamonSettings", JSON.stringify(settings));
 }
 document.querySelector("html").lang = settings.lang;
-let players = structuredClone(PKMN_INIT_BUILD);
-document.getElementById("p1Pokemon").style.backgroundImage = "url('back/" + players[0].build[0].name + ".png')";
-document.getElementById("p2Pokemon").style.backgroundImage = "url('front/" + players[1].build[0].name + ".png')";
-document.getElementById("p1Name").innerText = getL10n("pokemon", players[0].build[0].name);
-document.getElementById("p2Name").innerText = getL10n("pokemon", players[1].build[0].name);
 document.getElementById("turnNumber").innerText = getL10n("others", "turn", {
     "number": [0]
 });
@@ -197,7 +164,376 @@ document.getElementById("viewpoint").innerText = getL10n("ui", "viewpoint", {
     "player": ["Player 1"]
 });
 let record = [], recordPosition = 0, viewpoint = 0;
-function refreshRecord() {
+mergeTranslationData(TRANSLATION_OMIEGA, TRANSLATION);
+mergeIconData(ICONS_OMIEGA, ICONS);
+mergeMovePkmnData(MOVES_OMIEGA, MOVES, "omiega");
+mergeMovePkmnData(POKEMON_OMIEGA, POKEMON, "omiega");
+switchMode("pokemon");
+for (let i of document.getElementsByClassName("pkmnName")) {
+    i.addEventListener("click", function () {
+        document.querySelector(".pkmnName.selected")?.classList.remove("selected");
+        i.classList.add("selected");
+        document.querySelector(".list.show").classList.remove("show");
+        document.getElementById("pokemonList").classList.add("show");
+    });
+}
+for (let i of document.getElementsByClassName("move")) {
+    i.addEventListener("click", function () {
+        document.querySelector(".move.selected")?.classList.remove("selected");
+        i.classList.add("selected");
+        document.querySelector(".list.show").classList.remove("show");
+        for (let j of document.getElementById("movesListInner").childNodes) {
+            let selectedMove = document.querySelector(".move.selected");
+            if (getStats(players[Number(selectedMove.dataset.player) - 1].build[Number(selectedMove.dataset.no) - 1].name).moves.includes(j.dataset.for)) {
+                j.classList.remove("hide");
+            }
+            else
+                j.classList.add("hide");
+        }
+        document.getElementById("movesList").classList.add("show");
+    });
+}
+document.getElementById("clearMove").addEventListener("click", function () {
+    let selectedMove = document.querySelector(".move.selected");
+    players[Number(selectedMove.dataset.player) - 1].build[Number(selectedMove.dataset.no) - 1].moves[Number(selectedMove.dataset.moveNo) - 1] = "";
+    renderTable();
+    document.getElementById("movesList").classList.remove("show");
+    document.getElementById("setupTable").classList.add("show");
+});
+for (let i of document.querySelectorAll(".back"))
+    i.addEventListener("click", function () {
+        document.querySelector(".list.show").classList.remove("show");
+        document.getElementById("setupTable").classList.add("show");
+    });
+let turn = 0, playerToMove = 0, battleInfo = [];
+document.getElementById("startGame").addEventListener("click", function () {
+    if (settings[BGM_SETTINGS[settings.mode]] == "none") {
+        startGame();
+    }
+    else {
+        let intro = new Audio(SOUNDS[settings.mode][settings[BGM_SETTINGS[settings.mode]]].intro);
+        let loop = new Audio(SOUNDS[settings.mode][settings[BGM_SETTINGS[settings.mode]]].loop);
+        loop.loop = true;
+        let audioAvailable = 0;
+        function prepareAudio() {
+            audioAvailable++;
+            if (audioAvailable == 2) {
+                intro.play();
+                setTimeout(function () {
+                    loop.play();
+                }, intro.duration * 1000);
+                startGame();
+            }
+        }
+        intro.addEventListener("canplaythrough", function () {
+            prepareAudio();
+        });
+        loop.addEventListener("canplaythrough", function () {
+            prepareAudio();
+        });
+    }
+});
+let sequence = [], refreshSequenceIsRunning = false;
+document.getElementById("file").addEventListener("change", function () {
+    READER.readAsText(document.getElementById("file").files[0]);
+});
+const READER = new FileReader();
+READER.addEventListener("load", function () {
+    console.log(JSON.parse(READER.result));
+    /*record = */ readSimplifiedRecordJSON(READER.result);
+    for (let i = 0; i < record.length; i++)
+        insertText(record[i], true, i);
+    recordPosition = record.length - 1;
+    navigationRefresh();
+    battleInfo = (record[recordPosition].refresh) ? record[recordPosition].refresh : getNearestRefresh(record, recordPosition);
+});
+for (let i = 0; i < 6; i++) {
+    document.querySelectorAll(".decisionSwitch")[i].addEventListener("click", function () {
+        switchPkmn(document.querySelectorAll(".decisionSwitch")[i].dataset.for);
+    });
+    for (let j in TOOLTIP_PLAYER) {
+        document.querySelectorAll(j)[i].addEventListener("mouseover", function () {
+            addTooltip(document.querySelectorAll(j), i, TOOLTIP_PLAYER[j]);
+        });
+        document.querySelectorAll(j)[i].addEventListener("mouseout", function () {
+            document.querySelectorAll(j)[i].parentElement.querySelector(".tooltip")?.classList.remove("show");
+        });
+    }
+}
+let isNewTurn = false;
+let nextPlayerEffect = [{
+        "name": "delay",
+        "condition": function () { return true; },
+        "effect": function () {
+            for (let i = 0; i < getPkmn(true).delay.length; i++) {
+                if (getPkmn(true).delay[i].turns > 0)
+                    getPkmn(true).delay[i].turns--;
+                else {
+                    getPkmn(true).delay[i].effect();
+                    getPkmn(true).delay.splice(i, 1);
+                    i--;
+                }
+            }
+        }
+    }, {
+        "name": "disable",
+        "condition": function () { return true; },
+        "effect": function () {
+            if (getPkmn(true).disable.turns > 0)
+                getPkmn(true).disable.turns--;
+            else
+                getPkmn(true).disable.move = "";
+        }
+    }, {
+        "name": "par",
+        "condition": function () { return getPkmn(true).status == "par" && Math.random() < 1 / 4; },
+        "effect": function () {
+            addMainText("others", "unableToMove", {
+                "pokemon": [getName(getPkmn(true), false, true)],
+                "isEnemy": playerToMove != viewpoint
+            });
+            return { "continue": true };
+        }
+    }, {
+        "name": "frz",
+        "condition": function () { return getPkmn(true).status == "frz"; },
+        "exclude": "par",
+        "effect": function () {
+            addMainText("others", "frozenSolid", {
+                "pokemon": [getName(getPkmn(true), false, true)],
+                "isEnemy": playerToMove != viewpoint
+            });
+            return { "continue": true };
+        }
+    }, {
+        "name": "charge",
+        "condition": function () { return getPkmn(true).charge.turns > 0; },
+        "exclude": "frz",
+        "effect": function () {
+            getPkmn(true).charge.turns--;
+            if (getPkmn(true).charge.move && getPkmn(true).charge.turns == 0 && getPkmn(true).charge.move) {
+                attack(getPkmn(true).charge.move);
+                getPkmn(true).charge.move = "";
+            }
+            else {
+                return { "continue": true };
+            }
+        }
+    }, {
+        "name": "uncontrollable",
+        "condition": function () { return getPkmn(true).uncontrollable.turns > 0; },
+        "exclude": "charge",
+        "effect": function () {
+            getPkmn(true).uncontrollable.turns--;
+            if (getPkmn(true).uncontrollable.move && getPkmn(true).uncontrollable.turns == 0) {
+                getPkmn(true).uncontrollable.move = "";
+            }
+        }
+    }, {
+        "name": "slp",
+        "condition": function () { return getPkmn(true).status == "slp"; },
+        "exclude": "uncontrollable",
+        "effect": function () {
+            getPkmn(true).sleepTurns--;
+            if (getPkmn(true).sleepTurns > 0) {
+                addMainText("others", "fastAsleep", {
+                    "pokemon": [getName(getPkmn(true), false, true)],
+                    "isEnemy": playerToMove != viewpoint
+                });
+            }
+            else if (getPkmn(true).sleepTurns == 0) {
+                addSmallText("others", "wakeUp", {
+                    "pokemon": [getName(getPkmn(true), false, true)],
+                    "isEnemy": playerToMove != viewpoint
+                });
+                getPkmn(true).status = "";
+            }
+            return { "continue": true };
+        }
+    }, {
+        "name": "confused",
+        "condition": function () { return getPkmn(true).tempEffect.confused > 0; },
+        "exclude": "slp",
+        "effect": function () {
+            addSmallText("others", "confused", {
+                "pokemon": [getName(getPkmn(true), false, true)],
+                "isEnemy": ((viewpoint == -1) ? false : (playerToMove != viewpoint))
+            });
+            //getPkmn(true).tempEffect.confused--;
+            if (Math.random() < 0.5) {
+                dealDmg(true, calculateDmg(40, getAttack(true), getDefense(true, true), getPkmn(true).lv, "", getType(true), getType(true)), { opposingSubstitute: true });
+                addMainText("others", "hurtConfusion");
+                return { "continue": true }; //!
+            }
+        }
+    }];
+let lastSelfKoMoveUser = -1;
+let attacks = [];
+for (let i = 0; i < 4; i++) {
+    let decisionMove = document.querySelectorAll(".decisionMove");
+    decisionMove[i].addEventListener("click", function () {
+        makeMove(decisionMove[i].dataset.for);
+    });
+    decisionMove[i].addEventListener("mouseover", function () {
+        let decisionMoveFor = decisionMove[i].dataset.for;
+        if (!getMoveStats(decisionMoveFor))
+            return;
+        let tooltipMove;
+        if (!decisionMove[i].parentElement.querySelector(".tooltip-move")) {
+            tooltipMove = document.querySelector(".tooltip-move").cloneNode(true);
+            decisionMove[i].parentElement.insertBefore(tooltipMove, document.getElementsByClassName("decisionMove")[i]);
+        }
+        tooltipMove = decisionMove[i].parentElement.querySelector(".tooltip-move");
+        tooltipMove.querySelector(".tip-name").innerText = getL10n("moves", decisionMoveFor);
+        let moveStats = getMoveStats(decisionMoveFor);
+        tooltipMove.querySelector(".tip-cat").innerText = getL10n("cat", moveStats.cat).toUpperCase();
+        tooltipMove.querySelector(".tip-cat").classList.remove("cat-physical", "cat-special", "cat-status");
+        tooltipMove.querySelector(".tip-cat").classList.add("cat-" + moveStats.cat);
+        tooltipMove.querySelector(".tip-desc").innerText = getL10n("moveDesc", decisionMoveFor);
+        tooltipMove.querySelector(".type-text").innerText = getL10n("types", moveStats.type).toUpperCase();
+        tooltipMove.querySelector(".type-text").classList.remove("type-bug", "type-dragon", "type-electric", "type-fighting", "type-fire", "type-flying", "type-ghost", "type-grass", "type-ground", "type-ice", "type-normal", "type-poison", "type-psychic", "type-rock", "type-water");
+        tooltipMove.querySelector(".type-text").classList.add("type-" + moveStats.type);
+        tooltipMove.querySelector(".tip-pow").innerText = moveStats.power.toString();
+        $("pokemon", () => {
+            tooltipMove.querySelector(".tip-priority").innerText = moveStats.priority.toString();
+            tooltipMove.querySelector(".tip-pp .main").innerText = decisionMove[i]
+                .querySelector(".pp-remaining").innerText;
+            tooltipMove.querySelector(".tip-pp .sub").innerText = "/" + moveStats.pp;
+        });
+        $("pokemon", "coromon", () => {
+            tooltipMove.querySelector(".tip-acc").innerText = (moveStats.acc == Infinity) ? "∞" : moveStats.acc + "%";
+        });
+        tooltipMove.querySelector(".type-img").src = `${$("space")}types/` + moveStats.type + ".png";
+        tooltipMove.classList.add("show");
+    });
+    decisionMove[i].addEventListener("mouseout", function () {
+        decisionMove[i].parentElement.querySelector(".tooltip-move")?.classList.remove("show");
+    });
+}
+renderTable();
+for (let i of document.getElementsByClassName("tab")) {
+    i.addEventListener("click", function () {
+        document.querySelector(".tab.tab-selected").classList.remove("tab-selected");
+        i.classList.add("tab-selected");
+        document.querySelector(".tab-content.tab-show").classList.remove("tab-show");
+        document.querySelector(".tab-content[data-for='" + i.dataset.for + "']").classList.add("tab-show");
+    });
+}
+document.getElementById("forfeit").addEventListener("click", function () {
+    addSmallText("others", "forfeit", {
+        "player": [battleInfo[playerToMove].name]
+    });
+    addMainText("others", "winBattle", {
+        "player": [battleInfo[Number(!playerToMove)].name]
+    });
+    refreshSequence();
+});
+document.getElementById("viewpoint").addEventListener("click", function () {
+    viewpoint = Number(!viewpoint);
+    renderFull((record[recordPosition].refresh) ? record[recordPosition].refresh : getNearestRefresh(record, recordPosition));
+    for (let i of document.querySelectorAll("[data-content]")) {
+        let arr = JSON.parse(i.dataset.content);
+        if (arr[2] && Object.keys(arr[2]).includes("isEnemy"))
+            arr[2].isEnemy = !arr[2].isEnemy;
+        i.dataset.content = JSON.stringify(arr);
+        i.innerHTML = getSequenceL10n(arr);
+    }
+    document.getElementById("viewpoint").innerText = getL10n("ui", "viewpoint", {
+        "player": [battleInfo[viewpoint].name]
+    });
+});
+refreshLang();
+for (let i of document.querySelectorAll("[data-settings]")) {
+    let datasetSettings = i.dataset.settings;
+    if (i.tagName.toLowerCase() == "select")
+        i.value = settings[datasetSettings];
+    else if (i.tagName.toLowerCase() == "input" && i.type == "range") {
+        i.value = settings[datasetSettings];
+        refreshRange(i);
+    }
+    else
+        i.checked = settings[datasetSettings];
+    i.addEventListener("change", function () {
+        if (i.tagName.toLowerCase() == "select")
+            settings[datasetSettings] = i.value;
+        else if (i.tagName.toLowerCase() == "input" && i.type == "range")
+            settings[datasetSettings] = Math.floor(Number(i.value));
+        else
+            settings[datasetSettings] = i.checked;
+        localStorage.setItem("mechamonSettings", JSON.stringify(settings));
+        applySetting(datasetSettings);
+    });
+    applySetting(datasetSettings);
+}
+for (let i of document.querySelectorAll(".nick"))
+    i.addEventListener("blur", function () {
+        players[Number(i.dataset.player) - 1].build[Number(i.dataset.no) - 1].nick = i.innerText;
+    });
+addUpdateValueListener("lv", 1, 100);
+addUpdateValueListener("ev", 0, 252);
+addUpdateValueListener("dv", 0, 15);
+document.addEventListener("keypress", function (e) {
+    if (settings.keyboardControls) {
+        if (e.key == "1" || e.key == "2" || e.key == "3" || e.key == "4")
+            document.querySelectorAll(".decisionMove")[Number(e
+                .key) - 1].click();
+        else {
+            let keys = ["z", "x", "c", "v", "b", "n"];
+            if (keys.includes(e.key.toLowerCase()))
+                document.querySelectorAll(".decisionSwitch")[keys.indexOf(e.key
+                    .toLowerCase())].click();
+        }
+    }
+});
+document.getElementById("navFirst").addEventListener("click", function () {
+    recordPosition = 0;
+    navigationRefresh();
+});
+document.getElementById("navPrev").addEventListener("click", function () {
+    if (recordPosition != 0)
+        recordPosition--;
+    navigationRefresh();
+});
+document.getElementById("navNext").addEventListener("click", function () {
+    if (recordPosition != record.length - 1)
+        recordPosition++;
+    navigationRefresh();
+});
+document.getElementById("navLast").addEventListener("click", function () {
+    recordPosition = record.length - 1;
+    navigationRefresh();
+});
+document.getElementById("close").addEventListener("click", closePage);
+document.getElementById("dialogBg").addEventListener("click", closePage);
+document.getElementById("whatsNewButton").addEventListener("click", function () {
+    document.getElementById("dialogOuter").classList.add("show");
+});
+for (let i of document.getElementsByClassName("clause-checkbox"))
+    i.addEventListener("change", function () {
+        renderTable();
+    });
+for (let i of (document.querySelectorAll(".mode-btn"))) {
+    i.addEventListener("mouseover", function () {
+        for (let j in THEME_CLASSNAMES)
+            document.body.classList.remove(THEME_CLASSNAMES[j]);
+        document.body.classList.add(THEME_CLASSNAMES[i.dataset.mode]);
+        document.querySelector(".mode-btn.selected").classList.remove("selected");
+        i.classList.add("selected");
+    });
+    i.addEventListener("click", function () {
+        switchMode(i.dataset.mode);
+        document.getElementById("modeSelectBg").classList.remove("show");
+    });
+}
+function $(...args) {
+    if (args.length > 1) {
+        for (let i = 0; i < args.length - 1; i++)
+            if (args[i] == settings.mode)
+                args[args.length - 1]();
+    }
+    else {
+        return POOLS[settings.mode][args[0]];
+    }
 }
 function setUncontrollable(isSelf, move, turns) {
     getPkmn(isSelf).uncontrollable = {
@@ -216,12 +552,12 @@ function render(info = battleInfo) {
         document.getElementById("p1Pokemon").style.backgroundImage = "none";
     else
         document.getElementById("p1Pokemon").style.backgroundImage =
-            "url('back/" + players[Number(viewpoint != 0)].build[info[Number(viewpoint != 0)].currentPokemon].name + ".png')";
+            `url('${$("space")}back/` + players[Number(viewpoint != 0)].build[info[Number(viewpoint != 0)].currentPokemon].name + ".png')";
     if (info[Number(viewpoint != 1)].currentPokemon == -1)
         document.getElementById("p2Pokemon").style.backgroundImage = "none";
     else
         document.getElementById("p2Pokemon").style.backgroundImage =
-            "url('front/" + players[Number(viewpoint != 1)].build[info[Number(viewpoint != 1)].currentPokemon].name + ".png')";
+            `url('${$("space")}front/` + players[Number(viewpoint != 1)].build[info[Number(viewpoint != 1)].currentPokemon].name + ".png')";
     if (info[Number(viewpoint != 0)].currentPokemon != -1)
         document.getElementById("p1Name").innerText =
             getName(players[Number(viewpoint != 0)].build[info[Number(viewpoint != 0)].currentPokemon], false);
@@ -234,7 +570,7 @@ function renderFull(info = battleInfo) {
     renderHP(info);
 }
 function getL10n(type, str, additionalParam) {
-    let returnValue = TRANSLATION[settings.lang][type][str + ((additionalParam?.isEnemy) ? "-enemy" : "")];
+    let returnValue = $("transl")[settings.lang][type][str + ((additionalParam?.isEnemy) ? "-enemy" : "")];
     if (additionalParam)
         for (let i in additionalParam) {
             if (i == "isEnemy")
@@ -276,82 +612,59 @@ function mergeMovePkmnData(from, to, tag) {
         i.tag = tag;
     to.push(...from);
 }
-mergeTranslationData(TRANSLATION_OMIEGA, TRANSLATION);
-mergeIconData(ICONS_OMIEGA, ICONS);
-mergeMovePkmnData(MOVES_OMIEGA, MOVES, "omiega");
-mergeMovePkmnData(POKEMON_OMIEGA, POKEMON, "omiega");
-for (let i of POKEMON) {
-    cries[i.name] = new Audio(`cry/${i.name}.mp3`);
-}
-for (let i of POKEMON) {
-    let div = document.createElement("div");
-    div.classList.add("listButton");
-    div.innerHTML = getL10n("pokemon", i.name);
-    if (i.tag)
-        div.dataset.tag = i.tag;
-    div.addEventListener("click", function () {
-        players[Number(document.querySelector(".pkmnName.selected").dataset.player) - 1].build[Number(document.querySelector(".pkmnName.selected").dataset.no) - 1].name = i.name;
-        for (let j = 0; j < 4; j++) {
-            if (!i.moves.includes(players[Number(document.querySelector(".pkmnName.selected").dataset.player) - 1].build[Number(document.querySelector(".pkmnName.selected").dataset.no) - 1].moves[j])) {
-                players[Number(document.querySelector(".pkmnName.selected").dataset.player) - 1].build[Number(document
-                    .querySelector(".pkmnName.selected").dataset.no) - 1].moves[j] = "";
+function switchMode(mode) {
+    settings.mode = mode;
+    players = structuredClone($("initBuild"));
+    document.getElementById("p1Pokemon").style.backgroundImage = `url('${$("space")}back/` + players[0].build[0].name + ".png')";
+    document.getElementById("p2Pokemon").style.backgroundImage = `url('${$("space")}front/` + players[1].build[0].name + ".png')";
+    document.getElementById("p1Name").innerText = getL10n("pokemon", players[0].build[0].name);
+    document.getElementById("p2Name").innerText = getL10n("pokemon", players[1].build[0].name);
+    for (let i of $("mons")) {
+        cries[i.name] = new Audio(`${$("cryLocation")}/${i.name}.mp3`);
+    }
+    for (let i of $("mons")) {
+        let div = document.createElement("div");
+        div.classList.add("listButton");
+        div.innerHTML = getL10n("pokemon", i.name);
+        if (i.tag)
+            div.dataset.tag = i.tag;
+        div.addEventListener("click", function () {
+            players[Number(document.querySelector(".pkmnName.selected").dataset.player) - 1].build[Number(document.querySelector(".pkmnName.selected").dataset.no) - 1].name = i.name;
+            for (let j = 0; j < 4; j++) {
+                if (!i.moves.includes(players[Number(document.querySelector(".pkmnName.selected").dataset.player) - 1].build[Number(document.querySelector(".pkmnName.selected").dataset.no) - 1].moves[j])) {
+                    players[Number(document.querySelector(".pkmnName.selected").dataset.player) - 1].build[Number(document
+                        .querySelector(".pkmnName.selected").dataset.no) - 1].moves[j] = "";
+                }
             }
-        }
-        renderTable();
-        document.getElementById("pokemonList").classList.remove("show");
-        document.getElementById("setupTable").classList.add("show");
-    });
-    document.getElementById("pokemonList").appendChild(div);
+            renderTable();
+            document.getElementById("pokemonList").classList.remove("show");
+            document.getElementById("setupTable").classList.add("show");
+        });
+        document.getElementById("pokemonList").appendChild(div);
+    }
+    for (let i of document.querySelectorAll("input[type='range']")) {
+        for (let j in cries)
+            cries[j].volume = settings.sfxVolume / 100;
+        i.addEventListener("input", function () {
+            refreshRange(i);
+            for (let j in cries)
+                cries[j].volume = settings.sfxVolume / 100;
+        });
+    }
+    for (let i of $("moves")) {
+        let div = document.createElement("div");
+        div.classList.add("listButton");
+        div.innerHTML = getL10n("moves", i.name);
+        div.addEventListener("click", function () {
+            players[Number(document.querySelector(".move.selected").dataset.player) - 1].build[Number(document.querySelector(".move.selected").dataset.no) - 1].moves[Number(document.querySelector(".move.selected").dataset.moveNo) - 1] = i.name;
+            renderTable();
+            document.getElementById("movesList").classList.remove("show");
+            document.getElementById("setupTable").classList.add("show");
+        });
+        div.dataset.for = i.name;
+        document.getElementById("movesListInner").appendChild(div);
+    }
 }
-for (let i of MOVES) {
-    let div = document.createElement("div");
-    div.classList.add("listButton");
-    div.innerHTML = getL10n("moves", i.name);
-    div.addEventListener("click", function () {
-        players[Number(document.querySelector(".move.selected").dataset.player) - 1].build[Number(document.querySelector(".move.selected").dataset.no) - 1].moves[Number(document.querySelector(".move.selected").dataset.moveNo) - 1] = i.name;
-        renderTable();
-        document.getElementById("movesList").classList.remove("show");
-        document.getElementById("setupTable").classList.add("show");
-    });
-    div.dataset.for = i.name;
-    document.getElementById("movesListInner").appendChild(div);
-}
-for (let i of document.getElementsByClassName("pkmnName")) {
-    i.addEventListener("click", function () {
-        document.querySelector(".pkmnName.selected")?.classList.remove("selected");
-        i.classList.add("selected");
-        document.querySelector(".list.show").classList.remove("show");
-        document.getElementById("pokemonList").classList.add("show");
-    });
-}
-for (let i of document.getElementsByClassName("move")) {
-    i.addEventListener("click", function () {
-        document.querySelector(".move.selected")?.classList.remove("selected");
-        i.classList.add("selected");
-        document.querySelector(".list.show").classList.remove("show");
-        for (let j of document.getElementById("movesListInner").childNodes) {
-            let selectedMove = document.querySelector(".move.selected");
-            if (getStats(players[Number(selectedMove.dataset.player) - 1].build[Number(selectedMove.dataset.no) - 1].name).moves.includes(j.dataset.for)) {
-                j.classList.remove("hide");
-            }
-            else
-                j.classList.add("hide");
-        }
-        document.getElementById("movesList").classList.add("show");
-    });
-}
-document.getElementById("clearMove").addEventListener("click", function () {
-    let selectedMove = document.querySelector(".move.selected");
-    players[Number(selectedMove.dataset.player) - 1].build[Number(selectedMove.dataset.no) - 1].moves[Number(selectedMove.dataset.moveNo) - 1] = "";
-    renderTable();
-    document.getElementById("movesList").classList.remove("show");
-    document.getElementById("setupTable").classList.add("show");
-});
-for (let i of document.querySelectorAll(".back"))
-    i.addEventListener("click", function () {
-        document.querySelector(".list.show").classList.remove("show");
-        document.getElementById("setupTable").classList.add("show");
-    });
 function calculateDmg(power, atk, def, lv, attackType, defenseType, userType) {
     let effectiveness = calculateEffectiveness(attackType, defenseType);
     let stab = 1;
@@ -365,7 +678,7 @@ function calculateEffectiveness(attackType, defenseType) {
     if (!attackType)
         return effectiveness;
     for (let i of defenseType) {
-        effectiveness *= MULTIPLIER[attackType][i];
+        effectiveness *= $("multiplierMod")[$("multiplier")[attackType][i]];
     }
     return effectiveness;
 }
@@ -389,12 +702,17 @@ function refreshDecision() {
                 tempMove = getPkmn(true).mimicMove;
             else
                 tempMove = Object.keys(getPkmn(true).moves)[i];
-            button.querySelector(".move-text").innerText = getL10n("moves", tempMove);
-            button.querySelector(".pp-remaining").innerText = Object.values(getPkmn(true).moves)[i].toString();
-            button.querySelector(".sub").innerText = "/" + getMoveStats(Object.keys(getPkmn(true).moves)[i]).pp;
-            button.querySelector(".move-type").innerText = getL10n("types", getMoveStats(tempMove).type);
             button.dataset.for = tempMove;
-            displayEffectiveness(button, tempMove);
+            $("pokemon", () => {
+                modifyDecisionMoveBtn(button, getL10n("moves", tempMove), Object.values(getPkmn(true).moves)[i].toString(), getMoveStats(Object.keys(getPkmn(true)
+                    .moves)[i]).pp, getL10n("types", getMoveStats(tempMove).type), tempMove);
+            });
+            $("roco kingdom", () => {
+                button.querySelector(".move-text").innerText = getL10n("moves", tempMove);
+                button.querySelector(".move-type").innerText = getL10n("types", getMoveStats(tempMove).type);
+                button.querySelector(".cost").innerText = getMoveStats(tempMove).cost;
+                displayEffectiveness(button, tempMove);
+            });
         }
     }
     else if (battleInfo[playerToMove].currentPokemon == -1)
@@ -405,18 +723,10 @@ function refreshDecision() {
     else {
         let moveButtonGroup = document.querySelectorAll(".decisionMove");
         moveButtonGroup[0].disabled = false;
-        moveButtonGroup[0].querySelector(".move-text").innerText = "Pass";
-        moveButtonGroup[0].querySelector(".pp-remaining").innerText = "-";
-        moveButtonGroup[0].querySelector(".sub").innerText = "/-";
-        moveButtonGroup[0].querySelector(".move-type").innerText = "-";
-        displayEffectiveness(moveButtonGroup[0], getPkmn(true).uncontrollable.move);
+        modifyDecisionMoveBtn(moveButtonGroup[0], "Pass", "-", "-", "-", getPkmn(true).uncontrollable.move);
         for (let i = 1; i < 4; i++) {
             moveButtonGroup[i].disabled = true;
-            moveButtonGroup[i].querySelector(".move-text").innerText = "-";
-            moveButtonGroup[i].querySelector(".pp-remaining").innerText = "-";
-            moveButtonGroup[i].querySelector(".sub").innerText = "/-";
-            moveButtonGroup[i].querySelector(".move-type").innerText = "-";
-            displayEffectiveness(moveButtonGroup[i], "");
+            modifyDecisionMoveBtn(moveButtonGroup[i], "-", "-", "-", "-", "");
         }
     }
     let switchButtons = document.querySelectorAll(".decisionSwitch");
@@ -434,6 +744,13 @@ function refreshDecision() {
         switchButtons[i].dataset.for = players[playerToMove].build[i].name;
     }
 }
+function modifyDecisionMoveBtn(element, displayName, ppRemaining, ppTotal, type, moveName) {
+    element.querySelector(".move-text").innerText = displayName;
+    element.querySelector(".pp-remaining").innerText = ppRemaining.toString();
+    element.querySelector(".sub").innerText = `/${ppTotal}`;
+    element.querySelector(".move-type").innerText = type;
+    displayEffectiveness(element, moveName);
+}
 function displayEffectiveness(button, move) {
     const EFFECTIVENESS_ABBR = {
         0: "NE",
@@ -448,23 +765,34 @@ function displayEffectiveness(button, move) {
     else
         button.querySelector(".effectiveness").innerText = EFFECTIVENESS_ABBR[calculateEffectiveness(getMoveStats(move).type, getType(false))];
 }
-let turn = 0, playerToMove = 0, battleInfo = [];
 function getDefaultProperties(playersInfo) {
     let arr = structuredClone(playersInfo);
     arr[0].currentPokemon = -1;
     arr[1].currentPokemon = -1;
     for (let i of arr)
         for (let j of i.build) {
-            for (let k of POKEMON) {
+            for (let k of $("mons")) {
                 if (k.name == j.name) {
-                    j.maxHp = Math.floor(0.01 * (2 * (k.hp + j.dv) + Math.floor(0.25 * j.ev)) * j.lv) + j.lv + 10;
+                    $("pokemon", () => {
+                        j.maxHp = Math.floor(0.01 * (2 * (k.hp + j.dv) + Math.floor(0.25 * j.ev)) * j.lv) + j.lv + 10;
+                    });
+                    $("roco kingdom", () => {
+                        j.maxHp = Math.round(Math.round(k.hp * 1.7 + j.dv * 0.85 + 70) + 100);
+                    });
                     j.hp = j.maxHp;
                     break;
                 }
             }
-            for (let k of ["atk", "def", "sp", "spe"]) {
-                j[k] = Math.floor(0.01 * (2 * (getStats(j.name)[k] + j.dv) + Math.floor(0.25 * j.ev)) * j.lv) + 5;
-            }
+            $("pokemon", () => {
+                for (let k of ["atk", "def", "sp", "spe"]) {
+                    j[k] = Math.floor(0.01 * (2 * (getStats(j.name)[k] + j.dv) + Math.floor(0.25 * j.ev)) * j.lv) + 5;
+                }
+            });
+            $("roco kingdom", () => {
+                for (let k of ["atk", "def", "spa", "spd", "spe"]) {
+                    j[k] = Math.round(Math.round(getStats(j.name)[k] * 1.1 + j.dv * 0.55 + 10) + 50);
+                }
+            });
             j.transformPkmn = "";
             j.mimicMove = "";
             j.atkStage = 0;
@@ -506,7 +834,7 @@ function getDefaultProperties(playersInfo) {
             j.lastMoveUsed = "";
             let json = {};
             for (let k of j.moves)
-                for (let l of MOVES)
+                for (let l of $("moves"))
                     if (l.name == k)
                         json[k] = l.pp;
             j.moves = json;
@@ -517,11 +845,6 @@ function getDefaultProperties(playersInfo) {
         }
     return arr;
 }
-const BGM_SETTINGS = {
-    "pokemon": "backgroundMusic",
-    "coromon": "coromonBgm",
-    "roco kingdom": "rocoKingdomBgm"
-};
 function startGame() {
     if (settings.backgroundImage == "none") {
         document.getElementById("battlePanel").style.backgroundImage = "none";
@@ -542,34 +865,6 @@ function startGame() {
     nextTurn();
     render();
 }
-document.getElementById("startGame").addEventListener("click", function () {
-    if (settings[BGM_SETTINGS[settings.mode]] == "none") {
-        startGame();
-    }
-    else {
-        let intro = new Audio(SOUNDS[settings.mode][settings[BGM_SETTINGS[settings.mode]]].intro);
-        let loop = new Audio(SOUNDS[settings.mode][settings[BGM_SETTINGS[settings.mode]]].loop);
-        loop.loop = true;
-        let audioAvailable = 0;
-        function prepareAudio() {
-            audioAvailable++;
-            if (audioAvailable == 2) {
-                intro.play();
-                setTimeout(function () {
-                    loop.play();
-                }, intro.duration * 1000);
-                startGame();
-            }
-        }
-        intro.addEventListener("canplaythrough", function () {
-            prepareAudio();
-        });
-        loop.addEventListener("canplaythrough", function () {
-            prepareAudio();
-        });
-    }
-});
-let sequence = [], refreshSequenceIsRunning = false;
 function getSequenceL10n(args) {
     let tempArgs = structuredClone(args);
     if (tempArgs[2])
@@ -652,19 +947,6 @@ function readSimplifiedRecordJSON(lines) {
         record.push(element);
     }
 }
-document.getElementById("file").addEventListener("change", function () {
-    READER.readAsText(document.getElementById("file").files[0]);
-});
-const READER = new FileReader();
-READER.addEventListener("load", function () {
-    console.log(JSON.parse(READER.result));
-    /*record = */ readSimplifiedRecordJSON(READER.result);
-    for (let i = 0; i < record.length; i++)
-        insertText(record[i], true, i);
-    recordPosition = record.length - 1;
-    navigationRefresh();
-    battleInfo = (record[recordPosition].refresh) ? record[recordPosition].refresh : getNearestRefresh(record, recordPosition);
-});
 function modifyValue(object, keys, value) {
     let tempObject = object;
     for (let i = 0; i < keys.length - 1; i++) {
@@ -823,8 +1105,8 @@ function addTooltip(elementGroup, i, player = playerToMove) {
     tooltip = elementGroup[i].parentElement.querySelector(".tooltip");
     tooltip.querySelector(".tip-name").innerText = getL10n("pokemon", elementGroup[i].dataset.for);
     let stats = getStats(elementGroup[i].dataset.for);
-    tooltip.querySelector(".img-left").style.background = "url(pokemonicons-sheet.png) no-repeat scroll -" +
-        (ICONS[elementGroup[i].dataset.for].cell - 1) * 40 + "px -" + (ICONS[elementGroup[i].dataset.for].row - 1) * 30 + "px";
+    tooltip.querySelector(".img-left").style.background = `url(${$("iconLocation")}) no-repeat scroll -` +
+        ($("icons")[elementGroup[i].dataset.for].cell - 1) * 40 + "px -" + ($("icons")[elementGroup[i].dataset.for].row - 1) * 30 + "px";
     tooltip.querySelector(".tip-desc").innerText = getL10n("pkmnDesc", elementGroup[i].dataset.for);
     for (let j of [0, 1]) {
         if (!stats.type[j]) {
@@ -835,30 +1117,34 @@ function addTooltip(elementGroup, i, player = playerToMove) {
         tooltip.querySelectorAll(".type-text")[j].innerText = getL10n("types", stats.type[j]).toUpperCase();
         tooltip.querySelectorAll(".type-text")[j].classList.remove("type-bug", "type-dragon", "type-electric", "type-fighting", "type-fire", "type-flying", "type-ghost", "type-grass", "type-ground", "type-ice", "type-normal", "type-poison", "type-psychic", "type-rock", "type-water");
         tooltip.querySelectorAll(".type-text")[j].classList.add("type-" + stats.type[j]);
-        tooltip.querySelectorAll(".type-img")[j].src = "types/" + stats.type[j] + ".png";
+        tooltip.querySelectorAll(".type-img")[j].src = `${$("space")}types/` + stats.type[j] + ".png";
     }
     let actualPlayer = Number(viewpoint != player);
     insertEffects(battleInfo[actualPlayer].build[i], tooltip.querySelector(".tip-status"), true);
     for (let j = 0; j < 4; j++) {
         let totalPp = getMoveStats(Object.keys(battleInfo[actualPlayer].build[i].moves)[j])?.pp;
-        let ppRemaining = Object.values(battleInfo[actualPlayer].build[i].moves)[j];
-        if (Object.keys(battleInfo[actualPlayer].build[i].moves)[j] && ((actualPlayer != playerToMove && ppRemaining < totalPp) ||
-            (actualPlayer == playerToMove))) {
-            tooltip.querySelectorAll(".move-name")[j].innerText = getL10n("moves", Object.keys(battleInfo[actualPlayer]
-                .build[i].moves)[j]);
-            tooltip.querySelectorAll(".pp-remaining")[j].innerText = ppRemaining.toString();
-            tooltip.querySelectorAll(".pp .sub")[j].innerText = "/" + totalPp;
-            if (Object.values(battleInfo[actualPlayer].build[i].moves)[j] == getMoveStats(Object
-                .keys(battleInfo[actualPlayer].build[i].moves)[j]).pp)
-                tooltip.querySelectorAll(".move-name")[j].classList
-                    .add("unknown");
+        $("pokemon", () => {
+            let ppRemaining = Object.values(battleInfo[actualPlayer].build[i].moves)[j];
+            if (Object.keys(battleInfo[actualPlayer].build[i].moves)[j] && ((actualPlayer != playerToMove && ppRemaining < totalPp) ||
+                (actualPlayer == playerToMove))) {
+                tooltip.querySelectorAll(".move-name")[j].innerText = getL10n("moves", Object.keys(battleInfo[actualPlayer]
+                    .build[i].moves)[j]);
+                tooltip.querySelectorAll(".pp-remaining")[j].innerText = ppRemaining.toString();
+                tooltip.querySelectorAll(".pp .sub")[j].innerText = "/" + totalPp;
+                if (Object.values(battleInfo[actualPlayer].build[i].moves)[j] == getMoveStats(Object
+                    .keys(battleInfo[actualPlayer].build[i].moves)[j]).pp)
+                    tooltip.querySelectorAll(".move-name")[j].classList
+                        .add("unknown");
+                else
+                    tooltip.querySelectorAll(".move-name")[j].classList.remove("unknown");
+            }
+            else if (actualPlayer == playerToMove)
+                addGrayMove(tooltip, j, "empty", 0, "/0");
             else
-                tooltip.querySelectorAll(".move-name")[j].classList.remove("unknown");
-        }
-        else if (actualPlayer == playerToMove)
-            addGrayMove(tooltip, j, "empty", 0, "/0");
-        else
-            addGrayMove(tooltip, j, "unknownMove", "?", "/?");
+                addGrayMove(tooltip, j, "unknownMove", "?", "/?");
+        });
+        $("roco kingdom", () => {
+        });
     }
     tooltip.querySelector(".hp-remaining").innerText = (battleInfo[actualPlayer].build[i].hp / battleInfo[actualPlayer]
         .build[i].maxHp * 100).toFixed(0) + "%";
@@ -878,24 +1164,6 @@ function addGrayMove(tooltip, j, textKey, ppRemaining, subText) {
     tooltip.querySelectorAll(".pp-remaining")[j].innerText = ppRemaining.toString();
     tooltip.querySelectorAll(".pp .sub")[j].innerText = subText;
     tooltip.querySelectorAll(".move-name")[j].classList.add("unknown");
-}
-const TOOLTIP_PLAYER = {
-    ".decisionSwitch": undefined,
-    "#p1Balls .ball": 0,
-    "#p2Balls .ball": 1
-};
-for (let i = 0; i < 6; i++) {
-    document.querySelectorAll(".decisionSwitch")[i].addEventListener("click", function () {
-        switchPkmn(document.querySelectorAll(".decisionSwitch")[i].dataset.for);
-    });
-    for (let j in TOOLTIP_PLAYER) {
-        document.querySelectorAll(j)[i].addEventListener("mouseover", function () {
-            addTooltip(document.querySelectorAll(j), i, TOOLTIP_PLAYER[j]);
-        });
-        document.querySelectorAll(j)[i].addEventListener("mouseout", function () {
-            document.querySelectorAll(j)[i].parentElement.querySelector(".tooltip")?.classList.remove("show");
-        });
-    }
 }
 function insertEffects(pkmn, outputArea, showFull) {
     outputArea.innerHTML = "";
@@ -944,7 +1212,6 @@ function switchPkmn(name) {
         decisionNextPlayer();
     }
 }
-let isNewTurn = false;
 function dealDmg(isSelf, dmg, additionalParam) {
     let roundedDmg = Math.max(1, Math.floor(dmg));
     if (additionalParam?.opposingSubstitute && getPkmn(!isSelf).substituteHp > 0) {
@@ -984,112 +1251,6 @@ function dealDmg(isSelf, dmg, additionalParam) {
         });
     }
 }
-let nextPlayerEffect = [{
-        "name": "delay",
-        "condition": function () { return true; },
-        "effect": function () {
-            for (let i = 0; i < getPkmn(true).delay.length; i++) {
-                if (getPkmn(true).delay[i].turns > 0)
-                    getPkmn(true).delay[i].turns--;
-                else {
-                    getPkmn(true).delay[i].effect();
-                    getPkmn(true).delay.splice(i, 1);
-                    i--;
-                }
-            }
-        }
-    }, {
-        "name": "disable",
-        "condition": function () { return true; },
-        "effect": function () {
-            if (getPkmn(true).disable.turns > 0)
-                getPkmn(true).disable.turns--;
-            else
-                getPkmn(true).disable.move = "";
-        }
-    }, {
-        "name": "par",
-        "condition": function () { return getPkmn(true).status == "par" && Math.random() < 1 / 4; },
-        "effect": function () {
-            addMainText("others", "unableToMove", {
-                "pokemon": [getName(getPkmn(true), false, true)],
-                "isEnemy": playerToMove != viewpoint
-            });
-            return { "continue": true };
-        }
-    }, {
-        "name": "frz",
-        "condition": function () { return getPkmn(true).status == "frz"; },
-        "exclude": "par",
-        "effect": function () {
-            addMainText("others", "frozenSolid", {
-                "pokemon": [getName(getPkmn(true), false, true)],
-                "isEnemy": playerToMove != viewpoint
-            });
-            return { "continue": true };
-        }
-    }, {
-        "name": "charge",
-        "condition": function () { return getPkmn(true).charge.turns > 0; },
-        "exclude": "frz",
-        "effect": function () {
-            getPkmn(true).charge.turns--;
-            if (getPkmn(true).charge.move && getPkmn(true).charge.turns == 0 && getPkmn(true).charge.move) {
-                attack(getPkmn(true).charge.move);
-                getPkmn(true).charge.move = "";
-            }
-            else {
-                return { "continue": true };
-            }
-        }
-    }, {
-        "name": "uncontrollable",
-        "condition": function () { return getPkmn(true).uncontrollable.turns > 0; },
-        "exclude": "charge",
-        "effect": function () {
-            getPkmn(true).uncontrollable.turns--;
-            if (getPkmn(true).uncontrollable.move && getPkmn(true).uncontrollable.turns == 0) {
-                getPkmn(true).uncontrollable.move = "";
-            }
-        }
-    }, {
-        "name": "slp",
-        "condition": function () { return getPkmn(true).status == "slp"; },
-        "exclude": "uncontrollable",
-        "effect": function () {
-            getPkmn(true).sleepTurns--;
-            if (getPkmn(true).sleepTurns > 0) {
-                addMainText("others", "fastAsleep", {
-                    "pokemon": [getName(getPkmn(true), false, true)],
-                    "isEnemy": playerToMove != viewpoint
-                });
-            }
-            else if (getPkmn(true).sleepTurns == 0) {
-                addSmallText("others", "wakeUp", {
-                    "pokemon": [getName(getPkmn(true), false, true)],
-                    "isEnemy": playerToMove != viewpoint
-                });
-                getPkmn(true).status = "";
-            }
-            return { "continue": true };
-        }
-    }, {
-        "name": "confused",
-        "condition": function () { return getPkmn(true).tempEffect.confused > 0; },
-        "exclude": "slp",
-        "effect": function () {
-            addSmallText("others", "confused", {
-                "pokemon": [getName(getPkmn(true), false, true)],
-                "isEnemy": ((viewpoint == -1) ? false : (playerToMove != viewpoint))
-            });
-            //getPkmn(true).tempEffect.confused--;
-            if (Math.random() < 0.5) {
-                dealDmg(true, calculateDmg(40, getAttack(true), getDefense(true, true), getPkmn(true).lv, "", getType(true), getType(true)), { opposingSubstitute: true });
-                addMainText("others", "hurtConfusion");
-                return { "continue": true }; //!
-            }
-        }
-    }];
 function nextPlayer(player) {
     playerToMove = player;
     let matchedConditions = [];
@@ -1271,7 +1432,6 @@ function nextTurn() {
     judgeHP();
     endTurn();
 }
-let lastSelfKoMoveUser = -1;
 function setLastSelfKoMoveUser(user) {
     lastSelfKoMoveUser = user;
 }
@@ -1317,13 +1477,13 @@ function endTurn() {
     refreshSequence();
 }
 function getStats(name) {
-    for (let i of POKEMON) {
+    for (let i of $("mons")) {
         if (i.name == name)
             return i;
     }
 }
 function getMoveStats(name) {
-    for (let i of MOVES) {
+    for (let i of $("moves")) {
         if (i.name == name)
             return i;
     }
@@ -1359,7 +1519,7 @@ function getName(pkmn, showSpeciesName, returnArr) {
         return getL10n(...arr);
 }
 function attack(move) {
-    for (let k of MOVES)
+    for (let k of $("moves"))
         if (k.name == move) {
             let criticalHitRatioMultiplier = 1;
             let preCritEffect;
@@ -1411,7 +1571,6 @@ function attack(move) {
             return effect;
         }
 }
-let attacks = [];
 function refreshPlayerToMove(ptm) {
     playerToMove = ptm;
     document.getElementById("playerToMove").innerText = getL10n("ui", "playerTurn", {
@@ -1426,43 +1585,6 @@ function decisionNextPlayer() {
     else {
         nextTurn();
     }
-}
-for (let i = 0; i < 4; i++) {
-    let decisionMove = document.querySelectorAll(".decisionMove");
-    decisionMove[i].addEventListener("click", function () {
-        makeMove(decisionMove[i].dataset.for);
-    });
-    decisionMove[i].addEventListener("mouseover", function () {
-        let decisionMoveFor = decisionMove[i].dataset.for;
-        if (!getMoveStats(decisionMoveFor))
-            return;
-        let tooltipMove;
-        if (!decisionMove[i].parentElement.querySelector(".tooltip-move")) {
-            tooltipMove = document.querySelector(".tooltip-move").cloneNode(true);
-            decisionMove[i].parentElement.insertBefore(tooltipMove, document.getElementsByClassName("decisionMove")[i]);
-        }
-        tooltipMove = decisionMove[i].parentElement.querySelector(".tooltip-move");
-        tooltipMove.querySelector(".tip-name").innerText = getL10n("moves", decisionMoveFor);
-        let moveStats = getMoveStats(decisionMoveFor);
-        tooltipMove.querySelector(".tip-cat").innerText = getL10n("cat", moveStats.cat).toUpperCase();
-        tooltipMove.querySelector(".tip-cat").classList.remove("cat-physical", "cat-special", "cat-status");
-        tooltipMove.querySelector(".tip-cat").classList.add("cat-" + moveStats.cat);
-        tooltipMove.querySelector(".tip-desc").innerText = getL10n("moveDesc", decisionMoveFor);
-        tooltipMove.querySelector(".type-text").innerText = getL10n("types", moveStats.type).toUpperCase();
-        tooltipMove.querySelector(".type-text").classList.remove("type-bug", "type-dragon", "type-electric", "type-fighting", "type-fire", "type-flying", "type-ghost", "type-grass", "type-ground", "type-ice", "type-normal", "type-poison", "type-psychic", "type-rock", "type-water");
-        tooltipMove.querySelector(".type-text").classList.add("type-" + moveStats.type);
-        tooltipMove.querySelector(".tip-pow").innerText = moveStats.power.toString();
-        tooltipMove.querySelector(".tip-priority").innerText = moveStats.priority.toString();
-        tooltipMove.querySelector(".tip-pp .main").innerText = decisionMove[i]
-            .querySelector(".pp-remaining").innerText;
-        tooltipMove.querySelector(".tip-pp .sub").innerText = "/" + moveStats.pp;
-        tooltipMove.querySelector(".tip-acc").innerText = (moveStats.acc == Infinity) ? "∞" : moveStats.acc + "%";
-        tooltipMove.querySelector(".type-img").src = "types/" + moveStats.type + ".png";
-        tooltipMove.classList.add("show");
-    });
-    decisionMove[i].addEventListener("mouseout", function () {
-        decisionMove[i].parentElement.querySelector(".tooltip-move")?.classList.remove("show");
-    });
 }
 function makeMove(name) {
     if (getPkmn(true).uncontrollable.turns > 0) {
@@ -1522,36 +1644,6 @@ function judgeHP() {
         });
     }
 }
-const STAGE_MULTIPLIER = {
-    "-6": 2 / 8,
-    "-5": 2 / 7,
-    "-4": 2 / 6,
-    "-3": 2 / 5,
-    "-2": 2 / 4,
-    "-1": 2 / 3,
-    "0": 1,
-    "1": 3 / 2,
-    "2": 4 / 2,
-    "3": 5 / 2,
-    "4": 6 / 2,
-    "5": 7 / 2,
-    "6": 8 / 2
-};
-const ACC_STAGE_MULTIPLIER = {
-    "-6": 9 / 3,
-    "-5": 8 / 3,
-    "-4": 7 / 3,
-    "-3": 6 / 3,
-    "-2": 5 / 3,
-    "-1": 4 / 3,
-    "0": 1,
-    "1": 3 / 4,
-    "2": 3 / 5,
-    "3": 3 / 6,
-    "4": 3 / 7,
-    "5": 3 / 8,
-    "6": 3 / 9
-};
 function renderHP(info = battleInfo) {
     for (let i of [0, 1]) {
         if (info[Number(i != viewpoint)].currentPokemon == -1) {
@@ -1590,9 +1682,9 @@ function refreshBalls(info) {
         for (let j = 0; j < 6; j++) {
             let ballElement = document.getElementById("p" + (i + 1) + "Ball" + (j + 1));
             if (info[Number(i != viewpoint)].build[j].revealed && !settings.hardcoreMode) {
-                ballElement.style.backgroundImage = "url(pokemonicons-sheet.png)";
-                ballElement.style.backgroundPosition = (-(ICONS[info[Number(i != viewpoint)].build[j]
-                    .name].cell - 1) * 40) + "px " + (-(ICONS[info[Number(i != viewpoint)].build[j].name].row - 1) * 30) + "px";
+                ballElement.style.backgroundImage = `url(${$("iconLocation")})`;
+                ballElement.style.backgroundPosition = (-($("icons")[info[Number(i != viewpoint)].build[j]
+                    .name].cell - 1) * 40) + "px " + (-($("icons")[info[Number(i != viewpoint)].build[j].name].row - 1) * 30) + "px";
                 ballElement.dataset.for = info[Number(i != viewpoint)].build[j].name;
             }
             else {
@@ -1626,23 +1718,6 @@ function renderTable() {
     else
         document.getElementById("startGame").disabled = true;
 }
-renderTable();
-for (let i of document.getElementsByClassName("tab")) {
-    i.addEventListener("click", function () {
-        document.querySelector(".tab.tab-selected").classList.remove("tab-selected");
-        i.classList.add("tab-selected");
-        document.querySelector(".tab-content.tab-show").classList.remove("tab-show");
-        document.querySelector(".tab-content[data-for='" + i.dataset.for + "']").classList.add("tab-show");
-    });
-}
-const STAT_NAMES = {
-    "def": "Defense",
-    "atk": "Attack",
-    "sp": "Special",
-    "spe": "Speed",
-    "eva": "Evasion",
-    "acc": "Accuracy"
-};
 function modifyStats(isSelf, stat, delta, prob) {
     if (getPkmn(isSelf).tempEffect.mist > 0 && delta < 0)
         return;
@@ -1665,13 +1740,6 @@ function modifyStats(isSelf, stat, delta, prob) {
         });
     }
 }
-const SMALL_TEXT_KEY = {
-    "par": "paralyzed",
-    "frz": "frozenSolid",
-    "psn": "poisoned",
-    "tox": "badlyPoisoned",
-    "brn": "burn"
-};
 function modifyStatus(status, prob) {
     if ((getStats(getPkmn(false).name).type.includes("poison") && (status == "tox" || status == "psn"))
         || (getStats(getPkmn(false).name).type.includes("fire") && status == "brn")
@@ -1735,56 +1803,10 @@ function addTempEffect(isSelf, effect, turns, prob) {
             });
     }
 }
-document.getElementById("forfeit").addEventListener("click", function () {
-    addSmallText("others", "forfeit", {
-        "player": [battleInfo[playerToMove].name]
-    });
-    addMainText("others", "winBattle", {
-        "player": [battleInfo[Number(!playerToMove)].name]
-    });
-    refreshSequence();
-});
-document.getElementById("viewpoint").addEventListener("click", function () {
-    viewpoint = Number(!viewpoint);
-    renderFull((record[recordPosition].refresh) ? record[recordPosition].refresh : getNearestRefresh(record, recordPosition));
-    for (let i of document.querySelectorAll("[data-content]")) {
-        let arr = JSON.parse(i.dataset.content);
-        if (arr[2] && Object.keys(arr[2]).includes("isEnemy"))
-            arr[2].isEnemy = !arr[2].isEnemy;
-        i.dataset.content = JSON.stringify(arr);
-        i.innerHTML = getSequenceL10n(arr);
-    }
-    document.getElementById("viewpoint").innerText = getL10n("ui", "viewpoint", {
-        "player": [battleInfo[viewpoint].name]
-    });
-});
 function refreshLang() {
     for (let i of document.querySelectorAll("[data-transl-cat]")) {
         i.innerHTML = TRANSLATION[settings.lang][i.dataset.translCat][i.dataset.translKey];
     }
-}
-refreshLang();
-for (let i of document.querySelectorAll("[data-settings]")) {
-    let datasetSettings = i.dataset.settings;
-    if (i.tagName.toLowerCase() == "select")
-        i.value = settings[datasetSettings];
-    else if (i.tagName.toLowerCase() == "input" && i.type == "range") {
-        i.value = settings[datasetSettings];
-        refreshRange(i);
-    }
-    else
-        i.checked = settings[datasetSettings];
-    i.addEventListener("change", function () {
-        if (i.tagName.toLowerCase() == "select")
-            settings[datasetSettings] = i.value;
-        else if (i.tagName.toLowerCase() == "input" && i.type == "range")
-            settings[datasetSettings] = Math.floor(Number(i.value));
-        else
-            settings[datasetSettings] = i.checked;
-        localStorage.setItem("mechamonSettings", JSON.stringify(settings));
-        applySetting(datasetSettings);
-    });
-    applySetting(datasetSettings);
 }
 function applySetting(key) {
     switch (key) {
@@ -1841,10 +1863,6 @@ function applySetting(key) {
                     i.classList.add("hide");
     }
 }
-for (let i of document.querySelectorAll(".nick"))
-    i.addEventListener("blur", function () {
-        players[Number(i.dataset.player) - 1].build[Number(i.dataset.no) - 1].nick = i.innerText;
-    });
 function addUpdateValueListener(name, min, max) {
     for (let i of document.querySelectorAll("." + name))
         i.addEventListener("blur", function () {
@@ -1863,40 +1881,6 @@ function addUpdateValueListener(name, min, max) {
             players[Number(i.dataset.player) - 1].build[Number(i.dataset.no) - 1][name] = Number(i.innerText);
         });
 }
-addUpdateValueListener("lv", 1, 100);
-addUpdateValueListener("ev", 0, 252);
-addUpdateValueListener("dv", 0, 15);
-document.addEventListener("keypress", function (e) {
-    if (settings.keyboardControls) {
-        if (e.key == "1" || e.key == "2" || e.key == "3" || e.key == "4")
-            document.querySelectorAll(".decisionMove")[Number(e
-                .key) - 1].click();
-        else {
-            let keys = ["z", "x", "c", "v", "b", "n"];
-            if (keys.includes(e.key.toLowerCase()))
-                document.querySelectorAll(".decisionSwitch")[keys.indexOf(e.key
-                    .toLowerCase())].click();
-        }
-    }
-});
-document.getElementById("navFirst").addEventListener("click", function () {
-    recordPosition = 0;
-    navigationRefresh();
-});
-document.getElementById("navPrev").addEventListener("click", function () {
-    if (recordPosition != 0)
-        recordPosition--;
-    navigationRefresh();
-});
-document.getElementById("navNext").addEventListener("click", function () {
-    if (recordPosition != record.length - 1)
-        recordPosition++;
-    navigationRefresh();
-});
-document.getElementById("navLast").addEventListener("click", function () {
-    recordPosition = record.length - 1;
-    navigationRefresh();
-});
 function navigationRefresh() {
     renderFull((record[recordPosition].refresh) ? record[recordPosition].refresh : getNearestRefresh(record, recordPosition));
     document.getElementById("currentStep").innerText = (recordPosition + 1).toString();
@@ -1968,30 +1952,14 @@ function insertText(recordItem, insertRecordContent, step = recordPosition) {
             insertElementWithClass("h2", recordItem, "recordContent", ["turn-number"], step);
     }
 }
-function getImagePosition() {
-}
 function closePage() {
     document.getElementById("dialogOuter").classList.remove("show");
 }
-document.getElementById("close").addEventListener("click", closePage);
-document.getElementById("dialogBg").addEventListener("click", closePage);
-document.getElementById("whatsNewButton").addEventListener("click", function () {
-    document.getElementById("dialogOuter").classList.add("show");
-});
 function refreshRange(element) {
     element.style.backgroundImage =
         "linear-gradient(90deg, var(--theme) 0%, var(--theme) " + element.value + "%, lightgray " + element.value + "%)";
     element.parentNode.querySelector(".range-value").innerHTML = Math.floor(Number(element.value)).toString();
     localStorage.setItem("mechamonSettings", JSON.stringify(settings));
-}
-for (let i of document.querySelectorAll("input[type='range']")) {
-    for (let j in cries)
-        cries[j].volume = settings.sfxVolume / 100;
-    i.addEventListener("input", function () {
-        refreshRange(i);
-        for (let j in cries)
-            cries[j].volume = settings.sfxVolume / 100;
-    });
 }
 function checkBuildValidity() {
     if (settings.speciesClause) {
@@ -2007,26 +1975,4 @@ function checkBuildValidity() {
                         if (players[i].build[j].moves.includes(k))
                             return false;
     return true;
-}
-for (let i of document.getElementsByClassName("clause-checkbox"))
-    i.addEventListener("change", function () {
-        renderTable();
-    });
-const THEME_CLASSNAMES = {
-    "pokemon": "theme-pokemon",
-    "coromon": "theme-coromon",
-    "roco kingdom": "theme-roco-kingdom"
-};
-for (let i of (document.querySelectorAll(".mode-btn"))) {
-    i.addEventListener("mouseover", function () {
-        for (let j in THEME_CLASSNAMES)
-            document.body.classList.remove(THEME_CLASSNAMES[j]);
-        document.body.classList.add(THEME_CLASSNAMES[i.dataset.mode]);
-        document.querySelector(".mode-btn.selected").classList.remove("selected");
-        i.classList.add("selected");
-    });
-    i.addEventListener("click", function () {
-        settings.mode = i.dataset.mode;
-        document.getElementById("modeSelectBg").classList.remove("show");
-    });
 }
