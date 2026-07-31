@@ -12,26 +12,28 @@
         --special: #7799DD;
         --physical: #EE7700;
         --status: #999;
-        --bug: #83c300;
-        --dragon: #006fc9;
-        --electric: #fbd100;
-        --fighting: #e0306a;
-        --fire: #fc9540;
-        --flying: #89aae3;
-        --ghost: #4c6ab2;
-        --grass: #38bf4b;
-        --ground: #e87236;
-        --ice: #4cd1c0;
-        --normal: #919aa2;
-        --poison: #b165c9;
-        --psychic: #ff6675;
-        --rock: #c8b686;
-        --water: #3692dc;
+
         --fs-medium: 2.3vmin;
         --stamina: #9C3FDF;
 
         &.theme-pokemon {
             --theme: dodgerblue;
+
+            --bug: #83c300;
+            --dragon: #006fc9;
+            --electric: #fbd100;
+            --fighting: #e0306a;
+            --fire: #fc9540;
+            --flying: #89aae3;
+            --ghost: #4c6ab2;
+            --grass: #38bf4b;
+            --ground: #e87236;
+            --ice: #4cd1c0;
+            --normal: #919aa2;
+            --poison: #b165c9;
+            --psychic: #ff6675;
+            --rock: #c8b686;
+            --water: #3692dc;
         }
 
         &.theme-coromon {
@@ -40,6 +42,25 @@
 
         &.theme-roco-kingdom {
             --theme: #42ca42;
+
+            --bug: #9ECE21;
+            --cute: #FC7CAC;
+            --dark: #CF467A;
+            --dragon: #ED4962;
+            --electric: #E7C506;
+            --fighting: #FF9636;
+            --fire: #DB5525;
+            --flying: #3EC7CA;
+            --ghost: #9446EC;
+            --grass: #4EBC73;
+            --ground: #9A7E3F;
+            --ice: #5FADDD;
+            --light: #4FC0FF;
+            --mecha: #40CBA9;
+            --normal: #3F89B4;
+            --poison: #BA62E0;
+            --psychic: #9FA7F8;
+            --water: #6AA9FE;
         }
 
         &.dark {
@@ -612,6 +633,19 @@
 
             &.type-water {
                 color: var(--water);
+            }
+
+            /*RK-specific types*/
+            &.type-cute {
+                color: var(--cute);
+            }
+
+            &.type-mecha {
+                color: var(--mecha);
+            }
+
+            &.type-light {
+                color: var(--light);
             }
         }
     }

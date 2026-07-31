@@ -1,8 +1,15 @@
 "use strict";
-const FEATURES = {
+const TYPE_CLASSNAMES = ["type-bug", "type-dragon", "type-electric", "type-fighting", "type-fire", "type-flying", "type-ghost", "type-grass", "type-ground",
+    "type-ice", "type-normal", "type-poison", "type-psychic", "type-rock", "type-water", "type-cute", "type-mecha", "type-light"];
+/*const FEATURES = {
     "pokemon": [],
     "rk": []
-};
+};*/
+//merge omiegamon
+mergeTranslData(TRANSLATION_OMIEGA, TRANSLATION);
+mergeIconData(ICONS_OMIEGA, ICONS);
+mergeMovePkmnData(MOVES_OMIEGA, MOVES, "omiega");
+mergeMovePkmnData(POKEMON_OMIEGA, POKEMON, "omiega");
 const POOLS = {
     "pokemon": {
         "space": "",
@@ -14,7 +21,7 @@ const POOLS = {
         "iconLocation": "pokemonicons-sheet.png",
         "initBuild": INIT_BUILD,
         "cryLocation": "cry",
-        "transl": TRANSLATION
+        "transl": getMergedTransl(TRANSLATION_GLOBAL, TRANSLATION)
     },
     "coromon": {
         "space": "coromon/",
@@ -38,7 +45,7 @@ const POOLS = {
         "iconLocation": "roco kingdom/iconsheet.png",
         "initBuild": RK_INIT_BUILD,
         "cryLocation": "roco kingdom/cry",
-        "transl": RK_TRANSLATION
+        "transl": getMergedTransl(TRANSLATION_GLOBAL, RK_TRANSLATION)
     }
 };
 const BGM_SETTINGS = {
@@ -164,10 +171,6 @@ document.getElementById("viewpoint").innerText = getL10n("ui", "viewpoint", {
     "player": ["Player 1"]
 });
 let record = [], recordPosition = 0, viewpoint = 0;
-mergeTranslationData(TRANSLATION_OMIEGA, TRANSLATION);
-mergeIconData(ICONS_OMIEGA, ICONS);
-mergeMovePkmnData(MOVES_OMIEGA, MOVES, "omiega");
-mergeMovePkmnData(POKEMON_OMIEGA, POKEMON, "omiega");
 switchMode("pokemon");
 for (let i of document.getElementsByClassName("pkmnName")) {
     i.addEventListener("click", function () {
@@ -391,7 +394,7 @@ for (let i = 0; i < 4; i++) {
         tooltipMove.querySelector(".tip-cat").classList.add("cat-" + moveStats.cat);
         tooltipMove.querySelector(".tip-desc").innerText = getL10n("moveDesc", decisionMoveFor);
         tooltipMove.querySelector(".type-text").innerText = getL10n("types", moveStats.type).toUpperCase();
-        tooltipMove.querySelector(".type-text").classList.remove("type-bug", "type-dragon", "type-electric", "type-fighting", "type-fire", "type-flying", "type-ghost", "type-grass", "type-ground", "type-ice", "type-normal", "type-poison", "type-psychic", "type-rock", "type-water");
+        tooltipMove.querySelector(".type-text").classList.remove(...TYPE_CLASSNAMES);
         tooltipMove.querySelector(".type-text").classList.add("type-" + moveStats.type);
         tooltipMove.querySelector(".tip-pow").innerText = moveStats.power.toString();
         $("pokemon", () => {
@@ -402,6 +405,9 @@ for (let i = 0; i < 4; i++) {
         });
         $("pokemon", "coromon", () => {
             tooltipMove.querySelector(".tip-acc").innerText = (moveStats.acc == Infinity) ? "∞" : moveStats.acc + "%";
+        });
+        $("roco kingdom", () => {
+            tooltipMove.querySelector(".tip-cost").innerText = moveStats.cost.toString();
         });
         tooltipMove.querySelector(".type-img").src = `${$("space")}types/` + moveStats.type + ".png";
         tooltipMove.classList.add("show");
@@ -596,12 +602,17 @@ function capitalize(str) {
     tempStr = tempArr.join("-");
     return tempStr;
 }
-function mergeTranslationData(from, to) {
+function mergeTranslData(from, to) {
     for (let i in from)
         for (let j in from[i])
             for (let k in from[i][j]) {
                 to[i][j][k] = from[i][j][k];
             }
+}
+function getMergedTransl(from, to) {
+    let toClone = structuredClone(to);
+    mergeTranslData(from, toClone);
+    return toClone;
 }
 function mergeIconData(from, to) {
     for (let i in from)
@@ -758,6 +769,7 @@ function displayEffectiveness(button, move) {
         0.5: "NVE",
         1: "E",
         2: "SE",
+        3: "DSE",
         4: "DSE"
     };
     if (!getPkmn(false) || !move || getMoveStats(move).cat == "status")
@@ -1115,7 +1127,7 @@ function addTooltip(elementGroup, i, player = playerToMove) {
         }
         tooltip.querySelectorAll(".type")[j].classList.remove("hide");
         tooltip.querySelectorAll(".type-text")[j].innerText = getL10n("types", stats.type[j]).toUpperCase();
-        tooltip.querySelectorAll(".type-text")[j].classList.remove("type-bug", "type-dragon", "type-electric", "type-fighting", "type-fire", "type-flying", "type-ghost", "type-grass", "type-ground", "type-ice", "type-normal", "type-poison", "type-psychic", "type-rock", "type-water");
+        tooltip.querySelectorAll(".type-text")[j].classList.remove(...TYPE_CLASSNAMES);
         tooltip.querySelectorAll(".type-text")[j].classList.add("type-" + stats.type[j]);
         tooltip.querySelectorAll(".type-img")[j].src = `${$("space")}types/` + stats.type[j] + ".png";
     }
@@ -1805,7 +1817,7 @@ function addTempEffect(isSelf, effect, turns, prob) {
 }
 function refreshLang() {
     for (let i of document.querySelectorAll("[data-transl-cat]")) {
-        i.innerHTML = TRANSLATION[settings.lang][i.dataset.translCat][i.dataset.translKey];
+        i.innerHTML = $("transl")[settings.lang][i.dataset.translCat][i.dataset.translKey];
     }
 }
 function applySetting(key) {
