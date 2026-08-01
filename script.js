@@ -797,12 +797,12 @@ function getDefaultProperties(playersInfo) {
             }
             $("pokemon", () => {
                 for (let k of ["atk", "def", "sp", "spe"]) {
-                    j[k] = Math.floor(0.01 * (2 * (getStats(j.name)[k] + j.dv) + Math.floor(0.25 * j.ev)) * j.lv) + 5;
+                    j[k] = calcActualValue(getStats(j.name)[k], j.dv, j.ev, j.lv);
                 }
             });
             $("roco kingdom", () => {
                 for (let k of ["atk", "def", "spa", "spd", "spe"]) {
-                    j[k] = Math.round(Math.round(getStats(j.name)[k] * 1.1 + j.dv * 0.55 + 10) + 50);
+                    j[k] = calcActualValueRk(getStats(j.name)[k], j.ev);
                 }
             });
             j.transformPkmn = "";
@@ -1139,7 +1139,7 @@ function addTooltip(elementGroup, i, player = playerToMove) {
             let totalPp = getMoveStats(Object.keys(battleInfo[actualPlayer].build[i].moves)[j])?.pp;
             let ppRemaining = Object.values(battleInfo[actualPlayer].build[i].moves)[j];
             addMoveToTooltip(tooltip, actualPlayer, i, j, {
-                "isRevealed": ppRemaining == totalPp,
+                "isRevealed": ppRemaining != totalPp,
                 "additionalInfoFn": () => {
                     tooltip.querySelectorAll(".pp-remaining")[j].innerText = ppRemaining.toString();
                     tooltip.querySelectorAll(".pp .sub")[j].innerText = "/" + totalPp;
@@ -1162,15 +1162,25 @@ function addTooltip(elementGroup, i, player = playerToMove) {
     tooltip.querySelector(".hp-remaining").innerText = (battleInfo[actualPlayer].build[i].hp / battleInfo[actualPlayer]
         .build[i].maxHp * 100).toFixed(0) + "%";
     let stats2 = getStats(battleInfo[actualPlayer].build[i].name);
-    tooltip.querySelector(".spe-range").innerText = (Math.floor(0.01 * (2 * (stats2.spe + 0) + Math.floor(0.25 *
-        0)) * battleInfo[actualPlayer].build[i].lv) + 5) + "~" + (Math.floor(0.01 * (2 * (stats2.spe + 15) + Math
-        .floor(0.25 * 252)) * battleInfo[actualPlayer].build[i].lv) + 5);
+    $("pokemon", () => {
+        tooltip.querySelector(".spe-range").innerText = `${calcActualValue(stats2.spe, 0, 0, battleInfo[actualPlayer].build[i].lv)}~${calcActualValue(stats2
+            .spe, 15, 252, battleInfo[actualPlayer].build[i].lv)}`;
+    });
+    $("roco kingdom", () => {
+        tooltip.querySelector(".spe-range").innerText = `${calcActualValueRk(stats2.spe, 0)}~${calcActualValueRk(stats2.spe, 100)}`;
+    });
     if (actualPlayer == playerToMove)
         tooltip.querySelector(".hp .sub").innerText = ", " + battleInfo[actualPlayer].build[i].hp
             .toFixed(0) + "/" + battleInfo[actualPlayer].build[i].maxHp;
     else
         tooltip.querySelector(".hp .sub").innerText = "";
     tooltip.classList.add("show");
+}
+function calcActualValue(base, dv, ev, lv) {
+    return Math.floor(0.01 * (2 * (base + dv) + Math.floor(0.25 * ev)) * lv) + 5;
+}
+function calcActualValueRk(base, ev) {
+    return Math.round(Math.round(base * 1.1 + ev * 0.55 + 10) + 50);
 }
 function addMoveToTooltip(tooltip, actualPlayer, i, j, { isRevealed, additionalInfoFn, emptyMoveFn, unknownMoveFn }) {
     if (Object.keys(battleInfo[actualPlayer].build[i].moves)[j] && ((actualPlayer != playerToMove && isRevealed) || (actualPlayer == playerToMove))) {
