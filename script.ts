@@ -513,6 +513,7 @@ for (let i = 0; i < 4; i++) {
             tooltipMove.querySelector<HTMLElement>(".tip-acc")!.innerText = (moveStats.acc == Infinity) ? "∞" : moveStats.acc + "%";
         });
         $("roco kingdom", () => {
+
             tooltipMove.querySelector<HTMLElement>(".tip-cost")!.innerText = moveStats.cost.toString();
         });
         tooltipMove.querySelector<HTMLImageElement>(".type-img")!.src = `${$("space")}types/` + moveStats.type + ".png";
@@ -923,6 +924,7 @@ function getDefaultProperties(playersInfo: Player[]): BattleInfo {
 
         $("roco kingdom", () => {
             j.energy = 10;
+            j.revealedMoves = new Set([]);
         });
     }
     return arr;
@@ -1187,24 +1189,28 @@ function addTooltip(elementGroup: NodeListOf<HTMLElement>, i: number, player = p
     let actualPlayer = Number(viewpoint != player);
     insertEffects(battleInfo[actualPlayer].build[i], tooltip.querySelector(".tip-status") as HTMLDivElement, true);
     for (let j = 0; j < 4; j++) {
-        let totalPp = getMoveStats(Object.keys(battleInfo[actualPlayer].build[i].moves)[j])?.pp;
         $("pokemon", () => {
+            let totalPp = getMoveStats(Object.keys(battleInfo[actualPlayer].build[i].moves)[j])?.pp;
             let ppRemaining = Object.values(battleInfo[actualPlayer].build[i].moves)[j];
-            if (Object.keys(battleInfo[actualPlayer].build[i].moves)[j] && ((actualPlayer != playerToMove && ppRemaining < (totalPp as number)) ||
-                (actualPlayer == playerToMove))) {
-                tooltip.querySelectorAll<HTMLElement>(".move-name")[j].innerText = getL10n("moves", Object.keys(battleInfo[actualPlayer]
-                    .build[i].moves)[j]);
-                tooltip.querySelectorAll<HTMLElement>(".pp-remaining")[j].innerText = ppRemaining.toString();
-                tooltip.querySelectorAll<HTMLElement>(".pp .sub")[j].innerText = "/" + totalPp;
-                if (Object.values(battleInfo[actualPlayer].build[i].moves)[j] == getMoveStats(Object
-                    .keys(battleInfo[actualPlayer].build[i].moves)[j])!.pp) tooltip.querySelectorAll(".move-name")[j].classList
-                        .add("unknown");
-                else tooltip.querySelectorAll(".move-name")[j].classList.remove("unknown");
-            } else if (actualPlayer == playerToMove) addGrayMove(tooltip, j, "empty", 0, "/0");
-            else addGrayMove(tooltip, j, "unknownMove", "?", "/?");
+            addMoveToTooltip(tooltip, actualPlayer, i, j, {
+                "isRevealed": ppRemaining == totalPp,
+                "additionalInfoFn": () => {
+                    tooltip.querySelectorAll<HTMLElement>(".pp-remaining")[j].innerText = ppRemaining.toString();
+                    tooltip.querySelectorAll<HTMLElement>(".pp .sub")[j].innerText = "/" + totalPp;
+                },
+                "emptyMoveFn": () => addGrayMove(tooltip, j, "empty", 0, "/0"),
+                "unknownMoveFn": () => addGrayMove(tooltip, j, "unknownMove", "?", "/?")
+            });
         });
         $("roco kingdom", () => {
-
+            addMoveToTooltip(tooltip, actualPlayer, i, j, {
+                "isRevealed": battleInfo[actualPlayer].build[i].revealedMoves.has(Object.keys(battleInfo[actualPlayer].build[i].moves)[j]),
+                "additionalInfoFn": () => {
+                    tooltip.querySelectorAll<HTMLElement>(".cost")[j].innerText = getMoveStats(Object.keys(battleInfo[actualPlayer].build[i].moves)[j])?.cost;
+                },
+                "emptyMoveFn": () => addGrayMoveRk(tooltip, j, "empty", 0),
+                "unknownMoveFn": () => addGrayMoveRk(tooltip, j, "unknownMove", "?")
+            });
         });
     }
     tooltip.querySelector<HTMLElement>(".hp-remaining")!.innerText = (battleInfo[actualPlayer].build[i].hp / battleInfo[actualPlayer]
@@ -1218,10 +1224,32 @@ function addTooltip(elementGroup: NodeListOf<HTMLElement>, i: number, player = p
     else tooltip.querySelector<HTMLElement>(".hp .sub")!.innerText = "";
     tooltip.classList.add("show");
 }
+
+function addMoveToTooltip(tooltip: HTMLDivElement, actualPlayer: number, i: number, j: number, { isRevealed, additionalInfoFn, emptyMoveFn, unknownMoveFn }: {
+    isRevealed: boolean,
+    additionalInfoFn: () => void,
+    emptyMoveFn: () => void,
+    unknownMoveFn: () => void;
+}) {
+    if (Object.keys(battleInfo[actualPlayer].build[i].moves)[j] && ((actualPlayer != playerToMove && isRevealed) || (actualPlayer == playerToMove))) {
+        tooltip.querySelectorAll<HTMLElement>(".move-name")[j].innerText = getL10n("moves", Object.keys(battleInfo[actualPlayer]
+            .build[i].moves)[j]);
+        additionalInfoFn();
+        if (!isRevealed) tooltip.querySelectorAll(".move-name")[j].classList
+            .add("unknown");
+        else tooltip.querySelectorAll(".move-name")[j].classList.remove("unknown");
+    } else if (actualPlayer == playerToMove) emptyMoveFn();
+    else unknownMoveFn();
+}
 function addGrayMove(tooltip: HTMLDivElement, j: number, textKey: string, ppRemaining: number | string, subText: string) {
     tooltip.querySelectorAll<HTMLElement>(".move-name")[j].innerText = getL10n("ui", textKey);
     tooltip.querySelectorAll<HTMLElement>(".pp-remaining")[j].innerText = ppRemaining.toString();
     tooltip.querySelectorAll<HTMLElement>(".pp .sub")[j].innerText = subText;
+    tooltip.querySelectorAll(".move-name")[j].classList.add("unknown");
+}
+function addGrayMoveRk(tooltip: HTMLDivElement, j: number, textKey: string, cost: number | string) {
+    tooltip.querySelectorAll<HTMLElement>(".move-name")[j].innerText = getL10n("ui", textKey);
+    tooltip.querySelectorAll<HTMLElement>(".cost")[j].innerText = cost.toString();
     tooltip.querySelectorAll(".move-name")[j].classList.add("unknown");
 }
 function insertEffects(pkmn: MonInstance, outputArea: HTMLDivElement, showFull: boolean) {

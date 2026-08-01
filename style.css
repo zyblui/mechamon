@@ -759,7 +759,8 @@
                     display: inline-block;
                 }
 
-                .pp {
+                .pp,
+                .cost-outer {
                     float: right;
                     font-size: large;
                     font-weight: bold;

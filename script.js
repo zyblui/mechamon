@@ -853,6 +853,7 @@ function getDefaultProperties(playersInfo) {
             j.revealed = false;
             $("roco kingdom", () => {
                 j.energy = 10;
+                j.revealedMoves = new Set([]);
             });
         }
     return arr;
@@ -1134,28 +1135,28 @@ function addTooltip(elementGroup, i, player = playerToMove) {
     let actualPlayer = Number(viewpoint != player);
     insertEffects(battleInfo[actualPlayer].build[i], tooltip.querySelector(".tip-status"), true);
     for (let j = 0; j < 4; j++) {
-        let totalPp = getMoveStats(Object.keys(battleInfo[actualPlayer].build[i].moves)[j])?.pp;
         $("pokemon", () => {
+            let totalPp = getMoveStats(Object.keys(battleInfo[actualPlayer].build[i].moves)[j])?.pp;
             let ppRemaining = Object.values(battleInfo[actualPlayer].build[i].moves)[j];
-            if (Object.keys(battleInfo[actualPlayer].build[i].moves)[j] && ((actualPlayer != playerToMove && ppRemaining < totalPp) ||
-                (actualPlayer == playerToMove))) {
-                tooltip.querySelectorAll(".move-name")[j].innerText = getL10n("moves", Object.keys(battleInfo[actualPlayer]
-                    .build[i].moves)[j]);
-                tooltip.querySelectorAll(".pp-remaining")[j].innerText = ppRemaining.toString();
-                tooltip.querySelectorAll(".pp .sub")[j].innerText = "/" + totalPp;
-                if (Object.values(battleInfo[actualPlayer].build[i].moves)[j] == getMoveStats(Object
-                    .keys(battleInfo[actualPlayer].build[i].moves)[j]).pp)
-                    tooltip.querySelectorAll(".move-name")[j].classList
-                        .add("unknown");
-                else
-                    tooltip.querySelectorAll(".move-name")[j].classList.remove("unknown");
-            }
-            else if (actualPlayer == playerToMove)
-                addGrayMove(tooltip, j, "empty", 0, "/0");
-            else
-                addGrayMove(tooltip, j, "unknownMove", "?", "/?");
+            addMoveToTooltip(tooltip, actualPlayer, i, j, {
+                "isRevealed": ppRemaining == totalPp,
+                "additionalInfoFn": () => {
+                    tooltip.querySelectorAll(".pp-remaining")[j].innerText = ppRemaining.toString();
+                    tooltip.querySelectorAll(".pp .sub")[j].innerText = "/" + totalPp;
+                },
+                "emptyMoveFn": () => addGrayMove(tooltip, j, "empty", 0, "/0"),
+                "unknownMoveFn": () => addGrayMove(tooltip, j, "unknownMove", "?", "/?")
+            });
         });
         $("roco kingdom", () => {
+            addMoveToTooltip(tooltip, actualPlayer, i, j, {
+                "isRevealed": battleInfo[actualPlayer].build[i].revealedMoves.has(Object.keys(battleInfo[actualPlayer].build[i].moves)[j]),
+                "additionalInfoFn": () => {
+                    tooltip.querySelectorAll(".cost")[j].innerText = getMoveStats(Object.keys(battleInfo[actualPlayer].build[i].moves)[j])?.cost;
+                },
+                "emptyMoveFn": () => addGrayMoveRk(tooltip, j, "empty", 0),
+                "unknownMoveFn": () => addGrayMoveRk(tooltip, j, "unknownMove", "?")
+            });
         });
     }
     tooltip.querySelector(".hp-remaining").innerText = (battleInfo[actualPlayer].build[i].hp / battleInfo[actualPlayer]
@@ -1171,10 +1172,31 @@ function addTooltip(elementGroup, i, player = playerToMove) {
         tooltip.querySelector(".hp .sub").innerText = "";
     tooltip.classList.add("show");
 }
+function addMoveToTooltip(tooltip, actualPlayer, i, j, { isRevealed, additionalInfoFn, emptyMoveFn, unknownMoveFn }) {
+    if (Object.keys(battleInfo[actualPlayer].build[i].moves)[j] && ((actualPlayer != playerToMove && isRevealed) || (actualPlayer == playerToMove))) {
+        tooltip.querySelectorAll(".move-name")[j].innerText = getL10n("moves", Object.keys(battleInfo[actualPlayer]
+            .build[i].moves)[j]);
+        additionalInfoFn();
+        if (!isRevealed)
+            tooltip.querySelectorAll(".move-name")[j].classList
+                .add("unknown");
+        else
+            tooltip.querySelectorAll(".move-name")[j].classList.remove("unknown");
+    }
+    else if (actualPlayer == playerToMove)
+        emptyMoveFn();
+    else
+        unknownMoveFn();
+}
 function addGrayMove(tooltip, j, textKey, ppRemaining, subText) {
     tooltip.querySelectorAll(".move-name")[j].innerText = getL10n("ui", textKey);
     tooltip.querySelectorAll(".pp-remaining")[j].innerText = ppRemaining.toString();
     tooltip.querySelectorAll(".pp .sub")[j].innerText = subText;
+    tooltip.querySelectorAll(".move-name")[j].classList.add("unknown");
+}
+function addGrayMoveRk(tooltip, j, textKey, cost) {
+    tooltip.querySelectorAll(".move-name")[j].innerText = getL10n("ui", textKey);
+    tooltip.querySelectorAll(".cost")[j].innerText = cost.toString();
     tooltip.querySelectorAll(".move-name")[j].classList.add("unknown");
 }
 function insertEffects(pkmn, outputArea, showFull) {
