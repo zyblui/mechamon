@@ -535,7 +535,6 @@ for (let i = 0; i < 4; i++) {
             tooltipMove.querySelector<HTMLElement>(".tip-acc")!.innerText = (moveStats.acc == Infinity) ? "∞" : moveStats.acc + "%";
         });
         $("roco kingdom", () => {
-
             tooltipMove.querySelector<HTMLElement>(".tip-cost")!.innerText = moveStats.cost.toString();
         });
         tooltipMove.querySelector<HTMLImageElement>(".type-img")!.src = `${$("space")}types/` + moveStats.type + ".png";
@@ -643,6 +642,9 @@ for (let i of (document.querySelectorAll<HTMLDivElement>(".mode-btn"))) {
     });
     i.addEventListener("click", function () {
         switchMode(i.dataset.mode as string);
+
+        applySetting("omiegamon");
+
         document.getElementById("modeSelectBg")!.classList.remove("show");
     });
 }
@@ -732,11 +734,10 @@ function switchMode(mode: string) {
     document.getElementById("p2Name")!.innerText = getL10n("pokemon", players[1].build[0].name);
 
     renderTable();
-
+    document.getElementById("pokemonListInner")!.innerHTML = "";
     for (let i of $("mons")) {
         cries[i.name] = new Audio(`${$("cryLocation")}/${i.name}.mp3`);
-    }
-    for (let i of $("mons")) {
+
         let div = document.createElement("div");
         div.classList.add("listButton");
         div.innerHTML = getL10n("pokemon", i.name);
@@ -755,7 +756,7 @@ function switchMode(mode: string) {
             document.getElementById("pokemonList")!.classList.remove("show");
             document.getElementById("setupTable")!.classList.add("show");
         });
-        document.getElementById("pokemonList")!.appendChild(div);
+        document.getElementById("pokemonListInner")!.appendChild(div);
     }
 
     $("roco kingdom", () => {
@@ -1322,17 +1323,8 @@ function insertEffects(pkmn: MonInstance, outputArea: HTMLDivElement, showFull: 
         outputArea.appendChild(statusSpan);
     }
     for (let j of $("properties")) {
-        if (pkmn[j + "Stage"] != 0) {
-            let span = document.createElement("span");
-            if (pkmn[j + "Stage"] > 0) {
-                span.classList.add("buff");
-            } else {
-                span.classList.add("debuff");
-            }
-            span.innerText = "[" + ((showFull) ? getL10n("stats", j).toUpperCase() : capitalize(j)) + " x" +
-                Number(STAGE_MULTIPLIER[pkmn[j + "Stage"]].toFixed(2)) + "]";
-            outputArea.appendChild(span);
-        }
+        $("pokemon", () => insertPropertyMod(pkmn[j + "Stage"], 0, Number(STAGE_MULTIPLIER[pkmn[j + "Stage"]].toFixed(2)), outputArea, showFull, j));
+        $("roco kingdom", () => insertPropertyMod(Number(pkmn[`${j}Multiplier`].toFixed(2)), 1, Number(pkmn[`${j}Multiplier`].toFixed(2)), outputArea, showFull, j));
     }
     for (let j in pkmn.tempEffect) {
         if (pkmn.tempEffect[j]) {
@@ -1341,6 +1333,15 @@ function insertEffects(pkmn: MonInstance, outputArea: HTMLDivElement, showFull: 
             tempEffectSpan.classList.add("debuff");
             outputArea.appendChild(tempEffectSpan);
         }
+    }
+}
+function insertPropertyMod(value: number, criticalValue: number, displayValue: number, outputArea: HTMLElement, showFull: boolean, j: string) {
+    if (value != criticalValue) {
+        let span = document.createElement("span");
+        if (value > criticalValue) span.classList.add("buff");
+        else span.classList.add("debuff");
+        span.innerText = "[" + ((showFull) ? getL10n("stats", j).toUpperCase() : capitalize(j)) + " x" + displayValue + "]";
+        outputArea.appendChild(span);
     }
 }
 function switchPkmn(name: string) {

@@ -22,7 +22,8 @@ const POOLS = {
         "initBuild": INIT_BUILD,
         "cryLocation": "cry",
         "transl": getMergedTransl(TRANSLATION_GLOBAL, TRANSLATION),
-        "stab": 1.5
+        "stab": 1.5,
+        "properties": ["atk", "def", "sp", "spe"]
     },
     "coromon": {
         "space": "coromon/",
@@ -35,7 +36,8 @@ const POOLS = {
         "initBuild": [],
         "cryLocation": "",
         "transl": [],
-        "stab": 1
+        "stab": 1,
+        "properties": []
     },
     "roco kingdom": {
         "space": "roco kingdom/",
@@ -48,7 +50,8 @@ const POOLS = {
         "initBuild": RK_INIT_BUILD,
         "cryLocation": "roco kingdom/cry",
         "transl": getMergedTransl(TRANSLATION_GLOBAL, RK_TRANSLATION),
-        "stab": 1.25
+        "stab": 1.25,
+        "properties": ["atk", "def", "spa", "spd", "spe"]
     }
 };
 const BGM_SETTINGS = {
@@ -95,6 +98,8 @@ const STAT_NAMES = {
     "def": "Defense",
     "atk": "Attack",
     "sp": "Special",
+    "spa": "Special Attack",
+    "spd": "Special Defense",
     "spe": "Speed",
     "eva": "Evasion",
     "acc": "Accuracy"
@@ -143,7 +148,6 @@ if (!localStorage.getItem("mechamonSettings") || settings.whatsNew != JSON.parse
     document.getElementById("dialogOuter").classList.add("show");
 }
 let cries = {};
-const PROPERTIES = ["atk", "def", "sp", "spe"];
 const MOVE_BAN_LIST = {
     "ohkoClause": ["fissure", "horn drill", "guillotine", "sheer cold"],
     "evasionClause": ["double team", "minimize"]
@@ -545,6 +549,7 @@ for (let i of (document.querySelectorAll(".mode-btn"))) {
     });
     i.addEventListener("click", function () {
         switchMode(i.dataset.mode);
+        applySetting("omiegamon");
         document.getElementById("modeSelectBg").classList.remove("show");
     });
 }
@@ -648,10 +653,9 @@ function switchMode(mode) {
     document.getElementById("p1Name").innerText = getL10n("pokemon", players[0].build[0].name);
     document.getElementById("p2Name").innerText = getL10n("pokemon", players[1].build[0].name);
     renderTable();
+    document.getElementById("pokemonListInner").innerHTML = "";
     for (let i of $("mons")) {
         cries[i.name] = new Audio(`${$("cryLocation")}/${i.name}.mp3`);
-    }
-    for (let i of $("mons")) {
         let div = document.createElement("div");
         div.classList.add("listButton");
         div.innerHTML = getL10n("pokemon", i.name);
@@ -669,7 +673,7 @@ function switchMode(mode) {
             document.getElementById("pokemonList").classList.remove("show");
             document.getElementById("setupTable").classList.add("show");
         });
-        document.getElementById("pokemonList").appendChild(div);
+        document.getElementById("pokemonListInner").appendChild(div);
     }
     $("roco kingdom", () => {
         for (let i in RK_NATURES) {
@@ -835,16 +839,14 @@ function getDefaultProperties(playersInfo) {
                     break;
                 }
             }
-            $("pokemon", () => {
-                for (let k of ["atk", "def", "sp", "spe"]) {
+            for (let k of $("properties")) {
+                $("pokemon", () => {
                     j[k] = calcActualValue(getStats(j.name)[k], j.dv, j.ev, j.lv);
-                }
-            });
-            $("roco kingdom", () => {
-                for (let k of ["atk", "def", "spa", "spd", "spe"]) {
+                });
+                $("roco kingdom", () => {
                     j[k] = calcActualValueRk(getStats(j.name)[k], j.ev);
-                }
-            });
+                });
+            }
             j.transformPkmn = "";
             j.mimicMove = "";
             j.atkStage = 0;
@@ -894,6 +896,11 @@ function getDefaultProperties(playersInfo) {
             $("roco kingdom", () => {
                 j.energy = 10;
                 j.revealedMoves = new Set([]);
+                j.atkMultiplier = 1;
+                j.defMultiplier = 1;
+                j.spaMultiplier = 1;
+                j.spdMultiplier = 1;
+                j.speMultiplier = 1;
             });
         }
     return arr;
@@ -1259,19 +1266,9 @@ function insertEffects(pkmn, outputArea, showFull) {
             "]";
         outputArea.appendChild(statusSpan);
     }
-    for (let j of PROPERTIES) {
-        if (pkmn[j + "Stage"] != 0) {
-            let span = document.createElement("span");
-            if (pkmn[j + "Stage"] > 0) {
-                span.classList.add("buff");
-            }
-            else {
-                span.classList.add("debuff");
-            }
-            span.innerText = "[" + ((showFull) ? getL10n("stats", j).toUpperCase() : capitalize(j)) + " x" +
-                Number(STAGE_MULTIPLIER[pkmn[j + "Stage"]].toFixed(2)) + "]";
-            outputArea.appendChild(span);
-        }
+    for (let j of $("properties")) {
+        $("pokemon", () => insertPropertyMod(pkmn[j + "Stage"], 0, Number(STAGE_MULTIPLIER[pkmn[j + "Stage"]].toFixed(2)), outputArea, showFull, j));
+        $("roco kingdom", () => insertPropertyMod(Number(pkmn[`${j}Multiplier`].toFixed(2)), 1, Number(pkmn[`${j}Multiplier`].toFixed(2)), outputArea, showFull, j));
     }
     for (let j in pkmn.tempEffect) {
         if (pkmn.tempEffect[j]) {
@@ -1280,6 +1277,17 @@ function insertEffects(pkmn, outputArea, showFull) {
             tempEffectSpan.classList.add("debuff");
             outputArea.appendChild(tempEffectSpan);
         }
+    }
+}
+function insertPropertyMod(value, criticalValue, displayValue, outputArea, showFull, j) {
+    if (value != criticalValue) {
+        let span = document.createElement("span");
+        if (value > criticalValue)
+            span.classList.add("buff");
+        else
+            span.classList.add("debuff");
+        span.innerText = "[" + ((showFull) ? getL10n("stats", j).toUpperCase() : capitalize(j)) + " x" + displayValue + "]";
+        outputArea.appendChild(span);
     }
 }
 function switchPkmn(name) {

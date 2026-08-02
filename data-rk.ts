@@ -8358,6 +8358,14 @@ const RK_TRANSLATION: Translation = {
             "psychic": "Psychic",
             "electric": "Electric"
         },
+        "stats": {
+            "atk": "Attack",
+            "def": "Defense",
+            "spa": "Special Attack",
+            "spd": "Special Defense",
+            "spe": "Speed",
+            "hp": "HP"
+        },
         "cat": {
             "physical": "Physical",
             "special": "Special",
@@ -10132,6 +10140,14 @@ const RK_TRANSLATION: Translation = {
             "cute": "萌",
             "psychic": "幻",
             "electric": "电"
+        },
+        "stats": {
+            "atk": "攻击",
+            "def": "防御",
+            "spa": "魔攻",
+            "spd": "魔抗",
+            "spe": "速度",
+            "hp": "HP"
         },
         "cat": {
             "physical": "物攻",
