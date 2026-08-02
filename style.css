@@ -12,6 +12,7 @@
         --special: #7799DD;
         --physical: #EE7700;
         --status: #999;
+        --defense: #ffc65f;
 
         --fs-medium: 2.3vmin;
         --stamina: #9C3FDF;
@@ -802,6 +803,10 @@
             &.cat-status {
                 color: var(--status);
             }
+
+            &.cat-defense {
+                color: var(--defense);
+            }
         }
 
         .container {
@@ -995,6 +1000,17 @@
         & .dv::before {
             content: "DV: ";
             color: var(--text-dim);
+        }
+
+        & .nature {
+            &::before {
+                content: "Nature: ";
+                color: var(--text-dim);
+            }
+
+            html[lang="zh"] &::before {
+                content: "性格";
+            }
         }
 
         & .move-1::before {

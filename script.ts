@@ -106,7 +106,8 @@ const POOLS: {
         "iconLocation": "pokemonicons-sheet.png",
         "initBuild": INIT_BUILD,
         "cryLocation": "cry",
-        "transl": getMergedTransl(TRANSLATION_GLOBAL, TRANSLATION)
+        "transl": getMergedTransl(TRANSLATION_GLOBAL, TRANSLATION),
+        "stab": 1.5
     },
     "coromon": {
         "space": "coromon/",
@@ -118,7 +119,8 @@ const POOLS: {
         "iconLocation": "roco kingdom/iconsheet.png",
         "initBuild": [],
         "cryLocation": "",
-        "transl": []
+        "transl": [],
+        "stab": 1
     },
     "roco kingdom": {
         "space": "roco kingdom/",
@@ -130,7 +132,8 @@ const POOLS: {
         "iconLocation": "roco kingdom/iconsheet.png",
         "initBuild": RK_INIT_BUILD,
         "cryLocation": "roco kingdom/cry",
-        "transl": getMergedTransl(TRANSLATION_GLOBAL, RK_TRANSLATION)
+        "transl": getMergedTransl(TRANSLATION_GLOBAL, RK_TRANSLATION),
+        "stab": 1.25
     }
 };
 const BGM_SETTINGS: {
@@ -496,7 +499,7 @@ for (let i = 0; i < 4; i++) {
         tooltipMove.querySelector<HTMLElement>(".tip-name")!.innerText = getL10n("moves", decisionMoveFor);
         let moveStats: MonMove = getMoveStats(decisionMoveFor) as MonMove;
         tooltipMove.querySelector<HTMLElement>(".tip-cat")!.innerText = getL10n("cat", moveStats.cat).toUpperCase();
-        tooltipMove.querySelector<HTMLElement>(".tip-cat")!.classList.remove("cat-physical", "cat-special", "cat-status");
+        tooltipMove.querySelector<HTMLElement>(".tip-cat")!.classList.remove("cat-physical", "cat-special", "cat-status", "cat-defense");
         tooltipMove.querySelector<HTMLElement>(".tip-cat")!.classList.add("cat-" + moveStats.cat);
         tooltipMove.querySelector<HTMLElement>(".tip-desc")!.innerText = getL10n("moveDesc", decisionMoveFor);
         tooltipMove.querySelector<HTMLElement>(".type-text")!.innerText = getL10n("types", moveStats.type).toUpperCase();
@@ -523,7 +526,6 @@ for (let i = 0; i < 4; i++) {
         decisionMove[i].parentElement!.querySelector(".tooltip-move")?.classList.remove("show");
     });
 }
-renderTable();
 for (let i of document.getElementsByClassName("tab") as HTMLCollectionOf<HTMLButtonElement>) {
     i.addEventListener("click", function () {
         document.querySelector(".tab.tab-selected")!.classList.remove("tab-selected");
@@ -710,6 +712,8 @@ function switchMode(mode: string) {
     document.getElementById("p1Name")!.innerText = getL10n("pokemon", players[0].build[0].name);
     document.getElementById("p2Name")!.innerText = getL10n("pokemon", players[1].build[0].name);
 
+    renderTable();
+
     for (let i of $("mons")) {
         cries[i.name] = new Audio(`${$("cryLocation")}/${i.name}.mp3`);
     }
@@ -764,6 +768,12 @@ function calculateDmg(power: number, atk: number, def: number, lv: number, attac
     if (userType.includes(attackType)) stab = 1.5;
     let random = (Math.floor(Math.random() * (256 - 217)) + 217) / 255;
     return ((2 * lv + 10) / 250 * atk / def * power + 2) * effectiveness * stab * random;
+}
+function calculateDmgRk(power: number, atk: number, def: number, attackType: string, defenseType: string, userType: string[]) {
+    let effectiveness = calculateEffectiveness(attackType, defenseType);
+    let stab = 1;
+    if (userType.includes(attackType)) stab = 1.25;
+    return Math.floor(Math.round(atk * power * effectiveness * stab * 0.9024) / def);
 }
 function calculateEffectiveness(attackType: string, defenseType: string) {
     let effectiveness = 1;
@@ -1605,7 +1615,6 @@ function attack(move: string) {
             getPkmn(false).lastDmgTakenType = k.type;
         }
         let effect;
-        //let opponentHasSubstitute2 = (getPkmn(false).substituteHp > 0);
         if (k.effect) effect = k.effect({
             "totalDmg": totalDmg,
             "substitutePreDmg": substitutePreDmg
