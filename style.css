@@ -1009,7 +1009,7 @@
             }
 
             html[lang="zh"] &::before {
-                content: "性格";
+                content: "性格：";
             }
         }
 

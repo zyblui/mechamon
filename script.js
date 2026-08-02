@@ -183,6 +183,14 @@ for (let i of document.getElementsByClassName("pkmnName")) {
         document.getElementById("pokemonList").classList.add("show");
     });
 }
+for (let i of document.getElementsByClassName("nature")) {
+    i.addEventListener("click", function () {
+        document.querySelector(".nature.selected")?.classList.remove("selected");
+        i.classList.add("selected");
+        document.querySelector(".list.show").classList.remove("show");
+        document.getElementById("natureList").classList.add("show");
+    });
+}
 for (let i of document.getElementsByClassName("move")) {
     i.addEventListener("click", function () {
         document.querySelector(".move.selected")?.classList.remove("selected");
@@ -204,6 +212,13 @@ document.getElementById("clearMove").addEventListener("click", function () {
     players[Number(selectedMove.dataset.player) - 1].build[Number(selectedMove.dataset.no) - 1].moves[Number(selectedMove.dataset.moveNo) - 1] = "";
     renderTable();
     document.getElementById("movesList").classList.remove("show");
+    document.getElementById("setupTable").classList.add("show");
+});
+document.getElementById("clearNature").addEventListener("click", function () {
+    let selectedNature = document.querySelector(".nature.selected");
+    players[Number(selectedNature.dataset.player) - 1].build[Number(selectedNature.dataset.no) - 1].nature = "";
+    renderTable();
+    document.getElementById("natureList").classList.remove("show");
     document.getElementById("setupTable").classList.add("show");
 });
 for (let i of document.querySelectorAll(".back"))
@@ -656,6 +671,21 @@ function switchMode(mode) {
         });
         document.getElementById("pokemonList").appendChild(div);
     }
+    $("roco kingdom", () => {
+        for (let i in RK_NATURES) {
+            let div = document.createElement("div");
+            div.classList.add("listButton");
+            div.innerHTML = getL10n("natures", i);
+            div.addEventListener("click", function () {
+                players[Number(document.querySelector(".nature.selected").dataset.player) - 1].build[Number(document.querySelector(".nature.selected").dataset.no) - 1].nature = i;
+                renderTable();
+                document.getElementById("natureList").classList.remove("show");
+                document.getElementById("setupTable").classList.add("show");
+            });
+            div.dataset.for = i;
+            document.getElementById("natureListInner").appendChild(div);
+        }
+    });
     for (let i of document.querySelectorAll("input[type='range']")) {
         for (let j in cries)
             cries[j].volume = settings.sfxVolume / 100;
@@ -1755,6 +1785,16 @@ function renderTable() {
     for (let playerNo of [0, 1])
         for (let i = 0; i < 6; i++) {
             document.querySelectorAll(".pkmnName[data-player='" + (playerNo + 1) + "']")[i].innerText = getL10n("pokemon", players[playerNo].build[i].name);
+            document.querySelectorAll(".lv[data-player='" + (playerNo + 1) + "']")[i].innerText = players[playerNo].build[i].lv.toString();
+            document.querySelectorAll(".dv[data-player='" + (playerNo + 1) + "']")[i].innerText = players[playerNo].build[i].dv.toString();
+            $("roco kingdom", () => {
+                if (players[playerNo].build[i].nature) {
+                    document.querySelectorAll(".nature[data-player='" + (playerNo + 1) + "']")[i].innerText = getL10n("natures", players[playerNo].build[i].nature);
+                }
+                else {
+                    document.querySelectorAll(".nature[data-player='" + (playerNo + 1) + "']")[i].innerText = "(Empty)";
+                }
+            });
             for (let j = 0; j < 4; j++) {
                 if (players[playerNo].build[i].moves[j]) {
                     document.querySelectorAll(".pkmn[data-player='" + (playerNo + 1) + "']")[i].querySelectorAll(".move")[j].innerText

@@ -21,7 +21,6 @@ interface RkSkill extends MonMove {
     "cat": string,
     "cost": number,
     "power": number,
-    "desc": string,
     "effect"?: Function,
     "preDmgEffect"?: Function;
 }
@@ -4309,8 +4308,7 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "normal",
     "cat": "physical",
     "cost": 1,
-    "power": 60,
-    "desc": "对敌方精灵造成物理伤害。"
+    "power": 60
 }, {
     "name": "防御",
     "type": "normal",
@@ -4323,50 +4321,49 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "light",
     "cat": "special",
     "cost": 1,
-    "power": 60,
-    "desc": "对敌方精灵造成魔法伤害。"
+    "power": 60
 }, {
     "name": "魔法增效",
     "type": "normal",
     "cat": "status",
     "cost": 0,
     "power": 0,
-    "desc": "自己获得魔攻+70%。"
+    "effect": function () {
+        getPkmn(true).spaMultiplier += 0.7;
+    }
 }, {
     "name": "光球",
     "type": "light",
     "cat": "special",
     "cost": 2,
-    "power": 80,
-    "desc": "对敌方精灵造成魔法伤害。"
+    "power": 80
 }, {
     "name": "火焰箭",
     "type": "fire",
     "cat": "physical",
     "cost": 2,
-    "power": 80,
-    "desc": "对敌方精灵造成物理伤害。"
+    "power": 80
 }, {
     "name": "力量增效",
     "type": "normal",
     "cat": "status",
     "cost": 1,
     "power": 0,
-    "desc": "自己获得物攻+100%。"
+    "effect": function () {
+        getPkmn(true).atkMultiplier += 1;
+    }
 }, {
     "name": "棘突",
     "type": "grass",
     "cat": "special",
     "cost": 3,
-    "power": 100,
-    "desc": "对敌方精灵造成魔法伤害。"
+    "power": 100
 }, {
     "name": "潮涌",
     "type": "water",
     "cat": "physical",
     "cost": 2,
-    "power": 80,
-    "desc": "对敌方精灵造成物理伤害。"
+    "power": 80
 }, {
     "name": "超导",
     "type": "electric",
@@ -4379,8 +4376,7 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "light",
     "cat": "physical",
     "cost": 3,
-    "power": 100,
-    "desc": "对敌方精灵造成物理伤害。"
+    "power": 100
 }, {
     "name": "漫反射",
     "type": "light",
@@ -4393,22 +4389,19 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "ice",
     "cat": "physical",
     "cost": 2,
-    "power": 80,
-    "desc": "对敌方精灵造成物理伤害。"
+    "power": 80
 }, {
     "name": "热砂",
     "type": "ground",
     "cat": "special",
     "cost": 2,
-    "power": 80,
-    "desc": "对敌方精灵造成魔法伤害。"
+    "power": 80
 }, {
     "name": "念力膨胀",
     "type": "psychic",
     "cat": "physical",
     "cost": 2,
-    "power": 80,
-    "desc": "对敌方精灵造成物理伤害。"
+    "power": 80
 }, {
     "name": "放晴",
     "type": "light",
@@ -4428,8 +4421,7 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "light",
     "cat": "physical",
     "cost": 4,
-    "power": 120,
-    "desc": "对敌方精灵造成物理伤害。"
+    "power": 120
 }, {
     "name": "折射",
     "type": "light",
@@ -4443,7 +4435,9 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "physical",
     "cost": 0,
     "power": 30,
-    "desc": "造成物伤，自己回复1能量。"
+    "effect": function () {
+        getPkmn(true).energy = Math.min(10, getPkmn(true).energy + 1);
+    }
 }, {
     "name": "休息回复",
     "type": "normal",
@@ -4456,29 +4450,31 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "normal",
     "cat": "physical",
     "cost": 2,
-    "power": 90,
-    "desc": "对敌方精灵造成物理伤害。"
+    "power": 90
 }, {
     "name": "藤绞",
     "type": "grass",
     "cat": "physical",
     "cost": 4,
     "power": 80,
-    "desc": "造成物伤，自己回复5能量。"
+    "effect": function () {
+        getPkmn(true).energy = Math.min(10, getPkmn(true).energy + 5);
+    }
 }, {
     "name": "徒长",
     "type": "grass",
     "cat": "status",
     "cost": 2,
     "power": 0,
-    "desc": "自己回复10能量。"
+    "effect": function () {
+        getPkmn(true).energy = Math.min(10, getPkmn(true).energy + 10);
+    }
 }, {
     "name": "叶绿光束",
     "type": "grass",
     "cat": "special",
     "cost": 4,
-    "power": 120,
-    "desc": "对敌方精灵造成魔法伤害。"
+    "power": 120
 }, {
     "name": "酶浓度调整",
     "type": "grass",
@@ -4512,15 +4508,17 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "grass",
     "cat": "physical",
     "cost": 6,
-    "power": 150,
-    "desc": "对敌方精灵造成物理伤害。"
+    "power": 150
 }, {
     "name": "丰饶",
     "type": "grass",
     "cat": "status",
     "cost": 3,
     "power": 0,
-    "desc": "自己获得物攻和魔攻+130%。"
+    "effect": function () {
+        getPkmn(true).atkMultiplier += 1.3;
+        getPkmn(true).spaMultiplier += 1.3;
+    }
 }, {
     "name": "光合作用",
     "type": "grass",
@@ -4541,14 +4539,15 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "status",
     "cost": 0,
     "power": 30,
-    "desc": "造成物伤，自己回复1能量。"
+    "effect": function () {
+        getPkmn(true).energy += 1;
+    }
 }, {
     "name": "火焰切割",
     "type": "fire",
     "cat": "physical",
     "cost": 3,
-    "power": 100,
-    "desc": "对敌方精灵造成物理伤害。"
+    "power": 100
 }, {
     "name": "吹火",
     "type": "fire",
@@ -4569,7 +4568,12 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "status",
     "cost": 1,
     "power": 0,
-    "desc": "自己获得双攻+130%和双防-40%。"
+    "effect": function () {
+        getPkmn(true).atkMultiplier += 1.3;
+        getPkmn(true).spaMultiplier += 1.3;
+        getPkmn(true).defMultiplier = Math.max(0, getPkmn(true).defMultiplier - 0.4);
+        getPkmn(true).spdMultiplier = Math.max(0, getPkmn(true).spdMultiplier - 0.4);
+    }
 }, {
     "name": "持续高温",
     "type": "fire",
@@ -4582,8 +4586,7 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "fire",
     "cat": "physical",
     "cost": 5,
-    "power": 140,
-    "desc": "对敌方精灵造成物理伤害。"
+    "power": 140
 }, {
     "name": "热身",
     "type": "fire",
@@ -4610,22 +4613,22 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "normal",
     "cat": "special",
     "cost": 1,
-    "power": 60,
-    "desc": "对敌方精灵造成魔法伤害。"
+    "power": 60
 }, {
     "name": "甩水",
     "type": "water",
     "cat": "special",
     "cost": 0,
     "power": 30,
-    "desc": "造成魔伤，自己回复1能量。"
+    "effect": function () {
+        getPkmn(true).energy += 1;
+    }
 }, {
     "name": "气泡",
     "type": "water",
     "cat": "special",
     "cost": 3,
-    "power": 100,
-    "desc": "对敌方精灵造成魔法伤害。"
+    "power": 100
 }, {
     "name": "水泡盾",
     "type": "water",
@@ -4688,14 +4691,19 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "physical",
     "cost": 3,
     "power": 30,
-    "desc": "造成物伤，3连击。"
+    "effect": function (e: EffectParam) {
+        repeatAttack(e.totalDmg, 2);
+    }
 }, {
     "name": "咆哮",
     "type": "normal",
     "cat": "status",
     "cost": 1,
     "power": 0,
-    "desc": "敌方获得物攻-130%。"
+    "desc": "敌方获得物攻-130%。",
+    "effect": function () {
+        getPkmn(false).atkMultiplier = Math.max(0, getPkmn(false).atkMultiplier - 1.3);
+    }
 }, {
     "name": "吓退",
     "type": "normal",
@@ -4743,8 +4751,7 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "water",
     "cat": "special",
     "cost": 1,
-    "power": 60,
-    "desc": "对敌方精灵造成魔法伤害。"
+    "power": 60
 }, {
     "name": "后发制人",
     "type": "normal",
@@ -4757,8 +4764,7 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "water",
     "cat": "special",
     "cost": 5,
-    "power": 140,
-    "desc": "对敌方精灵造成魔法伤害。"
+    "power": 140
 }, {
     "name": "水环",
     "type": "water",
@@ -4771,15 +4777,13 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "dark",
     "cat": "physical",
     "cost": 1,
-    "power": 60,
-    "desc": "对敌方精灵造成物理伤害。"
+    "power": 60
 }, {
     "name": "幻象",
     "type": "ghost",
     "cat": "physical",
     "cost": 1,
-    "power": 60,
-    "desc": "对敌方精灵造成物理伤害。"
+    "power": 60
 }, {
     "name": "勾魂",
     "type": "ghost",
@@ -8257,37 +8261,37 @@ const RK_INIT_BUILD = [{
         "name": "迪莫",
         "moves": ["猛烈撞击", "防御", "闪光", "魔法增效"],
         "lv": 5,
-        "nature": "none",
+        "nature": "",
         "dv": 60
     }, {
         "name": "喵喵",
         "moves": ["抓挠", "休息回复", "棘突", "扫尾"],
         "lv": 5,
-        "nature": "none",
+        "nature": "",
         "dv": 60
     }, {
         "name": "喵呜",
         "moves": ["抓挠", "休息回复", "棘突", "扫尾"],
         "lv": 5,
-        "nature": "none",
+        "nature": "",
         "dv": 60
     }, {
         "name": "魔力猫",
         "moves": ["抓挠", "休息回复", "棘突", "扫尾"],
         "lv": 5,
-        "nature": "none",
+        "nature": "",
         "dv": 60
     }, {
         "name": "火花",
         "moves": ["猛烈撞击", "火苗", "力量增效", "火焰切割"],
         "lv": 5,
-        "nature": "none",
+        "nature": "",
         "dv": 60
     }, {
         "name": "焰火",
         "moves": ["猛烈撞击", "火苗", "力量增效", "火焰切割"],
         "lv": 5,
-        "nature": "none",
+        "nature": "",
         "dv": 60
     }]
 }, {
@@ -8296,37 +8300,37 @@ const RK_INIT_BUILD = [{
         "name": "迪莫",
         "moves": ["猛烈撞击", "防御", "闪光", "魔法增效"],
         "lv": 5,
-        "nature": "none",
+        "nature": "",
         "dv": 60
     }, {
         "name": "喵喵",
         "moves": ["抓挠", "休息回复", "棘突", "扫尾"],
         "lv": 5,
-        "nature": "none",
+        "nature": "",
         "dv": 60
     }, {
         "name": "喵呜",
         "moves": ["抓挠", "休息回复", "棘突", "扫尾"],
         "lv": 5,
-        "nature": "none",
+        "nature": "",
         "dv": 60
     }, {
         "name": "魔力猫",
         "moves": ["抓挠", "休息回复", "棘突", "扫尾"],
         "lv": 5,
-        "nature": "none",
+        "nature": "",
         "dv": 60
     }, {
         "name": "火花",
         "moves": ["猛烈撞击", "火苗", "力量增效", "火焰切割"],
         "lv": 5,
-        "nature": "none",
+        "nature": "",
         "dv": 60
     }, {
         "name": "焰火",
         "moves": ["猛烈撞击", "火苗", "力量增效", "火焰切割"],
         "lv": 5,
-        "nature": "none",
+        "nature": "",
         "dv": 60
     }]
 }];
@@ -8359,6 +8363,38 @@ const RK_TRANSLATION: Translation = {
             "special": "Special",
             "status": "Status",
             "defense": "Defense"
+        },
+        "natures": {
+            "固执": "固执",
+            "勇敢": "勇敢",
+            "逞强": "逞强",
+            "大胆": "大胆",
+            "调皮": "调皮",
+            "聪明": "聪明",
+            "冷静": "冷静",
+            "理性": "理性",
+            "专注": "专注",
+            "偏执": "偏执",
+            "胆小": "胆小",
+            "开朗": "开朗",
+            "热情": "热情",
+            "急躁": "急躁",
+            "莽撞": "莽撞",
+            "沉默": "沉默",
+            "平和": "平和",
+            "踏实": "踏实",
+            "忧郁": "忧郁",
+            "粗心": "粗心",
+            "稳重": "稳重",
+            "天真": "天真",
+            "悠闲": "悠闲",
+            "坦率": "坦率",
+            "懒散": "懒散",
+            "警惕": "警惕",
+            "害羞": "害羞",
+            "慎重": "慎重",
+            "焦虑": "焦虑",
+            "温顺": "温顺"
         },
         "ui": {},
         "pokemon": {
@@ -10103,6 +10139,38 @@ const RK_TRANSLATION: Translation = {
             "status": "状态",
             "defense": "防御"
         },
+        "natures": {
+            "固执": "固执",
+            "勇敢": "勇敢",
+            "逞强": "逞强",
+            "大胆": "大胆",
+            "调皮": "调皮",
+            "聪明": "聪明",
+            "冷静": "冷静",
+            "理性": "理性",
+            "专注": "专注",
+            "偏执": "偏执",
+            "胆小": "胆小",
+            "开朗": "开朗",
+            "热情": "热情",
+            "急躁": "急躁",
+            "莽撞": "莽撞",
+            "沉默": "沉默",
+            "平和": "平和",
+            "踏实": "踏实",
+            "忧郁": "忧郁",
+            "粗心": "粗心",
+            "稳重": "稳重",
+            "天真": "天真",
+            "悠闲": "悠闲",
+            "坦率": "坦率",
+            "懒散": "懒散",
+            "警惕": "警惕",
+            "害羞": "害羞",
+            "慎重": "慎重",
+            "焦虑": "焦虑",
+            "温顺": "温顺"
+        },
         "ui": {},
         "pokemon": {
             "迪莫": "迪莫",
@@ -11821,134 +11889,130 @@ const RK_TRANSLATION: Translation = {
     }
 };
 
-const RK_NATURES:{
-    [nature:string]:{
-        "increase":string,
-        "decrease":string
+const RK_NATURES: {
+    [nature: string]: {
+        "increase": string,
+        "decrease": string;
+    };
+} = {
+    "固执": {
+        "increase": "atk",
+        "decrease": "spa"
+    },
+    "勇敢": {
+        "increase": "atk",
+        "decrease": "spe"
+    },
+    "逞强": {
+        "increase": "atk",
+        "decrease": "hp"
+    },
+    "大胆": {
+        "increase": "atk",
+        "decrease": "def"
+    },
+    "调皮": {
+        "increase": "atk",
+        "decrease": "spd"
+    },
+    "聪明": {
+        "increase": "spa",
+        "decrease": "atk"
+    },
+    "冷静": {
+        "increase": "spa",
+        "decrease": "spe"
+    },
+    "理性": {
+        "increase": "spa",
+        "decrease": "hp"
+    },
+    "专注": {
+        "increase": "spa",
+        "decrease": "def"
+    },
+    "偏执": {
+        "increase": "spa",
+        "decrease": "spd"
+    },
+    "胆小": {
+        "increase": "spe",
+        "decrease": "atk"
+    },
+    "开朗": {
+        "increase": "spe",
+        "decrease": "spa"
+    },
+    "热情": {
+        "increase": "spe",
+        "decrease": "hp"
+    },
+    "急躁": {
+        "increase": "spe",
+        "decrease": "def"
+    },
+    "莽撞": {
+        "increase": "spe",
+        "decrease": "spd"
+    },
+    "沉默": {
+        "increase": "hp",
+        "decrease": "atk"
+    },
+    "平和": {
+        "increase": "hp",
+        "decrease": "spa"
+    },
+    "踏实": {
+        "increase": "hp",
+        "decrease": "spe"
+    },
+    "忧郁": {
+        "increase": "hp",
+        "decrease": "def"
+    },
+    "粗心": {
+        "increase": "hp",
+        "decrease": "spd"
+    },
+    "稳重": {
+        "increase": "def",
+        "decrease": "atk"
+    },
+    "天真": {
+        "increase": "def",
+        "decrease": "spa"
+    },
+    "悠闲": {
+        "increase": "def",
+        "decrease": "spe"
+    },
+    "坦率": {
+        "increase": "def",
+        "decrease": "hp"
+    },
+    "懒散": {
+        "increase": "def",
+        "decrease": "spd"
+    },
+    "警惕": {
+        "increase": "spd",
+        "decrease": "atk"
+    },
+    "害羞": {
+        "increase": "spd",
+        "decrease": "spa"
+    },
+    "慎重": {
+        "increase": "spd",
+        "decrease": "spe"
+    },
+    "焦虑": {
+        "increase": "spd",
+        "decrease": "hp"
+    },
+    "温顺": {
+        "increase": "spd",
+        "decrease": "def"
     }
-}={
-    "none":{
-        "increase":"",
-        "decrease":""
-    },
-    "固执":{
-        "increase":"atk",
-        "decrease":"spa"
-    },
-    "勇敢":{
-        "increase":"atk",
-        "decrease":"spe"
-    },
-    "逞强":{
-        "increase":"atk",
-        "decrease":"hp"
-    },
-    "大胆":{
-        "increase":"atk",
-        "decrease":"def"
-    },
-    "调皮":{
-        "increase":"atk",
-        "decrease":"spd"
-    },
-    "聪明":{
-        "increase":"spa",
-        "decrease":"atk"
-    },
-    "冷静":{
-        "increase":"spa",
-        "decrease":"spe"
-    },
-    "理性":{
-        "increase":"spa",
-        "decrease":"hp"
-    },
-    "专注":{
-        "increase":"spa",
-        "decrease":"def"
-    },
-    "偏执":{
-        "increase":"spa",
-        "decrease":"spd"
-    },
-    "胆小":{
-        "increase":"spe",
-        "decrease":"atk"
-    },
-    "开朗":{
-        "increase":"spe",
-        "decrease":"spa"
-    },
-    "热情":{
-        "increase":"spe",
-        "decrease":"hp"
-    },
-    "急躁":{
-        "increase":"spe",
-        "decrease":"def"
-    },
-    "莽撞":{
-        "increase":"spe",
-        "decrease":"spd"
-    },
-    "沉默":{
-        "increase":"hp",
-        "decrease":"atk"
-    },
-    "平和":{
-        "increase":"hp",
-        "decrease":"spa"
-    },
-    "踏实":{
-        "increase":"hp",
-        "decrease":"spe"
-    },
-    "忧郁":{
-        "increase":"hp",
-        "decrease":"def"
-    },
-    "粗心":{
-        "increase":"hp",
-        "decrease":"spd"
-    },
-    "稳重":{
-        "increase":"def",
-        "decrease":"atk"
-    },
-    "天真":{
-        "increase":"def",
-        "decrease":"spa"
-    },
-    "悠闲":{
-        "increase":"def",
-        "decrease":"spe"
-    },
-    "坦率":{
-        "increase":"def",
-        "decrease":"hp"
-    },
-    "懒散":{
-        "increase":"def",
-        "decrease":"spd"
-    },
-    "警惕":{
-        "increase":"spd",
-        "decrease":"atk"
-    },
-    "害羞":{
-        "increase":"spd",
-        "decrease":"spa"
-    },
-    "慎重":{
-        "increase":"spd",
-        "decrease":"spe"
-    },
-    "焦虑":{
-        "increase":"spd",
-        "decrease":"hp"
-    },
-    "温顺":{
-        "increase":"spd",
-        "decrease":"def"
-    }
-}
+};
