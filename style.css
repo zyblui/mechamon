@@ -949,16 +949,22 @@
         }
     }
 
+    .pkmn-outer:hover {
+        & .pkmn {
+            background-color: color-mix(in srgb, var(--theme) 20%, transparent);
+        }
+
+        & .advanced {
+            border-color: color-mix(in srgb, var(--theme) 20%, transparent);
+        }
+    }
+
     .pkmn {
         border-radius: 9px;
         background-color: var(--decision-bg);
         padding: 4px 9px;
         margin: 0 0 9px 0;
         transition: 0.1s;
-
-        &:hover {
-            background-color: color-mix(in srgb, var(--theme) 20%, transparent);
-        }
 
         &>div {
             margin: 5px 0

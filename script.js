@@ -752,11 +752,15 @@ function refreshDecision() {
                 displayEffectiveness(button, "");
                 continue;
             }
-            if (Object.values(getPkmn(true).moves)[i] <= 0 || (getPkmn(true).disable.move == Object.keys(getPkmn(true)
+            else if (Object.values(getPkmn(true).moves)[i] <= 0 || (getPkmn(true).disable.move == Object.keys(getPkmn(true)
                 .moves)[i]))
                 button.disabled = true;
             else
                 button.disabled = false;
+            $("roco kingdom", () => {
+                if (getPkmn(true).energy < getMoveStats(Object.keys(getPkmn(true).moves)[i]).cost)
+                    button.disabled = true;
+            });
             let tempMove = "";
             if (Object.keys(getPkmn(true).moves)[i] == "mimic" && getPkmn(true).mimicMove)
                 tempMove = getPkmn(true).mimicMove;
@@ -812,6 +816,7 @@ function modifyDecisionMoveBtn(element, displayName, ppRemaining, ppTotal, type,
     displayEffectiveness(element, moveName);
 }
 function displayEffectiveness(button, move) {
+    console.log(move);
     const EFFECTIVENESS_ABBR = {
         0: "NE",
         0.25: "DNVE",
@@ -849,7 +854,8 @@ function getDefaultProperties(playersInfo) {
                     j[k] = calcActualValue(getStats(j.name)[k], j.dv[k], j.ev[k], j.lv);
                 });
                 $("roco kingdom", () => {
-                    j[k] = calcActualValueRk(getStats(j.name)[k], j.dv[k]);
+                    if (k != "hp")
+                        j[k] = calcActualValueRk(getStats(j.name)[k], j.dv[k]);
                 });
             }
             j.transformPkmn = "";
@@ -898,14 +904,17 @@ function getDefaultProperties(playersInfo) {
                         json[k] = l.pp;
             j.moves = json;
             j.revealed = false;
+            j.revealedMoves = new Set([]);
             $("roco kingdom", () => {
                 j.energy = 10;
-                j.revealedMoves = new Set([]);
-                j.atkMultiplier = 1;
-                j.defMultiplier = 1;
-                j.spaMultiplier = 1;
-                j.spdMultiplier = 1;
-                j.speMultiplier = 1;
+                j.valueMultiplier = {
+                    "hp": 1,
+                    "atk": 1,
+                    "def": 1,
+                    "spa": 1,
+                    "spd": 1,
+                    "spe": 1
+                };
             });
         }
     return arr;
@@ -1191,7 +1200,6 @@ function addTooltip(elementGroup, i, player = playerToMove) {
             let totalPp = getMoveStats(Object.keys(battleInfo[actualPlayer].build[i].moves)[j])?.pp;
             let ppRemaining = Object.values(battleInfo[actualPlayer].build[i].moves)[j];
             addMoveToTooltip(tooltip, actualPlayer, i, j, {
-                "isRevealed": ppRemaining != totalPp,
                 "additionalInfoFn": () => {
                     tooltip.querySelectorAll(".pp-remaining")[j].innerText = ppRemaining.toString();
                     tooltip.querySelectorAll(".pp .sub")[j].innerText = "/" + totalPp;
@@ -1202,7 +1210,6 @@ function addTooltip(elementGroup, i, player = playerToMove) {
         });
         $("roco kingdom", () => {
             addMoveToTooltip(tooltip, actualPlayer, i, j, {
-                "isRevealed": battleInfo[actualPlayer].build[i].revealedMoves.has(Object.keys(battleInfo[actualPlayer].build[i].moves)[j]),
                 "additionalInfoFn": () => {
                     tooltip.querySelectorAll(".cost")[j].innerText = getMoveStats(Object.keys(battleInfo[actualPlayer].build[i].moves)[j])?.cost;
                 },
@@ -1234,7 +1241,8 @@ function calcActualValue(base, dv, ev, lv) {
 function calcActualValueRk(base, ev) {
     return Math.round(Math.round(base * 1.1 + ev * 0.55 + 10) + 50);
 }
-function addMoveToTooltip(tooltip, actualPlayer, i, j, { isRevealed, additionalInfoFn, emptyMoveFn, unknownMoveFn }) {
+function addMoveToTooltip(tooltip, actualPlayer, i, j, { additionalInfoFn, emptyMoveFn, unknownMoveFn }) {
+    let isRevealed = battleInfo[actualPlayer].build[i].revealedMoves.has(Object.keys(battleInfo[actualPlayer].build[i].moves)[j]);
     if (Object.keys(battleInfo[actualPlayer].build[i].moves)[j] && ((actualPlayer != playerToMove && isRevealed) || (actualPlayer == playerToMove))) {
         tooltip.querySelectorAll(".move-name")[j].innerText = getL10n("moves", Object.keys(battleInfo[actualPlayer]
             .build[i].moves)[j]);
@@ -1273,7 +1281,7 @@ function insertEffects(pkmn, outputArea, showFull) {
     }
     for (let j of $("properties")) {
         $("pokemon", () => insertPropertyMod(pkmn[j + "Stage"], 0, Number(STAGE_MULTIPLIER[pkmn[j + "Stage"]].toFixed(2)), outputArea, showFull, j));
-        $("roco kingdom", () => insertPropertyMod(Number(pkmn[`${j}Multiplier`].toFixed(2)), 1, Number(pkmn[`${j}Multiplier`].toFixed(2)), outputArea, showFull, j));
+        $("roco kingdom", () => insertPropertyMod(Number(pkmn.valueMultiplier[j].toFixed(2)), 1, Number(pkmn.valueMultiplier[j].toFixed(2)), outputArea, showFull, j));
     }
     for (let j in pkmn.tempEffect) {
         if (pkmn.tempEffect[j]) {
@@ -1452,7 +1460,7 @@ function nextTurn() {
             continue;
         }
         getPkmn(true).lastMoveUsed = i.move;
-        for (let k of MOVES)
+        for (let k of $("moves"))
             if (k.name == i.move) {
                 let effect;
                 if (k.cat != "status" && Math.random() > k.acc * ACC_STAGE_MULTIPLIER[getPkmn(true).accStage] *
@@ -1496,16 +1504,22 @@ function nextTurn() {
                     else
                         dealDmg(true, getPkmn(true).maxHp / 16, { ignoreSubstitute: true });
                 }
+                $("roco kingdom", () => {
+                    getPkmn(true).energy -= k.cost;
+                });
+                getPkmn(true).revealedMoves.add(k.name);
                 judgeHP();
                 if (getPkmn(true)) {
-                    getPkmn(true).moves[k.name]--;
-                    let outOfMoves = true;
-                    for (let m in getPkmn(true).moves) {
-                        if (getPkmn(true).moves[m])
-                            outOfMoves = false;
-                    }
-                    if (outOfMoves)
-                        setUncontrollable(true, "struggle", Infinity);
+                    $("pokemon", () => {
+                        getPkmn(true).moves[k.name]--;
+                        let outOfMoves = true;
+                        for (let m in getPkmn(true).moves) {
+                            if (getPkmn(true).moves[m])
+                                outOfMoves = false;
+                        }
+                        if (outOfMoves)
+                            setUncontrollable(true, "struggle", Infinity);
+                    });
                     if (effect?.flinch) {
                         nextTurn();
                     }
@@ -1987,7 +2001,7 @@ function addUpdateValueListener(name, min, max) {
                 i.innerText = Math.round(Number(i.innerText)).toString();
             }
             if (i.dataset.valueFor)
-                players[Number(i.dataset.player) - 1].build[Number(i.dataset.no) - 1][name][Number(i.dataset.valueFor)] = Number(i.innerText);
+                players[Number(i.dataset.player) - 1].build[Number(i.dataset.no) - 1][name][i.dataset.valueFor] = Number(i.innerText);
             else
                 players[Number(i.dataset.player) - 1].build[Number(i.dataset.no) - 1][name] = Number(i.innerText);
         });

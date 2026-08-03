@@ -4300,7 +4300,7 @@ const RK_SKILLS = [{
         "cost": 0,
         "power": 0,
         "effect": function () {
-            getPkmn(true).spaMultiplier += 0.7;
+            getPkmn(true).valueMultiplier.spa += 0.7;
         }
     }, {
         "name": "光球",
@@ -4321,7 +4321,7 @@ const RK_SKILLS = [{
         "cost": 1,
         "power": 0,
         "effect": function () {
-            getPkmn(true).atkMultiplier += 1;
+            getPkmn(true).valueMultiplier.atk += 1;
         }
     }, {
         "name": "棘突",
@@ -4487,8 +4487,8 @@ const RK_SKILLS = [{
         "cost": 3,
         "power": 0,
         "effect": function () {
-            getPkmn(true).atkMultiplier += 1.3;
-            getPkmn(true).spaMultiplier += 1.3;
+            getPkmn(true).valueMultiplier.atk += 1.3;
+            getPkmn(true).valueMultiplier.spa += 1.3;
         }
     }, {
         "name": "光合作用",
@@ -4540,10 +4540,10 @@ const RK_SKILLS = [{
         "cost": 1,
         "power": 0,
         "effect": function () {
-            getPkmn(true).atkMultiplier += 1.3;
-            getPkmn(true).spaMultiplier += 1.3;
-            getPkmn(true).defMultiplier = Math.max(0, getPkmn(true).defMultiplier - 0.4);
-            getPkmn(true).spdMultiplier = Math.max(0, getPkmn(true).spdMultiplier - 0.4);
+            getPkmn(true).valueMultiplier.atk += 1.3;
+            getPkmn(true).valueMultiplier.spa += 1.3;
+            getPkmn(true).valueMultiplier.def = Math.max(0, getPkmn(true).valueMultiplier.def - 0.4);
+            getPkmn(true).valueMultiplier.spd = Math.max(0, getPkmn(true).valueMultiplier.spd - 0.4);
         }
     }, {
         "name": "持续高温",
@@ -4673,7 +4673,7 @@ const RK_SKILLS = [{
         "power": 0,
         "desc": "敌方获得物攻-130%。",
         "effect": function () {
-            getPkmn(false).atkMultiplier = Math.max(0, getPkmn(false).atkMultiplier - 1.3);
+            getPkmn(false).valueMultiplier.atk = Math.max(0, getPkmn(false).valueMultiplier.atk - 1.3);
         }
     }, {
         "name": "吓退",

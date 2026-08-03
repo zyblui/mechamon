@@ -835,10 +835,12 @@ function refreshDecision() {
                 button.disabled = true;
                 displayEffectiveness(button, "");
                 continue;
-            }
-            if (Object.values<number>(getPkmn(true).moves)[i] <= 0 || (getPkmn(true).disable.move == Object.keys(getPkmn(true)
+            } else if (Object.values<number>(getPkmn(true).moves)[i] <= 0 || (getPkmn(true).disable.move == Object.keys(getPkmn(true)
                 .moves)[i])) button.disabled = true;
             else button.disabled = false;
+            $("roco kingdom", () => {
+                if (getPkmn(true).energy < getMoveStats(Object.keys(getPkmn(true).moves)[i])!.cost) button.disabled = true;
+            });
             let tempMove = "";
             if (Object.keys(getPkmn(true).moves)[i] == "mimic" && getPkmn(true).mimicMove) tempMove = getPkmn(true).mimicMove;
             else tempMove = Object.keys(getPkmn(true).moves)[i];
@@ -887,6 +889,7 @@ function modifyDecisionMoveBtn(element: HTMLButtonElement, displayName: string, 
     displayEffectiveness(element, moveName);
 }
 function displayEffectiveness(button: HTMLButtonElement, move: string) {
+    console.log(move);
     const EFFECTIVENESS_ABBR: {
         [key: number]: string;
     } = {
@@ -925,7 +928,7 @@ function getDefaultProperties(playersInfo: Player[]): BattleInfo {
                 j[k] = calcActualValue((getStats(j.name) as Pkmn)[k], j.dv[k], j.ev[k], j.lv);
             });
             $("roco kingdom", () => {
-                j[k] = calcActualValueRk((getStats(j.name) as RkPet)[k], j.dv[k]);
+                if (k != "hp") j[k] = calcActualValueRk((getStats(j.name) as RkPet)[k], j.dv[k]);
             });
         }
         j.transformPkmn = "";
@@ -973,15 +976,18 @@ function getDefaultProperties(playersInfo: Player[]): BattleInfo {
         for (let k of j.moves) for (let l of $("moves")) if (l.name == k) json[k] = l.pp;
         j.moves = json;
         j.revealed = false;
+        j.revealedMoves = new Set([]);
 
         $("roco kingdom", () => {
             j.energy = 10;
-            j.revealedMoves = new Set([]);
-            j.atkMultiplier = 1;
-            j.defMultiplier = 1;
-            j.spaMultiplier = 1;
-            j.spdMultiplier = 1;
-            j.speMultiplier = 1;
+            j.valueMultiplier = {
+                "hp": 1,
+                "atk": 1,
+                "def": 1,
+                "spa": 1,
+                "spd": 1,
+                "spe": 1
+            };
         });
     }
     return arr;
@@ -1250,7 +1256,6 @@ function addTooltip(elementGroup: NodeListOf<HTMLElement>, i: number, player = p
             let totalPp = getMoveStats(Object.keys(battleInfo[actualPlayer].build[i].moves)[j])?.pp;
             let ppRemaining = Object.values(battleInfo[actualPlayer].build[i].moves)[j];
             addMoveToTooltip(tooltip, actualPlayer, i, j, {
-                "isRevealed": ppRemaining != totalPp,
                 "additionalInfoFn": () => {
                     tooltip.querySelectorAll<HTMLElement>(".pp-remaining")[j].innerText = ppRemaining.toString();
                     tooltip.querySelectorAll<HTMLElement>(".pp .sub")[j].innerText = "/" + totalPp;
@@ -1261,7 +1266,6 @@ function addTooltip(elementGroup: NodeListOf<HTMLElement>, i: number, player = p
         });
         $("roco kingdom", () => {
             addMoveToTooltip(tooltip, actualPlayer, i, j, {
-                "isRevealed": battleInfo[actualPlayer].build[i].revealedMoves.has(Object.keys(battleInfo[actualPlayer].build[i].moves)[j]),
                 "additionalInfoFn": () => {
                     tooltip.querySelectorAll<HTMLElement>(".cost")[j].innerText = getMoveStats(Object.keys(battleInfo[actualPlayer].build[i].moves)[j])?.cost;
                 },
@@ -1291,12 +1295,12 @@ function calcActualValue(base: number, dv: number, ev: number, lv: number) {
 function calcActualValueRk(base: number, ev: number) {
     return Math.round(Math.round(base * 1.1 + ev * 0.55 + 10) + 50);
 }
-function addMoveToTooltip(tooltip: HTMLDivElement, actualPlayer: number, i: number, j: number, { isRevealed, additionalInfoFn, emptyMoveFn, unknownMoveFn }: {
-    isRevealed: boolean,
+function addMoveToTooltip(tooltip: HTMLDivElement, actualPlayer: number, i: number, j: number, { additionalInfoFn, emptyMoveFn, unknownMoveFn }: {
     additionalInfoFn: () => void,
     emptyMoveFn: () => void,
     unknownMoveFn: () => void;
 }) {
+    let isRevealed = battleInfo[actualPlayer].build[i].revealedMoves.has(Object.keys(battleInfo[actualPlayer].build[i].moves)[j]);
     if (Object.keys(battleInfo[actualPlayer].build[i].moves)[j] && ((actualPlayer != playerToMove && isRevealed) || (actualPlayer == playerToMove))) {
         tooltip.querySelectorAll<HTMLElement>(".move-name")[j].innerText = getL10n("moves", Object.keys(battleInfo[actualPlayer]
             .build[i].moves)[j]);
@@ -1330,7 +1334,7 @@ function insertEffects(pkmn: MonInstance, outputArea: HTMLDivElement, showFull: 
     }
     for (let j of $("properties")) {
         $("pokemon", () => insertPropertyMod(pkmn[j + "Stage"], 0, Number(STAGE_MULTIPLIER[pkmn[j + "Stage"]].toFixed(2)), outputArea, showFull, j));
-        $("roco kingdom", () => insertPropertyMod(Number(pkmn[`${j}Multiplier`].toFixed(2)), 1, Number(pkmn[`${j}Multiplier`].toFixed(2)), outputArea, showFull, j));
+        $("roco kingdom", () => insertPropertyMod(Number(pkmn.valueMultiplier[j].toFixed(2)), 1, Number(pkmn.valueMultiplier[j].toFixed(2)), outputArea, showFull, j));
     }
     for (let j in pkmn.tempEffect) {
         if (pkmn.tempEffect[j]) {
@@ -1483,7 +1487,7 @@ function nextTurn() {
         }
         getPkmn(true).lastMoveUsed = i.move;
 
-        for (let k of MOVES) if (k.name == i.move) {
+        for (let k of $("moves")) if (k.name == i.move) {
             let effect;
             if (k.cat != "status" && Math.random() > k.acc * ACC_STAGE_MULTIPLIER[getPkmn(true).accStage] *
                 ACC_STAGE_MULTIPLIER[getPkmn(false).evaStage] / 100) {
@@ -1523,14 +1527,21 @@ function nextTurn() {
                 } else dealDmg(true, getPkmn(true).maxHp / 16, { ignoreSubstitute: true });
             }
 
+            $("roco kingdom", () => {
+                getPkmn(true).energy -= k.cost;
+            });
+            getPkmn(true).revealedMoves.add(k.name);
+
             judgeHP();
             if (getPkmn(true)) {
-                getPkmn(true).moves[k.name]--;
-                let outOfMoves = true;
-                for (let m in getPkmn(true).moves) {
-                    if (getPkmn(true).moves[m]) outOfMoves = false;
-                }
-                if (outOfMoves) setUncontrollable(true, "struggle", Infinity);
+                $("pokemon", () => {
+                    getPkmn(true).moves[k.name]--;
+                    let outOfMoves = true;
+                    for (let m in getPkmn(true).moves) {
+                        if (getPkmn(true).moves[m]) outOfMoves = false;
+                    }
+                    if (outOfMoves) setUncontrollable(true, "struggle", Infinity);
+                });
                 if (effect?.flinch) {
                     nextTurn();
                 }
@@ -1943,7 +1954,7 @@ function addUpdateValueListener(name: string, min: () => number, max: () => numb
         } else {
             i.innerText = Math.round(Number(i.innerText)).toString();
         }
-        if (i.dataset.valueFor) players[Number(i.dataset.player) - 1].build[Number(i.dataset.no) - 1][name][Number(i.dataset.valueFor)] = Number(i.innerText);
+        if (i.dataset.valueFor) players[Number(i.dataset.player) - 1].build[Number(i.dataset.no) - 1][name][i.dataset.valueFor] = Number(i.innerText);
         else players[Number(i.dataset.player) - 1].build[Number(i.dataset.no) - 1][name] = Number(i.innerText);
     });
 }
