@@ -3419,7 +3419,7 @@ const TRANSLATION: Translation = {
             "light screen": "Light Screen",
             "mist": "Mist"
         },
-        "ui":{},
+        "ui": {},
         "others": {
             "turn": "Turn [number0]",
             "nick": "[nick0] ([pokemon0])",
@@ -4194,7 +4194,7 @@ const TRANSLATION: Translation = {
             "light screen": "光墙",
             "mist": "白雾"
         },
-        "ui":{},
+        "ui": {},
         "others": {
             "turn": "第 [number0] 回合",
             "nick": "[nick0]（[pokemon0]）",
@@ -5280,7 +5280,7 @@ const TRANSLATION_GLOBAL: Translation = {
             "accuracy": "命中",
             "priority": "优先度",
             "pp": "PP",
-            "cost":"耗能",
+            "cost": "耗能",
             "empty": "(空)",
             "unknownMove": "未知招式",
             "playerTurn": "[player0] 的回合",
@@ -5338,7 +5338,7 @@ const TRANSLATION_GLOBAL: Translation = {
             "accuracy": "Accuracy",
             "priority": "Priority",
             "pp": "PP",
-            "cost":"Cost",
+            "cost": "Cost",
             "empty": "(Empty)",
             "unknownMove": "Unknown Move",
             "playerTurn": "[player0]'s turn",
@@ -5790,43 +5790,115 @@ const INIT_BUILD: Player[] = [{
         "name": "geodude",
         "moves": ["earthquake", "rock slide", "body slam", "explosion"],
         "lv": 5,
-        "ev": 252,
-        "dv": 15,
+        "ev": {
+            "hp": 252,
+            "atk": 252,
+            "def": 252,
+            "sp": 252,
+            "spe": 252
+        },
+        "dv": {
+            "hp": 15,
+            "atk": 15,
+            "def": 15,
+            "sp": 15,
+            "spe": 15
+        },
         "nick": ""
     }, {
         "name": "staryu",
         "moves": ["surf", "thunderbolt", "blizzard", "thunder wave"],
         "lv": 5,
-        "ev": 252,
-        "dv": 15,
+        "ev": {
+            "hp": 252,
+            "atk": 252,
+            "def": 252,
+            "sp": 252,
+            "spe": 252
+        },
+        "dv": {
+            "hp": 15,
+            "atk": 15,
+            "def": 15,
+            "sp": 15,
+            "spe": 15
+        },
         "nick": ""
     }, {
         "name": "koffing",
         "moves": ["sludge", "fire blast", "thunderbolt", "explosion"],
         "lv": 5,
-        "ev": 252,
-        "dv": 15,
+        "ev": {
+            "hp": 252,
+            "atk": 252,
+            "def": 252,
+            "sp": 252,
+            "spe": 252
+        },
+        "dv": {
+            "hp": 15,
+            "atk": 15,
+            "def": 15,
+            "sp": 15,
+            "spe": 15
+        },
         "nick": ""
     }, {
         "name": "tentacool",
         "moves": ["surf", "blizzard", "mega drain", "hydro pump"],
         "lv": 5,
-        "ev": 252,
-        "dv": 15,
+        "ev": {
+            "hp": 252,
+            "atk": 252,
+            "def": 252,
+            "sp": 252,
+            "spe": 252
+        },
+        "dv": {
+            "hp": 15,
+            "atk": 15,
+            "def": 15,
+            "sp": 15,
+            "spe": 15
+        },
         "nick": ""
     }, {
         "name": "machop",
         "moves": ["submission", "earthquake", "rock slide", "body slam"],
         "lv": 5,
-        "ev": 252,
-        "dv": 15,
+        "ev": {
+            "hp": 252,
+            "atk": 252,
+            "def": 252,
+            "sp": 252,
+            "spe": 252
+        },
+        "dv": {
+            "hp": 15,
+            "atk": 15,
+            "def": 15,
+            "sp": 15,
+            "spe": 15
+        },
         "nick": ""
     }, {
         "name": "eevee",
         "moves": ["substitute", "reflect", "body slam", "double-edge"],
         "lv": 5,
-        "ev": 252,
-        "dv": 15,
+        "ev": {
+            "hp": 252,
+            "atk": 252,
+            "def": 252,
+            "sp": 252,
+            "spe": 252
+        },
+        "dv": {
+            "hp": 15,
+            "atk": 15,
+            "def": 15,
+            "sp": 15,
+            "spe": 15
+        },
         "nick": ""
     }]
 }, {
@@ -5835,43 +5907,115 @@ const INIT_BUILD: Player[] = [{
         "name": "eevee",
         "moves": ["rage", "body slam", "double-edge", "quick attack"],
         "lv": 5,
-        "ev": 252,
-        "dv": 15,
+        "ev": {
+            "hp": 252,
+            "atk": 252,
+            "def": 252,
+            "sp": 252,
+            "spe": 252
+        },
+        "dv": {
+            "hp": 15,
+            "atk": 15,
+            "def": 15,
+            "sp": 15,
+            "spe": 15
+        },
         "nick": ""
     }, {
         "name": "vulpix",
         "moves": ["flamethrower", "body slam", "confuse ray", "substitute"],
         "lv": 5,
-        "ev": 252,
-        "dv": 15,
+        "ev": {
+            "hp": 252,
+            "atk": 252,
+            "def": 252,
+            "sp": 252,
+            "spe": 252
+        },
+        "dv": {
+            "hp": 15,
+            "atk": 15,
+            "def": 15,
+            "sp": 15,
+            "spe": 15
+        },
         "nick": ""
     }, {
         "name": "ponyta",
         "moves": ["toxic", "agility", "fire blast", "body slam"],
         "lv": 5,
-        "ev": 252,
-        "dv": 15,
+        "ev": {
+            "hp": 252,
+            "atk": 252,
+            "def": 252,
+            "sp": 252,
+            "spe": 252
+        },
+        "dv": {
+            "hp": 15,
+            "atk": 15,
+            "def": 15,
+            "sp": 15,
+            "spe": 15
+        },
         "nick": ""
     }, {
         "name": "growlithe",
         "moves": ["agility", "body slam", "fire blast", "double-edge"],
         "lv": 5,
-        "ev": 252,
-        "dv": 15,
+        "ev": {
+            "hp": 252,
+            "atk": 252,
+            "def": 252,
+            "sp": 252,
+            "spe": 252
+        },
+        "dv": {
+            "hp": 15,
+            "atk": 15,
+            "def": 15,
+            "sp": 15,
+            "spe": 15
+        },
         "nick": ""
     }, {
         "name": "psyduck",
         "moves": ["surf", "mega kick", "blizzard", "rage"],
         "lv": 5,
-        "ev": 252,
-        "dv": 15,
+        "ev": {
+            "hp": 252,
+            "atk": 252,
+            "def": 252,
+            "sp": 252,
+            "spe": 252
+        },
+        "dv": {
+            "hp": 15,
+            "atk": 15,
+            "def": 15,
+            "sp": 15,
+            "spe": 15
+        },
         "nick": ""
     }, {
         "name": "poliwag",
         "moves": ["hypnosis", "amnesia", "surf", "psychic"],
         "lv": 5,
-        "ev": 252,
-        "dv": 15,
+        "ev": {
+            "hp": 252,
+            "atk": 252,
+            "def": 252,
+            "sp": 252,
+            "spe": 252
+        },
+        "dv": {
+            "hp": 15,
+            "atk": 15,
+            "def": 15,
+            "sp": 15,
+            "spe": 15
+        },
         "nick": ""
     }]
 }];

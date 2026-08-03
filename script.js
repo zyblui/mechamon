@@ -51,7 +51,7 @@ const POOLS = {
         "cryLocation": "roco kingdom/cry",
         "transl": getMergedTransl(TRANSLATION_GLOBAL, RK_TRANSLATION),
         "stab": 1.25,
-        "properties": ["atk", "def", "spa", "spd", "spe"]
+        "properties": ["hp", "atk", "def", "spa", "spd", "spe"]
     }
 };
 const BGM_SETTINGS = {
@@ -496,9 +496,14 @@ for (let i of document.querySelectorAll(".nick"))
     i.addEventListener("blur", function () {
         players[Number(i.dataset.player) - 1].build[Number(i.dataset.no) - 1].nick = i.innerText;
     });
-addUpdateValueListener("lv", 1, 100);
-addUpdateValueListener("ev", 0, 252);
-addUpdateValueListener("dv", 0, 15);
+addUpdateValueListener("lv", () => 1, () => 100);
+addUpdateValueListener("ev", () => 0, () => 252);
+addUpdateValueListener("dv", () => 0, () => {
+    let val = 0;
+    $("pokemon", () => { val = 15; });
+    $("roco kingdom", () => { val = 100; });
+    return val;
+});
 document.addEventListener("keypress", function (e) {
     if (settings.keyboardControls) {
         if (e.key == "1" || e.key == "2" || e.key == "3" || e.key == "4")
@@ -830,10 +835,10 @@ function getDefaultProperties(playersInfo) {
             for (let k of $("mons")) {
                 if (k.name == j.name) {
                     $("pokemon", () => {
-                        j.maxHp = Math.floor(0.01 * (2 * (k.hp + j.dv) + Math.floor(0.25 * j.ev)) * j.lv) + j.lv + 10;
+                        j.maxHp = Math.floor(0.01 * (2 * (k.hp + j.dv.hp) + Math.floor(0.25 * j.ev.hp)) * j.lv) + j.lv + 10;
                     });
                     $("roco kingdom", () => {
-                        j.maxHp = Math.round(Math.round(k.hp * 1.7 + j.dv * 0.85 + 70) + 100);
+                        j.maxHp = Math.round(Math.round(k.hp * 1.7 + j.dv.hp * 0.85 + 70) + 100);
                     });
                     j.hp = j.maxHp;
                     break;
@@ -841,10 +846,10 @@ function getDefaultProperties(playersInfo) {
             }
             for (let k of $("properties")) {
                 $("pokemon", () => {
-                    j[k] = calcActualValue(getStats(j.name)[k], j.dv, j.ev, j.lv);
+                    j[k] = calcActualValue(getStats(j.name)[k], j.dv[k], j.ev[k], j.lv);
                 });
                 $("roco kingdom", () => {
-                    j[k] = calcActualValueRk(getStats(j.name)[k], j.ev);
+                    j[k] = calcActualValueRk(getStats(j.name)[k], j.dv[k]);
                 });
             }
             j.transformPkmn = "";
@@ -1794,7 +1799,9 @@ function renderTable() {
         for (let i = 0; i < 6; i++) {
             document.querySelectorAll(".pkmnName[data-player='" + (playerNo + 1) + "']")[i].innerText = getL10n("pokemon", players[playerNo].build[i].name);
             document.querySelectorAll(".lv[data-player='" + (playerNo + 1) + "']")[i].innerText = players[playerNo].build[i].lv.toString();
-            document.querySelectorAll(".dv[data-player='" + (playerNo + 1) + "']")[i].innerText = players[playerNo].build[i].dv.toString();
+            for (let property of $("properties")) {
+                document.querySelector(`.pkmn-outer[data-player="${playerNo + 1}"][data-no="${i + 1}"]`).querySelector(`.dv[data-value-for="${property}"]`).innerText = players[playerNo].build[i].dv[property].toString();
+            }
             $("roco kingdom", () => {
                 if (players[playerNo].build[i].nature) {
                     document.querySelectorAll(".nature[data-player='" + (playerNo + 1) + "']")[i].innerText = getL10n("natures", players[playerNo].build[i].nature);
@@ -1970,16 +1977,19 @@ function addUpdateValueListener(name, min, max) {
             if (Number.isNaN(Number(i.innerText))) {
                 i.innerText = players[Number(i.dataset.player) - 1].build[Number(i.dataset.no) - 1][name];
             }
-            else if (Number(i.innerText) > max) {
-                i.innerText = max.toString();
+            else if (Number(i.innerText) > max()) {
+                i.innerText = max().toString();
             }
-            else if (Number(i.innerText) < min) {
-                i.innerText = min.toString();
+            else if (Number(i.innerText) < min()) {
+                i.innerText = min().toString();
             }
             else {
                 i.innerText = Math.round(Number(i.innerText)).toString();
             }
-            players[Number(i.dataset.player) - 1].build[Number(i.dataset.no) - 1][name] = Number(i.innerText);
+            if (i.dataset.valueFor)
+                players[Number(i.dataset.player) - 1].build[Number(i.dataset.no) - 1][name][Number(i.dataset.valueFor)] = Number(i.innerText);
+            else
+                players[Number(i.dataset.player) - 1].build[Number(i.dataset.no) - 1][name] = Number(i.innerText);
         });
 }
 function navigationRefresh() {

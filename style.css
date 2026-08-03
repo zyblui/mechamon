@@ -953,7 +953,7 @@
         border-radius: 9px;
         background-color: var(--decision-bg);
         padding: 4px 9px;
-        margin: 9px 0;
+        margin: 0 0 9px 0;
         transition: 0.1s;
 
         &:hover {
@@ -962,18 +962,6 @@
 
         &>div {
             margin: 5px 0
-        }
-
-        & .input {
-            background-color: var(--button-bg);
-            border-radius: 9px;
-            padding: 3px 9px;
-            border: solid 2px var(--button-bg);
-            display: inline-block;
-
-            &:hover {
-                border: solid 2px var(--theme);
-            }
         }
 
         & .lv::before {
@@ -990,16 +978,6 @@
             html[lang="zh"] &::before {
                 content: "昵称：";
             }
-        }
-
-        & .ev::before {
-            content: "EV: ";
-            color: var(--text-dim);
-        }
-
-        & .dv::before {
-            content: "DV: ";
-            color: var(--text-dim);
         }
 
         & .nature {
@@ -1037,6 +1015,27 @@
             font-weight: bold;
             font-size: large;
         }
+    }
+
+    .pkmn .input,
+    .advanced .input {
+        background-color: var(--button-bg);
+        border-radius: 9px;
+        padding: 3px 9px;
+        display: inline-block;
+
+        &:hover {
+            border: solid 2px var(--theme);
+        }
+    }
+
+    .pkmn .input {
+        border: solid 2px var(--button-bg);
+    }
+
+    .advanced .input {
+        border: solid 2px var(--decision-bg);
+        margin: 3px;
     }
 
     input[type="checkbox"] {
@@ -1527,6 +1526,35 @@
         & svg {
             width: 40px;
             height: 30px;
+        }
+    }
+
+    .advanced {
+        border-bottom: solid 2px var(--decision-bg);
+        border-left: solid 2px var(--decision-bg);
+        border-right: solid 2px var(--decision-bg);
+        border-radius: 0 0 9px 9px;
+        padding: 9px;
+        margin: 0 12px;
+        position: relative;
+        top: -9px;
+        display: grid;
+
+        .theme-pokemon & {
+            grid-template-columns: max-content 2fr 2fr 2fr 2fr 2fr;
+        }
+
+        .theme-roco-kingdom & {
+            grid-template-columns: max-content 2fr 2fr 2fr 2fr 2fr 2fr;
+        }
+
+        & .header {
+            padding-left: 14px;
+        }
+
+        & .header-left {
+            padding-top: 8px;
+            margin: 0 3px;
         }
     }
 }

@@ -376,229 +376,757 @@
             <div class="list show" id="setupTable">
                 <div class="wrap">
                     <p class="dim">Welcome to the world of Mechamon!</p>
-                    <button id="mechaButton" class="right-button float-right">Mechamon</button>
+                    <!-- <button id="mechaButton" class="right-button float-right">Mechamon</button> -->
                     <button id="startGame" class="right-button float-right" data-transl-cat="ui"
                         data-transl-key="startGame">Start Game</button>
                 </div>
-                Player 1:
+                <div>Player 1</div>
                 <div class="team">
-                    <div class="pkmn" data-player="1" data-no="1">
-                        <div>
-                            <div class="pkmnName input" data-player="1" data-no="1">Geodude</div>
-                            <div class="lv input" contenteditable="true" data-player="1" data-no="1">5</div>
-                            <div class="nick input pokemon coromon" contenteditable="true" data-player="1" data-no="1"></div>
-                            <div class="ev input pokemon" contenteditable="true" data-player="1" data-no="1">252</div>
-                            <div class="dv input" contenteditable="true" data-player="1" data-no="1">15</div>
-                            <div class="nature input roco-kingdom" data-player="1" data-no="1">None</div>
-                        </div>
-                        <div>
-                            <div class="input-outer">
-                                <div class="move input move-1" data-player="1" data-no="1" data-move-no="1">Move 1</div>
-                                <div class="move input move-2" data-player="1" data-no="1" data-move-no="2">Move 2</div>
-                                <div class="move input move-3" data-player="1" data-no="1" data-move-no="3">Move 3</div>
-                                <div class="move input move-4" data-player="1" data-no="1" data-move-no="4">Move 4</div>
+                    <div class="pkmn-outer" data-player="1" data-no="1">
+                        <div class="pkmn" data-player="1" data-no="1">
+                            <div>
+                                <div class="pkmnName input" data-player="1" data-no="1">Geodude</div>
+                                <div class="lv input" contenteditable="true" data-player="1" data-no="1">5</div>
+                                <div class="nick input pokemon coromon" contenteditable="true" data-player="1"
+                                    data-no="1">
+                                </div>
+                                <div class="nature input roco-kingdom" data-player="1" data-no="1">None</div>
                             </div>
+                            <div>
+                                <div class="input-outer">
+                                    <div class="move input move-1" data-player="1" data-no="1" data-move-no="1">Move 1
+                                    </div>
+                                    <div class="move input move-2" data-player="1" data-no="1" data-move-no="2">Move 2
+                                    </div>
+                                    <div class="move input move-3" data-player="1" data-no="1" data-move-no="3">Move 3
+                                    </div>
+                                    <div class="move input move-4" data-player="1" data-no="1" data-move-no="4">Move 4
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="advanced">
+                            <div></div>
+                            <div class="header"><strong>HP</strong></div>
+                            <div class="header"><strong>Atk</strong></div>
+                            <div class="header"><strong>Def</strong></div>
+                            <div class="header pokemon"><strong>Sp</strong></div>
+                            <div class="header roco-kingdom"><strong>SpA</strong></div>
+                            <div class="header roco-kingdom"><strong>SpD</strong></div>
+                            <div class="header"><strong>Spe</strong></div>
+
+                            <div class="header-left pokemon"><strong>EV</strong></div>
+                            <div class="ev input pokemon" contenteditable="true" data-player="1" data-no="1"
+                                data-value-for="hp">252</div>
+                            <div class="ev input pokemon" contenteditable="true" data-player="1" data-no="1"
+                                data-value-for="atk">252</div>
+                            <div class="ev input pokemon" contenteditable="true" data-player="1" data-no="1"
+                                data-value-for="def">252</div>
+                            <div class="ev input pokemon" contenteditable="true" data-player="1" data-no="1"
+                                data-value-for="sp">252</div>
+                            <div class="ev input pokemon" contenteditable="true" data-player="1" data-no="1"
+                                data-value-for="spe">252</div>
+
+                            <div class="header-left"><strong>DV</strong></div>
+                            <div data-player="1" data-no="1" class="dv input" contenteditable="true"
+                                data-value-for="hp">15</div>
+                            <div data-player="1" data-no="1" class="dv input" contenteditable="true"
+                                data-value-for="atk">15</div>
+                            <div data-player="1" data-no="1" class="dv input" contenteditable="true"
+                                data-value-for="def">15</div>
+                            <div data-player="1" data-no="1" class="dv input pokemon" contenteditable="true"
+                                data-value-for="sp">15</div>
+                            <div data-player="1" data-no="1" class="dv input roco-kingdom" contenteditable="true"
+                                data-value-for="spa">15</div>
+                            <div data-player="1" data-no="1" class="dv input roco-kingdom" contenteditable="true"
+                                data-value-for="spd">15</div>
+                            <div data-player="1" data-no="1" class="dv input" contenteditable="true"
+                                data-value-for="spe">15</div>
                         </div>
                     </div>
-                    <div class="pkmn" data-player="1" data-no="2">
-                        <div>
-                            <div class="pkmnName input" data-player="1" data-no="2">Geodude</div>
-                            <div class="lv input" contenteditable="true" data-player="1" data-no="2">5</div>
-                            <div class="nick input pokemon coromon" contenteditable="true" data-player="1" data-no="2"></div>
-                            <div class="ev input pokemon" contenteditable="true" data-player="1" data-no="2">252</div>
-                            <div class="dv input" contenteditable="true" data-player="1" data-no="2">15</div>
-                            <div class="nature input roco-kingdom" data-player="1" data-no="2">None</div>
-                        </div>
-                        <div>
-                            <div class="input-outer">
-                                <div class="move input move-1" data-player="1" data-no="2" data-move-no="1">Move 1</div>
-                                <div class="move input move-2" data-player="1" data-no="2" data-move-no="2">Move 2</div>
-                                <div class="move input move-3" data-player="1" data-no="2" data-move-no="3">Move 3</div>
-                                <div class="move input move-4" data-player="1" data-no="2" data-move-no="4">Move 4</div>
+                    <div class="pkmn-outer" data-player="1" data-no="2">
+                        <div class="pkmn" data-player="1" data-no="2">
+                            <div>
+                                <div class="pkmnName input" data-player="1" data-no="2">Geodude</div>
+                                <div class="lv input" contenteditable="true" data-player="1" data-no="2">5</div>
+                                <div class="nick input pokemon coromon" contenteditable="true" data-player="1"
+                                    data-no="2">
+                                </div>
+                                <div class="nature input roco-kingdom" data-player="1" data-no="2">None</div>
                             </div>
+                            <div>
+                                <div class="input-outer">
+                                    <div class="move input move-1" data-player="1" data-no="2" data-move-no="1">Move 1
+                                    </div>
+                                    <div class="move input move-2" data-player="1" data-no="2" data-move-no="2">Move 2
+                                    </div>
+                                    <div class="move input move-3" data-player="1" data-no="2" data-move-no="3">Move 3
+                                    </div>
+                                    <div class="move input move-4" data-player="1" data-no="2" data-move-no="4">Move 4
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="advanced">
+                            <div></div>
+                            <div class="header"><strong>HP</strong></div>
+                            <div class="header"><strong>Atk</strong></div>
+                            <div class="header"><strong>Def</strong></div>
+                            <div class="header pokemon"><strong>Sp</strong></div>
+                            <div class="header roco-kingdom"><strong>SpA</strong></div>
+                            <div class="header roco-kingdom"><strong>SpD</strong></div>
+                            <div class="header"><strong>Spe</strong></div>
+
+                            <div data-player="1" data-no="2" class="header-left pokemon"><strong>EV</strong></div>
+                            <div data-player="1" data-no="2" class="ev input pokemon" contenteditable="true"
+                                data-value-for="hp">252</div>
+                            <div data-player="1" data-no="2" class="ev input pokemon" contenteditable="true"
+                                data-value-for="atk">252</div>
+                            <div data-player="1" data-no="2" class="ev input pokemon" contenteditable="true"
+                                data-value-for="def">252</div>
+                            <div data-player="1" data-no="2" class="ev input pokemon" contenteditable="true"
+                                data-value-for="sp">252</div>
+                            <div data-player="1" data-no="2" class="ev input pokemon" contenteditable="true"
+                                data-value-for="spe">252</div>
+
+                            <div class="header-left"><strong>DV</strong></div>
+                            <div data-player="1" data-no="2" class="dv input" contenteditable="true"
+                                data-value-for="hp">15</div>
+                            <div data-player="1" data-no="2" class="dv input" contenteditable="true"
+                                data-value-for="atk">15</div>
+                            <div data-player="1" data-no="2" class="dv input" contenteditable="true"
+                                data-value-for="def">15</div>
+                            <div data-player="1" data-no="2" class="dv input pokemon" contenteditable="true"
+                                data-value-for="sp">15</div>
+                            <div data-player="1" data-no="2" class="dv input roco-kingdom" contenteditable="true"
+                                data-value-for="spa">15</div>
+                            <div data-player="1" data-no="2" class="dv input roco-kingdom" contenteditable="true"
+                                data-value-for="spd">15</div>
+                            <div data-player="1" data-no="2" class="dv input" contenteditable="true"
+                                data-value-for="spe">15</div>
                         </div>
                     </div>
-                    <div class="pkmn" data-player="1" data-no="3">
-                        <div>
-                            <div class="pkmnName input" data-player="1" data-no="3">Geodude</div>
-                            <div class="lv input" contenteditable="true" data-player="1" data-no="3">5</div>
-                            <div class="nick input pokemon coromon" contenteditable="true" data-player="1" data-no="3"></div>
-                            <div class="ev input pokemon" contenteditable="true" data-player="1" data-no="3">252</div>
-                            <div class="dv input" contenteditable="true" data-player="1" data-no="3">15</div>
-                            <div class="nature input roco-kingdom" data-player="1" data-no="3">None</div>
-                        </div>
-                        <div>
-                            <div class="input-outer">
-                                <div class="move input move-1" data-player="1" data-no="3" data-move-no="1">Move 1</div>
-                                <div class="move input move-2" data-player="1" data-no="3" data-move-no="2">Move 2</div>
-                                <div class="move input move-3" data-player="1" data-no="3" data-move-no="3">Move 3</div>
-                                <div class="move input move-4" data-player="1" data-no="3" data-move-no="4">Move 4</div>
+                    <div class="pkmn-outer" data-player="1" data-no="3">
+                        <div class="pkmn" data-player="1" data-no="3">
+                            <div>
+                                <div class="pkmnName input" data-player="1" data-no="3">Geodude</div>
+                                <div class="lv input" contenteditable="true" data-player="1" data-no="3">5</div>
+                                <div class="nick input pokemon coromon" contenteditable="true" data-player="1"
+                                    data-no="3">
+                                </div>
+                                <div class="nature input roco-kingdom" data-player="1" data-no="3">None</div>
                             </div>
+                            <div>
+                                <div class="input-outer">
+                                    <div class="move input move-1" data-player="1" data-no="3" data-move-no="1">Move 1
+                                    </div>
+                                    <div class="move input move-2" data-player="1" data-no="3" data-move-no="2">Move 2
+                                    </div>
+                                    <div class="move input move-3" data-player="1" data-no="3" data-move-no="3">Move 3
+                                    </div>
+                                    <div class="move input move-4" data-player="1" data-no="3" data-move-no="4">Move 4
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="advanced">
+                            <div></div>
+                            <div class="header"><strong>HP</strong></div>
+                            <div class="header"><strong>Atk</strong></div>
+                            <div class="header"><strong>Def</strong></div>
+                            <div class="header pokemon"><strong>Sp</strong></div>
+                            <div class="header roco-kingdom"><strong>SpA</strong></div>
+                            <div class="header roco-kingdom"><strong>SpD</strong></div>
+                            <div class="header"><strong>Spe</strong></div>
+
+                            <div class="header-left pokemon"><strong>EV</strong></div>
+                            <div data-player="1" data-no="3" class="ev input pokemon" contenteditable="true"
+                                data-value-for="hp">252</div>
+                            <div data-player="1" data-no="3" class="ev input pokemon" contenteditable="true"
+                                data-value-for="atk">252</div>
+                            <div data-player="1" data-no="3" class="ev input pokemon" contenteditable="true"
+                                data-value-for="def">252</div>
+                            <div data-player="1" data-no="3" class="ev input pokemon" contenteditable="true"
+                                data-value-for="sp">252</div>
+                            <div data-player="1" data-no="3" class="ev input pokemon" contenteditable="true"
+                                data-value-for="spe">252</div>
+
+                            <div class="header-left"><strong>DV</strong></div>
+                            <div data-player="1" data-no="3" class="dv input" contenteditable="true"
+                                data-value-for="hp">15</div>
+                            <div data-player="1" data-no="3" class="dv input" contenteditable="true"
+                                data-value-for="atk">15</div>
+                            <div data-player="1" data-no="3" class="dv input" contenteditable="true"
+                                data-value-for="def">15</div>
+                            <div data-player="1" data-no="3" class="dv input pokemon" contenteditable="true"
+                                data-value-for="sp">15</div>
+                            <div data-player="1" data-no="3" class="dv input roco-kingdom" contenteditable="true"
+                                data-value-for="spa">15</div>
+                            <div data-player="1" data-no="3" class="dv input roco-kingdom" contenteditable="true"
+                                data-value-for="spd">15</div>
+                            <div data-player="1" data-no="3" class="dv input" contenteditable="true"
+                                data-value-for="spe">15</div>
                         </div>
                     </div>
-                    <div class="pkmn" data-player="1" data-no="4">
-                        <div>
-                            <div class="pkmnName input" data-player="1" data-no="4">Geodude</div>
-                            <div class="lv input" contenteditable="true" data-player="1" data-no="4">5</div>
-                            <div class="nick input pokemon coromon" contenteditable="true" data-player="1" data-no="4"></div>
-                            <div class="ev input pokemon" contenteditable="true" data-player="1" data-no="4">252</div>
-                            <div class="dv input" contenteditable="true" data-player="1" data-no="4">15</div>
-                            <div class="nature input roco-kingdom" data-player="1" data-no="4">None</div>
-                        </div>
-                        <div>
-                            <div class="input-outer">
-                                <div class="move input move-1" data-player="1" data-no="4" data-move-no="1">Move 1</div>
-                                <div class="move input move-2" data-player="1" data-no="4" data-move-no="2">Move 2</div>
-                                <div class="move input move-3" data-player="1" data-no="4" data-move-no="3">Move 3</div>
-                                <div class="move input move-4" data-player="1" data-no="4" data-move-no="4">Move 4</div>
+                    <div class="pkmn-outer" data-player="1" data-no="4">
+                        <div class="pkmn" data-player="1" data-no="4">
+                            <div>
+                                <div class="pkmnName input" data-player="1" data-no="4">Geodude</div>
+                                <div class="lv input" contenteditable="true" data-player="1" data-no="4">5</div>
+                                <div class="nick input pokemon coromon" contenteditable="true" data-player="1"
+                                    data-no="4">
+                                </div>
+                                <div class="nature input roco-kingdom" data-player="1" data-no="4">None</div>
                             </div>
+                            <div>
+                                <div class="input-outer">
+                                    <div class="move input move-1" data-player="1" data-no="4" data-move-no="1">Move 1
+                                    </div>
+                                    <div class="move input move-2" data-player="1" data-no="4" data-move-no="2">Move 2
+                                    </div>
+                                    <div class="move input move-3" data-player="1" data-no="4" data-move-no="3">Move 3
+                                    </div>
+                                    <div class="move input move-4" data-player="1" data-no="4" data-move-no="4">Move 4
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="advanced">
+                            <div></div>
+                            <div class="header"><strong>HP</strong></div>
+                            <div class="header"><strong>Atk</strong></div>
+                            <div class="header"><strong>Def</strong></div>
+                            <div class="header pokemon"><strong>Sp</strong></div>
+                            <div class="header roco-kingdom"><strong>SpA</strong></div>
+                            <div class="header roco-kingdom"><strong>SpD</strong></div>
+                            <div class="header"><strong>Spe</strong></div>
+
+                            <div class="header-left pokemon"><strong>EV</strong></div>
+                            <div data-player="1" data-no="4" class="ev input pokemon" contenteditable="true"
+                                data-value-for="hp">252</div>
+                            <div data-player="1" data-no="4" class="ev input pokemon" contenteditable="true"
+                                data-value-for="atk">252</div>
+                            <div data-player="1" data-no="4" class="ev input pokemon" contenteditable="true"
+                                data-value-for="def">252</div>
+                            <div data-player="1" data-no="4" class="ev input pokemon" contenteditable="true"
+                                data-value-for="sp">252</div>
+                            <div data-player="1" data-no="4" class="ev input pokemon" contenteditable="true"
+                                data-value-for="spe">252</div>
+
+                            <div class="header-left"><strong>DV</strong></div>
+                            <div data-player="1" data-no="4" class="dv input" contenteditable="true"
+                                data-value-for="hp">15</div>
+                            <div data-player="1" data-no="4" class="dv input" contenteditable="true"
+                                data-value-for="atk">15</div>
+                            <div data-player="1" data-no="4" class="dv input" contenteditable="true"
+                                data-value-for="def">15</div>
+                            <div data-player="1" data-no="4" class="dv input pokemon" contenteditable="true"
+                                data-value-for="sp">15</div>
+                            <div data-player="1" data-no="4" class="dv input roco-kingdom" contenteditable="true"
+                                data-value-for="spa">15</div>
+                            <div data-player="1" data-no="4" class="dv input roco-kingdom" contenteditable="true"
+                                data-value-for="spd">15</div>
+                            <div data-player="1" data-no="4" class="dv input" contenteditable="true"
+                                data-value-for="spe">15</div>
                         </div>
                     </div>
-                    <div class="pkmn" data-player="1" data-no="5">
-                        <div>
-                            <div class="pkmnName input" data-player="1" data-no="5">Geodude</div>
-                            <div class="lv input" contenteditable="true" data-player="1" data-no="5">5</div>
-                            <div class="nick input pokemon coromon" contenteditable="true" data-player="1" data-no="5"></div>
-                            <div class="ev input pokemon" contenteditable="true" data-player="1" data-no="5">252</div>
-                            <div class="dv input" contenteditable="true" data-player="1" data-no="5">15</div>
-                            <div class="nature input roco-kingdom" data-player="1" data-no="5">None</div>
-                        </div>
-                        <div>
-                            <div class="input-outer">
-                                <div class="move input move-1" data-player="1" data-no="5" data-move-no="1">Move 1</div>
-                                <div class="move input move-2" data-player="1" data-no="5" data-move-no="2">Move 2</div>
-                                <div class="move input move-3" data-player="1" data-no="5" data-move-no="3">Move 3</div>
-                                <div class="move input move-4" data-player="1" data-no="5" data-move-no="4">Move 4</div>
+                    <div class="pkmn-outer" data-player="1" data-no="5">
+                        <div class="pkmn" data-player="1" data-no="5">
+                            <div>
+                                <div class="pkmnName input" data-player="1" data-no="5">Geodude</div>
+                                <div class="lv input" contenteditable="true" data-player="1" data-no="5">5</div>
+                                <div class="nick input pokemon coromon" contenteditable="true" data-player="1"
+                                    data-no="5">
+                                </div>
+                                <div class="nature input roco-kingdom" data-player="1" data-no="5">None</div>
                             </div>
+                            <div>
+                                <div class="input-outer">
+                                    <div class="move input move-1" data-player="1" data-no="5" data-move-no="1">Move 1
+                                    </div>
+                                    <div class="move input move-2" data-player="1" data-no="5" data-move-no="2">Move 2
+                                    </div>
+                                    <div class="move input move-3" data-player="1" data-no="5" data-move-no="3">Move 3
+                                    </div>
+                                    <div class="move input move-4" data-player="1" data-no="5" data-move-no="4">Move 4
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="advanced">
+                            <div></div>
+                            <div class="header"><strong>HP</strong></div>
+                            <div class="header"><strong>Atk</strong></div>
+                            <div class="header"><strong>Def</strong></div>
+                            <div class="header pokemon"><strong>Sp</strong></div>
+                            <div class="header roco-kingdom"><strong>SpA</strong></div>
+                            <div class="header roco-kingdom"><strong>SpD</strong></div>
+                            <div class="header"><strong>Spe</strong></div>
+
+                            <div class="header-left pokemon"><strong>EV</strong></div>
+                            <div data-player="1" data-no="5" class="ev input pokemon" contenteditable="true"
+                                data-value-for="hp">252</div>
+                            <div data-player="1" data-no="5" class="ev input pokemon" contenteditable="true"
+                                data-value-for="atk">252</div>
+                            <div data-player="1" data-no="5" class="ev input pokemon" contenteditable="true"
+                                data-value-for="def">252</div>
+                            <div data-player="1" data-no="5" class="ev input pokemon" contenteditable="true"
+                                data-value-for="sp">252</div>
+                            <div data-player="1" data-no="5" class="ev input pokemon" contenteditable="true"
+                                data-value-for="spe">252</div>
+
+                            <div class="header-left"><strong>DV</strong></div>
+                            <div data-player="1" data-no="5" class="dv input" contenteditable="true"
+                                data-value-for="hp">15</div>
+                            <div data-player="1" data-no="5" class="dv input" contenteditable="true"
+                                data-value-for="atk">15</div>
+                            <div data-player="1" data-no="5" class="dv input" contenteditable="true"
+                                data-value-for="def">15</div>
+                            <div data-player="1" data-no="5" class="dv input pokemon" contenteditable="true"
+                                data-value-for="sp">15</div>
+                            <div data-player="1" data-no="5" class="dv input roco-kingdom" contenteditable="true"
+                                data-value-for="spa">15</div>
+                            <div data-player="1" data-no="5" class="dv input roco-kingdom" contenteditable="true"
+                                data-value-for="spd">15</div>
+                            <div data-player="1" data-no="5" class="dv input" contenteditable="true"
+                                data-value-for="spe">15</div>
                         </div>
                     </div>
-                    <div class="pkmn" data-player="1" data-no="6">
-                        <div>
-                            <div class="pkmnName input" data-player="1" data-no="6">Geodude</div>
-                            <div class="lv input" contenteditable="true" data-player="1" data-no="6">5</div>
-                            <div class="nick input pokemon coromon" contenteditable="true" data-player="1" data-no="6"></div>
-                            <div class="ev input pokemon" contenteditable="true" data-player="1" data-no="6">252</div>
-                            <div class="dv input" contenteditable="true" data-player="1" data-no="6">15</div>
-                            <div class="nature input roco-kingdom" data-player="1" data-no="6">None</div>
-                        </div>
-                        <div>
-                            <div class="input-outer">
-                                <div class="move input move-1" data-player="1" data-no="6" data-move-no="1">Move 1</div>
-                                <div class="move input move-2" data-player="1" data-no="6" data-move-no="2">Move 2</div>
-                                <div class="move input move-3" data-player="1" data-no="6" data-move-no="3">Move 3</div>
-                                <div class="move input move-4" data-player="1" data-no="6" data-move-no="4">Move 4</div>
+                    <div class="pkmn-outer" data-player="1" data-no="6">
+                        <div class="pkmn" data-player="1" data-no="6">
+                            <div>
+                                <div class="pkmnName input" data-player="1" data-no="6">Geodude</div>
+                                <div class="lv input" contenteditable="true" data-player="1" data-no="6">5</div>
+                                <div class="nick input pokemon coromon" contenteditable="true" data-player="1"
+                                    data-no="6">
+                                </div>
+                                <div class="nature input roco-kingdom" data-player="1" data-no="6">None</div>
                             </div>
+                            <div>
+                                <div class="input-outer">
+                                    <div class="move input move-1" data-player="1" data-no="6" data-move-no="1">Move 1
+                                    </div>
+                                    <div class="move input move-2" data-player="1" data-no="6" data-move-no="2">Move 2
+                                    </div>
+                                    <div class="move input move-3" data-player="1" data-no="6" data-move-no="3">Move 3
+                                    </div>
+                                    <div class="move input move-4" data-player="1" data-no="6" data-move-no="4">Move 4
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="advanced">
+                            <div></div>
+                            <div class="header"><strong>HP</strong></div>
+                            <div class="header"><strong>Atk</strong></div>
+                            <div class="header"><strong>Def</strong></div>
+                            <div class="header pokemon"><strong>Sp</strong></div>
+                            <div class="header roco-kingdom"><strong>SpA</strong></div>
+                            <div class="header roco-kingdom"><strong>SpD</strong></div>
+                            <div class="header"><strong>Spe</strong></div>
+
+                            <div class="header-left pokemon"><strong>EV</strong></div>
+                            <div data-player="1" data-no="6" class="ev input pokemon" contenteditable="true"
+                                data-value-for="hp">252</div>
+                            <div data-player="1" data-no="6" class="ev input pokemon" contenteditable="true"
+                                data-value-for="atk">252</div>
+                            <div data-player="1" data-no="6" class="ev input pokemon" contenteditable="true"
+                                data-value-for="def">252</div>
+                            <div data-player="1" data-no="6" class="ev input pokemon" contenteditable="true"
+                                data-value-for="sp">252</div>
+                            <div data-player="1" data-no="6" class="ev input pokemon" contenteditable="true"
+                                data-value-for="spe">252</div>
+
+                            <div class="header-left"><strong>DV</strong></div>
+                            <div data-player="1" data-no="6" class="dv input" contenteditable="true"
+                                data-value-for="hp">15</div>
+                            <div data-player="1" data-no="6" class="dv input" contenteditable="true"
+                                data-value-for="atk">15</div>
+                            <div data-player="1" data-no="6" class="dv input" contenteditable="true"
+                                data-value-for="def">15</div>
+                            <div data-player="1" data-no="6" class="dv input pokemon" contenteditable="true"
+                                data-value-for="sp">15</div>
+                            <div data-player="1" data-no="6" class="dv input roco-kingdom" contenteditable="true"
+                                data-value-for="spa">15</div>
+                            <div data-player="1" data-no="6" class="dv input roco-kingdom" contenteditable="true"
+                                data-value-for="spd">15</div>
+                            <div data-player="1" data-no="6" class="dv input" contenteditable="true"
+                                data-value-for="spe">15</div>
                         </div>
                     </div>
                 </div>
-                Player 2:
+                <div>Player 2</div>
                 <div class="team">
-                    <div class="pkmn" data-player="2" data-no="1">
-                        <div>
-                            <div class="pkmnName input" data-player="2" data-no="1">Geodude</div>
-                            <div class="lv input" contenteditable="true" data-player="2" data-no="1">5</div>
-                            <div class="nick input pokemon coromon" contenteditable="true" data-player="2" data-no="1"></div>
-                            <div class="ev input pokemon" contenteditable="true" data-player="2" data-no="1">252</div>
-                            <div class="dv input" contenteditable="true" data-player="2" data-no="1">15</div>
-                            <div class="nature input roco-kingdom" data-player="2" data-no="1">None</div>
-                        </div>
-                        <div>
-                            <div class="input-outer">
-                                <div class="move input move-1" data-player="2" data-no="1" data-move-no="1">Move 1</div>
-                                <div class="move input move-2" data-player="2" data-no="1" data-move-no="2">Move 2</div>
-                                <div class="move input move-3" data-player="2" data-no="1" data-move-no="3">Move 3</div>
-                                <div class="move input move-4" data-player="2" data-no="1" data-move-no="4">Move 4</div>
+                    <div class="pkmn-outer" data-player="2" data-no="1">
+                        <div class="pkmn" data-player="2" data-no="1">
+                            <div>
+                                <div class="pkmnName input" data-player="2" data-no="1">Geodude</div>
+                                <div class="lv input" contenteditable="true" data-player="2" data-no="1">5</div>
+                                <div class="nick input pokemon coromon" contenteditable="true" data-player="2"
+                                    data-no="1">
+                                </div>
+                                <div class="nature input roco-kingdom" data-player="2" data-no="1">None</div>
                             </div>
+                            <div>
+                                <div class="input-outer">
+                                    <div class="move input move-1" data-player="2" data-no="1" data-move-no="1">Move 1
+                                    </div>
+                                    <div class="move input move-2" data-player="2" data-no="1" data-move-no="2">Move 2
+                                    </div>
+                                    <div class="move input move-3" data-player="2" data-no="1" data-move-no="3">Move 3
+                                    </div>
+                                    <div class="move input move-4" data-player="2" data-no="1" data-move-no="4">Move 4
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="advanced">
+                            <div></div>
+                            <div class="header"><strong>HP</strong></div>
+                            <div class="header"><strong>Atk</strong></div>
+                            <div class="header"><strong>Def</strong></div>
+                            <div class="header pokemon"><strong>Sp</strong></div>
+                            <div class="header roco-kingdom"><strong>SpA</strong></div>
+                            <div class="header roco-kingdom"><strong>SpD</strong></div>
+                            <div class="header"><strong>Spe</strong></div>
+
+                            <div class="header-left pokemon"><strong>EV</strong></div>
+                            <div data-player="2" data-no="1" class="ev input pokemon" contenteditable="true"
+                                data-value-for="hp">252</div>
+                            <div data-player="2" data-no="1" class="ev input pokemon" contenteditable="true"
+                                data-value-for="atk">252</div>
+                            <div data-player="2" data-no="1" class="ev input pokemon" contenteditable="true"
+                                data-value-for="def">252</div>
+                            <div data-player="2" data-no="1" class="ev input pokemon" contenteditable="true"
+                                data-value-for="sp">252</div>
+                            <div data-player="2" data-no="1" class="ev input pokemon" contenteditable="true"
+                                data-value-for="spe">252</div>
+
+                            <div class="header-left"><strong>DV</strong></div>
+                            <div data-player="2" data-no="1" class="dv input" contenteditable="true"
+                                data-value-for="hp">15</div>
+                            <div data-player="2" data-no="1" class="dv input" contenteditable="true"
+                                data-value-for="atk">15</div>
+                            <div data-player="2" data-no="1" class="dv input" contenteditable="true"
+                                data-value-for="def">15</div>
+                            <div data-player="2" data-no="1" class="dv input pokemon" contenteditable="true"
+                                data-value-for="sp">15</div>
+                            <div data-player="2" data-no="1" class="dv input roco-kingdom" contenteditable="true"
+                                data-value-for="spa">15</div>
+                            <div data-player="2" data-no="1" class="dv input roco-kingdom" contenteditable="true"
+                                data-value-for="spd">15</div>
+                            <div data-player="2" data-no="1" class="dv input" contenteditable="true"
+                                data-value-for="spe">15</div>
                         </div>
                     </div>
-                    <div class="pkmn" data-player="2" data-no="2">
-                        <div>
-                            <div class="pkmnName input" data-player="2" data-no="2">Geodude</div>
-                            <div class="lv input" contenteditable="true" data-player="2" data-no="2">5</div>
-                            <div class="nick input pokemon coromon" contenteditable="true" data-player="2" data-no="2"></div>
-                            <div class="ev input pokemon" contenteditable="true" data-player="2" data-no="2">252</div>
-                            <div class="dv input" contenteditable="true" data-player="2" data-no="2">15</div>
-                            <div class="nature input roco-kingdom" data-player="2" data-no="2">None</div>
-                        </div>
-                        <div>
-                            <div class="input-outer">
-                                <div class="move input move-1" data-player="2" data-no="2" data-move-no="1">Move 1</div>
-                                <div class="move input move-2" data-player="2" data-no="2" data-move-no="2">Move 2</div>
-                                <div class="move input move-3" data-player="2" data-no="2" data-move-no="3">Move 3</div>
-                                <div class="move input move-4" data-player="2" data-no="2" data-move-no="4">Move 4</div>
+                    <div class="pkmn-outer" data-player="2" data-no="2">
+                        <div class="pkmn" data-player="2" data-no="2">
+                            <div>
+                                <div class="pkmnName input" data-player="2" data-no="2">Geodude</div>
+                                <div class="lv input" contenteditable="true" data-player="2" data-no="2">5</div>
+                                <div class="nick input pokemon coromon" contenteditable="true" data-player="2"
+                                    data-no="2">
+                                </div>
+                                <div class="nature input roco-kingdom" data-player="2" data-no="2">None</div>
                             </div>
+                            <div>
+                                <div class="input-outer">
+                                    <div class="move input move-1" data-player="2" data-no="2" data-move-no="1">Move 1
+                                    </div>
+                                    <div class="move input move-2" data-player="2" data-no="2" data-move-no="2">Move 2
+                                    </div>
+                                    <div class="move input move-3" data-player="2" data-no="2" data-move-no="3">Move 3
+                                    </div>
+                                    <div class="move input move-4" data-player="2" data-no="2" data-move-no="4">Move 4
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="advanced">
+                            <div></div>
+                            <div class="header"><strong>HP</strong></div>
+                            <div class="header"><strong>Atk</strong></div>
+                            <div class="header"><strong>Def</strong></div>
+                            <div class="header pokemon"><strong>Sp</strong></div>
+                            <div class="header roco-kingdom"><strong>SpA</strong></div>
+                            <div class="header roco-kingdom"><strong>SpD</strong></div>
+                            <div class="header"><strong>Spe</strong></div>
+
+                            <div class="header-left pokemon"><strong>EV</strong></div>
+                            <div data-player="2" data-no="2" class="ev input pokemon" contenteditable="true"
+                                data-value-for="hp">252</div>
+                            <div data-player="2" data-no="2" class="ev input pokemon" contenteditable="true"
+                                data-value-for="atk">252</div>
+                            <div data-player="2" data-no="2" class="ev input pokemon" contenteditable="true"
+                                data-value-for="def">252</div>
+                            <div data-player="2" data-no="2" class="ev input pokemon" contenteditable="true"
+                                data-value-for="sp">252</div>
+                            <div data-player="2" data-no="2" class="ev input pokemon" contenteditable="true"
+                                data-value-for="spe">252</div>
+
+                            <div class="header-left"><strong>DV</strong></div>
+                            <div data-player="2" data-no="2" class="dv input" contenteditable="true"
+                                data-value-for="hp">15</div>
+                            <div data-player="2" data-no="2" class="dv input" contenteditable="true"
+                                data-value-for="atk">15</div>
+                            <div data-player="2" data-no="2" class="dv input" contenteditable="true"
+                                data-value-for="def">15</div>
+                            <div data-player="2" data-no="2" class="dv input pokemon" contenteditable="true"
+                                data-value-for="sp">15</div>
+                            <div data-player="2" data-no="2" class="dv input roco-kingdom" contenteditable="true"
+                                data-value-for="spa">15</div>
+                            <div data-player="2" data-no="2" class="dv input roco-kingdom" contenteditable="true"
+                                data-value-for="spd">15</div>
+                            <div data-player="2" data-no="2" class="dv input" contenteditable="true"
+                                data-value-for="spe">15</div>
                         </div>
                     </div>
-                    <div class="pkmn" data-player="2" data-no="3">
-                        <div>
-                            <div class="pkmnName input" data-player="2" data-no="3">Geodude</div>
-                            <div class="lv input" contenteditable="true" data-player="2" data-no="3">5</div>
-                            <div class="nick input pokemon coromon" contenteditable="true" data-player="2" data-no="3"></div>
-                            <div class="ev input pokemon" contenteditable="true" data-player="2" data-no="3">252</div>
-                            <div class="dv input" contenteditable="true" data-player="2" data-no="3">15</div>
-                            <div class="nature input roco-kingdom" data-player="2" data-no="3">None</div>
-                        </div>
-                        <div>
-                            <div class="input-outer">
-                                <div class="move input move-1" data-player="2" data-no="3" data-move-no="1">Move 1</div>
-                                <div class="move input move-2" data-player="2" data-no="3" data-move-no="2">Move 2</div>
-                                <div class="move input move-3" data-player="2" data-no="3" data-move-no="3">Move 3</div>
-                                <div class="move input move-4" data-player="2" data-no="3" data-move-no="4">Move 4</div>
+                    <div class="pkmn-outer" data-player="2" data-no="3">
+                        <div class="pkmn" data-player="2" data-no="3">
+                            <div>
+                                <div class="pkmnName input" data-player="2" data-no="3">Geodude</div>
+                                <div class="lv input" contenteditable="true" data-player="2" data-no="3">5</div>
+                                <div class="nick input pokemon coromon" contenteditable="true" data-player="2"
+                                    data-no="3">
+                                </div>
+                                <div class="nature input roco-kingdom" data-player="2" data-no="3">None</div>
                             </div>
+                            <div>
+                                <div class="input-outer">
+                                    <div class="move input move-1" data-player="2" data-no="3" data-move-no="1">Move 1
+                                    </div>
+                                    <div class="move input move-2" data-player="2" data-no="3" data-move-no="2">Move 2
+                                    </div>
+                                    <div class="move input move-3" data-player="2" data-no="3" data-move-no="3">Move 3
+                                    </div>
+                                    <div class="move input move-4" data-player="2" data-no="3" data-move-no="4">Move 4
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="advanced">
+                            <div></div>
+                            <div class="header"><strong>HP</strong></div>
+                            <div class="header"><strong>Atk</strong></div>
+                            <div class="header"><strong>Def</strong></div>
+                            <div class="header pokemon"><strong>Sp</strong></div>
+                            <div class="header roco-kingdom"><strong>SpA</strong></div>
+                            <div class="header roco-kingdom"><strong>SpD</strong></div>
+                            <div class="header"><strong>Spe</strong></div>
+
+                            <div class="header-left pokemon"><strong>EV</strong></div>
+                            <div data-player="2" data-no="3" class="ev input pokemon" contenteditable="true"
+                                data-value-for="hp">252</div>
+                            <div data-player="2" data-no="3" class="ev input pokemon" contenteditable="true"
+                                data-value-for="atk">252</div>
+                            <div data-player="2" data-no="3" class="ev input pokemon" contenteditable="true"
+                                data-value-for="def">252</div>
+                            <div data-player="2" data-no="3" class="ev input pokemon" contenteditable="true"
+                                data-value-for="sp">252</div>
+                            <div data-player="2" data-no="3" class="ev input pokemon" contenteditable="true"
+                                data-value-for="spe">252</div>
+
+                            <div class="header-left"><strong>DV</strong></div>
+                            <div data-player="2" data-no="3" class="dv input" contenteditable="true"
+                                data-value-for="hp">15</div>
+                            <div data-player="2" data-no="3" class="dv input" contenteditable="true"
+                                data-value-for="atk">15</div>
+                            <div data-player="2" data-no="3" class="dv input" contenteditable="true"
+                                data-value-for="def">15</div>
+                            <div data-player="2" data-no="3" class="dv input pokemon" contenteditable="true"
+                                data-value-for="sp">15</div>
+                            <div data-player="2" data-no="3" class="dv input roco-kingdom" contenteditable="true"
+                                data-value-for="spa">15</div>
+                            <div data-player="2" data-no="3" class="dv input roco-kingdom" contenteditable="true"
+                                data-value-for="spd">15</div>
+                            <div data-player="2" data-no="3" class="dv input" contenteditable="true"
+                                data-value-for="spe">15</div>
                         </div>
                     </div>
-                    <div class="pkmn" data-player="2" data-no="4">
-                        <div>
-                            <div class="pkmnName input" data-player="2" data-no="4">Geodude</div>
-                            <div class="lv input" contenteditable="true" data-player="2" data-no="4">5</div>
-                            <div class="nick input pokemon coromon" contenteditable="true" data-player="2" data-no="4"></div>
-                            <div class="ev input pokemon" contenteditable="true" data-player="2" data-no="4">252</div>
-                            <div class="dv input" contenteditable="true" data-player="2" data-no="4">15</div>
-                            <div class="nature input roco-kingdom" data-player="2" data-no="4">None</div>
-                        </div>
-                        <div>
-                            <div class="input-outer">
-                                <div class="move input move-1" data-player="2" data-no="4" data-move-no="1">Move 1</div>
-                                <div class="move input move-2" data-player="2" data-no="4" data-move-no="2">Move 2</div>
-                                <div class="move input move-3" data-player="2" data-no="4" data-move-no="3">Move 3</div>
-                                <div class="move input move-4" data-player="2" data-no="4" data-move-no="4">Move 4</div>
+                    <div class="pkmn-outer" data-player="2" data-no="4">
+                        <div class="pkmn" data-player="2" data-no="4">
+                            <div>
+                                <div class="pkmnName input" data-player="2" data-no="4">Geodude</div>
+                                <div class="lv input" contenteditable="true" data-player="2" data-no="4">5</div>
+                                <div class="nick input pokemon coromon" contenteditable="true" data-player="2"
+                                    data-no="4">
+                                </div>
+                                <div class="nature input roco-kingdom" data-player="2" data-no="4">None</div>
                             </div>
+                            <div>
+                                <div class="input-outer">
+                                    <div class="move input move-1" data-player="2" data-no="4" data-move-no="1">Move 1
+                                    </div>
+                                    <div class="move input move-2" data-player="2" data-no="4" data-move-no="2">Move 2
+                                    </div>
+                                    <div class="move input move-3" data-player="2" data-no="4" data-move-no="3">Move 3
+                                    </div>
+                                    <div class="move input move-4" data-player="2" data-no="4" data-move-no="4">Move 4
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="advanced">
+                            <div></div>
+                            <div class="header"><strong>HP</strong></div>
+                            <div class="header"><strong>Atk</strong></div>
+                            <div class="header"><strong>Def</strong></div>
+                            <div class="header pokemon"><strong>Sp</strong></div>
+                            <div class="header roco-kingdom"><strong>SpA</strong></div>
+                            <div class="header roco-kingdom"><strong>SpD</strong></div>
+                            <div class="header"><strong>Spe</strong></div>
+
+                            <div class="header-left pokemon"><strong>EV</strong></div>
+                            <div data-player="2" data-no="4" class="ev input pokemon" contenteditable="true"
+                                data-value-for="hp">252</div>
+                            <div data-player="2" data-no="4" class="ev input pokemon" contenteditable="true"
+                                data-value-for="atk">252</div>
+                            <div data-player="2" data-no="4" class="ev input pokemon" contenteditable="true"
+                                data-value-for="def">252</div>
+                            <div data-player="2" data-no="4" class="ev input pokemon" contenteditable="true"
+                                data-value-for="sp">252</div>
+                            <div data-player="2" data-no="4" class="ev input pokemon" contenteditable="true"
+                                data-value-for="spe">252</div>
+
+                            <div class="header-left"><strong>DV</strong></div>
+                            <div data-player="2" data-no="4" class="dv input" contenteditable="true"
+                                data-value-for="hp">15</div>
+                            <div data-player="2" data-no="4" class="dv input" contenteditable="true"
+                                data-value-for="atk">15</div>
+                            <div data-player="2" data-no="4" class="dv input" contenteditable="true"
+                                data-value-for="def">15</div>
+                            <div data-player="2" data-no="4" class="dv input pokemon" contenteditable="true"
+                                data-value-for="sp">15</div>
+                            <div data-player="2" data-no="4" class="dv input roco-kingdom" contenteditable="true"
+                                data-value-for="spa">15</div>
+                            <div data-player="2" data-no="4" class="dv input roco-kingdom" contenteditable="true"
+                                data-value-for="spd">15</div>
+                            <div data-player="2" data-no="4" class="dv input" contenteditable="true"
+                                data-value-for="spe">15</div>
                         </div>
                     </div>
-                    <div class="pkmn" data-player="2" data-no="5">
-                        <div>
-                            <div class="pkmnName input" data-player="2" data-no="5">Geodude</div>
-                            <div class="lv input" contenteditable="true" data-player="2" data-no="5">5</div>
-                            <div class="nick input pokemon coromon" contenteditable="true" data-player="2" data-no="5"></div>
-                            <div class="ev input pokemon" contenteditable="true" data-player="2" data-no="5">252</div>
-                            <div class="dv input" contenteditable="true" data-player="2" data-no="5">15</div>
-                            <div class="nature input roco-kingdom" data-player="2" data-no="5">None</div>
-                        </div>
-                        <div>
-                            <div class="input-outer">
-                                <div class="move input move-1" data-player="2" data-no="5" data-move-no="1">Move 1</div>
-                                <div class="move input move-2" data-player="2" data-no="5" data-move-no="2">Move 2</div>
-                                <div class="move input move-3" data-player="2" data-no="5" data-move-no="3">Move 3</div>
-                                <div class="move input move-4" data-player="2" data-no="5" data-move-no="4">Move 4</div>
+                    <div class="pkmn-outer" data-player="2" data-no="5">
+                        <div class="pkmn" data-player="2" data-no="5">
+                            <div>
+                                <div class="pkmnName input" data-player="2" data-no="5">Geodude</div>
+                                <div class="lv input" contenteditable="true" data-player="2" data-no="5">5</div>
+                                <div class="nick input pokemon coromon" contenteditable="true" data-player="2"
+                                    data-no="5">
+                                </div>
+                                <div class="nature input roco-kingdom" data-player="2" data-no="5">None</div>
                             </div>
+                            <div>
+                                <div class="input-outer">
+                                    <div class="move input move-1" data-player="2" data-no="5" data-move-no="1">Move 1
+                                    </div>
+                                    <div class="move input move-2" data-player="2" data-no="5" data-move-no="2">Move 2
+                                    </div>
+                                    <div class="move input move-3" data-player="2" data-no="5" data-move-no="3">Move 3
+                                    </div>
+                                    <div class="move input move-4" data-player="2" data-no="5" data-move-no="4">Move 4
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="advanced">
+                            <div></div>
+                            <div class="header"><strong>HP</strong></div>
+                            <div class="header"><strong>Atk</strong></div>
+                            <div class="header"><strong>Def</strong></div>
+                            <div class="header pokemon"><strong>Sp</strong></div>
+                            <div class="header roco-kingdom"><strong>SpA</strong></div>
+                            <div class="header roco-kingdom"><strong>SpD</strong></div>
+                            <div class="header"><strong>Spe</strong></div>
+
+                            <div class="header-left pokemon"><strong>EV</strong></div>
+                            <div data-player="2" data-no="5" class="ev input pokemon" contenteditable="true"
+                                data-value-for="hp">252</div>
+                            <div data-player="2" data-no="5" class="ev input pokemon" contenteditable="true"
+                                data-value-for="atk">252</div>
+                            <div data-player="2" data-no="5" class="ev input pokemon" contenteditable="true"
+                                data-value-for="def">252</div>
+                            <div data-player="2" data-no="5" class="ev input pokemon" contenteditable="true"
+                                data-value-for="sp">252</div>
+                            <div data-player="2" data-no="5" class="ev input pokemon" contenteditable="true"
+                                data-value-for="spe">252</div>
+
+                            <div class="header-left"><strong>DV</strong></div>
+                            <div data-player="2" data-no="5" class="dv input" contenteditable="true"
+                                data-value-for="hp">15</div>
+                            <div data-player="2" data-no="5" class="dv input" contenteditable="true"
+                                data-value-for="atk">15</div>
+                            <div data-player="2" data-no="5" class="dv input" contenteditable="true"
+                                data-value-for="def">15</div>
+                            <div data-player="2" data-no="5" class="dv input pokemon" contenteditable="true"
+                                data-value-for="sp">15</div>
+                            <div data-player="2" data-no="5" class="dv input roco-kingdom" contenteditable="true"
+                                data-value-for="spa">15</div>
+                            <div data-player="2" data-no="5" class="dv input roco-kingdom" contenteditable="true"
+                                data-value-for="spd">15</div>
+                            <div data-player="2" data-no="5" class="dv input" contenteditable="true"
+                                data-value-for="spe">15</div>
                         </div>
                     </div>
-                    <div class="pkmn" data-player="2" data-no="6">
-                        <div>
-                            <div class="pkmnName input" data-player="2" data-no="6">Geodude</div>
-                            <div class="lv input" contenteditable="true" data-player="2" data-no="6">5</div>
-                            <div class="nick input pokemon coromon" contenteditable="true" data-player="2" data-no="6"></div>
-                            <div class="ev input pokemon" contenteditable="true" data-player="2" data-no="6">252</div>
-                            <div class="dv input" contenteditable="true" data-player="2" data-no="6">15</div>
-                            <div class="nature input roco-kingdom" data-player="2" data-no="6">None</div>
-                        </div>
-                        <div>
-                            <div class="input-outer">
-                                <div class="move input move-1" data-player="2" data-no="6" data-move-no="1">Move 1</div>
-                                <div class="move input move-2" data-player="2" data-no="6" data-move-no="2">Move 2</div>
-                                <div class="move input move-3" data-player="2" data-no="6" data-move-no="3">Move 3</div>
-                                <div class="move input move-4" data-player="2" data-no="6" data-move-no="4">Move 4</div>
+                    <div class="pkmn-outer" data-player="2" data-no="6">
+                        <div class="pkmn" data-player="2" data-no="6">
+                            <div>
+                                <div class="pkmnName input" data-player="2" data-no="6">Geodude</div>
+                                <div class="lv input" contenteditable="true" data-player="2" data-no="6">5</div>
+                                <div class="nick input pokemon coromon" contenteditable="true" data-player="2"
+                                    data-no="6">
+                                </div>
+                                <div class="nature input roco-kingdom" data-player="2" data-no="6">None</div>
                             </div>
+                            <div>
+                                <div class="input-outer">
+                                    <div class="move input move-1" data-player="2" data-no="6" data-move-no="1">Move 1
+                                    </div>
+                                    <div class="move input move-2" data-player="2" data-no="6" data-move-no="2">Move 2
+                                    </div>
+                                    <div class="move input move-3" data-player="2" data-no="6" data-move-no="3">Move 3
+                                    </div>
+                                    <div class="move input move-4" data-player="2" data-no="6" data-move-no="4">Move 4
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="advanced">
+                            <div></div>
+                            <div class="header"><strong>HP</strong></div>
+                            <div class="header"><strong>Atk</strong></div>
+                            <div class="header"><strong>Def</strong></div>
+                            <div class="header pokemon"><strong>Sp</strong></div>
+                            <div class="header roco-kingdom"><strong>SpA</strong></div>
+                            <div class="header roco-kingdom"><strong>SpD</strong></div>
+                            <div class="header"><strong>Spe</strong></div>
+
+                            <div class="header-left pokemon"><strong>EV</strong></div>
+                            <div data-player="2" data-no="6" class="ev input pokemon" contenteditable="true"
+                                data-value-for="hp">252</div>
+                            <div data-player="2" data-no="6" class="ev input pokemon" contenteditable="true"
+                                data-value-for="atk">252</div>
+                            <div data-player="2" data-no="6" class="ev input pokemon" contenteditable="true"
+                                data-value-for="def">252</div>
+                            <div data-player="2" data-no="6" class="ev input pokemon" contenteditable="true"
+                                data-value-for="sp">252</div>
+                            <div data-player="2" data-no="6" class="ev input pokemon" contenteditable="true"
+                                data-value-for="spe">252</div>
+
+                            <div class="header-left"><strong>DV</strong></div>
+                            <div data-player="2" data-no="6" class="dv input" contenteditable="true"
+                                data-value-for="hp">15</div>
+                            <div data-player="2" data-no="6" class="dv input" contenteditable="true"
+                                data-value-for="atk">15</div>
+                            <div data-player="2" data-no="6" class="dv input" contenteditable="true"
+                                data-value-for="def">15</div>
+                            <div data-player="2" data-no="6" class="dv input pokemon" contenteditable="true"
+                                data-value-for="sp">15</div>
+                            <div data-player="2" data-no="6" class="dv input roco-kingdom" contenteditable="true"
+                                data-value-for="spa">15</div>
+                            <div data-player="2" data-no="6" class="dv input roco-kingdom" contenteditable="true"
+                                data-value-for="spd">15</div>
+                            <div data-player="2" data-no="6" class="dv input" contenteditable="true"
+                                data-value-for="spe">15</div>
                         </div>
                     </div>
                 </div>
