@@ -133,6 +133,7 @@
         padding: 0 10px;
         border-radius: 9px;
         box-shadow: 0 0 9px var(--shadow);
+        anchor-name: --turn-number;
     }
 
     #text {
@@ -449,20 +450,6 @@
         font-size: large;
         border-radius: 9px;
         position: relative;
-
-        &::after {
-            width: 4px;
-            content: "";
-            display: block;
-            position: absolute;
-            margin: auto 0;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            background-color: var(--theme);
-            height: calc(100% - 20px);
-            border-radius: 2px;
-        }
     }
 
     .small-text {
@@ -1562,6 +1549,37 @@
             padding-top: 8px;
             margin: 0 3px;
         }
+    }
+
+    #weatherAndCondition {
+        border-radius: 9px;
+        width: 300px;
+        background-color: var(--main-text-bg);
+        padding: 9px 9px 9px 10px;
+        position-anchor: --turn-number;
+        left: anchor(left);
+        top: calc(anchor(bottom) + 9px);
+        position: absolute;
+
+        & .split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    #weatherAndCondition::after,
+    .main-text::after {
+        width: 4px;
+        content: "";
+        display: block;
+        position: absolute;
+        margin: auto 0;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        background-color: var(--theme);
+        height: calc(100% - 20px);
+        border-radius: 2px;
     }
 }
 

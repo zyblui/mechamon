@@ -558,6 +558,9 @@ for (let i of (document.querySelectorAll(".mode-btn"))) {
         document.getElementById("modeSelectBg").classList.remove("show");
     });
 }
+document.getElementById("energyButton").addEventListener("click", function () {
+    makeMove("focus energy");
+});
 function $(...args) {
     if (args.length > 1) {
         for (let i = 0; i < args.length - 1; i++)
@@ -835,7 +838,7 @@ function getDefaultProperties(playersInfo) {
     let arr = structuredClone(playersInfo);
     arr[0].currentPokemon = -1;
     arr[1].currentPokemon = -1;
-    for (let i of arr)
+    for (let i of arr) {
         for (let j of i.build) {
             for (let k of $("mons")) {
                 if (k.name == j.name) {
@@ -918,6 +921,19 @@ function getDefaultProperties(playersInfo) {
                 j.dmgReduction = 0;
             });
         }
+        $("roco kingdom", () => {
+            i.marks = {
+                "positive": {
+                    "name": "",
+                    "layers": 0
+                },
+                "negative": {
+                    "name": "",
+                    "layers": 0
+                }
+            };
+        });
+    }
     return arr;
 }
 function startGame() {
@@ -1538,10 +1554,11 @@ function nextTurn() {
                 break;
             }
     }
-    getPkmn(true).dmgDeduction = 0;
-    getPkmn(false).dmgDeduction = 0;
     attacks = [];
-    for (let i of [true, false])
+    for (let i of [true, false]) {
+        $("roco kingdom", () => {
+            getPkmn(i).dmgDeduction = 0;
+        });
         if (getPkmn(i)?.status == "brn") {
             addSmallText("others", "hurtByBurn", {
                 "pokemon": [getName(getPkmn(i), false, true)],
@@ -1549,6 +1566,7 @@ function nextTurn() {
             });
             dealDmg(i, getPkmn(i).maxHp / 16, { ignoreSubstitute: true });
         }
+    }
     judgeHP();
     endTurn();
 }

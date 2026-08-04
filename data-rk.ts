@@ -4304,6 +4304,15 @@ const RK_TRAITS: RkTrait[] = [{
 
 //dmg = floor(round(atk * power * type * stab * 0.9024) / def) * deduction
 const RK_SKILLS: RkSkill[] = [{
+    "name": "focus energy",
+    "type": "normal",
+    "cat": "status",
+    "cost": 0,
+    "power": 0,
+    "effect": function () {
+        getPkmn(true).energy = Math.min(10, getPkmn(true).energy + 5);
+    }
+}, {
     "name": "猛烈撞击",
     "type": "normal",
     "cat": "physical",
@@ -4315,8 +4324,7 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "defense",
     "cost": 1,
     "power": 0,
-    "dmgDeduction": 0.7,
-    "desc": "减伤70%，应对攻击。"
+    "dmgDeduction": 0.7
 }, {
     "name": "闪光",
     "type": "light",
@@ -4484,8 +4492,11 @@ const RK_SKILLS: RkSkill[] = [{
     "power": 0,
     "desc": "减伤70%，应对攻击：自己回复20%生命。",
     "dmgDeduction": 0.7,
-    "tackleEffect": function () {
-        getPkmn(true).hp = Math.min(getPkmn(true).maxHp, getPkmn(true).hp + getPkmn(true).maxHp * 0.2);
+    "tackleEffect": {
+        "cat": "attack",
+        "func": function () {
+            getPkmn(true).hp = Math.min(getPkmn(true).maxHp, getPkmn(true).hp + getPkmn(true).maxHp * 0.2);
+        }
     }
 }, {
     "name": "筛管奔流",
@@ -4837,14 +4848,28 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "status",
     "cost": 0,
     "power": 0,
-    "desc": "敌方失去3能量，应对防御：改为敌方失去6能量。"
+    "desc": "敌方失去3能量，应对防御：改为敌方失去6能量。",
+    "effect": function () {
+        getPkmn(false).energy = Math.max(0, getPkmn(false).energy - 3);
+    },
+    "tackleEffect": {
+        "cat": "defense",
+        "func": function () {
+            getPkmn(false).energy = Math.max(0, getPkmn(false).energy - 3);
+        }
+    }
 }, {
     "name": "极限撕裂",
     "type": "dark",
     "cat": "physical",
     "cost": 4,
     "power": 140,
-    "desc": "造成物伤，若生命高于50%，使用后自己获得双攻-50%。"
+    "effect": function () {
+        if (getPkmn(true).hp > 0.5 * getPkmn(true).maxHp) {
+            getPkmn(true).valueMultiplier.atk = Math.max(0, getPkmn(true).valueMultiplier.atk - 0.5);
+            getPkmn(true).valueMultiplier.spa = Math.max(0, getPkmn(true).valueMultiplier.spa - 0.5);
+        }
+    }
 }, {
     "name": "恶意逃离",
     "type": "dark",
@@ -4913,8 +4938,7 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "flying",
     "cat": "physical",
     "cost": 5,
-    "power": 140,
-    "desc": "对敌方精灵造成物理伤害。"
+    "power": 140
 }, {
     "name": "羽刃",
     "type": "flying",
@@ -4935,21 +4959,28 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "special",
     "cost": 0,
     "power": 30,
-    "desc": "造成魔伤，自己回复1能量。"
+    "effect": function () {
+        getPkmn(true).energy = Math.min(getPkmn(true).energy + 1, 10);
+    }
 }, {
     "name": "氧输送",
     "type": "grass",
     "cat": "status",
     "cost": 2,
     "power": 0,
-    "desc": "自己回复4能量，并获得魔攻+80%。"
+    "effect": function () {
+        getPkmn(true).energy = Math.min(getPkmn(true).energy + 1, 40);
+        getPkmn(true).valueMultiplier.spa += 0.8;
+    }
 }, {
     "name": "种子弹",
     "type": "grass",
     "cat": "physical",
     "cost": 0,
     "power": 30,
-    "desc": "造成物伤，自己回复1能量。"
+    "effect": function () {
+        getPkmn(true).energy = Math.min(getPkmn(true).energy + 1, 10);
+    }
 }, {
     "name": "汲取",
     "type": "grass",
@@ -4998,15 +5029,18 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "ground",
     "cat": "special",
     "cost": 1,
-    "power": 60,
-    "desc": "对敌方精灵造成魔法伤害。"
+    "power": 60
 }, {
     "name": "石肤术",
     "type": "ground",
     "cat": "status",
     "cost": 3,
     "power": 0,
-    "desc": "自己获得物防 + 160% 和魔防 - 60%。"
+    "desc": "自己获得物防 + 160% 和魔防 - 60%。",
+    "effect": function () {
+        getPkmn(true).valueMultiplier.def += 1.6;
+        getPkmn(true).valueMultiplier.spd = Math.max(0, getPkmn(true).valueMultiplier.def - 0.6);
+    }
 }, {
     "name": "音波弹",
     "type": "normal",
@@ -5041,8 +5075,7 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "ground",
     "cat": "special",
     "cost": 3,
-    "power": 100,
-    "desc": "对敌方精灵造成魔法伤害。"
+    "power": 100
 }, {
     "name": "石锁",
     "type": "ground",
@@ -5103,8 +5136,7 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "ground",
     "cat": "physical",
     "cost": 2,
-    "power": 80,
-    "desc": "对敌方精灵造成物理伤害。"
+    "power": 80
 }, {
     "name": "岩脉崩毁",
     "type": "ground",
@@ -5132,8 +5164,7 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "ground",
     "cat": "physical",
     "cost": 10,
-    "power": 190,
-    "desc": "对敌方精灵造成物理伤害。"
+    "power": 190
 }, {
     "name": "沙涌",
     "type": "ground",
@@ -5154,8 +5185,7 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "defense",
     "cost": 2,
     "power": 0,
-    "dmgDeduction": 0.9,
-    "desc": "减伤90%，应对攻击。"
+    "dmgDeduction": 0.9
 }, {
     "name": "魔爪",
     "type": "dark",
@@ -5175,8 +5205,7 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "flying",
     "cat": "physical",
     "cost": 1,
-    "power": 60,
-    "desc": "对敌方精灵造成物理伤害。"
+    "power": 60
 }, {
     "name": "暗箱操作",
     "type": "dark",
@@ -5217,15 +5246,13 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "bug",
     "cat": "physical",
     "cost": 0,
-    "power": 40,
-    "desc": "对敌方精灵造成物理伤害。"
+    "power": 40
 }, {
     "name": "噬心",
     "type": "bug",
     "cat": "physical",
     "cost": 1,
-    "power": 60,
-    "desc": "对敌方精灵造成物理伤害。"
+    "power": 60
 }, {
     "name": "捆缚",
     "type": "bug",
@@ -5260,8 +5287,7 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "cute",
     "cat": "special",
     "cost": 1,
-    "power": 60,
-    "desc": "对敌方精灵造成魔法伤害。"
+    "power": 60
 }, {
     "name": "食腐",
     "type": "bug",
@@ -5288,29 +5314,25 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "bug",
     "cat": "special",
     "cost": 3,
-    "power": 100,
-    "desc": "对敌方精灵造成魔法伤害。"
+    "power": 100
 }, {
     "name": "爆米花爆破",
     "type": "cute",
     "cat": "physical",
     "cost": 5,
-    "power": 140,
-    "desc": "对敌方精灵造成物理伤害。"
+    "power": 140
 }, {
     "name": "打鼾",
     "type": "normal",
     "cat": "special",
     "cost": 6,
-    "power": 165,
-    "desc": "对敌方精灵造成魔法伤害。"
+    "power": 165
 }, {
     "name": "诡刺",
     "type": "ghost",
     "cat": "physical",
     "cost": 0,
-    "power": 40,
-    "desc": "对敌方精灵造成物理伤害。"
+    "power": 40
 }, {
     "name": "聚盐",
     "type": "grass",
@@ -5331,7 +5353,10 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "status",
     "cost": 2,
     "power": 0,
-    "desc": "自己回复15%生命和4能量。"
+    "effect": function () {
+        getPkmn(true).hp = Math.min(getPkmn(true).maxHp, getPkmn(true).maxHp * 0.15 + getPkmn(true).hp);
+        getPkmn(true).energy = Math.min(10, getPkmn(true).energy + 4);
+    }
 }, {
     "name": "虚化",
     "type": "ghost",
@@ -5345,15 +5370,13 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "grass",
     "cat": "special",
     "cost": 1,
-    "power": 60,
-    "desc": "对敌方精灵造成魔法伤害。"
+    "power": 60
 }, {
     "name": "幽灵爆发",
     "type": "ghost",
     "cat": "special",
     "cost": 5,
-    "power": 140,
-    "desc": "对敌方精灵造成魔法伤害。"
+    "power": 140
 }, {
     "name": "彗星",
     "type": "normal",
@@ -5373,22 +5396,19 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "normal",
     "cat": "physical",
     "cost": 0,
-    "power": 40,
-    "desc": "对敌方精灵造成物理伤害。"
+    "power": 40
 }, {
     "name": "水弹",
     "type": "water",
     "cat": "special",
     "cost": 0,
-    "power": 40,
-    "desc": "对敌方精灵造成魔法伤害。"
+    "power": 40
 }, {
     "name": "泡沫",
     "type": "water",
     "cat": "physical",
     "cost": 1,
-    "power": 60,
-    "desc": "对敌方精灵造成物理伤害。"
+    "power": 60
 }, {
     "name": "鼓劲",
     "type": "normal",
@@ -5401,8 +5421,7 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "normal",
     "cat": "physical",
     "cost": 4,
-    "power": 120,
-    "desc": "对敌方精灵造成物理伤害。"
+    "power": 120
 }, {
     "name": "有效预防",
     "type": "normal",
@@ -5423,8 +5442,7 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "light",
     "cat": "special",
     "cost": 0,
-    "power": 40,
-    "desc": "对敌方精灵造成魔法伤害。"
+    "power": 40
 }, {
     "name": "淤泥表皮",
     "type": "ground",
@@ -5438,22 +5456,19 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "ground",
     "cat": "special",
     "cost": 0,
-    "power": 40,
-    "desc": "对敌方精灵造成魔法伤害。"
+    "power": 40
 }, {
     "name": "透射",
     "type": "light",
     "cat": "physical",
     "cost": 1,
-    "power": 60,
-    "desc": "对敌方精灵造成物理伤害。"
+    "power": 60
 }, {
     "name": "扬沙",
     "type": "ground",
     "cat": "physical",
     "cost": 1,
-    "power": 60,
-    "desc": "对敌方精灵造成物理伤害。"
+    "power": 60
 }, {
     "name": "镜像反射",
     "type": "light",
@@ -5482,8 +5497,7 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "grass",
     "cat": "physical",
     "cost": 3,
-    "power": 100,
-    "desc": "对敌方精灵造成物理伤害。"
+    "power": 100
 }, {
     "name": "富养化",
     "type": "grass",
@@ -5573,8 +5587,7 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "fire",
     "cat": "physical",
     "cost": 4,
-    "power": 120,
-    "desc": "对敌方精灵造成物理伤害。"
+    "power": 120
 }, {
     "name": "耀眼",
     "type": "normal",
@@ -5624,8 +5637,7 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "poison",
     "cat": "special",
     "cost": 0,
-    "power": 40,
-    "desc": "对敌方精灵造成魔法伤害。"
+    "power": 40
 }, {
     "name": "取念",
     "type": "normal",
@@ -5659,8 +5671,7 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "poison",
     "cat": "special",
     "cost": 3,
-    "power": 100,
-    "desc": "对敌方精灵造成魔法伤害。"
+    "power": 100
 }, {
     "name": "疫病吐息",
     "type": "poison",
@@ -5701,8 +5712,7 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "normal",
     "cat": "special",
     "cost": 3,
-    "power": 110,
-    "desc": "对敌方精灵造成魔法伤害。"
+    "power": 110
 }, {
     "name": "聒噪",
     "type": "normal",
@@ -5722,8 +5732,7 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "ghost",
     "cat": "special",
     "cost": 2,
-    "power": 80,
-    "desc": "对敌方精灵造成魔法伤害。"
+    "power": 80
 }, {
     "name": "借用",
     "type": "normal",
@@ -5820,8 +5829,7 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "poison",
     "cat": "physical",
     "cost": 2,
-    "power": 80,
-    "desc": "对敌方精灵造成物理伤害。"
+    "power": 80
 }, {
     "name": "蜡质膜",
     "type": "grass",
@@ -5849,8 +5857,7 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "electric",
     "cat": "physical",
     "cost": 1,
-    "power": 60,
-    "desc": "对敌方精灵造成物理伤害。"
+    "power": 60
 }, {
     "name": "加固",
     "type": "normal",
@@ -5970,8 +5977,7 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "normal",
     "cat": "physical",
     "cost": 5,
-    "power": 155,
-    "desc": "对敌方精灵造成物理伤害。"
+    "power": 155
 }, {
     "name": "气沉丹田",
     "type": "fighting",
@@ -6033,8 +6039,7 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "cute",
     "cat": "physical",
     "cost": 1,
-    "power": 60,
-    "desc": "对敌方精灵造成物理伤害。"
+    "power": 60
 }, {
     "name": "重击",
     "type": "normal",
@@ -6061,8 +6066,7 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "electric",
     "cat": "special",
     "cost": 1,
-    "power": 60,
-    "desc": "对敌方精灵造成魔法伤害。"
+    "power": 60
 }, {
     "name": "过载回路",
     "type": "electric",
@@ -6075,15 +6079,13 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "electric",
     "cat": "physical",
     "cost": 2,
-    "power": 80,
-    "desc": "对敌方精灵造成物理伤害。"
+    "power": 80
 }, {
     "name": "交叉闪电",
     "type": "electric",
     "cat": "physical",
     "cost": 3,
-    "power": 100,
-    "desc": "对敌方精灵造成物理伤害。"
+    "power": 100
 }, {
     "name": "雷暴",
     "type": "electric",
@@ -6110,8 +6112,7 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "flying",
     "cat": "special",
     "cost": 0,
-    "power": 40,
-    "desc": "对敌方精灵造成魔法伤害。"
+    "power": 40
 }, {
     "name": "虫鸣",
     "type": "bug",
@@ -6124,8 +6125,7 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "flying",
     "cat": "physical",
     "cost": 2,
-    "power": 80,
-    "desc": "对敌方精灵造成物理伤害。"
+    "power": 80
 }, {
     "name": "草虫冲击",
     "type": "bug",
@@ -6166,8 +6166,7 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "dark",
     "cat": "special",
     "cost": 1,
-    "power": 60,
-    "desc": "对敌方精灵造成魔法伤害。"
+    "power": 60
 }, {
     "name": "等价交换",
     "type": "dark",
@@ -6252,15 +6251,13 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "dark",
     "cat": "physical",
     "cost": 0,
-    "power": 40,
-    "desc": "对敌方精灵造成物理伤害。"
+    "power": 40
 }, {
     "name": "栽赃",
     "type": "dark",
     "cat": "special",
     "cost": 6,
-    "power": 150,
-    "desc": "对敌方精灵造成魔法伤害。"
+    "power": 150
 }, {
     "name": "灾厄",
     "type": "dark",
@@ -6344,8 +6341,7 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "flying",
     "cat": "special",
     "cost": 3,
-    "power": 100,
-    "desc": "对敌方精灵造成魔法伤害。"
+    "power": 100
 }, {
     "name": "啃咬",
     "type": "bug",
@@ -6358,8 +6354,7 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "grass",
     "cat": "physical",
     "cost": 0,
-    "power": 40,
-    "desc": "对敌方精灵造成物理伤害。"
+    "power": 40
 }, {
     "name": "假寐",
     "type": "bug",
@@ -6471,8 +6466,7 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "light",
     "cat": "special",
     "cost": 3,
-    "power": 100,
-    "desc": "对敌方精灵造成魔法伤害。"
+    "power": 100
 }, {
     "name": "天光",
     "type": "light",
@@ -6499,8 +6493,7 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "normal",
     "cat": "special",
     "cost": 4,
-    "power": 130,
-    "desc": "对敌方精灵造成魔法伤害。"
+    "power": 130
 }, {
     "name": "嗜痛",
     "type": "normal",
@@ -6549,8 +6542,7 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "poison",
     "cat": "physical",
     "cost": 1,
-    "power": 60,
-    "desc": "对敌方精灵造成物理伤害。"
+    "power": 60
 }, {
     "name": "不可接触",
     "type": "poison",
@@ -6571,8 +6563,7 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "psychic",
     "cat": "physical",
     "cost": 1,
-    "power": 60,
-    "desc": "对敌方精灵造成物理伤害。"
+    "power": 60
 }, {
     "name": "星链",
     "type": "psychic",
@@ -6629,7 +6620,9 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "special",
     "cost": 0,
     "power": 30,
-    "desc": "造成魔伤，自己回复1能量。"
+    "effect": function () {
+        getPkmn(true).energy = Math.min(getPkmn(true).energy + 1, 10);
+    }
 }, {
     "name": "超导加速",
     "type": "electric",
@@ -6649,8 +6642,7 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "electric",
     "cat": "special",
     "cost": 0,
-    "power": 40,
-    "desc": "对敌方精灵造成魔法伤害。"
+    "power": 40
 }, {
     "name": "霜冻",
     "type": "ice",
@@ -6691,8 +6683,7 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "ice",
     "cat": "physical",
     "cost": 0,
-    "power": 40,
-    "desc": "对敌方精灵造成物理伤害。"
+    "power": 40
 }, {
     "name": "雪球",
     "type": "ice",
@@ -6891,15 +6882,13 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "ice",
     "cat": "special",
     "cost": 1,
-    "power": 60,
-    "desc": "对敌方精灵造成魔法伤害。"
+    "power": 60
 }, {
     "name": "炎枪",
     "type": "fire",
     "cat": "special",
     "cost": 3,
-    "power": 100,
-    "desc": "对敌方精灵造成魔法伤害。"
+    "power": 100
 }, {
     "name": "充分燃烧",
     "type": "fire",
@@ -6934,8 +6923,7 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "fire",
     "cat": "special",
     "cost": 7,
-    "power": 160,
-    "desc": "对敌方精灵造成魔法伤害。"
+    "power": 160
 }, {
     "name": "疾风连袭",
     "type": "flying",
@@ -6969,15 +6957,13 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "fighting",
     "cat": "physical",
     "cost": 3,
-    "power": 100,
-    "desc": "对敌方精灵造成物理伤害。"
+    "power": 100
 }, {
     "name": "气波",
     "type": "fighting",
     "cat": "special",
     "cost": 0,
-    "power": 40,
-    "desc": "对敌方精灵造成魔法伤害。"
+    "power": 40
 }, {
     "name": "炎打",
     "type": "fire",
@@ -7020,8 +7006,7 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "water",
     "cat": "physical",
     "cost": 3,
-    "power": 100,
-    "desc": "对敌方精灵造成物理伤害。"
+    "power": 100
 }, {
     "name": "破防",
     "type": "fighting",
@@ -7055,8 +7040,7 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "fighting",
     "cat": "physical",
     "cost": 5,
-    "power": 140,
-    "desc": "对敌方精灵造成物理伤害。"
+    "power": 140
 }, {
     "name": "无影脚",
     "type": "fighting",
@@ -7077,7 +7061,16 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "status",
     "cost": 2,
     "power": 0,
-    "desc": "自己获得双攻+50%，每携带1个0能耗技能，额外+50%。"
+    "effect": function () {
+        let atkIncrement = 0.5;
+        for (let i in getPkmn(true).moves) {
+            if (getMoveStats(i)!.cost == 0) {
+                atkIncrement += 0.5;
+            }
+        }
+        getPkmn(true).valueMultiplier.atk += 0.5;
+        getPkmn(true).valueMultiplier.spa += 0.5;
+    }
 }, {
     "name": "虫击",
     "type": "bug",
@@ -7113,7 +7106,9 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "status",
     "cost": 7,
     "power": 0,
-    "desc": "自己获得魔攻+190%。"
+    "effect": function () {
+        getPkmn(true).valueMultiplier.spa += 1.9;
+    }
 }, {
     "name": "捧杀",
     "type": "cute",
@@ -7142,8 +7137,7 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "cute",
     "cat": "special",
     "cost": 2,
-    "power": 80,
-    "desc": "对敌方精灵造成魔法伤害。"
+    "power": 80
 }, {
     "name": "赤子之心",
     "type": "cute",
@@ -7170,8 +7164,7 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "dragon",
     "cat": "special",
     "cost": 2,
-    "power": 80,
-    "desc": "对敌方精灵造成魔法伤害。"
+    "power": 80
 }, {
     "name": "架势",
     "type": "dragon",
@@ -7198,8 +7191,7 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "normal",
     "cat": "special",
     "cost": 5,
-    "power": 155,
-    "desc": "对敌方精灵造成魔法伤害。"
+    "power": 155
 }, {
     "name": "龙威",
     "type": "dragon",
@@ -7240,15 +7232,13 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "normal",
     "cost": 3,
     "cat": "physical",
-    "power": 110,
-    "desc": "对敌方精灵造成物理伤害。"
+    "power": 110
 }, {
     "name": "导电撞击",
     "type": "electric",
     "cost": 0,
     "cat": "physical",
-    "power": 40,
-    "desc": "对敌方精灵造成物理伤害。"
+    "power": 40
 }, {
     "name": "引雷",
     "type": "electric",
@@ -7276,8 +7266,7 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "psychic",
     "cat": "physical",
     "cost": 0,
-    "power": 40,
-    "desc": "对敌方精灵造成物理伤害。"
+    "power": 40
 }, {
     "name": "主轴",
     "type": "mecha",
@@ -7290,8 +7279,7 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "psychic",
     "cat": "physical",
     "cost": 3,
-    "power": 100,
-    "desc": "对敌方精灵造成物理伤害。"
+    "power": 100
 }, {
     "name": "齿轮切开",
     "type": "mecha",
@@ -7304,8 +7292,7 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "bug",
     "cat": "physical",
     "cost": 2,
-    "power": 80,
-    "desc": "对敌方精灵造成物理伤害。"
+    "power": 80
 }, {
     "name": "以重制重",
     "type": "normal",
@@ -7318,8 +7305,7 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "fire",
     "cat": "physical",
     "cost": 1,
-    "power": 60,
-    "desc": "对敌方精灵造成物理伤害。"
+    "power": 60
 }, {
     "name": "双响炮",
     "type": "fire",
@@ -7360,15 +7346,13 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "dragon",
     "cat": "physical",
     "cost": 3,
-    "power": 100,
-    "desc": "对敌方精灵造成物理伤害。"
+    "power": 100
 }, {
     "name": "龙爪",
     "type": "dragon",
     "cat": "physical",
     "cost": 4,
-    "power": 120,
-    "desc": "对敌方精灵造成物理伤害。"
+    "power": 120
 }, {
     "name": "龙之利爪",
     "type": "dragon",
@@ -7381,8 +7365,7 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "mecha",
     "cat": "physical",
     "cost": 0,
-    "power": 40,
-    "desc": "对敌方精灵造成物理伤害。"
+    "power": 40
 }, {
     "name": "传感器",
     "type": "mecha",
@@ -7395,8 +7378,7 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "cute",
     "cat": "physical",
     "cost": 0,
-    "power": 40,
-    "desc": "对敌方精灵造成物理伤害。"
+    "power": 40
 }, {
     "name": "双联脉冲",
     "type": "electric",
@@ -7409,29 +7391,25 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "water",
     "cat": "special",
     "cost": 4,
-    "power": 120,
-    "desc": "对敌方精灵造成魔法伤害。"
+    "power": 120
 }, {
     "name": "炎息",
     "type": "fire",
     "cat": "physical",
     "cost": 0,
-    "power": 40,
-    "desc": "对敌方精灵造成物理伤害。"
+    "power": 40
 }, {
     "name": "热气",
     "type": "fire",
     "cat": "special",
     "cost": 0,
-    "power": 40,
-    "desc": "对敌方精灵造成魔法伤害。"
+    "power": 40
 }, {
     "name": "火爪",
     "type": "fire",
     "cat": "special",
     "cost": 1,
-    "power": 60,
-    "desc": "对敌方精灵造成魔法伤害。"
+    "power": 60
 }, {
     "name": "天火",
     "type": "fire",
@@ -7444,8 +7422,7 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "dark",
     "cat": "physical",
     "cost": 2,
-    "power": 80,
-    "desc": "对敌方精灵造成物理伤害。"
+    "power": 80
 }, {
     "name": "流火",
     "type": "fire",
@@ -7479,8 +7456,7 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "mecha",
     "cat": "special",
     "cost": 3,
-    "power": 100,
-    "desc": "对敌方精灵造成魔法伤害。"
+    "power": 100
 }, {
     "name": "龙血",
     "type": "dragon",
@@ -7494,15 +7470,13 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "dragon",
     "cat": "physical",
     "cost": 1,
-    "power": 60,
-    "desc": "对敌方精灵造成物理伤害。"
+    "power": 60
 }, {
     "name": "隼鳞",
     "type": "dragon",
     "cat": "physical",
     "cost": 5,
-    "power": 140,
-    "desc": "对敌方精灵造成物理伤害。"
+    "power": 140
 }, {
     "name": "吹炎",
     "type": "dragon",
@@ -7529,8 +7503,7 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "psychic",
     "cat": "special",
     "cost": 3,
-    "power": 100,
-    "desc": "对敌方精灵造成魔法伤害。"
+    "power": 100
 }, {
     "name": "垂死反击",
     "type": "normal",
@@ -7564,8 +7537,7 @@ const RK_SKILLS: RkSkill[] = [{
     "type": "ghost",
     "cat": "special",
     "cost": 3,
-    "power": 100,
-    "desc": "对敌方精灵造成魔法伤害。"
+    "power": 100
 }, {
     "name": "烈焰风暴",
     "type": "fire",

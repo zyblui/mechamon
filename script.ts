@@ -663,6 +663,9 @@ for (let i of (document.querySelectorAll<HTMLDivElement>(".mode-btn"))) {
         document.getElementById("modeSelectBg")!.classList.remove("show");
     });
 }
+document.getElementById("energyButton")!.addEventListener("click", function () {
+    makeMove("focus energy");
+});
 
 function $(...args: [...modes: string[], func: () => void] | [key: string]): void | any {
     if (args.length > 1) {
@@ -918,86 +921,100 @@ function getDefaultProperties(playersInfo: Player[]): BattleInfo {
     let arr: any = structuredClone(playersInfo);
     arr[0].currentPokemon = -1;
     arr[1].currentPokemon = -1;
-    for (let i of arr) for (let j of i.build) {
-        for (let k of $("mons")) {
-            if (k.name == j.name) {
+    for (let i of arr) {
+        for (let j of i.build) {
+            for (let k of $("mons")) {
+                if (k.name == j.name) {
+                    $("pokemon", () => {
+                        j.maxHp = Math.floor(0.01 * (2 * (k.hp + j.dv.hp) + Math.floor(0.25 * j.ev.hp)) * j.lv) + j.lv + 10;
+                    });
+                    $("roco kingdom", () => {
+                        j.maxHp = Math.round(Math.round(k.hp * 1.7 + j.dv.hp * 0.85 + 70) + 100);
+                    });
+                    j.hp = j.maxHp;
+                    break;
+                }
+            }
+
+            for (let k of $("properties")) {
                 $("pokemon", () => {
-                    j.maxHp = Math.floor(0.01 * (2 * (k.hp + j.dv.hp) + Math.floor(0.25 * j.ev.hp)) * j.lv) + j.lv + 10;
+                    j[k] = calcActualValue((getStats(j.name) as Pkmn)[k], j.dv[k], j.ev[k], j.lv);
                 });
                 $("roco kingdom", () => {
-                    j.maxHp = Math.round(Math.round(k.hp * 1.7 + j.dv.hp * 0.85 + 70) + 100);
+                    if (k != "hp") j[k] = calcActualValueRk((getStats(j.name) as RkPet)[k], j.dv[k]);
                 });
-                j.hp = j.maxHp;
-                break;
             }
-        }
-
-        for (let k of $("properties")) {
-            $("pokemon", () => {
-                j[k] = calcActualValue((getStats(j.name) as Pkmn)[k], j.dv[k], j.ev[k], j.lv);
-            });
-            $("roco kingdom", () => {
-                if (k != "hp") j[k] = calcActualValueRk((getStats(j.name) as RkPet)[k], j.dv[k]);
-            });
-        }
-        j.transformPkmn = "";
-        j.mimicMove = "";
-        j.atkStage = 0;
-        j.defStage = 0;
-        j.spStage = 0;
-        j.speStage = 0;
-        j.accStage = 0;
-        j.evaStage = 0;
-        j.critProbMultiplier = 1;
-        j.status = "";
-        j.charge = {
-            move: "",
-            turns: 0
-        };
-        j.uncontrollable = {
-            move: "",
-            turns: 0,
-            isCrit: false
-        };
-        j.tempEffect = {
-            "confused": 0,
-            "semiInvulnerable": 0,
-            "rage": 0,
-            "reflect": 0,
-            "light screen": 0,
-            "mist": 0
-        };
-        j.delay = [];
-        j.sleepTurns = 0;
-        j.tempType = [];
-        j.disable = {
-            move: "",
-            turns: 0
-        };
-        j.substituteHp = 0;
-        j.toxicCounter = 0;
-        j.dmgTaken = [];
-        j.lastDmgTakenType = "";
-        j.lastMoveUsed = "";
-        let json: {
-            [moveName: string]: number;
-        } = {};
-        for (let k of j.moves) for (let l of $("moves")) if (l.name == k) json[k] = l.pp;
-        j.moves = json;
-        j.revealed = false;
-        j.revealedMoves = new Set([]);
-
-        $("roco kingdom", () => {
-            j.energy = 10;
-            j.valueMultiplier = {
-                "hp": 1,
-                "atk": 1,
-                "def": 1,
-                "spa": 1,
-                "spd": 1,
-                "spe": 1
+            j.transformPkmn = "";
+            j.mimicMove = "";
+            j.atkStage = 0;
+            j.defStage = 0;
+            j.spStage = 0;
+            j.speStage = 0;
+            j.accStage = 0;
+            j.evaStage = 0;
+            j.critProbMultiplier = 1;
+            j.status = "";
+            j.charge = {
+                move: "",
+                turns: 0
             };
-            j.dmgReduction = 0;
+            j.uncontrollable = {
+                move: "",
+                turns: 0,
+                isCrit: false
+            };
+            j.tempEffect = {
+                "confused": 0,
+                "semiInvulnerable": 0,
+                "rage": 0,
+                "reflect": 0,
+                "light screen": 0,
+                "mist": 0
+            };
+            j.delay = [];
+            j.sleepTurns = 0;
+            j.tempType = [];
+            j.disable = {
+                move: "",
+                turns: 0
+            };
+            j.substituteHp = 0;
+            j.toxicCounter = 0;
+            j.dmgTaken = [];
+            j.lastDmgTakenType = "";
+            j.lastMoveUsed = "";
+            let json: {
+                [moveName: string]: number;
+            } = {};
+            for (let k of j.moves) for (let l of $("moves")) if (l.name == k) json[k] = l.pp;
+            j.moves = json;
+            j.revealed = false;
+            j.revealedMoves = new Set([]);
+
+            $("roco kingdom", () => {
+                j.energy = 10;
+                j.valueMultiplier = {
+                    "hp": 1,
+                    "atk": 1,
+                    "def": 1,
+                    "spa": 1,
+                    "spd": 1,
+                    "spe": 1
+                };
+                j.dmgReduction = 0;
+            });
+        }
+        $("roco kingdom", () => {
+            i.marks = {
+                "positive": {
+                    "name": "",
+                    "layers": 0
+                },
+                "negative": {
+                    "name": "",
+                    "layers": 0
+                }
+            };
         });
     }
     return arr;
@@ -1567,17 +1584,20 @@ function nextTurn() {
             break;
         }
     }
-
-    getPkmn(true).dmgDeduction = 0;
-    getPkmn(false).dmgDeduction = 0;
-
     attacks = [];
-    for (let i of [true, false]) if (getPkmn(i)?.status == "brn") {
-        addSmallText("others", "hurtByBurn", {
-            "pokemon": [getName(getPkmn(i), false, true)],
-            "isEnemy": Number(Number(i) == playerToMove) != viewpoint
+    for (let i of [true, false]) {
+        
+        $("roco kingdom", () => {
+            getPkmn(i).dmgDeduction = 0;
         });
-        dealDmg(i, getPkmn(i).maxHp / 16, { ignoreSubstitute: true });
+
+        if (getPkmn(i)?.status == "brn") {
+            addSmallText("others", "hurtByBurn", {
+                "pokemon": [getName(getPkmn(i), false, true)],
+                "isEnemy": Number(Number(i) == playerToMove) != viewpoint
+            });
+            dealDmg(i, getPkmn(i).maxHp / 16, { ignoreSubstitute: true });
+        }
     }
     judgeHP();
     endTurn();
