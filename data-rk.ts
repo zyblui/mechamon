@@ -4315,6 +4315,7 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "defense",
     "cost": 1,
     "power": 0,
+    "dmgDeduction": 0.7,
     "desc": "减伤70%，应对攻击。"
 }, {
     "name": "闪光",
@@ -4478,10 +4479,14 @@ const RK_SKILLS: RkSkill[] = [{
 }, {
     "name": "酶浓度调整",
     "type": "grass",
-    "cat": "status",
+    "cat": "defense",
     "cost": 3,
     "power": 0,
-    "desc": "减伤70%，应对攻击：自己回复20%生命。"
+    "desc": "减伤70%，应对攻击：自己回复20%生命。",
+    "dmgDeduction": 0.7,
+    "tackleEffect": function () {
+        getPkmn(true).hp = Math.min(getPkmn(true).maxHp, getPkmn(true).hp + getPkmn(true).maxHp * 0.2);
+    }
 }, {
     "name": "筛管奔流",
     "type": "grass",
@@ -4635,6 +4640,7 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "defense",
     "cost": 2,
     "power": 0,
+    "dmgDeduction": 0.7,
     "desc": "减伤70%，应对攻击：自己获得魔攻+40%。"
 }, {
     "name": "水炮",
@@ -4656,6 +4662,7 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "defense",
     "cost": 2,
     "power": 0,
+    "dmgDeduction": 0.7,
     "desc": "减伤70%，应对攻击：自己脱离。"
 }, {
     "name": "涌泉",
@@ -4677,6 +4684,7 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "defense",
     "cost": 4,
     "power": 0,
+    "dmgDeduction": 0.6,
     "desc": "减伤60%，应对攻击：自己获得1层湿润印记。"
 }, {
     "name": "天洪",
@@ -4710,6 +4718,7 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "defense",
     "cost": 2,
     "power": 0,
+    "dmgDeduction": 0.6,
     "desc": "减伤60%，应对攻击：敌方脱离。"
 }, {
     "name": "见招拆招",
@@ -4758,6 +4767,7 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "physical",
     "cost": 3,
     "power": 140,
+    "priority": -1,
     "desc": "造成物理伤害，先手-1。"
 }, {
     "name": "水光冲击",
@@ -4771,6 +4781,7 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "defense",
     "cost": 2,
     "power": 0,
+    "dmgDeduction": 0.7,
     "desc": "减伤70%，应对攻击：自己获得全技能能耗-2。"
 }, {
     "name": "恶能量",
@@ -4797,6 +4808,7 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "defense",
     "cost": 2,
     "power": 0,
+    "dmgDeduction": 0.8,
     "desc": "减伤80%，能量不足时，消耗5%生命代替1能量，应对攻击。"
 }, {
     "name": "降灵",
@@ -4958,6 +4970,7 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "defense",
     "cost": 2,
     "power": 0,
+    "dmgDeduction": 0.6,
     "desc": "减伤60%，应对攻击：敌方失去3能量。"
 }, {
     "name": "灵光",
@@ -5021,6 +5034,7 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "defense",
     "cost": 2,
     "power": 0,
+    "dmgDeduction": 0.8,
     "desc": "减伤 80%，若上次使用攻击技则本技能能耗 - 2，应对攻击。"
 }, {
     "name": "陨石",
@@ -5045,6 +5059,7 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "defense",
     "cost": 3,
     "power": 0,
+    "dmgDeduction": 0.5,
     "desc": "减伤 50% 并脱离，应对攻击。"
 }, {
     "name": "冲撞",
@@ -5066,6 +5081,7 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "defense",
     "cost": 2,
     "power": 0,
+    "dmgDeduction": 0.6,
     "desc": "减伤 60%，应对攻击：本回合受到致命伤害时，保留 1 生命值。"
 }, {
     "name": "地陷",
@@ -5080,6 +5096,7 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "defense",
     "cost": 3,
     "power": 0,
+    "dmgDeduction": 0.7,
     "desc": "减伤 70%，应对攻击：敌方获得物攻 - 50%。"
 }, {
     "name": "跺地",
@@ -5108,6 +5125,7 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "defense",
     "cost": 2,
     "power": 0,
+    "dmgDeduction": 0.8,
     "desc": "减伤80%，应对攻击：防御技能冷却-1。"
 }, {
     "name": "地震",
@@ -5136,6 +5154,7 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "defense",
     "cost": 2,
     "power": 0,
+    "dmgDeduction": 0.9,
     "desc": "减伤90%，应对攻击。"
 }, {
     "name": "魔爪",
@@ -5234,6 +5253,7 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "defense",
     "cost": 2,
     "power": 0,
+    "dmgDeduction": 0.7,
     "desc": "减伤70%，紧急脱离，应对攻击：下个入场精灵获得减伤。"
 }, {
     "name": "魅惑",
@@ -5318,6 +5338,7 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "defense",
     "cost": 2,
     "power": 0,
+    "dmgDeduction": 0.7,
     "desc": "减伤70%，应对攻击：自己获得魔防+40%。"
 }, {
     "name": "花香",
@@ -5388,6 +5409,7 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "defense",
     "cost": 2,
     "power": 0,
+    "dmgDeduction": 0.5,
     "desc": "减伤50%，应对攻击：下次行动获得先手+1。"
 }, {
     "name": "连续爪击",
@@ -5409,6 +5431,7 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "defense",
     "cost": 2,
     "power": 0,
+    "dmgDeduction": 0.8,
     "desc": "减伤80%，应对攻击：敌方获得连击数-2。"
 }, {
     "name": "泥浆",
@@ -5437,6 +5460,7 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "defense",
     "cost": 2,
     "power": 0,
+    "dmgDeduction": 0.8,
     "desc": "减伤80%，应对攻击：本技能变为被应对的技能。"
 }, {
     "name": "能量炮",
@@ -5451,6 +5475,7 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "defense",
     "cost": 2,
     "power": 0,
+    "dmgDeduction": 0.7,
     "desc": "减伤70%，应对攻击：自己获得物防+40%。"
 }, {
     "name": "顶端优势",
@@ -5563,6 +5588,7 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "defense",
     "cost": 2,
     "power": 0,
+    "dmgDeduction": 0.6,
     "desc": "减伤60%，应对攻击：自己获得物攻和魔攻+40%。"
 }, {
     "name": "气势一击",
@@ -5591,6 +5617,7 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "defense",
     "cost": 5,
     "power": 0,
+    "dmgDeduction": 1,
     "desc": "减伤100%，应对攻击：减免的伤害变为回复自己生命，且本技能能耗永久+2。"
 }, {
     "name": "毒泡泡",
@@ -5801,6 +5828,7 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "defense",
     "cost": 2,
     "power": 0,
+    "dmgDeduction": 0.8,
     "desc": "减伤80%，应对攻击：回复3能量。"
 }, {
     "name": "针刺射击",
@@ -5857,6 +5885,7 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "defense",
     "cost": 2,
     "power": 0,
+    "dmgDeduction": 0.8,
     "desc": "减伤80%，应对攻击：自己回合结束返场。"
 }, {
     "name": "落雷",
@@ -5878,6 +5907,7 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "defense",
     "cost": 3,
     "power": 0,
+    "dmgDeduction": 0.7,
     "desc": "减伤70%，应对攻击：下回合所选技能使用次数+1。"
 }, {
     "name": "强制重启",
@@ -6144,6 +6174,7 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "defense",
     "cost": 3,
     "power": 0,
+    "dmgDeduction": 0.9,
     "desc": "减伤90%，应对攻击：自己获得50%吸血。"
 }, {
     "name": "蝙蝠",
@@ -6200,6 +6231,7 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "defense",
     "cost": 2,
     "power": 0,
+    "dmgDeduction": 0.5,
     "desc": "减伤50%，迅捷，应对攻击。"
 }, {
     "name": "水花四溅",
@@ -6242,6 +6274,7 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "defense",
     "cost": 3,
     "power": 0,
+    "dmgDeduction": 0.7,
     "desc": "减伤70%，应对攻击：自己获得连击数+3。"
 }, {
     "name": "针状物",
@@ -6347,6 +6380,7 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "defense",
     "cost": 2,
     "power": 0,
+    "dmgDeduction": 0.8,
     "desc": "减伤80%，应对攻击：己方队伍获得1次随机奉献。"
 }, {
     "name": "飞断",
@@ -6473,6 +6507,7 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "defense",
     "cost": 2,
     "power": 0,
+    "dmgDeduction": 0.8,
     "desc": "减伤80%，应对攻击：期间自己每次受到伤害，获得双攻+40%。"
 }, {
     "name": "乱打",
@@ -6522,6 +6557,7 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "defense",
     "cost": 1,
     "power": 0,
+    "dmgDeduction": 0.5,
     "desc": "减伤50%，敌方每有1层中毒效果，本技能减伤+10%，应对攻击。"
 }, {
     "name": "鸩毒",
@@ -6564,6 +6600,7 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "defense",
     "cost": 3,
     "power": 0,
+    "dmgDeduction": 0.8,
     "desc": "减伤80%，应对攻击：敌方获得2层星陨印记。"
 }, {
     "name": "错乱",
@@ -6683,6 +6720,7 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "defense",
     "cost": 2,
     "power": 0,
+    "dmgDeduction": 0.7,
     "desc": "减伤70%，应对攻击：回复能量，回复值等于被应对技能能耗的2倍。"
 }, {
     "name": "暴风雪",
@@ -6704,6 +6742,7 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "defense",
     "cost": 2,
     "power": 0,
+    "dmgDeduction": 0.8,
     "desc": "减伤80%，应对攻击：敌方获得2层冻结。"
 }, {
     "name": "冰雹",
@@ -6718,6 +6757,7 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "defense",
     "cost": 3,
     "power": 0,
+    "dmgDeduction": 0.6,
     "desc": "减伤60%，应对攻击：敌方获得2层减速印记。"
 }, {
     "name": "冰天雪地",
@@ -6725,6 +6765,7 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "defense",
     "cost": 2,
     "power": 0,
+    "dmgDeduction": 0.8,
     "desc": "减伤80%，应对攻击：被应对技能能耗+3。"
 }, {
     "name": "滚雪球",
@@ -6872,6 +6913,7 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "defense",
     "cost": 2,
     "power": 0,
+    "dmgDeduction": 0.7,
     "desc": "减伤70%，应对攻击：敌方获得6层灼烧。"
 }, {
     "name": "打雪仗",
@@ -6949,6 +6991,7 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "defense",
     "cost": 4,
     "power": 0,
+    "dmgDeduction": 0.8,
     "desc": "减伤80%，应对攻击：下次攻击技能威力翻倍。"
 }, {
     "name": "焚毁",
@@ -6970,6 +7013,7 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "defense",
     "cost": 4,
     "power": 0,
+    "dmgDeduction": 0.6,
     "desc": "减伤60%，应对攻击：对敌方造成物理伤害，威力与被应对技能相等。"
 }, {
     "name": "水幕冲击",
@@ -7061,6 +7105,7 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "defense",
     "cost": 3,
     "power": 0,
+    "dmgDeduction": 0.8,
     "desc": "减伤80%，应对攻击：自己获得全技能威力+40。"
 }, {
     "name": "润泽",
@@ -7075,6 +7120,7 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "defense",
     "cost": 4,
     "power": 0,
+    "dmgDeduction": 0.9,
     "desc": "减伤90%，应对攻击：敌方获得1层萌化。"
 }, {
     "name": "破绽",
@@ -7089,6 +7135,7 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "defense",
     "cost": 2,
     "power": 0,
+    "dmgDeduction": 1,
     "desc": "应对攻击：打断被应对技能，并造成90威力物伤。"
 }, {
     "name": "飞吻",
@@ -7222,6 +7269,7 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "defense",
     "cost": 2,
     "power": 0,
+    "dmgDeduction": 0.8,
     "desc": "减伤80%，应对攻击：两侧技能能耗永久-1。"
 }, {
     "name": "粒子对撞",
@@ -7439,6 +7487,7 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "defense",
     "cost": 2,
     "power": 0,
+    "dmgDeduction": 0.7,
     "desc": "减伤70%，本技能可以在蓄力状态下使用，应对攻击：下次技能无需蓄力。"
 }, {
     "name": "龙吼",

@@ -915,6 +915,7 @@ function getDefaultProperties(playersInfo) {
                     "spd": 1,
                     "spe": 1
                 };
+                j.dmgReduction = 0;
             });
         }
     return arr;
@@ -1393,41 +1394,46 @@ function getSp(isSelf, isCrit) {
         return getPkmn(isSelf).sp * STAGE_MULTIPLIER[getPkmn(isSelf).spStage] * ((getPkmn(isSelf)
             .tempEffect["light screen"]) ? 2 : 1);
 }
-function nextTurn() {
-    attacks.sort(function (a, b) {
-        if (b.type == "switch" && a.type == "move")
-            return 1;
-        else if (a.type == "switch" && b.type == "move")
+function sortAttackFn(a, b) {
+    if (b.type == "switch" && a.type == "move")
+        return 1;
+    else if (a.type == "switch" && b.type == "move")
+        return -1;
+    else if (a.type == "move" && b.type == "move") {
+        if (getMoveStats(a.move).cat == "defense" && getMoveStats(b.move).cat != "defense")
             return -1;
-        else if (a.type == "move" && b.type == "move") {
-            if (getMoveStats(a.move).priority > getMoveStats(b.move).priority)
-                return -1;
-            else if (getMoveStats(b.move).priority > getMoveStats(a.move).priority)
-                return 1;
-            let p1Spe = battleInfo[0].build[battleInfo[0].currentPokemon].spe * STAGE_MULTIPLIER[battleInfo[0].build[battleInfo[0]
-                .currentPokemon].speStage] * ((battleInfo[0].build[battleInfo[0].currentPokemon].status == "par") ? 0.25 : 1);
-            let p2Spe = battleInfo[1].build[battleInfo[1].currentPokemon].spe * STAGE_MULTIPLIER[battleInfo[1].build[battleInfo[1]
-                .currentPokemon].speStage] * ((battleInfo[1].build[battleInfo[1].currentPokemon].status == "par") ? 0.25 : 1);
-            let tempPlayerToMove = 0;
-            if (p1Spe > p2Spe) {
-                tempPlayerToMove = 0;
-            }
-            else if (p1Spe < p2Spe) {
-                tempPlayerToMove = 1;
-            }
-            else {
-                tempPlayerToMove = Math.round(Math.random());
-            }
-            if (a.user == tempPlayerToMove && b.user != tempPlayerToMove)
-                return -1;
-            else if (a.user != tempPlayerToMove && b.user == tempPlayerToMove)
-                return 1;
-            else
-                return 0;
+        else if (getMoveStats(b.move).cat == "defense" && getMoveStats(a.move).cat != "defense")
+            return 1;
+        if (getMoveStats(a.move).priority > getMoveStats(b.move).priority)
+            return -1;
+        else if (getMoveStats(b.move).priority > getMoveStats(a.move).priority)
+            return 1;
+        let p1Spe = battleInfo[0].build[battleInfo[0].currentPokemon].spe * STAGE_MULTIPLIER[battleInfo[0].build[battleInfo[0]
+            .currentPokemon].speStage] * ((battleInfo[0].build[battleInfo[0].currentPokemon].status == "par") ? 0.25 : 1);
+        let p2Spe = battleInfo[1].build[battleInfo[1].currentPokemon].spe * STAGE_MULTIPLIER[battleInfo[1].build[battleInfo[1]
+            .currentPokemon].speStage] * ((battleInfo[1].build[battleInfo[1].currentPokemon].status == "par") ? 0.25 : 1);
+        let tempPlayerToMove = 0;
+        if (p1Spe > p2Spe) {
+            tempPlayerToMove = 0;
         }
+        else if (p1Spe < p2Spe) {
+            tempPlayerToMove = 1;
+        }
+        else {
+            tempPlayerToMove = Math.round(Math.random());
+        }
+        if (a.user == tempPlayerToMove && b.user != tempPlayerToMove)
+            return -1;
+        else if (a.user != tempPlayerToMove && b.user == tempPlayerToMove)
+            return 1;
         else
             return 0;
-    });
+    }
+    else
+        return 0;
+}
+function nextTurn() {
+    attacks.sort(sortAttackFn);
     for (let i of [true, false]) {
         for (let index in getPkmn(i).tempEffect) {
             if (getPkmn(i).tempEffect[index] > 0)
@@ -1452,7 +1458,6 @@ function nextTurn() {
             "pokemon": [getName(getPkmn(true), false, true)],
             "moves": [["moves", i.move]],
             "isEnemy": ((viewpoint == -1) ? false : (playerToMove != viewpoint)),
-            //"notation":i.move
         });
         if (i.dirAttack) {
             attack(i.move);
@@ -1462,6 +1467,8 @@ function nextTurn() {
         getPkmn(true).lastMoveUsed = i.move;
         for (let k of $("moves"))
             if (k.name == i.move) {
+                if (k.dmgDeduction)
+                    getPkmn(true).dmgDeduction = k.dmgDeduction;
                 let effect;
                 if (k.cat != "status" && Math.random() > k.acc * ACC_STAGE_MULTIPLIER[getPkmn(true).accStage] *
                     ACC_STAGE_MULTIPLIER[getPkmn(false).evaStage] / 100) {
@@ -1531,6 +1538,8 @@ function nextTurn() {
                 break;
             }
     }
+    getPkmn(true).dmgDeduction = 0;
+    getPkmn(false).dmgDeduction = 0;
     attacks = [];
     for (let i of [true, false])
         if (getPkmn(i)?.status == "brn") {
@@ -1643,11 +1652,19 @@ function attack(move) {
                 criticalHitRatioMultiplier = Infinity;
             let isCrit = (Math.random() < criticalHitRatioMultiplier * getPkmn(true).critProbMultiplier * getStats(getPkmn(true).name).spe / 512);
             let dmg = 0, totalDmg = 0;
-            if (k.cat == "physical")
-                dmg = calculateDmg(k.power, getAttack(true), getDefense(false, isCrit), getPkmn(true).lv, k.type, getType(false), getType(true));
-            else
-                dmg = calculateDmg(k.power, getSp(true, isCrit), getSp(false, isCrit), getPkmn(true).lv, k.type, getType(false), getType(true));
-            if (k.cat != "status") {
+            $("pokemon", () => {
+                if (k.cat == "physical")
+                    dmg = calculateDmg(k.power, getAttack(true), getDefense(false, isCrit), getPkmn(true).lv, k.type, getType(false), getType(true));
+                else
+                    dmg = calculateDmg(k.power, getSp(true, isCrit), getSp(false, isCrit), getPkmn(true).lv, k.type, getType(false), getType(true));
+            });
+            $("roco kingdom", () => {
+                if (k.cat == "physical")
+                    dmg = calculateDmgRk(k.power, getAttack(true), getDefense(false, isCrit), k.type, getType(false), getType(true));
+                else
+                    dmg = calculateDmgRk(k.power, getPkmn(true).spa, getPkmn(false).spd, k.type, getType(false), getType(true));
+            });
+            if (k.cat == "physical" || k.cat == "special") {
                 switch (calculateEffectiveness(k.type, getType(false))) {
                     case 4:
                     case 2:
@@ -1668,6 +1685,9 @@ function attack(move) {
                     totalDmg += Math.min(dmg, getPkmn(false).hp);
                     addSmallText("others", "crit");
                 }
+                $("roco kingdom", () => {
+                    totalDmg *= (1 - getPkmn(false).dmgDeduction);
+                });
                 dealDmg(false, totalDmg);
                 getPkmn(false).dmgTaken.push(totalDmg);
                 getPkmn(false).lastDmgTakenType = k.type;
