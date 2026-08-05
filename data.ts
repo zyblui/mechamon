@@ -5256,6 +5256,7 @@ const TRANSLATION: Translation = {
 const TRANSLATION_GLOBAL: Translation = {
     "zh": {
         "ui": {
+            "weather": "天气",
             "moves": "招式：",
             "switch": "替换：",
             "viewpoint": "视角：[player0]",
@@ -5314,6 +5315,7 @@ const TRANSLATION_GLOBAL: Translation = {
     },
     "en": {
         "ui": {
+            "weather": "Weather",
             "moves": "Moves: ",
             "switch": "Switch to: ",
             "viewpoint": "Viewpoint: [player0]",

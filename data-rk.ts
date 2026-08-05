@@ -4392,7 +4392,10 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "status",
     "cost": 1,
     "power": 0,
-    "desc": "每种系别中的至多1个技能，威力+35。"
+    "desc": "每种系别中的至多1个技能，威力+35。",
+    "effect":function(){
+
+    }
 }, {
     "name": "冰爪",
     "type": "ice",
@@ -4417,7 +4420,16 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "status",
     "cost": 0,
     "power": 0,
-    "desc": "光系技能威力永久+40%，应对防御：改为永久+80%。"
+    "desc": "光系技能威力永久+40%，应对防御：改为永久+80%。",
+    "effect":function(){
+
+    },
+    "tackleEffect":{
+        "cat":"defense",
+        "func":function(){
+            
+        }
+    }
 }, {
     "name": "过曝",
     "type": "light",
@@ -9326,6 +9338,7 @@ const RK_TRANSLATION: Translation = {
         },
         "others": {
             "turn": "Turn [number0]",
+            "weather": "Weather",
             "nick": "[nick0] ([pokemon0])",
             "crit": "A critical hit!",
             "use": "[pokemon0] used <strong>[moves0]</strong>!",
@@ -12137,3 +12150,61 @@ const RK_NATURES: {
         "decrease": "def"
     }
 };
+const RK_MARKS = [
+    {
+        "name": "湿润印记",
+        "cat": "positive"
+    },
+    {
+        "name": "龙噬印记",
+        "cat": "positive"
+    },
+    {
+        "name": "蓄势印记",
+        "cat": "positive"
+    },
+    {
+        "name": "风起印记",
+        "cat": "positive"
+    },
+    {
+        "name": "蓄电印记",
+        "cat": "positive"
+    },
+    {
+        "name": "光合印记",
+        "cat": "positive"
+    },
+    {
+        "name": "攻击印记",
+        "cat": "positive"
+    },
+    {
+        "name": "萌芽印记",
+        "cat": "positive"
+    },
+    {
+        "name": "减速印记",
+        "cat": "negative"
+    },
+    {
+        "name": "降灵印记",
+        "cat": "negative"
+    },
+    {
+        "name": "星陨印记",
+        "cat": "negative"
+    },
+    {
+        "name": "中毒印记",
+        "cat": "negative"
+    },
+    {
+        "name": "棘刺印记",
+        "cat": "negative"
+    },
+    {
+        "name": "暗涌印记",
+        "cat": "negative"
+    }
+]

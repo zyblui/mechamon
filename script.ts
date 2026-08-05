@@ -42,6 +42,7 @@ type BattleInfo = {
     "name": string,
     "build": MonInstance[],
     "currentPokemon": number;
+    [key: string]: any;
 }[];
 interface Player {
     "name": string,
@@ -941,9 +942,18 @@ function getDefaultProperties(playersInfo: Player[]): BattleInfo {
                     j[k] = calcActualValue((getStats(j.name) as Pkmn)[k], j.dv[k], j.ev[k], j.lv);
                 });
                 $("roco kingdom", () => {
-                    if (k != "hp") j[k] = calcActualValueRk((getStats(j.name) as RkPet)[k], j.dv[k]);
+                    if (k != "hp") {
+                        j[k] = calcActualValueRk((getStats(j.name) as RkPet)[k], j.dv[k]);
+                    }
                 });
             }
+
+            $("roco kingdom", () => {
+                if (j.nature) {
+                    j[j.nature.increase] *= 1.2;
+                    j[j.nature.decrease] *= 0.9;
+                }
+            });
             j.transformPkmn = "";
             j.mimicMove = "";
             j.atkStage = 0;
@@ -988,6 +998,11 @@ function getDefaultProperties(playersInfo: Player[]): BattleInfo {
             } = {};
             for (let k of j.moves) for (let l of $("moves")) if (l.name == k) json[k] = l.pp;
             j.moves = json;
+            j.moveStats = {};
+            for (let k in j.moves) {
+                //j.moveStats[k] = structuredClone(getMoveStats(k));
+            }
+
             j.revealed = false;
             j.revealedMoves = new Set([]);
 
@@ -1001,7 +1016,7 @@ function getDefaultProperties(playersInfo: Player[]): BattleInfo {
                     "spd": 1,
                     "spe": 1
                 };
-                j.dmgReduction = 0;
+                j.dmgDeduction = 0;
             });
         }
         $("roco kingdom", () => {
@@ -1586,7 +1601,7 @@ function nextTurn() {
     }
     attacks = [];
     for (let i of [true, false]) {
-        
+
         $("roco kingdom", () => {
             getPkmn(i).dmgDeduction = 0;
         });
@@ -2087,4 +2102,13 @@ function checkBuildValidity() {
     for (let l of Object.keys(MOVE_BAN_LIST)) if (settings[l]) for (let i of [0, 1]) for (let j = 0; j < 6; j++) for (let k of MOVE_BAN_LIST[l])
         if (players[i].build[j].moves.includes(k)) return false;
     return true;
+}
+function addMark(playerIndex: number, name: string) {
+    let mark;
+    for (mark of RK_MARKS) if (mark.name == name) break;
+    if (battleInfo[playerIndex].marks[mark!.cat].name == name) battleInfo[playerIndex].marks[mark!.cat].layers++;
+    else {
+        battleInfo[playerIndex].marks[mark!.cat].name = name;
+        battleInfo[playerIndex].marks[mark!.cat].layers = 1;
+    }
 }

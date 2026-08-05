@@ -857,10 +857,17 @@ function getDefaultProperties(playersInfo) {
                     j[k] = calcActualValue(getStats(j.name)[k], j.dv[k], j.ev[k], j.lv);
                 });
                 $("roco kingdom", () => {
-                    if (k != "hp")
+                    if (k != "hp") {
                         j[k] = calcActualValueRk(getStats(j.name)[k], j.dv[k]);
+                    }
                 });
             }
+            $("roco kingdom", () => {
+                if (j.nature) {
+                    j[j.nature.increase] *= 1.2;
+                    j[j.nature.decrease] *= 0.9;
+                }
+            });
             j.transformPkmn = "";
             j.mimicMove = "";
             j.atkStage = 0;
@@ -906,6 +913,10 @@ function getDefaultProperties(playersInfo) {
                     if (l.name == k)
                         json[k] = l.pp;
             j.moves = json;
+            j.moveStats = {};
+            for (let k in j.moves) {
+                //j.moveStats[k] = structuredClone(getMoveStats(k));
+            }
             j.revealed = false;
             j.revealedMoves = new Set([]);
             $("roco kingdom", () => {
@@ -918,7 +929,7 @@ function getDefaultProperties(playersInfo) {
                     "spd": 1,
                     "spe": 1
                 };
-                j.dmgReduction = 0;
+                j.dmgDeduction = 0;
             });
         }
         $("roco kingdom", () => {
@@ -2138,4 +2149,16 @@ function checkBuildValidity() {
                         if (players[i].build[j].moves.includes(k))
                             return false;
     return true;
+}
+function addMark(playerIndex, name) {
+    let mark;
+    for (mark of RK_MARKS)
+        if (mark.name == name)
+            break;
+    if (battleInfo[playerIndex].marks[mark.cat].name == name)
+        battleInfo[playerIndex].marks[mark.cat].layers++;
+    else {
+        battleInfo[playerIndex].marks[mark.cat].name = name;
+        battleInfo[playerIndex].marks[mark.cat].layers = 1;
+    }
 }
