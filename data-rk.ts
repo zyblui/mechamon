@@ -4392,9 +4392,17 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "status",
     "cost": 1,
     "power": 0,
-    "desc": "每种系别中的至多1个技能，威力+35。",
-    "effect":function(){
-
+    "effect": function () {
+        let types: RkPetType[] = [];
+        let moveList = Object.keys(getPkmn(true).moves).toSorted(function (a, b) {
+            return Math.random() - 0.5;
+        });
+        for (let i of moveList) {
+            if (!types.includes(getTempMoveStats(getPkmn(true), i, "type"))) {
+                getPkmn(true).moveStats[i].power = getTempMoveStats(getPkmn(true), i, "power") + 35;
+                types.push(getTempMoveStats(getPkmn(true), i, "type"));
+            }
+        }
     }
 }, {
     "name": "冰爪",
@@ -4421,13 +4429,21 @@ const RK_SKILLS: RkSkill[] = [{
     "cost": 0,
     "power": 0,
     "desc": "光系技能威力永久+40%，应对防御：改为永久+80%。",
-    "effect":function(){
-
+    "effect": function () {
+        for (let i of Object.keys(getPkmn(true).moves)) {
+            if (getTempMoveStats(getPkmn(true), i, "type") == "light") {
+                getPkmn(true).moveStats[i].power = getTempMoveStats(getPkmn(true), i, "power") + 0.4 * getMoveStats(i)!.power;
+            }
+        }
     },
-    "tackleEffect":{
-        "cat":"defense",
-        "func":function(){
-            
+    "tackleEffect": {
+        "cat": "defense",
+        "func": function () {
+            for (let i of Object.keys(getPkmn(true).moves)) {
+                if (getTempMoveStats(getPkmn(true), i, "type") == "light") {
+                    getPkmn(true).moveStats[i].power = getTempMoveStats(getPkmn(true), i, "power") + 0.4 * getMoveStats(i)!.power;
+                }
+            }
         }
     }
 }, {
@@ -4465,7 +4481,9 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "status",
     "cost": 2,
     "power": 0,
-    "desc": "自己回复30%生命。"
+    "effect": function () {
+        getPkmn(true).hp = Math.min(getPkmn(true).hp + 0.3 * getPkmn(true).maxHp, getPkmn(true).maxHp);
+    }
 }, {
     "name": "扫尾",
     "type": "normal",
@@ -12207,4 +12225,4 @@ const RK_MARKS = [
         "name": "暗涌印记",
         "cat": "negative"
     }
-]
+];
