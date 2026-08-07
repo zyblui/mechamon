@@ -180,6 +180,7 @@ class MonInstance {
                 "spe": 1
             };
             this.dmgDeduction = 0;
+            this.moveThisTurn = "";
         });
     }
 }
@@ -1514,6 +1515,14 @@ function nextTurn() {
         }
     }
 
+    $("roco kingdom", () => {
+        for (let i of attacks) {
+            if (i.type == "move") {
+                battleInfo[i.user][battleInfo[i.user].currentPokemon].moveThisTurn = i.move;
+            }
+        }
+    });
+
     outer: for (let i of attacks) {
         let nextPlayerInfo = nextPlayer(i.user);
         if (!getPkmn(true) || !getPkmn(false)) continue;
@@ -1529,7 +1538,11 @@ function nextTurn() {
         addMainText("others", "use", {
             "pokemon": [getName(getPkmn(true), false, true)],
             "moves": [["moves", i.move]],
-            "isEnemy": ((viewpoint == -1) ? false : (playerToMove != viewpoint)),
+            "isEnemy": ((viewpoint == -1) ? false : (playerToMove != viewpoint))
+        });
+
+        $("roco kingdom", () => {
+            getPkmn(true).energy -= getTempMoveStats(getPkmn(true), i.move, "cost");
         });
 
         if (i.dirAttack) {
@@ -1561,6 +1574,13 @@ function nextTurn() {
                 }
                 if (getPkmn(false).tempEffect.semiInvulnerable > 0 && !preDmgEffect.nullifySemiInvulnerable) break;
                 effect = attack(k.name);
+
+                $("roco kingdom", () => {
+                    if (RK_TACKLE_CAT[getTempMoveStats(getPkmn(false), getPkmn(false).moveThisTurn, "cat")] == getMoveStats(k)!.tackle.cat) {
+                        getMoveStats(k)!.tackle.effect();
+                    }
+                });
+
                 if (getPkmn(false)?.tempEffect.rage > 0) {
                     addSmallText("others", "rageBuilding", {
                         "pokemon": [getName(getPkmn(false), false, true)],
@@ -1582,9 +1602,6 @@ function nextTurn() {
                 } else dealDmg(true, getPkmn(true).maxHp / 16, { ignoreSubstitute: true });
             }
 
-            $("roco kingdom", () => {
-                getPkmn(true).energy -= k.cost;
-            });
             getPkmn(true).revealedMoves.add(k.name);
 
             judgeHP();
@@ -1606,10 +1623,11 @@ function nextTurn() {
         }
     }
     attacks = [];
-    for (let i of [true, false]) {
+    for (let i of [true, false]) if (getPkmn(i)) {
 
         $("roco kingdom", () => {
             getPkmn(i).dmgDeduction = 0;
+            getPkmn(i).moveThisTurn = "";
         });
 
         if (getPkmn(i)?.status == "brn") {

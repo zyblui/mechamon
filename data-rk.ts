@@ -4428,7 +4428,6 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "status",
     "cost": 0,
     "power": 0,
-    "desc": "光系技能威力永久+40%，应对防御：改为永久+80%。",
     "effect": function () {
         for (let i of Object.keys(getPkmn(true).moves)) {
             if (getTempMoveStats(getPkmn(true), i, "type") == "light") {
@@ -4436,9 +4435,9 @@ const RK_SKILLS: RkSkill[] = [{
             }
         }
     },
-    "tackleEffect": {
+    "tackle": {
         "cat": "defense",
-        "func": function () {
+        "effect": function () {
             for (let i of Object.keys(getPkmn(true).moves)) {
                 if (getTempMoveStats(getPkmn(true), i, "type") == "light") {
                     getPkmn(true).moveStats[i].power = getTempMoveStats(getPkmn(true), i, "power") + 0.4 * getMoveStats(i)!.power;
@@ -4520,11 +4519,10 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "defense",
     "cost": 3,
     "power": 0,
-    "desc": "减伤70%，应对攻击：自己回复20%生命。",
     "dmgDeduction": 0.7,
-    "tackleEffect": {
+    "tackle": {
         "cat": "attack",
-        "func": function () {
+        "effect": function () {
             getPkmn(true).hp = Math.min(getPkmn(true).maxHp, getPkmn(true).hp + getPkmn(true).maxHp * 0.2);
         }
     }
@@ -4842,7 +4840,11 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "status",
     "cost": 1,
     "power": 0,
-    "desc": "偷取敌方3能量。"
+    "effect": function () {
+        let energyStolen = Math.min(3, getPkmn(false).energy);
+        getPkmn(false).energy -= energyStolen;
+        getPkmn(true).energy = Math.min(10, getPkmn(true).energy + energyStolen);
+    }
 }, {
     "name": "虚假破产",
     "type": "dark",
@@ -4871,20 +4873,26 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "status",
     "cost": 4,
     "power": 0,
-    "desc": "敌方获得技能威力-20，自己获得技能威力+20。"
+    "effect": function () {
+        for (let i in getPkmn(false).moves) {
+            getPkmn(true).moveStats[i].power = Math.max(0, getTempMoveStats(getPkmn(false), i, "power") - 20);
+        }
+        for (let i in getPkmn(true).moves) {
+            getPkmn(true).moveStats[i].power = getTempMoveStats(getPkmn(true), i, "power") + 20;
+        }
+    }
 }, {
     "name": "恶作剧",
     "type": "ghost",
     "cat": "status",
     "cost": 0,
     "power": 0,
-    "desc": "敌方失去3能量，应对防御：改为敌方失去6能量。",
     "effect": function () {
         getPkmn(false).energy = Math.max(0, getPkmn(false).energy - 3);
     },
-    "tackleEffect": {
+    "tackle": {
         "cat": "defense",
-        "func": function () {
+        "effect": function () {
             getPkmn(false).energy = Math.max(0, getPkmn(false).energy - 3);
         }
     }
@@ -7000,7 +7008,9 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "special",
     "cost": 2,
     "power": 95,
-    "desc": "造成高额魔法伤害，自己获得物防-40%。"
+    "effect": function () {
+        getPkmn(true).valueMultiplier.def = Math.max(0, getPkmn(true).valueMultiplier.def - 0.4);
+    }
 }, {
     "name": "淬火",
     "type": "fire",
@@ -7015,7 +7025,13 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "special",
     "cost": 2,
     "power": 60,
-    "desc": "造成魔伤，驱散敌方所有印记。"
+    "desc": "造成魔伤，驱散敌方所有印记。",
+    "effect": function () {
+        battleInfo[Number(!playerToMove)].marks.positive.name = "";
+        battleInfo[Number(!playerToMove)].marks.positive.layers = 0;
+        battleInfo[Number(!playerToMove)].marks.negative.name = "";
+        battleInfo[Number(!playerToMove)].marks.negative.layers = 0;
+    }
 }, {
     "name": "叠势",
     "type": "fighting",
@@ -7064,7 +7080,10 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "status",
     "cost": 2,
     "power": 0,
-    "desc": "敌方获得物防和魔防-120%。"
+    "desc": "敌方获得物防和魔防-120%。",
+    "effect":function(){
+        
+    }
 }, {
     "name": "一拳",
     "type": "fighting",
@@ -7114,7 +7133,12 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "physical",
     "cost": 2,
     "power": 65,
-    "desc": "造成物伤，应对状态：自己获得物攻+100%。"
+    "tackle": {
+        "cat": "status",
+        "effect": function () {
+            getPkmn(true).atkMultiplier += 1;
+        }
+    }
 }, {
     "name": "爆冲",
     "type": "fighting",
@@ -7129,7 +7153,14 @@ const RK_SKILLS: RkSkill[] = [{
     "cost": 3,
     "power": 0,
     "dmgDeduction": 0.8,
-    "desc": "减伤80%，应对攻击：自己获得全技能威力+40。"
+    "tackle": {
+        "cat": "attack",
+        "effect": function () {
+            for (let i in getPkmn(true).moves) {
+                getPkmn(true).moveStats[i].power = getTempMoveStats(getPkmn(true), i, "power") + 40;
+            }
+        }
+    }
 }, {
     "name": "润泽",
     "type": "water",
@@ -12226,3 +12257,11 @@ const RK_MARKS = [
         "cat": "negative"
     }
 ];
+const RK_TACKLE_CAT: {
+    [key: string]: string;
+} = {
+    "status": "status",
+    "physical": "attack",
+    "special": "attack",
+    "defense": "defense"
+};
