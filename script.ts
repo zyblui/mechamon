@@ -92,22 +92,22 @@ class MonInstance {
     constructor(mon: BuildMon) {
         for (let i in mon) if (i != "moves") this[i] = mon[i];
 
-        let k = getStats(this.name) as Mon;
+        let monStats = getStats(this.name) as Mon;
         $("pokemon", () => {
-            this.maxHp = Math.floor(0.01 * (2 * (k.hp + this.dv.hp) + Math.floor(0.25 * this.ev.hp)) * this.lv) + this.lv + 10;
+            this.maxHp = Math.floor(0.01 * (2 * (monStats.hp + this.dv.hp) + Math.floor(0.25 * this.ev.hp)) * this.lv) + this.lv + 10;
         });
         $("roco kingdom", () => {
-            this.maxHp = Math.round(Math.round(k.hp * 1.7 + this.dv.hp * 0.85 + 70) + 100);
+            this.maxHp = Math.round(Math.round(monStats.hp * 1.7 + Number(this.dvActive.has("hp")) * this.dv.hp * 0.85 + 70) + 100);
         });
         this.hp = this.maxHp;
 
-        for (let k of $("properties")) {
+        for (let property of $("properties")) {
             $("pokemon", () => {
-                this[k] = calcActualValue((getStats(this.name) as Pkmn)[k], this.dv[k], this.ev[k], this.lv);
+                this[property] = calcActualValue((getStats(this.name) as Pkmn)[property], this.dv[property], this.ev[property], this.lv);
             });
             $("roco kingdom", () => {
-                if (k != "hp") {
-                    this[k] = calcActualValueRk((getStats(this.name) as RkPet)[k], this.dv[k]);
+                if (property != "hp") {
+                    this[property] = calcActualValueRk((getStats(this.name) as RkPet)[property], Number(this.dvActive.has(property)) * this.dv[property]);
                 }
             });
         }
@@ -764,6 +764,15 @@ for (let i of (document.querySelectorAll<HTMLDivElement>(".mode-btn"))) {
 }
 document.getElementById("energyButton")!.addEventListener("click", function () {
     makeMove("focus energy");
+});
+for (let i of document.querySelectorAll<HTMLInputElement>(".dv-checkbox")) i.addEventListener("change", function () {
+    let set: Set<string> = players[Number(i.dataset.player) - 1].build[Number(i.dataset.no) - 1].dvActive;
+    if (i.checked) set.add(i.dataset.activeFor as string);
+    else set.delete(i.dataset.activeFor as string);
+    let checkboxGroup = document.querySelectorAll<HTMLInputElement>(`.dv-checkbox[data-player="${i.dataset.player}"][data-no="${i.dataset.no}"]`);
+    if (set.size == 3) {
+        for (let j of checkboxGroup) if (!j.checked) j.disabled = true;
+    } else for (let j of checkboxGroup) j.disabled = false;
 });
 
 function $(...args: [...modes: string[], func: () => void] | [key: string]): void | any {

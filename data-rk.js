@@ -4399,7 +4399,6 @@ const RK_SKILLS = [{
         "cat": "status",
         "cost": 0,
         "power": 0,
-        "desc": "光系技能威力永久+40%，应对防御：改为永久+80%。",
         "effect": function () {
             for (let i of Object.keys(getPkmn(true).moves)) {
                 if (getTempMoveStats(getPkmn(true), i, "type") == "light") {
@@ -4491,7 +4490,6 @@ const RK_SKILLS = [{
         "cat": "defense",
         "cost": 3,
         "power": 0,
-        "desc": "减伤70%，应对攻击：自己回复20%生命。",
         "dmgDeduction": 0.7,
         "tackle": {
             "cat": "attack",
@@ -4860,7 +4858,6 @@ const RK_SKILLS = [{
         "cat": "status",
         "cost": 0,
         "power": 0,
-        "desc": "敌方失去3能量，应对防御：改为敌方失去6能量。",
         "effect": function () {
             getPkmn(false).energy = Math.max(0, getPkmn(false).energy - 3);
         },
@@ -7054,7 +7051,9 @@ const RK_SKILLS = [{
         "cat": "status",
         "cost": 2,
         "power": 0,
-        "desc": "敌方获得物防和魔防-120%。"
+        "desc": "敌方获得物防和魔防-120%。",
+        "effect": function () {
+        }
     }, {
         "name": "一拳",
         "type": "fighting",
@@ -7104,7 +7103,12 @@ const RK_SKILLS = [{
         "cat": "physical",
         "cost": 2,
         "power": 65,
-        "desc": "造成物伤，应对状态：自己获得物攻+100%。"
+        "tackle": {
+            "cat": "status",
+            "effect": function () {
+                getPkmn(true).atkMultiplier += 1;
+            }
+        }
     }, {
         "name": "爆冲",
         "type": "fighting",
@@ -7119,7 +7123,6 @@ const RK_SKILLS = [{
         "cost": 3,
         "power": 0,
         "dmgDeduction": 0.8,
-        "desc": "减伤80%，应对攻击：自己获得全技能威力+40。",
         "tackle": {
             "cat": "attack",
             "effect": function () {
@@ -8318,7 +8321,8 @@ const RK_INIT_BUILD = [{
                     "spa": 60,
                     "spd": 60,
                     "spe": 60
-                }
+                },
+                "dvActive": new Set(["hp", "atk", "def"])
             }, {
                 "name": "喵喵",
                 "moves": ["抓挠", "休息回复", "棘突", "扫尾"],
@@ -8331,7 +8335,8 @@ const RK_INIT_BUILD = [{
                     "spa": 60,
                     "spd": 60,
                     "spe": 60
-                }
+                },
+                "dvActive": new Set(["hp", "atk", "def"])
             }, {
                 "name": "喵呜",
                 "moves": ["抓挠", "休息回复", "棘突", "扫尾"],
@@ -8344,7 +8349,8 @@ const RK_INIT_BUILD = [{
                     "spa": 60,
                     "spd": 60,
                     "spe": 60
-                }
+                },
+                "dvActive": new Set(["hp", "atk", "def"])
             }, {
                 "name": "魔力猫",
                 "moves": ["抓挠", "休息回复", "棘突", "扫尾"],
@@ -8357,7 +8363,8 @@ const RK_INIT_BUILD = [{
                     "spa": 60,
                     "spd": 60,
                     "spe": 60
-                }
+                },
+                "dvActive": new Set(["hp", "atk", "def"])
             }, {
                 "name": "火花",
                 "moves": ["猛烈撞击", "火苗", "力量增效", "火焰切割"],
@@ -8370,7 +8377,8 @@ const RK_INIT_BUILD = [{
                     "spa": 60,
                     "spd": 60,
                     "spe": 60
-                }
+                },
+                "dvActive": new Set(["hp", "atk", "def"])
             }, {
                 "name": "焰火",
                 "moves": ["猛烈撞击", "火苗", "力量增效", "火焰切割"],
@@ -8383,7 +8391,8 @@ const RK_INIT_BUILD = [{
                     "spa": 60,
                     "spd": 60,
                     "spe": 60
-                }
+                },
+                "dvActive": new Set(["hp", "atk", "def"])
             }]
     }, {
         "name": "Player 2",
@@ -8399,7 +8408,8 @@ const RK_INIT_BUILD = [{
                     "spa": 60,
                     "spd": 60,
                     "spe": 60
-                }
+                },
+                "dvActive": new Set(["hp", "atk", "def"])
             }, {
                 "name": "喵喵",
                 "moves": ["抓挠", "休息回复", "棘突", "扫尾"],
@@ -8412,7 +8422,8 @@ const RK_INIT_BUILD = [{
                     "spa": 60,
                     "spd": 60,
                     "spe": 60
-                }
+                },
+                "dvActive": new Set(["hp", "atk", "def"])
             }, {
                 "name": "喵呜",
                 "moves": ["抓挠", "休息回复", "棘突", "扫尾"],
@@ -8425,7 +8436,8 @@ const RK_INIT_BUILD = [{
                     "spa": 60,
                     "spd": 60,
                     "spe": 60
-                }
+                },
+                "dvActive": new Set(["hp", "atk", "def"])
             }, {
                 "name": "魔力猫",
                 "moves": ["抓挠", "休息回复", "棘突", "扫尾"],
@@ -8438,7 +8450,8 @@ const RK_INIT_BUILD = [{
                     "spa": 60,
                     "spd": 60,
                     "spe": 60
-                }
+                },
+                "dvActive": new Set(["hp", "atk", "def"])
             }, {
                 "name": "火花",
                 "moves": ["猛烈撞击", "火苗", "力量增效", "火焰切割"],
@@ -8451,7 +8464,8 @@ const RK_INIT_BUILD = [{
                     "spa": 60,
                     "spd": 60,
                     "spe": 60
-                }
+                },
+                "dvActive": new Set(["hp", "atk", "def"])
             }, {
                 "name": "焰火",
                 "moves": ["猛烈撞击", "火苗", "力量增效", "火焰切割"],
@@ -8464,7 +8478,8 @@ const RK_INIT_BUILD = [{
                     "spa": 60,
                     "spd": 60,
                     "spe": 60
-                }
+                },
+                "dvActive": new Set(["hp", "atk", "def"])
             }]
     }];
 //体力：真实值 = round( round(种族值 × 1.7 + 个体 × 0.85 + 70) × 性格修正 + 100 )
