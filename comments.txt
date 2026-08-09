@@ -1,0 +1,90 @@
+let w
+if (w?.terminate) w.terminate();
+w = new Worker("w.js");
+
+w.onmessage = function (e) {
+    if (e.data.type == "result") {
+        if (e.data.action == "switch") {
+            switchPkmn(e.data.pkmn);
+        } else if (e.data.action == "move") {
+            makeMove(e.data.move);
+        }
+    } else if (e.data.type == "log") {
+        console.log(e.data.content)
+    }
+}
+document.getElementById("mechaButton").addEventListener("click", function () {
+    w.postMessage({
+        type: "computerPlay",
+        battleInfo: battleInfo,
+        playerToMove: playerToMove
+    });
+});
+function simplifyRecord(rec) {
+    let str = "";
+    for (let i of [0, 1]) for (let j = 0; j < 6; j++) {
+        str += (`[Setup ${i} ${j}`);
+        for (let k of Object.keys(players[i].build[j])) str += `;${k}=${players[i].build[j][k]}`;
+        str += "]\r\n";
+    }
+    for (let i = 0; i < rec.length; i++) {
+        str += `[${capitalize(rec[i].type)} ${rec[i].args[1]}`;
+        if (rec[i].args[2]) {
+            for (let j of Object.keys(rec[i].args[2])) {
+                str += `;${j}=${simplifyRecordValue(rec[i].args[2][j])}`;
+            }
+        }
+        str += "]\r\n";
+        if (rec[i].refresh) {
+            let arr = compare(getNearestRefresh(rec, i), rec[i].refresh);
+            for (let j of arr) str += `[Effect ${j.property} ${j.value}]\r\n`;
+        }
+    }
+    return str;
+}
+function simplifyRecordValue(val, isInitial = true) {
+    let tempVal = structuredClone(val);
+    if (Array.isArray(tempVal)) {
+        for (let i = 0; i < tempVal.length; i++) tempVal[i] = simplifyRecordValue(tempVal[i], false);
+        if (isInitial) return tempVal;
+        else return "(" + tempVal + ")";
+    } else return tempVal;
+}
+function readSimplifiedRecord(lines) {
+    record = [];
+    for (let i of lines) {
+        let params = sliceParams(i);
+        switch (params[0].type) {
+            case "setup":
+                for (let j = 1; j < params.length; j++) {
+                    players[params[0].args[0]].build[params[0].args[1]][params[j].param] = params[j].val;
+                }
+                battleInfo = getDefaultProperties(players);
+                break;
+            case "main":
+            case "small": {
+                let json = { "type": params[0].type };
+                for (let j = 1; j < params.length; j++) {
+                    json[j.param] = j.val;
+                }
+                record.push(json);
+                break;
+            }
+            case "effect":
+        }
+    }
+}
+function sliceParams(line) {
+    let arr = line.slice(1, -1).split(";");
+    arr[0] = {
+        "type": arr[0].split(" ")[0].toLowerCase(),
+        "args": arr[0].split(" ").slice(1)
+    };
+    for (let i = 1; i < arr.length; i++) {
+        arr[i] = {
+            "param": arr[i].split("=")[0],
+            "val": arr[i].split("=")[1]
+        };
+    }
+    return arr;
+}

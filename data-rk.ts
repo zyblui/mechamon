@@ -23,6 +23,7 @@ interface RkSkill extends MonMove {
     "power": number,
     "effect"?: Function,
     "preDmgEffect"?: Function;
+    "preCritEffect"?: Function;
 }
 interface MultiplierMod {
     [key: number]: number;

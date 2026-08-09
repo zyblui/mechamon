@@ -1,108 +1,109 @@
 "use strict";
-class MonInstance {
-    constructor(mon) {
+class MonInstanceTemplate {
+    maxHp;
+    hp;
+    transformPkmn = "";
+    mimicMove = "";
+    atkStage = 0;
+    defStage = 0;
+    spStage = 0;
+    speStage = 0;
+    accStage = 0;
+    evaStage = 0;
+    critProbMultiplier = 1;
+    status = "";
+    charge = {
+        move: "",
+        turns: 0
+    };
+    uncontrollable = {
+        move: "",
+        turns: 0,
+        isCrit: false
+    };
+    tempEffect = {
+        "confused": 0,
+        "semiInvulnerable": 0,
+        "rage": 0,
+        "reflect": 0,
+        "light screen": 0,
+        "mist": 0
+    };
+    delay = [];
+    sleepTurns = 0;
+    tempType = [];
+    disable = {
+        move: "",
+        turns: 0
+    };
+    substituteHp = 0;
+    toxicCounter = 0;
+    dmgTaken = [];
+    lastDmgTakenType = "";
+    lastMoveUsed = "";
+    moves = {};
+    moveStats = {};
+    revealed = false;
+    revealedMoves = new Set([]);
+    constructor(mon, maxHp) {
         for (let i in mon)
             if (i != "moves")
                 this[i] = mon[i];
-        let monStats = getStats(this.name);
-        $("pokemon", () => {
-            this.maxHp = Math.floor(0.01 * (2 * (monStats.hp + this.dv.hp) + Math.floor(0.25 * this.ev.hp)) * this.lv) + this.lv + 10;
-        });
-        $("roco kingdom", () => {
-            this.maxHp = Math.round(Math.round(monStats.hp * 1.7 + Number(this.dvActive.has("hp")) * this.dv.hp * 0.85 + 70) + 100);
-        });
-        this.hp = this.maxHp;
-        for (let property of $("properties")) {
-            $("pokemon", () => {
-                this[property] = calcActualValue(getStats(this.name)[property], this.dv[property], this.ev[property], this.lv);
-            });
-            $("roco kingdom", () => {
-                if (property != "hp") {
-                    this[property] = calcActualValueRk(getStats(this.name)[property], Number(this.dvActive.has(property)) * this.dv[property]);
-                }
-            });
-        }
-        $("roco kingdom", () => {
-            if (this.nature) {
-                this[this.nature.increase] *= 1.2;
-                this[this.nature.decrease] *= 0.9;
-            }
-        });
-        this.transformPkmn = "";
-        this.mimicMove = "";
-        this.atkStage = 0;
-        this.defStage = 0;
-        this.spStage = 0;
-        this.speStage = 0;
-        this.accStage = 0;
-        this.evaStage = 0;
-        this.critProbMultiplier = 1;
-        this.status = "";
-        this.charge = {
-            move: "",
-            turns: 0
-        };
-        this.uncontrollable = {
-            move: "",
-            turns: 0,
-            isCrit: false
-        };
-        this.tempEffect = {
-            "confused": 0,
-            "semiInvulnerable": 0,
-            "rage": 0,
-            "reflect": 0,
-            "light screen": 0,
-            "mist": 0
-        };
-        this.delay = [];
-        this.sleepTurns = 0;
-        this.tempType = [];
-        this.disable = {
-            move: "",
-            turns: 0
-        };
-        this.substituteHp = 0;
-        this.toxicCounter = 0;
-        this.dmgTaken = [];
-        this.lastDmgTakenType = "";
-        this.lastMoveUsed = "";
-        this.moves = {};
+        this.maxHp = maxHp;
+        this.hp = maxHp;
         for (let k of mon.moves)
             for (let l of $("moves"))
                 if (l.name == k)
                     this.moves[k] = l.pp;
-        this.moveStats = {};
         for (let k in this.moves) {
             this.moveStats[k] = {};
         }
-        this.revealed = false;
-        this.revealedMoves = new Set([]);
-        $("roco kingdom", () => {
-            this.energy = 10;
-            this.valueMultiplier = {
-                "hp": 1,
-                "atk": 1,
-                "def": 1,
-                "spa": 1,
-                "spd": 1,
-                "spe": 1
-            };
-            this.dmgDeduction = 0;
-            this.moveThisTurn = "";
-            this.rkEffect = {
-                "poisoned": 0,
-                "burned": 0
-            };
-        });
     }
 }
+class PkmnInstance extends MonInstanceTemplate {
+    constructor(mon) {
+        let monStats = getStats(mon.name);
+        let maxHp = Math.floor(0.01 * (2 * (monStats.hp + mon.dv.hp) + Math.floor(0.25 * mon.ev.hp)) * mon.lv) + mon.lv + 10;
+        super(mon, maxHp);
+        for (let property of $("properties")) {
+            this[property] = calcActualValue(getStats(this.name)[property], this.dv[property], this.ev[property], this.lv);
+        }
+    }
+}
+class RkPetInstance extends MonInstanceTemplate {
+    energy = 10;
+    valueMultiplier = {
+        "hp": 1,
+        "atk": 1,
+        "def": 1,
+        "spa": 1,
+        "spd": 1,
+        "spe": 1
+    };
+    dmgDeduction = 0;
+    moveThisTurn = "";
+    rkEffect = {
+        "poisoned": 0,
+        "burned": 0
+    };
+    constructor(mon) {
+        let monStats = getStats(mon.name);
+        let maxHp = Math.round(Math.round(monStats.hp * 1.7 + Number(mon.dvActive.has("hp")) * mon.dv.hp * 0.85 + 70) + 100);
+        super(mon, maxHp);
+        for (let property of $("properties")) {
+            if (property != "hp") {
+                this[property] = calcActualValueRk(getStats(this.name)[property], Number(this.dvActive.has(property)) * this.dv[property]);
+            }
+        }
+        if (this.nature) {
+            this[this.nature.increase] *= 1.2;
+            this[this.nature.decrease] *= 0.9;
+        }
+    }
+}
+let MonInstance = PkmnInstance;
 const TYPE_CLASSNAMES = ["type-bug", "type-dragon", "type-electric", "type-fighting", "type-fire", "type-flying", "type-ghost", "type-grass", "type-ground",
     "type-ice", "type-normal", "type-poison", "type-psychic", "type-rock", "type-water", "type-cute", "type-mecha", "type-light"];
-/*const FEATURES = {
-    "pokemon": [],
-    "rk": []
-};*/
 //merge omiegamon
 mergeTranslData(TRANSLATION_OMIEGA, TRANSLATION);
 mergeIconData(ICONS_OMIEGA, ICONS);
@@ -770,6 +771,12 @@ function mergeMovePkmnData(from, to, tag) {
 }
 function switchMode(mode) {
     settings.mode = mode;
+    $("pokemon", () => {
+        MonInstance = PkmnInstance;
+    });
+    $("roco kingdom", () => {
+        MonInstance = RkPetInstance;
+    });
     players = structuredClone($("initBuild"));
     document.getElementById("p1Pokemon").style.backgroundImage = `url('${$("space")}back/` + players[0].build[0].name + ".png')";
     document.getElementById("p2Pokemon").style.backgroundImage = `url('${$("space")}front/` + players[1].build[0].name + ".png')";

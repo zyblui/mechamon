@@ -1,36 +1,9 @@
-/*let w
-if (w?.terminate) w.terminate();
-w = new Worker("w.js");
-
-w.onmessage = function (e) {
-    if (e.data.type == "result") {
-        if (e.data.action == "switch") {
-            switchPkmn(e.data.pkmn);
-        } else if (e.data.action == "move") {
-            makeMove(e.data.move);
-        }
-    } else if (e.data.type == "log") {
-        console.log(e.data.content)
-    }
-}
-document.getElementById("mechaButton").addEventListener("click", function () {
-    w.postMessage({
-        type: "computerPlay",
-        battleInfo: battleInfo,
-        playerToMove: playerToMove
-    });
-});*/
 type RecordItemType = "main" | "small" | "turn";
 interface RecordItem {
     "type": RecordItemType,
     "args": RecordItemArgs,
     refresh?: BattleInfo;
 }
-/*interface SimpRecordItem {
-    "type": RecordItemType,
-    "args": RecordItemArgs,
-    "delta": any;
-}*/
 type RecordItemArgs = [
     type: string,
     str: string,
@@ -40,7 +13,7 @@ type RecordItemArgs = [
 ];
 type BattleInfo = {
     "name": string,
-    "build": MonInstance[],
+    "build": MonInstanceTemplate[],
     "currentPokemon": number;
     [key: string]: any;
 }[];
@@ -71,7 +44,7 @@ interface BuildMon {
     "lv": number,
     [key: string]: any;
 }
-interface MonInstance {
+interface MonInstanceTemplate {
     "name": string,
     "moves": {
         [move: string]: number;
@@ -88,56 +61,44 @@ type Attack = {
     "type": "switch",
     "pkmn": string;
 };
-class MonInstance {
-    constructor(mon: BuildMon) {
-        for (let i in mon) if (i != "moves") this[i] = mon[i];
-
-        let monStats = getStats(this.name) as Mon;
-        $("pokemon", () => {
-            this.maxHp = Math.floor(0.01 * (2 * (monStats.hp + this.dv.hp) + Math.floor(0.25 * this.ev.hp)) * this.lv) + this.lv + 10;
-        });
-        $("roco kingdom", () => {
-            this.maxHp = Math.round(Math.round(monStats.hp * 1.7 + Number(this.dvActive.has("hp")) * this.dv.hp * 0.85 + 70) + 100);
-        });
-        this.hp = this.maxHp;
-
-        for (let property of $("properties")) {
-            $("pokemon", () => {
-                this[property] = calcActualValue((getStats(this.name) as Pkmn)[property], this.dv[property], this.ev[property], this.lv);
-            });
-            $("roco kingdom", () => {
-                if (property != "hp") {
-                    this[property] = calcActualValueRk((getStats(this.name) as RkPet)[property], Number(this.dvActive.has(property)) * this.dv[property]);
-                }
-            });
-        }
-
-        $("roco kingdom", () => {
-            if (this.nature) {
-                this[this.nature.increase] *= 1.2;
-                this[this.nature.decrease] *= 0.9;
-            }
-        });
-        this.transformPkmn = "";
-        this.mimicMove = "";
-        this.atkStage = 0;
-        this.defStage = 0;
-        this.spStage = 0;
-        this.speStage = 0;
-        this.accStage = 0;
-        this.evaStage = 0;
-        this.critProbMultiplier = 1;
-        this.status = "";
-        this.charge = {
+class MonInstanceTemplate {
+    maxHp: number;
+    hp: number;
+    transformPkmn: string = "";
+    mimicMove: string = "";
+    atkStage: number = 0;
+    defStage: number = 0;
+    spStage: number = 0;
+    speStage: number = 0;
+    accStage: number = 0;
+    evaStage: number = 0;
+    critProbMultiplier: number = 1;
+    status: string = "";
+    charge: {
+        move: string,
+        turns: number;
+    } = {
             move: "",
             turns: 0
         };
-        this.uncontrollable = {
+    uncontrollable: {
+        move: string,
+        turns: number,
+        isCrit?: boolean;
+    } = {
             move: "",
             turns: 0,
             isCrit: false
         };
-        this.tempEffect = {
+    tempEffect: {
+        "confused": number,
+        "semiInvulnerable": number,
+        "rage": number,
+        "reflect": number,
+        "light screen": number,
+        "mist": number,
+        [key: string]: number;
+    } = {
             "confused": 0,
             "semiInvulnerable": 0,
             "rage": 0,
@@ -145,55 +106,97 @@ class MonInstance {
             "light screen": 0,
             "mist": 0
         };
-        this.delay = [];
-        this.sleepTurns = 0;
-        this.tempType = [];
-        this.disable = {
+    delay: any[] = [];
+    sleepTurns: number = 0;
+    tempType: string[] = [];
+    disable: {
+        move: string,
+        turns: number;
+    } = {
             move: "",
             turns: 0
         };
-        this.substituteHp = 0;
-        this.toxicCounter = 0;
-        this.dmgTaken = [];
-        this.lastDmgTakenType = "";
-        this.lastMoveUsed = "";
+    substituteHp: number = 0;
+    toxicCounter: number = 0;
+    dmgTaken: number[] = [];
+    lastDmgTakenType: string = "";
+    lastMoveUsed: string = "";
+    moves: {
+        [move: string]: number;
+    } = {};
+    moveStats: {
+        [move: string]: any;
+    } = {};
+    revealed: boolean = false;
+    revealedMoves: Set<string> = new Set([]);
+    constructor(mon: BuildMon, maxHp: number) {
+        for (let i in mon) if (i != "moves") this[i] = mon[i];
 
-        this.moves = {};
+        this.maxHp = maxHp;
+        this.hp = maxHp;
+
         for (let k of mon.moves) for (let l of $("moves")) if (l.name == k) this.moves[k] = l.pp;
 
-        this.moveStats = {};
         for (let k in this.moves) {
             this.moveStats[k] = {};
         }
-
-        this.revealed = false;
-        this.revealedMoves = new Set([]);
-
-        $("roco kingdom", () => {
-            this.energy = 10;
-            this.valueMultiplier = {
-                "hp": 1,
-                "atk": 1,
-                "def": 1,
-                "spa": 1,
-                "spd": 1,
-                "spe": 1
-            };
-            this.dmgDeduction = 0;
-            this.moveThisTurn = "";
-            this.rkEffect = {
-                "poisoned": 0,
-                "burned": 0
-            };
-        });
     }
 }
+class PkmnInstance extends MonInstanceTemplate {
+    constructor(mon: BuildMon) {
+        let monStats = getStats(mon.name) as Mon;
+        let maxHp = Math.floor(0.01 * (2 * (monStats.hp + mon.dv.hp) + Math.floor(0.25 * mon.ev.hp)) * mon.lv) + mon.lv + 10;
+        super(mon, maxHp);
+        for (let property of $("properties")) {
+            this[property] = calcActualValue((getStats(this.name) as Pkmn)[property], this.dv[property], this.ev[property], this.lv);
+        }
+    }
+}
+class RkPetInstance extends MonInstanceTemplate {
+    energy: number = 10;
+    valueMultiplier: {
+        "hp": number,
+        "atk": number,
+        "def": number,
+        "spa": number,
+        "spd": number,
+        "spe": number;
+    } = {
+            "hp": 1,
+            "atk": 1,
+            "def": 1,
+            "spa": 1,
+            "spd": 1,
+            "spe": 1
+        };
+    dmgDeduction: number = 0;
+    moveThisTurn: string = "";
+    rkEffect: {
+        "poisoned": number,
+        "burned": number,
+        [key: string]: number;
+    } = {
+            "poisoned": 0,
+            "burned": 0
+        };
+    constructor(mon: BuildMon) {
+        let monStats = getStats(mon.name) as Mon;
+        let maxHp = Math.round(Math.round(monStats.hp * 1.7 + Number(mon.dvActive.has("hp")) * mon.dv.hp * 0.85 + 70) + 100);
+        super(mon, maxHp);
+        for (let property of $("properties")) {
+            if (property != "hp") {
+                this[property] = calcActualValueRk((getStats(this.name) as RkPet)[property], Number(this.dvActive.has(property)) * this.dv[property]);
+            }
+        }
+        if (this.nature) {
+            this[this.nature.increase] *= 1.2;
+            this[this.nature.decrease] *= 0.9;
+        }
+    }
+}
+let MonInstance: (typeof PkmnInstance) | (typeof RkPetInstance) = PkmnInstance;
 const TYPE_CLASSNAMES: string[] = ["type-bug", "type-dragon", "type-electric", "type-fighting", "type-fire", "type-flying", "type-ghost", "type-grass", "type-ground",
     "type-ice", "type-normal", "type-poison", "type-psychic", "type-rock", "type-water", "type-cute", "type-mecha", "type-light"];
-/*const FEATURES = {
-    "pokemon": [],
-    "rk": []
-};*/
 
 //merge omiegamon
 mergeTranslData(TRANSLATION_OMIEGA, TRANSLATION);
@@ -781,7 +784,7 @@ for (let i of document.querySelectorAll<HTMLInputElement>(".dv-checkbox")) i.add
 
 function $(...args: [...modes: string[], func: () => void] | [key: string]): void | any {
     if (args.length > 1) {
-        for (let i = 0; i < args.length - 1; i++) if (args[i] == settings.mode) (args[args.length - 1] as Function)();
+        for (let i = 0; i < args.length - 1; i++) if (args[i] == settings.mode) (args.at(-1) as Function)();
     } else {
         return POOLS[settings.mode][args[0] as string];
     }
@@ -857,6 +860,12 @@ function mergeMovePkmnData(from: any[], to: any[], tag: string) {
 function switchMode(mode: string) {
     settings.mode = mode;
 
+    $("pokemon", () => {
+        MonInstance = PkmnInstance;
+    });
+    $("roco kingdom", () => {
+        MonInstance = RkPetInstance;
+    });
     players = structuredClone($("initBuild"));
     document.getElementById("p1Pokemon")!.style.backgroundImage = `url('${$("space")}back/` + players[0].build[0].name + ".png')";
     document.getElementById("p2Pokemon")!.style.backgroundImage = `url('${$("space")}front/` + players[1].build[0].name + ".png')";
@@ -929,20 +938,20 @@ function switchMode(mode: string) {
         document.getElementById("movesListInner")!.appendChild(div);
     }
 }
-function calculateDmg(power: number, atk: number, def: number, lv: number, attackType: string, defenseType: string, userType: string[]) {
+function calculateDmg(power: number, atk: number, def: number, lv: number, attackType: string, defenseType: string[], userType: string[]) {
     let effectiveness = calculateEffectiveness(attackType, defenseType);
     let stab = 1;
     if (userType.includes(attackType)) stab = 1.5;
     let random = (Math.floor(Math.random() * (256 - 217)) + 217) / 255;
     return ((2 * lv + 10) / 250 * atk / def * power + 2) * effectiveness * stab * random;
 }
-function calculateDmgRk(power: number, atk: number, def: number, attackType: string, defenseType: string, userType: string[]) {
+function calculateDmgRk(power: number, atk: number, def: number, attackType: string, defenseType: string[], userType: string[]) {
     let effectiveness = calculateEffectiveness(attackType, defenseType);
     let stab = 1;
     if (userType.includes(attackType)) stab = 1.25;
     return Math.floor(Math.round(atk * power * effectiveness * stab * 0.9024) / def);
 }
-function calculateEffectiveness(attackType: string, defenseType: string) {
+function calculateEffectiveness(attackType: string, defenseType: string[]) {
     let effectiveness = 1;
     if (!attackType) return effectiveness;
     for (let i of defenseType) {
@@ -1145,76 +1154,8 @@ function modifyValue(object: { [index: string | number]: any; }, keys: any[], va
     for (let i = 0; i < keys.length - 1; i++) {
         tempObject = tempObject[keys[i]];
     }
-    tempObject[keys[keys.length - 1]] = value;
+    tempObject[keys.at(-1)] = value;
 }
-/*function simplifyRecord(rec) {
-    let str = "";
-    for (let i of [0, 1]) for (let j = 0; j < 6; j++) {
-        str += (`[Setup ${i} ${j}`);
-        for (let k of Object.keys(players[i].build[j])) str += `;${k}=${players[i].build[j][k]}`;
-        str += "]\r\n";
-    }
-    for (let i = 0; i < rec.length; i++) {
-        str += `[${capitalize(rec[i].type)} ${rec[i].args[1]}`;
-        if (rec[i].args[2]) {
-            for (let j of Object.keys(rec[i].args[2])) {
-                str += `;${j}=${simplifyRecordValue(rec[i].args[2][j])}`;
-            }
-        }
-        str += "]\r\n";
-        if (rec[i].refresh) {
-            let arr = compare(getNearestRefresh(rec, i), rec[i].refresh);
-            for (let j of arr) str += `[Effect ${j.property} ${j.value}]\r\n`;
-        }
-    }
-    return str;
-}
-function simplifyRecordValue(val, isInitial = true) {
-    let tempVal = structuredClone(val);
-    if (Array.isArray(tempVal)) {
-        for (let i = 0; i < tempVal.length; i++) tempVal[i] = simplifyRecordValue(tempVal[i], false);
-        if (isInitial) return tempVal;
-        else return "(" + tempVal + ")";
-    } else return tempVal;
-}
-function readSimplifiedRecord(lines) {
-    record = [];
-    for (let i of lines) {
-        let params = sliceParams(i);
-        switch (params[0].type) {
-            case "setup":
-                for (let j = 1; j < params.length; j++) {
-                    players[params[0].args[0]].build[params[0].args[1]][params[j].param] = params[j].val;
-                }
-                battleInfo = getDefaultProperties(players);
-                break;
-            case "main":
-            case "small": {
-                let json = { "type": params[0].type };
-                for (let j = 1; j < params.length; j++) {
-                    json[j.param] = j.val;
-                }
-                record.push(json);
-                break;
-            }
-            case "effect":
-        }
-    }
-}
-function sliceParams(line) {
-    let arr = line.slice(1, -1).split(";");
-    arr[0] = {
-        "type": arr[0].split(" ")[0].toLowerCase(),
-        "args": arr[0].split(" ").slice(1)
-    };
-    for (let i = 1; i < arr.length; i++) {
-        arr[i] = {
-            "param": arr[i].split("=")[0],
-            "val": arr[i].split("=")[1]
-        };
-    }
-    return arr;
-}*/
 function getNearestRefresh(rec: RecordItem[], i: number): BattleInfo {
     for (let j = i - 1; j >= 0; j--) if (rec[j].refresh) return rec[j].refresh as BattleInfo;
     return getDefaultProperties(players);
@@ -1382,7 +1323,7 @@ function addGrayMoveRk(tooltip: HTMLDivElement, j: number, textKey: string, cost
     tooltip.querySelectorAll<HTMLElement>(".cost")[j].innerText = cost.toString();
     tooltip.querySelectorAll(".move-name")[j].classList.add("unknown");
 }
-function insertEffects(pkmn: MonInstance, outputArea: HTMLDivElement, showFull: boolean) {
+function insertEffects(pkmn: MonInstanceTemplate, outputArea: HTMLDivElement, showFull: boolean) {
     outputArea.innerHTML = "";
     if (pkmn.status) {
         outputArea.innerHTML = "";
@@ -1694,7 +1635,7 @@ function getType(isSelf: boolean) {
     if (getPkmn(isSelf).tempType.length) return getPkmn(isSelf).tempType;
     else return getStats(getPkmn(isSelf).name)!.type;
 }
-function getName(pkmn: BuildMon | MonInstance, showSpeciesName: boolean, returnArr?: boolean) {
+function getName(pkmn: BuildMon | MonInstanceTemplate, showSpeciesName: boolean, returnArr?: boolean) {
     let arr: [
         type: string,
         str: string,
@@ -2155,7 +2096,7 @@ function addMark(playerIndex: number, name: string, layers: number) {
         battleInfo[playerIndex].marks[mark!.cat].layers = layers;
     }
 }
-function getTempMoveStats(mon: MonInstance, move: string, stat: string) {
+function getTempMoveStats(mon: MonInstanceTemplate, move: string, stat: string) {
     if (mon.moveStats[move][stat]) return mon.moveStats[move][stat];
     else return (getMoveStats(move) as MonMove)[stat];
 }
