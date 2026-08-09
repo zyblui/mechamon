@@ -4532,14 +4532,36 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "physical",
     "cost": 3,
     "power": 80,
-    "desc": "造成物伤，自己生命大于80%时，本次技能威力+75。"
+    "preCritEffect": function () {
+        let powerIncrement = 0;
+        if (getPkmn(true).hp > getPkmn(true).maxHp * 0.8) powerIncrement = 75;
+        getPkmn(true).moveStats["筛管奔流"].power = getTempMoveStats(getPkmn(true), "筛管奔流", "power") + powerIncrement;
+        return {
+            "powerIncrement": powerIncrement
+        };
+    },
+    "effect": function (e: EffectParam) {
+        getPkmn(true).moveStats["筛管奔流"].power = Math.max(0, getTempMoveStats(getPkmn(true), "筛管奔流", "power") - e.preCritReturn.powerIncrement);
+    }
 }, {
     "name": "盛开",
     "type": "grass",
     "cat": "status",
     "cost": 1,
     "power": 0,
-    "desc": "自己获得技能威力+30，应对防御：改为威力+70。"
+    "effect": function () {
+        for (let i in getPkmn(true).moves) {
+            if (getMoveStats(i)!.power > 0) getPkmn(true).moveStats[i].power = getTempMoveStats(getPkmn(true), i, "power") + 30;
+        }
+    },
+    "tackle": {
+        "cat": "defense",
+        "effect": function () {
+            for (let i in getPkmn(true).moves) {
+                if (getMoveStats(i)!.power > 0) getPkmn(true).moveStats[i].power = getTempMoveStats(getPkmn(true), i, "power") + 30;
+            }
+        }
+    }
 }, {
     "name": "孢子",
     "type": "grass",
@@ -4569,7 +4591,10 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "status",
     "cost": 4,
     "power": 0,
-    "desc": "自己获得1层光合印记。"
+    "desc": "自己获得1层光合印记。",
+    "function": function () {
+        addMark(playerToMove, "光合印记", 1);
+    }
 }, {
     "name": "光能聚集",
     "type": "grass",
@@ -4598,7 +4623,9 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "physical",
     "cost": 1,
     "power": 50,
-    "desc": "造成物伤，每次使用后，本技能威力永久+20。"
+    "effect": function () {
+        getPkmn(true).moveStats["吹火"].power = getTempMoveStats(getPkmn(true), "吹火", "power") + 20;
+    }
 }, {
     "name": "晒太阳",
     "type": "normal",
@@ -4644,7 +4671,16 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "physical",
     "cost": 1,
     "power": 35,
-    "desc": "造成物伤，应对状态：本次技能威力变为4倍。"
+    "desc": "造成物伤，应对状态：本次技能威力变为4倍。",
+    "tackle": {
+        "cat": "status",
+        "preCritEffect": function () {
+
+        },
+        "effect": function () {
+
+        }
+    }
 }, {
     "name": "山火",
     "type": "fire",
@@ -4724,7 +4760,13 @@ const RK_SKILLS: RkSkill[] = [{
     "cost": 4,
     "power": 0,
     "dmgDeduction": 0.6,
-    "desc": "减伤60%，应对攻击：自己获得1层湿润印记。"
+    "desc": "减伤60%，应对攻击：自己获得1层湿润印记。",
+    "tackle": {
+        "cat": "attack",
+        "effect": function () {
+            addMark(playerToMove, "湿润印记", 1);
+        }
+    }
 }, {
     "name": "天洪",
     "type": "water",
@@ -4747,7 +4789,6 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "status",
     "cost": 1,
     "power": 0,
-    "desc": "敌方获得物攻-130%。",
     "effect": function () {
         getPkmn(false).valueMultiplier.atk = Math.max(0, getPkmn(false).valueMultiplier.atk - 1.3);
     }
@@ -4859,7 +4900,10 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "status",
     "cost": 2,
     "power": 0,
-    "desc": "敌方获得1层降灵印记。"
+    "desc": "敌方获得1层降灵印记。",
+    "effect": function () {
+        addMark(Number(!playerToMove), "降灵印记", 1);
+    }
 }, {
     "name": "撕咬",
     "type": "dark",
@@ -4878,7 +4922,7 @@ const RK_SKILLS: RkSkill[] = [{
             getPkmn(true).moveStats[i].power = Math.max(0, getTempMoveStats(getPkmn(false), i, "power") - 20);
         }
         for (let i in getPkmn(true).moves) {
-            getPkmn(true).moveStats[i].power = getTempMoveStats(getPkmn(true), i, "power") + 20;
+            if (getMoveStats(i)!.power > 0) getPkmn(true).moveStats[i].power = getTempMoveStats(getPkmn(true), i, "power") + 20;
         }
     }
 }, {
@@ -5889,7 +5933,10 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "status",
     "cost": 1,
     "power": 0,
-    "desc": "敌方每有1层中毒效果，敌方获得双攻-30%。"
+    "effect": function () {
+        getPkmn(false).atkMultiplier = Math.max(0, getPkmn(false).atkMultiplier - 0.3 * getPkmn(false).rkEffect.poisoned);
+        getPkmn(false).spaMultiplier = Math.max(0, getPkmn(false).spaMultiplier - 0.3 * getPkmn(false).rkEffect.poisoned);
+    }
 }, {
     "name": "球状闪电",
     "type": "electric",
@@ -5902,7 +5949,9 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "status",
     "cost": 2,
     "power": 0,
-    "desc": "自己获得物防+140%。"
+    "effect": function () {
+        getPkmn(true).defMultiplier += 1.4;
+    }
 }, {
     "name": "远程访问",
     "type": "electric",
@@ -6002,14 +6051,20 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "physical",
     "cost": 0,
     "power": 30,
-    "desc": "造成物伤，自己回复1能量。"
+    "effect": function () {
+        getPkmn(true).energy = Math.min(10, getPkmn(true).energy + 1);
+    }
 }, {
     "name": "化劲",
     "type": "fighting",
     "cat": "status",
     "cost": 2,
     "power": 0,
-    "desc": "自己获得全技能威力+40。"
+    "effect": function () {
+        for (let i in getPkmn(true).moves) {
+            if (getMoveStats(i)!.power > 0) getPkmn(true).moveStats[i].power = getTempMoveStats(getPkmn(true), i, "power") + 40;
+        }
+    }
 }, {
     "name": "压扁",
     "type": "normal",
@@ -6324,14 +6379,19 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "status",
     "cost": 4,
     "power": 0,
-    "desc": "敌方获得4层星陨印记。"
+    "effect": function () {
+        addMark(Number(!playerToMove), "星陨印记", 4);
+    }
 }, {
     "name": "心灵洞悉",
     "type": "psychic",
     "cat": "status",
     "cost": 7,
     "power": 0,
-    "desc": "敌方获得星陨印记，获得层数等于敌方印记层数。"
+    "effect": function () {
+        let marks = battleInfo[Number(!playerToMove)].marks;
+        addMark(Number(!playerToMove), "星陨印记", marks.positive.layers + marks.negative.layers);
+    }
 }, {
     "name": "坍缩",
     "type": "psychic",
@@ -6359,7 +6419,12 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "physical",
     "cost": 3,
     "power": 95,
-    "desc": "造成物伤，应对状态：敌方获得物防-80%。"
+    "tackle": {
+        "cat": "status",
+        "effect": function () {
+            getPkmn(false).defMultiplier = Math.max(0, getPkmn(false).defMultiplier - 0.8);
+        }
+    }
 }, {
     "name": "复写",
     "type": "normal",
@@ -6428,7 +6493,9 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "physical",
     "cost": 2,
     "power": 60,
-    "desc": "造成物伤，敌方获得物防-30%。"
+    "effect": function () {
+        getPkmn(false).atkMultiplier = Math.max(0, getPkmn(false).atkMultiplier - 0.3);
+    }
 }, {
     "name": "砂糖弹球",
     "type": "cute",
@@ -6463,7 +6530,10 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "status",
     "cost": 4,
     "power": 0,
-    "desc": "自己获得1层湿润印记。"
+    "desc": "自己获得1层湿润印记。",
+    "effect": function () {
+        addMark(playerToMove, "打湿", 1);
+    }
 }, {
     "name": "穿膛",
     "type": "normal",
@@ -6484,14 +6554,18 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "physical",
     "cost": 0,
     "power": 30,
-    "desc": "造成物伤，自己回复1能量。"
+    "effect": function () {
+        getPkmn(true).energy = Math.min(10, getPkmn(true).energy + 1);
+    }
 }, {
     "name": "星轨裂变",
     "type": "psychic",
     "cat": "status",
     "cost": 1,
     "power": 0,
-    "desc": "敌方获得2层星陨印记。"
+    "effect": function () {
+        addMark(Number(!playerToMove), "星陨印记", 2);
+    }
 }, {
     "name": "超新星馈赠",
     "type": "psychic",
@@ -6525,7 +6599,17 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "special",
     "cost": 3,
     "power": 65,
-    "desc": "造成魔伤，使用后若能量耗尽，本次技能威力+110。"
+    "preCritEffect": function () {
+        let powerIncrement = 0;
+        if (getPkmn(true).energy == 0) powerIncrement = 110;
+        getPkmn(true).moveStats["触底强击"].power = getTempMoveStats(getPkmn(true), "触底强击", "power") + powerIncrement;
+        return {
+            "powerIncrement": powerIncrement
+        };
+    },
+    "effect": function (e: EffectParam) {
+        getPkmn(true).moveStats["触底强击"].power = Math.max(0, getTempMoveStats(getPkmn(true), "触底强击", "power") - e.preCritReturn.powerIncrement);
+    }
 }, {
     "name": "音爆",
     "type": "normal",
@@ -6553,14 +6637,25 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "status",
     "cost": 0,
     "power": 0,
-    "desc": "敌方获得全技能能耗+1，应对防御：改为能耗+3。"
+    "effect": function () {
+        for (let i in getPkmn(false).moves) getPkmn(false).moveStats[i].cost = getTempMoveStats(getPkmn(false), i, "cost") + 1;
+    },
+    "tackle": {
+        "cat": "defense",
+        "effect": function () {
+            for (let i in getPkmn(false).moves) getPkmn(false).moveStats[i].cost = getTempMoveStats(getPkmn(false), i, "cost") + 2;
+        }
+    }
 }, {
     "name": "毒针",
     "type": "poison",
     "cat": "physical",
     "cost": 0,
     "power": 20,
-    "desc": "造成物伤，敌方获得1层中毒。"
+    "desc": "造成物伤，敌方获得1层中毒。",
+    "effect": function () {
+        getPkmn(false).rkEffect.poisoned++;
+    }
 }, {
     "name": "连续毒针",
     "type": "poison",
@@ -7551,14 +7646,31 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "physical",
     "cost": 3,
     "power": 120,
-    "desc": "造成大量物伤，自己获得物攻-50%，应对状态：改为获得物攻+50%。"
+    "desc": "造成大量物伤，自己获得物攻-50%，应对状态：改为获得物攻+50%。",
+    "effect": function () {
+        let atkDecrement = Math.min(getPkmn(true).atkMultiplier, 0.5);
+        getPkmn(true).atkMultiplier = getPkmn(true).atkMultiplier - atkDecrement;
+        return {
+            "atkDecrement": atkDecrement
+        };
+    },
+    "tackle": {
+        "cat": "status",
+        "effect": function (e: EffectParam) {
+            getPkmn(true).atkMultiplier = getPkmn(true).atkMultiplier + e.atkDecrement + 0.5;
+        }
+    }
 }, {
     "name": "恶念交换",
     "type": "dark",
     "cat": "status",
     "cost": 4,
     "power": 0,
-    "desc": "与敌方交换生命比例。"
+    "effect": function () {
+        let myHpPercentage = getPkmn(true).hp / getPkmn(true).maxHp;
+        getPkmn(true).hp = getPkmn(true).maxHp * getPkmn(false).hp / getPkmn(false).maxHp;
+        getPkmn(false).hp = getPkmn(false).maxHp * myHpPercentage;
+    }
 }, {
     "name": "大爆炸",
     "type": "psychic",
@@ -7571,21 +7683,36 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "physical",
     "cost": 4,
     "power": 80,
-    "desc": "造成物伤，自己每失去5%生命，本次技能威力+5。"
+    "desc": "造成物伤，自己每失去5%生命，本次技能威力+5。",
+    "preCritEffect": function () {
+
+    },
+    "effect": function () {
+
+    }
 }, {
     "name": "空间压迫",
     "type": "psychic",
     "cat": "physical",
     "cost": 3,
     "power": 70,
-    "desc": "造成物伤，敌方获得1层星陨印记。"
+    "desc": "造成物伤，敌方获得1层星陨印记。",
+    "effect": function () {
+        addMark(Number(!playerToMove), "星陨印记", 1);
+    }
 }, {
     "name": "牵连",
     "type": "dark",
     "cat": "special",
     "cost": 4,
     "power": 85,
-    "desc": "造成魔伤，敌方每有1只力竭精灵，本次技能威力+30。"
+    "desc": "造成魔伤，敌方每有1只力竭精灵，本次技能威力+30。",
+    "preCritEffect": function () {
+
+    },
+    "effect": function () {
+
+    }
 }, {
     "name": "炙热波动",
     "type": "fire",
@@ -7605,21 +7732,39 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "special",
     "cost": 4,
     "power": 75,
-    "desc": "造成魔伤，敌方获得6层灼烧。"
+    "desc": "造成魔伤，敌方获得6层灼烧。",
+    "effect": function () {
+
+    }
 }, {
     "name": "燃尽",
     "type": "fire",
     "cat": "special",
     "cost": 4,
     "power": 155,
-    "desc": "造成魔伤，敌方每失去5%生命，本次技能威力-5。"
+    "desc": "造成魔伤，敌方每失去5%生命，本次技能威力-5。",
+    "preCritEffect": function () {
+
+    },
+    "effect": function () {
+
+    }
 }, {
     "name": "二律背反",
     "type": "psychic",
     "cat": "status",
     "cost": 4,
     "power": 0,
-    "desc": "敌方获得3层星陨印记，应对防御：额外使敌方星陨印记层数翻倍。"
+    "desc": "敌方获得3层星陨印记，应对防御：额外使敌方星陨印记层数翻倍。",
+    "effect": function () {
+        addMark(Number(!playerToMove), "星陨印记", 3);
+    },
+    "tackle": {
+        "cat": "defense",
+        "effect": function () {
+            addMark(Number(!playerToMove), "星陨印记", battleInfo[Number(!playerToMove)].marks.negative.layers);
+        }
+    }
 }, {
     "name": "除厄",
     "type": "fire",

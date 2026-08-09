@@ -181,6 +181,10 @@ class MonInstance {
             };
             this.dmgDeduction = 0;
             this.moveThisTurn = "";
+            this.rkEffect = {
+                "poisoned": 0,
+                "burned": 0
+            };
         });
     }
 }
@@ -1584,19 +1588,6 @@ function nextTurn() {
                 if (getPkmn(false).tempEffect.semiInvulnerable > 0 && !preDmgEffect.nullifySemiInvulnerable) break;
                 effect = attack(k.name);
 
-                $("roco kingdom", () => {
-                    if (RK_TACKLE_CAT[getTempMoveStats(getPkmn(false), getPkmn(false).moveThisTurn, "cat")] == getMoveStats(k)!.tackle.cat) {
-                        getMoveStats(k)!.tackle.effect();
-                    }
-                });
-
-                if (getPkmn(false)?.tempEffect.rage > 0) {
-                    addSmallText("others", "rageBuilding", {
-                        "pokemon": [getName(getPkmn(false), false, true)],
-                        "isEnemy": Number(!playerToMove) != viewpoint
-                    });
-                    modifyStats(false, "atk", 1, 1);
-                }
             }
 
             if (getPkmn(true)?.status == "psn") dealDmg(true, getPkmn(true).maxHp / 16, { ignoreSubstitute: true });
@@ -1773,11 +1764,30 @@ function attack(move: string) {
             getPkmn(false).dmgTaken.push(totalDmg);
             getPkmn(false).lastDmgTakenType = k.type;
         }
-        let effect;
+        let effect: {
+            [key: string]: any;
+        } | undefined;
         if (k.effect) effect = k.effect({
             "totalDmg": totalDmg,
-            "substitutePreDmg": substitutePreDmg
+            "substitutePreDmg": substitutePreDmg,
+            "preCritReturn": preCritEffect
         });
+
+        $("roco kingdom", () => {
+            if (RK_TACKLE_CAT[getTempMoveStats(getPkmn(false), getPkmn(false).moveThisTurn, "cat")] == getMoveStats(k)!.tackle.cat) {
+                getMoveStats(k)!.tackle.effect({
+                    "effectReturn": effect
+                });
+            }
+        });
+
+        if (getPkmn(false)?.tempEffect.rage > 0) {
+            addSmallText("others", "rageBuilding", {
+                "pokemon": [getName(getPkmn(false), false, true)],
+                "isEnemy": Number(!playerToMove) != viewpoint
+            });
+            modifyStats(false, "atk", 1, 1);
+        }
         return effect;
     }
 }
@@ -2136,13 +2146,13 @@ function checkBuildValidity() {
         if (players[i].build[j].moves.includes(k)) return false;
     return true;
 }
-function addMark(playerIndex: number, name: string) {
+function addMark(playerIndex: number, name: string, layers: number) {
     let mark;
     for (mark of RK_MARKS) if (mark.name == name) break;
-    if (battleInfo[playerIndex].marks[mark!.cat].name == name) battleInfo[playerIndex].marks[mark!.cat].layers++;
+    if (battleInfo[playerIndex].marks[mark!.cat].name == name) battleInfo[playerIndex].marks[mark!.cat].layers += layers;
     else {
         battleInfo[playerIndex].marks[mark!.cat].name = name;
-        battleInfo[playerIndex].marks[mark!.cat].layers = 1;
+        battleInfo[playerIndex].marks[mark!.cat].layers = layers;
     }
 }
 function getTempMoveStats(mon: MonInstance, move: string, stat: string) {
