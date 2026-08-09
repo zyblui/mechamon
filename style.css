@@ -212,24 +212,40 @@
         height: 100%;
     }
 
-    #p1Pokemon,
-    #p2Pokemon {
+    .pokemon-img {
+        .theme-roco-kingdom & {
+            width: 45vmin;
+            height: 45vmin;
+        }
+
+
         width: 55vmin;
         height: 55vmin;
         background-size: cover;
-        image-rendering: pixelated;
+
+        .theme-pokemon & {
+            image-rendering: pixelated;
+        }
     }
 
     #p1Pokemon {
         position: absolute;
         bottom: 0;
         left: 10%;
+
+        .theme-roco-kingdom & {
+            left: calc(10% + 5vmin);
+        }
     }
 
     #p2Pokemon {
         position: absolute;
         top: 0;
-        right: 10%
+        right: 10%;
+
+        .theme-roco-kingdom & {
+            right: calc(10% + 5vmin);
+        }
     }
 
     #p1Gauge {
