@@ -4369,9 +4369,9 @@ const RK_SKILLS = [{
                 return Math.random() - 0.5;
             });
             for (let i of moveList) {
-                if (!types.includes(getTempMoveStats(getPkmn(true), i, "type"))) {
-                    getPkmn(true).moveStats[i].power = getTempMoveStats(getPkmn(true), i, "power") + 35;
-                    types.push(getTempMoveStats(getPkmn(true), i, "type"));
+                if (!types.includes(getPkmn(true).getTempMoveStats(i, "type"))) {
+                    getPkmn(true).moveStats[i].power = getPkmn(true).getTempMoveStats(i, "power") + 35;
+                    types.push(getPkmn(true).getTempMoveStats(i, "type"));
                 }
             }
         }
@@ -4401,8 +4401,8 @@ const RK_SKILLS = [{
         "power": 0,
         "effect": function () {
             for (let i of Object.keys(getPkmn(true).moves)) {
-                if (getTempMoveStats(getPkmn(true), i, "type") == "light") {
-                    getPkmn(true).moveStats[i].power = getTempMoveStats(getPkmn(true), i, "power") + 0.4 * getMoveStats(i).power;
+                if (getPkmn(true).getTempMoveStats(i, "type") == "light") {
+                    getPkmn(true).moveStats[i].power = getPkmn(true).getTempMoveStats(i, "power") + 0.4 * getMoveStats(i).power;
                 }
             }
         },
@@ -4410,8 +4410,8 @@ const RK_SKILLS = [{
             "cat": "defense",
             "effect": function () {
                 for (let i of Object.keys(getPkmn(true).moves)) {
-                    if (getTempMoveStats(getPkmn(true), i, "type") == "light") {
-                        getPkmn(true).moveStats[i].power = getTempMoveStats(getPkmn(true), i, "power") + 0.4 * getMoveStats(i).power;
+                    if (getPkmn(true).getTempMoveStats(i, "type") == "light") {
+                        getPkmn(true).moveStats[i].power = getPkmn(true).getTempMoveStats(i, "power") + 0.4 * getMoveStats(i).power;
                     }
                 }
             }
@@ -4507,13 +4507,13 @@ const RK_SKILLS = [{
             let powerIncrement = 0;
             if (getPkmn(true).hp > getPkmn(true).maxHp * 0.8)
                 powerIncrement = 75;
-            getPkmn(true).moveStats["筛管奔流"].power = getTempMoveStats(getPkmn(true), "筛管奔流", "power") + powerIncrement;
+            getPkmn(true).moveStats["筛管奔流"].power = getPkmn(true).getTempMoveStats("筛管奔流", "power") + powerIncrement;
             return {
                 "powerIncrement": powerIncrement
             };
         },
         "effect": function (e) {
-            getPkmn(true).moveStats["筛管奔流"].power = Math.max(0, getTempMoveStats(getPkmn(true), "筛管奔流", "power") - e.preCritReturn.powerIncrement);
+            getPkmn(true).moveStats["筛管奔流"].power = Math.max(0, getPkmn(true).getTempMoveStats("筛管奔流", "power") - e.preCritReturn.powerIncrement);
         }
     }, {
         "name": "盛开",
@@ -4524,7 +4524,7 @@ const RK_SKILLS = [{
         "effect": function () {
             for (let i in getPkmn(true).moves) {
                 if (getMoveStats(i).power > 0)
-                    getPkmn(true).moveStats[i].power = getTempMoveStats(getPkmn(true), i, "power") + 30;
+                    getPkmn(true).moveStats[i].power = getPkmn(true).getTempMoveStats(i, "power") + 30;
             }
         },
         "tackle": {
@@ -4532,7 +4532,7 @@ const RK_SKILLS = [{
             "effect": function () {
                 for (let i in getPkmn(true).moves) {
                     if (getMoveStats(i).power > 0)
-                        getPkmn(true).moveStats[i].power = getTempMoveStats(getPkmn(true), i, "power") + 30;
+                        getPkmn(true).moveStats[i].power = getPkmn(true).getTempMoveStats(i, "power") + 30;
                 }
             }
         }
@@ -4598,7 +4598,7 @@ const RK_SKILLS = [{
         "cost": 1,
         "power": 50,
         "effect": function () {
-            getPkmn(true).moveStats["吹火"].power = getTempMoveStats(getPkmn(true), "吹火", "power") + 20;
+            getPkmn(true).moveStats["吹火"].power = getPkmn(true).getTempMoveStats("吹火", "power") + 20;
         }
     }, {
         "name": "晒太阳",
@@ -4891,11 +4891,11 @@ const RK_SKILLS = [{
         "power": 0,
         "effect": function () {
             for (let i in getPkmn(false).moves) {
-                getPkmn(true).moveStats[i].power = Math.max(0, getTempMoveStats(getPkmn(false), i, "power") - 20);
+                getPkmn(true).moveStats[i].power = Math.max(0, getPkmn(false).getTempMoveStats(i, "power") - 20);
             }
             for (let i in getPkmn(true).moves) {
                 if (getMoveStats(i).power > 0)
-                    getPkmn(true).moveStats[i].power = getTempMoveStats(getPkmn(true), i, "power") + 20;
+                    getPkmn(true).moveStats[i].power = getPkmn(true).getTempMoveStats(i, "power") + 20;
             }
         }
     }, {
@@ -5139,7 +5139,7 @@ const RK_SKILLS = [{
         "power": 50,
         "desc": "造成物伤，敌方 2 回合无法更换精灵。",
         "effect": function () {
-            addTempEffect(false, "stoneLock", 2, 1);
+            addTempEffect(false, "stoneLock", { "turns": 2 });
         }
     }, {
         "name": "遁地",
@@ -6036,7 +6036,7 @@ const RK_SKILLS = [{
         "effect": function () {
             for (let i in getPkmn(true).moves) {
                 if (getMoveStats(i).power > 0)
-                    getPkmn(true).moveStats[i].power = getTempMoveStats(getPkmn(true), i, "power") + 40;
+                    getPkmn(true).moveStats[i].power = getPkmn(true).getTempMoveStats(i, "power") + 40;
             }
         }
     }, {
@@ -6577,13 +6577,13 @@ const RK_SKILLS = [{
             let powerIncrement = 0;
             if (getPkmn(true).energy == 0)
                 powerIncrement = 110;
-            getPkmn(true).moveStats["触底强击"].power = getTempMoveStats(getPkmn(true), "触底强击", "power") + powerIncrement;
+            getPkmn(true).moveStats["触底强击"].power = getPkmn(true).getTempMoveStats("触底强击", "power") + powerIncrement;
             return {
                 "powerIncrement": powerIncrement
             };
         },
         "effect": function (e) {
-            getPkmn(true).moveStats["触底强击"].power = Math.max(0, getTempMoveStats(getPkmn(true), "触底强击", "power") - e.preCritReturn.powerIncrement);
+            getPkmn(true).moveStats["触底强击"].power = Math.max(0, getPkmn(true).getTempMoveStats("触底强击", "power") - e.preCritReturn.powerIncrement);
         }
     }, {
         "name": "音爆",
@@ -6614,13 +6614,13 @@ const RK_SKILLS = [{
         "power": 0,
         "effect": function () {
             for (let i in getPkmn(false).moves)
-                getPkmn(false).moveStats[i].cost = getTempMoveStats(getPkmn(false), i, "cost") + 1;
+                getPkmn(false).moveStats[i].cost = getPkmn(false).getTempMoveStats(i, "cost") + 1;
         },
         "tackle": {
             "cat": "defense",
             "effect": function () {
                 for (let i in getPkmn(false).moves)
-                    getPkmn(false).moveStats[i].cost = getTempMoveStats(getPkmn(false), i, "cost") + 2;
+                    getPkmn(false).moveStats[i].cost = getPkmn(false).getTempMoveStats(i, "cost") + 2;
             }
         }
     }, {
@@ -7228,7 +7228,7 @@ const RK_SKILLS = [{
             "cat": "attack",
             "effect": function () {
                 for (let i in getPkmn(true).moves) {
-                    getPkmn(true).moveStats[i].power = getTempMoveStats(getPkmn(true), i, "power") + 40;
+                    getPkmn(true).moveStats[i].power = getPkmn(true).getTempMoveStats(i, "power") + 40;
                 }
             }
         }

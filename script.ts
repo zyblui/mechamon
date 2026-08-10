@@ -21,6 +21,14 @@ interface Player {
     "name": string,
     "build": BuildMon[];
 }
+interface TempEffectValue {
+    "turns": number,
+    "layers": number;
+}
+class TempEffectValue {
+    turns = 0;
+    layers = 0;
+}
 interface Mon {
     "name": string,
     "type": string[],
@@ -62,6 +70,7 @@ type Attack = {
     "pkmn": string;
 };
 class MonInstanceTemplate {
+    modeName: string = "";
     maxHp: number;
     hp: number;
     transformPkmn: string = "";
@@ -91,20 +100,22 @@ class MonInstanceTemplate {
             isCrit: false
         };
     tempEffect: {
-        "confused": number,
-        "semiInvulnerable": number,
-        "rage": number,
-        "reflect": number,
-        "light screen": number,
-        "mist": number,
-        [key: string]: number;
+        "confused": TempEffectValue,
+        "semiInvulnerable": TempEffectValue,
+        "rage": TempEffectValue,
+        "reflect": TempEffectValue,
+        "light screen": TempEffectValue,
+        "mist": TempEffectValue,
+        "leech seed": TempEffectValue,
+        [key: string]: TempEffectValue;
     } = {
-            "confused": 0,
-            "semiInvulnerable": 0,
-            "rage": 0,
-            "reflect": 0,
-            "light screen": 0,
-            "mist": 0
+            "confused": new TempEffectValue(),
+            "semiInvulnerable": new TempEffectValue(),
+            "rage": new TempEffectValue(),
+            "reflect": new TempEffectValue(),
+            "light screen": new TempEffectValue(),
+            "mist": new TempEffectValue(),
+            "leech seed": new TempEffectValue()
         };
     delay: any[] = [];
     sleepTurns: number = 0;
@@ -131,18 +142,23 @@ class MonInstanceTemplate {
     revealedMoves: Set<string> = new Set([]);
     constructor(mon: BuildMon, maxHp: number) {
         for (let i in mon) if (i != "moves") this[i] = mon[i];
-
         this.maxHp = maxHp;
         this.hp = maxHp;
-
         for (let k of mon.moves) for (let l of $("moves")) if (l.name == k) this.moves[k] = l.pp;
-
         for (let k in this.moves) {
             this.moveStats[k] = {};
         }
     }
+    getTempMoveStats(move: string, stat: string) {
+        if (this.moveStats[move][stat]) return this.moveStats[move][stat];
+        else return (getMoveStats(move) as MonMove)[stat];
+    }
+    $(func: () => void) {
+        if (settings.mode == this.modeName) func();
+    }
 }
 class PkmnInstance extends MonInstanceTemplate {
+    modeName: string = "pokemon";
     constructor(mon: BuildMon) {
         let monStats = getStats(mon.name) as Mon;
         let maxHp = Math.floor(0.01 * (2 * (monStats.hp + mon.dv.hp) + Math.floor(0.25 * mon.ev.hp)) * mon.lv) + mon.lv + 10;
@@ -153,6 +169,7 @@ class PkmnInstance extends MonInstanceTemplate {
     }
 }
 class RkPetInstance extends MonInstanceTemplate {
+    modeName: string = "roco kingdom";
     energy: number = 10;
     valueMultiplier: {
         "hp": number,
@@ -394,22 +411,9 @@ document.getElementById("viewpoint")!.innerText = getL10n("ui", "viewpoint", {
 });
 let record: RecordItem[] = [], recordPosition = 0, viewpoint = 0;
 switchMode("pokemon");
-for (let i of document.getElementsByClassName("pkmnName")) {
-    i.addEventListener("click", function () {
-        document.querySelector(".pkmnName.selected")?.classList.remove("selected");
-        i.classList.add("selected");
-        document.querySelector(".list.show")!.classList.remove("show");
-        document.getElementById("pokemonList")!.classList.add("show");
-    });
-}
-for (let i of document.getElementsByClassName("nature")) {
-    i.addEventListener("click", function () {
-        document.querySelector(".nature.selected")?.classList.remove("selected");
-        i.classList.add("selected");
-        document.querySelector(".list.show")!.classList.remove("show");
-        document.getElementById("natureList")!.classList.add("show");
-    });
-}
+
+addListenerToInput("pkmnName", "pokemonList");
+addListenerToInput("nature", "natureList");
 for (let i of document.getElementsByClassName("move")) {
     i.addEventListener("click", function () {
         document.querySelector(".move.selected")?.classList.remove("selected");
@@ -587,14 +591,13 @@ let nextPlayerEffect: {
     }
 }, {
     "name": "confused",
-    "condition": function () { return getPkmn(true).tempEffect.confused > 0; },
+    "condition": function () { return getPkmn(true).tempEffect.confused.turns > 0; },
     "exclude": "slp",
     "effect": function () {
         addSmallText("others", "confused", {
             "pokemon": [getName(getPkmn(true), false, true)],
             "isEnemy": ((viewpoint == -1) ? false : (playerToMove != viewpoint))
         });
-        //getPkmn(true).tempEffect.confused--;
         if (Math.random() < 0.5) {
             dealDmg(true, calculateDmg(40, getAttack(true), getDefense(true, true), getPkmn(true).lv, "",
                 getType(true), getType(true)), { opposingSubstitute: true });
@@ -630,7 +633,7 @@ for (let i = 0; i < 4; i++) {
         tooltipMove = decisionMove[i].parentElement!.querySelector(".tooltip-move") as HTMLDivElement;
         tooltipMove.querySelector<HTMLElement>(".tip-name")!.innerText = getL10n("moves", decisionMoveFor);
 
-        let stats = (key: string) => getTempMoveStats(battleInfo[playerToMove].build[battleInfo[playerToMove].currentPokemon], decisionMoveFor, key);
+        let stats = (key: string) => battleInfo[playerToMove].build[battleInfo[playerToMove].currentPokemon].getTempMoveStats(decisionMoveFor, key);
 
         tooltipMove.querySelector<HTMLElement>(".tip-cat")!.innerText = getL10n("cat", stats("cat")).toUpperCase();
         tooltipMove.querySelector<HTMLElement>(".tip-cat")!.classList.remove("cat-physical", "cat-special", "cat-status", "cat-defense");
@@ -787,6 +790,16 @@ function $(...args: [...modes: string[], func: () => void] | [key: string]): voi
         for (let i = 0; i < args.length - 1; i++) if (args[i] == settings.mode) (args.at(-1) as Function)();
     } else {
         return POOLS[settings.mode][args[0] as string];
+    }
+}
+function addListenerToInput(className: string, listId: string) {
+    for (let i of document.getElementsByClassName(className)) {
+        i.addEventListener("click", function () {
+            document.querySelector(`.${className}.selected`)?.classList.remove("selected");
+            i.classList.add("selected");
+            document.querySelector(".list.show")!.classList.remove("show");
+            document.getElementById(listId)!.classList.add("show");
+        });
     }
 }
 function setUncontrollable(isSelf: boolean, move: string, turns: number): void {
@@ -972,20 +985,20 @@ function refreshDecision() {
                 .moves)[i])) button.disabled = true;
             else button.disabled = false;
             $("roco kingdom", () => {
-                if (getPkmn(true).energy < getTempMoveStats(getPkmn(true), Object.keys(getPkmn(true).moves)[i], "cost")) button.disabled = true;
+                if (getPkmn(true).energy < getPkmn(true).getTempMoveStats(Object.keys(getPkmn(true).moves)[i], "cost")) button.disabled = true;
             });
             let tempMove = "";
             if (Object.keys(getPkmn(true).moves)[i] == "mimic" && getPkmn(true).mimicMove) tempMove = getPkmn(true).mimicMove;
             else tempMove = Object.keys(getPkmn(true).moves)[i];
             button.dataset.for = tempMove;
             $("pokemon", () => {
-                modifyDecisionMoveBtn(button, getL10n("moves", tempMove), Object.values<number>(getPkmn(true).moves)[i].toString(), getTempMoveStats(getPkmn(true), Object
-                    .keys(getPkmn(true).moves)[i], "pp"), getL10n("types", getTempMoveStats(getPkmn(true), tempMove, "type")), tempMove);
+                modifyDecisionMoveBtn(button, getL10n("moves", tempMove), Object.values<number>(getPkmn(true).moves)[i].toString(), getPkmn(true).getTempMoveStats(Object
+                    .keys(getPkmn(true).moves)[i], "pp"), getL10n("types", getPkmn(true).getTempMoveStats(tempMove, "type")), tempMove);
             });
             $("roco kingdom", () => {
                 button.querySelector<HTMLElement>(".move-text")!.innerText = getL10n("moves", tempMove);
-                button.querySelector<HTMLElement>(".move-type")!.innerText = getL10n("types", getTempMoveStats(getPkmn(true), tempMove, "type"));
-                button.querySelector<HTMLElement>(".cost")!.innerText = getTempMoveStats(getPkmn(true), tempMove, "cost");
+                button.querySelector<HTMLElement>(".move-type")!.innerText = getL10n("types", getPkmn(true).getTempMoveStats(tempMove, "type"));
+                button.querySelector<HTMLElement>(".cost")!.innerText = getPkmn(true).getTempMoveStats(tempMove, "cost");
                 displayEffectiveness(button, tempMove);
             });
         }
@@ -1022,7 +1035,6 @@ function modifyDecisionMoveBtn(element: HTMLButtonElement, displayName: string, 
     displayEffectiveness(element, moveName);
 }
 function displayEffectiveness(button: HTMLButtonElement, move: string) {
-    console.log(move);
     const EFFECTIVENESS_ABBR: {
         [key: number]: string;
     } = {
@@ -1034,8 +1046,8 @@ function displayEffectiveness(button: HTMLButtonElement, move: string) {
         3: "DSE",
         4: "DSE"
     };
-    if (!getPkmn(false) || !move || getTempMoveStats(getPkmn(true), move, "cat") == "status") button.querySelector<HTMLElement>(".effectiveness")!.innerText = "";
-    else button.querySelector<HTMLElement>(".effectiveness")!.innerText = EFFECTIVENESS_ABBR[calculateEffectiveness(getTempMoveStats(getPkmn(true), move, "type"),
+    if (!getPkmn(false) || !move || getPkmn(true).getTempMoveStats(move, "cat") == "status") button.querySelector<HTMLElement>(".effectiveness")!.innerText = "";
+    else button.querySelector<HTMLElement>(".effectiveness")!.innerText = EFFECTIVENESS_ABBR[calculateEffectiveness(getPkmn(true).getTempMoveStats(move, "type"),
         getType(false))];
 }
 function getDefaultProperties(playersInfo: Player[]): BattleInfo {
@@ -1200,7 +1212,8 @@ function addSmallText(...args: RecordItemArgs): void {
 function sendOutPkmn(pkmn: string) {
     if (getPkmn(true)) {
         for (let j in getPkmn(true).tempEffect) {
-            getPkmn(true).tempEffect[j] = 0;
+            getPkmn(true).tempEffect[j].turns = 0;
+            getPkmn(true).tempEffect[j].layers = 0;
         }
         getPkmn(true).mimicMove = "";
         getPkmn(true).tempType = [];
@@ -1252,7 +1265,7 @@ function addTooltip(elementGroup: NodeListOf<HTMLElement>, i: number, player = p
     insertEffects(battleInfo[actualPlayer].build[i], tooltip.querySelector(".tip-status") as HTMLDivElement, true);
     for (let j = 0; j < 4; j++) {
         $("pokemon", () => {
-            let totalPp = getTempMoveStats(battleInfo[actualPlayer].build[i], Object.keys(battleInfo[actualPlayer].build[i].moves)[j], "pp");
+            let totalPp = battleInfo[actualPlayer].build[i].getTempMoveStats(Object.keys(battleInfo[actualPlayer].build[i].moves)[j], "pp");
 
             let ppRemaining = Object.values(battleInfo[actualPlayer].build[i].moves)[j];
             addMoveToTooltip(tooltip, actualPlayer, i, j, {
@@ -1267,7 +1280,7 @@ function addTooltip(elementGroup: NodeListOf<HTMLElement>, i: number, player = p
         $("roco kingdom", () => {
             addMoveToTooltip(tooltip, actualPlayer, i, j, {
                 "additionalInfoFn": () => {
-                    tooltip.querySelectorAll<HTMLElement>(".cost")[j].innerText = getTempMoveStats(battleInfo[actualPlayer].build[i], Object.keys(battleInfo[actualPlayer]
+                    tooltip.querySelectorAll<HTMLElement>(".cost")[j].innerText = battleInfo[actualPlayer].build[i].getTempMoveStats(Object.keys(battleInfo[actualPlayer]
                         .build[i].moves)[j], "cost");
                 },
                 "emptyMoveFn": () => addGrayMoveRk(tooltip, j, "empty", 0),
@@ -1338,7 +1351,7 @@ function insertEffects(pkmn: MonInstanceTemplate, outputArea: HTMLDivElement, sh
         $("roco kingdom", () => insertPropertyMod(Number(pkmn.valueMultiplier[j].toFixed(2)), 1, Number(pkmn.valueMultiplier[j].toFixed(2)), outputArea, showFull, j));
     }
     for (let j in pkmn.tempEffect) {
-        if (pkmn.tempEffect[j]) {
+        if (pkmn.tempEffect[j]?.turns) {
             let tempEffectSpan = document.createElement("span");
             tempEffectSpan.innerText = "[" + ((showFull) ? getL10n("tempEffects", j).toUpperCase() : getL10n("tempEffects", j)) + "]";
             tempEffectSpan.classList.add("debuff");
@@ -1423,19 +1436,18 @@ function getAttack(isSelf: boolean): number {
 }
 function getDefense(isSelf: boolean, isCrit: boolean) {
     if (isCrit) return getPkmn(isSelf).def * STAGE_MULTIPLIER[getPkmn(isSelf).defStage];
-    else return getPkmn(isSelf).def * STAGE_MULTIPLIER[getPkmn(isSelf).defStage] * ((getPkmn(isSelf).tempEffect
-        .reflect) ? 2 : 1);
+    else return getPkmn(isSelf).def * STAGE_MULTIPLIER[getPkmn(isSelf).defStage] * ((getPkmn(isSelf).tempEffect.reflect.turns) ? 2 : 1);
 }
 function getSp(isSelf: boolean, isCrit: boolean) {
     if (isCrit) return getPkmn(isSelf).sp * STAGE_MULTIPLIER[getPkmn(isSelf).spStage];
     else return getPkmn(isSelf).sp * STAGE_MULTIPLIER[getPkmn(isSelf).spStage] * ((getPkmn(isSelf)
-        .tempEffect["light screen"]) ? 2 : 1);
+        .tempEffect["light screen"].turns) ? 2 : 1);
 }
 function sortAttackFn(a: Attack, b: Attack) {
     if (b.type == "switch" && a.type == "move") return 1;
     else if (a.type == "switch" && b.type == "move") return -1;
     else if (a.type == "move" && b.type == "move") {
-        let stats = (attack: typeof a, stat: string) => getTempMoveStats(battleInfo[attack.user].build[battleInfo[attack.user].currentPokemon], attack.move, stat);
+        let stats = (attack: typeof a, stat: string) => battleInfo[attack.user].build[battleInfo[attack.user].currentPokemon].getTempMoveStats(attack.move, stat);
 
         if (stats(a, "cat") == "defense" && stats(b, "cat") != "defense") return -1;
         else if (stats(b, "cat") == "defense" && stats(a, "cat") != "defense") return 1;
@@ -1465,7 +1477,7 @@ function nextTurn() {
 
     for (let i of [true, false]) {
         for (let index in getPkmn(i).tempEffect) {
-            if (getPkmn(i).tempEffect[index] > 0) getPkmn(i).tempEffect[index]--;
+            if (getPkmn(i).tempEffect[index].turns > 0) getPkmn(i).tempEffect[index].turns--;
         }
     }
 
@@ -1496,7 +1508,7 @@ function nextTurn() {
         });
 
         $("roco kingdom", () => {
-            getPkmn(true).energy -= getTempMoveStats(getPkmn(true), i.move, "cost");
+            getPkmn(true).energy -= getPkmn(true).getTempMoveStats(i.move, "cost");
         });
 
         if (i.dirAttack) {
@@ -1526,7 +1538,7 @@ function nextTurn() {
                 if (getPkmn(true).charge.turns > 0) {
                     continue outer;
                 }
-                if (getPkmn(false).tempEffect.semiInvulnerable > 0 && !preDmgEffect.nullifySemiInvulnerable) break;
+                if (getPkmn(false).tempEffect.semiInvulnerable.turns > 0 && !preDmgEffect.nullifySemiInvulnerable) break;
                 effect = attack(k.name);
 
             }
@@ -1536,7 +1548,7 @@ function nextTurn() {
                 dealDmg(true, getPkmn(true).maxHp * getPkmn(true).toxicCounter / 16, { ignoreSubstitute: true });
                 getPkmn(true).toxicCounter++;
             }
-            if (getPkmn(true)?.tempEffect["leech seed"] > 0) {
+            if (getPkmn(true)?.tempEffect["leech seed"].turns > 0) {
                 if (getPkmn(true).status == "tox") {
                     dealDmg(true, getPkmn(true).maxHp * getPkmn(true).toxicCounter / 16, { ignoreSubstitute: true });
                     getPkmn(true).toxicCounter++;
@@ -1664,7 +1676,6 @@ function attack(move: string) {
         if (arguments[1]?.forceCrit) criticalHitRatioMultiplier = Infinity;
         let isCrit = (Math.random() < criticalHitRatioMultiplier * getPkmn(true).critProbMultiplier * getStats(getPkmn(true).name)!.spe / 512);
         let dmg = 0, totalDmg = 0;
-
         $("pokemon", () => {
             if (k.cat == "physical") dmg = calculateDmg(k.power, getAttack(true), getDefense(false, isCrit), getPkmn(true).lv,
                 k.type, getType(false), getType(true));
@@ -1715,14 +1726,14 @@ function attack(move: string) {
         });
 
         $("roco kingdom", () => {
-            if (RK_TACKLE_CAT[getTempMoveStats(getPkmn(false), getPkmn(false).moveThisTurn, "cat")] == getMoveStats(k)!.tackle.cat) {
+            if (RK_TACKLE_CAT[getPkmn(false).getTempMoveStats(getPkmn(false).moveThisTurn, "cat")] == getMoveStats(k)!.tackle.cat) {
                 getMoveStats(k)!.tackle.effect({
                     "effectReturn": effect
                 });
             }
         });
 
-        if (getPkmn(false)?.tempEffect.rage > 0) {
+        if (getPkmn(false)?.tempEffect.rage.turns > 0) {
             addSmallText("others", "rageBuilding", {
                 "pokemon": [getName(getPkmn(false), false, true)],
                 "isEnemy": Number(!playerToMove) != viewpoint
@@ -1854,11 +1865,9 @@ function renderTable() {
         document.querySelectorAll<HTMLElement>(".pkmnName[data-player='" + (playerNo + 1) + "']")[i].innerText = getL10n("pokemon", players[
             playerNo].build[i].name);
         document.querySelectorAll<HTMLElement>(".lv[data-player='" + (playerNo + 1) + "']")[i].innerText = players[playerNo].build[i].lv.toString();
-
         for (let property of $("properties")) {
             document.querySelector(`.pkmn-outer[data-player="${playerNo + 1}"][data-no="${i + 1}"]`)!.querySelector<HTMLElement>(`.dv[data-value-for="${property}"]`)!.innerText = players[playerNo].build[i].dv[property].toString();
         }
-
         $("roco kingdom", () => {
             if (players[playerNo].build[i].nature) {
                 document.querySelectorAll<HTMLElement>(".nature[data-player='" + (playerNo + 1) + "']")[i].innerText = getL10n("natures", players[playerNo].build[i].nature);
@@ -1881,7 +1890,7 @@ function renderTable() {
     else (document.getElementById("startGame") as HTMLButtonElement).disabled = true;
 }
 function modifyStats(isSelf: boolean, stat: string, delta: number, prob: number) {
-    if (getPkmn(isSelf).tempEffect.mist > 0 && delta < 0) return;
+    if (getPkmn(isSelf).tempEffect.mist.turns > 0 && delta < 0) return;
     let rand = Math.random();
     if (rand < prob && getPkmn(isSelf)[stat + "Stage"] + delta >= -6 && getPkmn(isSelf)[stat + "Stage"] + delta <= 6) {
         getPkmn(isSelf)[stat + "Stage"] += delta;
@@ -1937,9 +1946,18 @@ function putToSleep(isSelf: boolean, turns: number) {
         "isEnemy": ((viewpoint == -1) ? !isSelf : (Number(Number(isSelf) == playerToMove) != viewpoint))
     });
 }
-function addTempEffect(isSelf: boolean, effect: string, turns: number, prob: number) {
+function addTempEffect(isSelf: boolean, effect: string, {
+    turns = Infinity,
+    prob = 1,
+    layers = 1
+}: {
+    turns?: number,
+    prob?: number,
+    layers?: number;
+} = {}) {
     if (Math.random() < prob) {
-        getPkmn(isSelf).tempEffect[effect] = turns;
+        getPkmn(isSelf).tempEffect[effect].turns = turns;
+        getPkmn(isSelf).tempEffect[effect].layers = layers;
         if (effect == "confused") addSmallText("others", "becomeConfused", {
             "pokemon": [getName(getPkmn(isSelf), false, true)],
             "isEnemy": ((viewpoint == -1) ? !isSelf : (Number(Number(isSelf) == playerToMove) != viewpoint))
@@ -2095,8 +2113,4 @@ function addMark(playerIndex: number, name: string, layers: number) {
         battleInfo[playerIndex].marks[mark!.cat].name = name;
         battleInfo[playerIndex].marks[mark!.cat].layers = layers;
     }
-}
-function getTempMoveStats(mon: MonInstanceTemplate, move: string, stat: string) {
-    if (mon.moveStats[move][stat]) return mon.moveStats[move][stat];
-    else return (getMoveStats(move) as MonMove)[stat];
 }
