@@ -5,6 +5,7 @@ class TempEffectValue {
 }
 class MonInstanceTemplate {
     modeName = "";
+    playerNo;
     maxHp;
     hp;
     transformPkmn = "";
@@ -51,7 +52,8 @@ class MonInstanceTemplate {
     moveStats = {};
     revealed = false;
     revealedMoves = new Set([]);
-    constructor(mon, maxHp) {
+    constructor(mon, maxHp, playerNo) {
+        this.playerNo = playerNo;
         for (let i in mon)
             if (i != "moves")
                 this[i] = mon[i];
@@ -75,13 +77,32 @@ class MonInstanceTemplate {
         if (settings.mode == this.modeName)
             func();
     }
+    addTempEffect(effect, { turns = Infinity, prob = 1, layers = 1 } = {}) {
+        if (Math.random() < prob) {
+            if (!this.tempEffect[effect])
+                this.tempEffect[effect] = new TempEffectValue();
+            this.tempEffect[effect].turns = turns;
+            this.tempEffect[effect].layers = layers;
+            let isEnemy = ((viewpoint == -1) ? !(this.playerNo == playerToMove) : (this.playerNo != viewpoint));
+            if (effect == "confused")
+                addSmallText("others", "becomeConfused", {
+                    "pokemon": [getName(this, false, true)],
+                    "isEnemy": isEnemy
+                });
+            else if (effect == "reflect" || effect == "light screen")
+                addSmallText("others", "gainArmor", {
+                    "pokemon": [getName(this, false, true)],
+                    "isEnemy": isEnemy
+                });
+        }
+    }
 }
 class PkmnInstance extends MonInstanceTemplate {
     modeName = "pokemon";
-    constructor(mon) {
+    constructor(mon, playerNo) {
         let monStats = getStats(mon.name);
         let maxHp = Math.floor(0.01 * (2 * (monStats.hp + mon.dv.hp) + Math.floor(0.25 * mon.ev.hp)) * mon.lv) + mon.lv + 10;
-        super(mon, maxHp);
+        super(mon, maxHp, playerNo);
         for (let property of $("properties")) {
             this[property] = calcActualValue(getStats(this.name)[property], this.dv[property], this.ev[property], this.lv);
         }
@@ -100,14 +121,10 @@ class RkPetInstance extends MonInstanceTemplate {
     };
     dmgDeduction = 0;
     moveThisTurn = "";
-    rkEffect = {
-        "poisoned": 0,
-        "burned": 0
-    };
-    constructor(mon) {
+    constructor(mon, playerNo) {
         let monStats = getStats(mon.name);
         let maxHp = Math.round(Math.round(monStats.hp * 1.7 + Number(mon.dvActive.has("hp")) * mon.dv.hp * 0.85 + 70) + 100);
-        super(mon, maxHp);
+        super(mon, maxHp, playerNo);
         for (let property of $("properties")) {
             if (property != "hp") {
                 this[property] = calcActualValueRk(getStats(this.name)[property], Number(this.dvActive.has(property)) * this.dv[property]);
@@ -117,6 +134,7 @@ class RkPetInstance extends MonInstanceTemplate {
             this[this.nature.increase] *= 1.2;
             this[this.nature.decrease] *= 0.9;
         }
+        //rk effect
     }
 }
 let MonInstance = PkmnInstance;
@@ -972,11 +990,11 @@ function getDefaultProperties(playersInfo) {
     let arr = structuredClone(playersInfo);
     arr[0].currentPokemon = -1;
     arr[1].currentPokemon = -1;
-    for (let i of arr) {
-        for (let j = 0; j < i.build.length; j++)
-            i.build[j] = new MonInstance(i.build[j]);
+    for (let i of [0, 1]) {
+        for (let j = 0; j < arr[i].build.length; j++)
+            arr[i].build[j] = new MonInstance(arr[i].build[j], i);
         $("roco kingdom", () => {
-            i.marks = {
+            arr[i].marks = {
                 "positive": {
                     "name": "",
                     "layers": 0
@@ -1198,7 +1216,7 @@ function addTooltip(elementGroup, i, player = playerToMove) {
         tooltip.querySelectorAll(".type-img")[j].src = `${$("space")}types/` + stats.type[j] + ".png";
     }
     let actualPlayer = Number(viewpoint != player);
-    insertEffects(battleInfo[actualPlayer].build[i], tooltip.querySelector(".tip-status"), true);
+    addEffectBadges(battleInfo[actualPlayer].build[i], tooltip.querySelector(".tip-status"), true);
     for (let j = 0; j < 4; j++) {
         $("pokemon", () => {
             let totalPp = battleInfo[actualPlayer].build[i].getTempMoveStats(Object.keys(battleInfo[actualPlayer].build[i].moves)[j], "pp");
@@ -1274,7 +1292,7 @@ function addGrayMoveRk(tooltip, j, textKey, cost) {
     tooltip.querySelectorAll(".cost")[j].innerText = cost.toString();
     tooltip.querySelectorAll(".move-name")[j].classList.add("unknown");
 }
-function insertEffects(pkmn, outputArea, showFull) {
+function addEffectBadges(pkmn, outputArea, showFull) {
     outputArea.innerHTML = "";
     if (pkmn.status) {
         outputArea.innerHTML = "";
@@ -1451,6 +1469,7 @@ function nextTurn() {
             }
         }
     });
+    let attackOrder = 0;
     outer: for (let i of attacks) {
         let nextPlayerInfo = nextPlayer(i.user);
         if (!getPkmn(true) || !getPkmn(false))
@@ -1465,6 +1484,7 @@ function nextTurn() {
         }
         if (nextPlayerInfo?.continue)
             continue;
+        attackOrder++;
         addMainText("others", "use", {
             "pokemon": [getName(getPkmn(true), false, true)],
             "moves": [["moves", i.move]],
@@ -1474,7 +1494,9 @@ function nextTurn() {
             getPkmn(true).energy -= getPkmn(true).getTempMoveStats(i.move, "cost");
         });
         if (i.dirAttack) {
-            attack(i.move);
+            attack(i.move, {
+                "attackOrder": attackOrder
+            });
             judgeHP();
             continue;
         }
@@ -1502,7 +1524,9 @@ function nextTurn() {
                     }
                     if (getPkmn(false).tempEffect.semiInvulnerable.turns > 0 && !preDmgEffect.nullifySemiInvulnerable)
                         break;
-                    effect = attack(k.name);
+                    effect = attack(k.name, {
+                        "attackOrder": attackOrder
+                    });
                 }
                 if (getPkmn(true)?.status == "psn")
                     dealDmg(true, getPkmn(true).maxHp / 16, { ignoreSubstitute: true });
@@ -1646,83 +1670,91 @@ function getName(pkmn, showSpeciesName, returnArr) {
     else
         return getL10n(...arr);
 }
-function attack(move) {
-    for (let k of $("moves"))
-        if (k.name == move) {
-            let criticalHitRatioMultiplier = 1;
-            let preCritEffect;
-            let substitutePreDmg = (getPkmn(false).substituteHp > 0);
-            if (k.preCritEffect)
-                preCritEffect = k.preCritEffect();
-            if (preCritEffect?.isHighCritRatio)
-                criticalHitRatioMultiplier = 8;
-            if (arguments[1]?.forceCrit)
-                criticalHitRatioMultiplier = Infinity;
-            let isCrit = (Math.random() < criticalHitRatioMultiplier * getPkmn(true).critProbMultiplier * getStats(getPkmn(true).name).spe / 512);
-            let dmg = 0, totalDmg = 0;
-            $("pokemon", () => {
-                if (k.cat == "physical")
-                    dmg = calculateDmg(k.power, getAttack(true), getDefense(false, isCrit), getPkmn(true).lv, k.type, getType(false), getType(true));
-                else
-                    dmg = calculateDmg(k.power, getSp(true, isCrit), getSp(false, isCrit), getPkmn(true).lv, k.type, getType(false), getType(true));
-            });
-            $("roco kingdom", () => {
-                if (k.cat == "physical")
-                    dmg = calculateDmgRk(k.power, getAttack(true), getDefense(false, isCrit), k.type, getType(false), getType(true));
-                else
-                    dmg = calculateDmgRk(k.power, getPkmn(true).spa, getPkmn(false).spd, k.type, getType(false), getType(true));
-            });
-            if (k.cat == "physical" || k.cat == "special") {
-                switch (calculateEffectiveness(k.type, getType(false))) {
-                    case 4:
-                    case 2:
-                        addSmallText("others", "superEffective");
-                        break;
-                    case 0.5:
-                    case 0.25:
-                        addSmallText("others", "notVeryEffective");
-                        break;
-                    case 0:
-                        addSmallText("others", "noEffect", {
-                            "pokemon": [getName(getPkmn(false), false, true)],
-                            "isEnemy": Number(!playerToMove) != viewpoint
-                        });
-                }
-                totalDmg += Math.min(dmg, getPkmn(false).hp);
-                if (isCrit) {
-                    totalDmg += Math.min(dmg, getPkmn(false).hp);
-                    addSmallText("others", "crit");
-                }
-                $("roco kingdom", () => {
-                    totalDmg *= (1 - getPkmn(false).dmgDeduction);
+function attack(move, preAttackInfo) {
+    let k = getMoveStats(move);
+    let criticalHitRatioMultiplier = 1;
+    let preCritEffect;
+    let substitutePreDmg = (getPkmn(false).substituteHp > 0);
+    if (k.preCritEffect) {
+        preCritEffect = k.preCritEffect({
+            "preAttackInfo": preAttackInfo
+        });
+        $("roco kingdom", () => {
+            if (RK_TACKLE_CAT[getPkmn(false).getTempMoveStats(getPkmn(false).moveThisTurn, "cat")] == getMoveStats(move).tackle.cat) {
+                getMoveStats(move).tackle.effect({
+                    "preAttackInfo": preAttackInfo
                 });
-                dealDmg(false, totalDmg);
-                getPkmn(false).dmgTaken.push(totalDmg);
-                getPkmn(false).lastDmgTakenType = k.type;
             }
-            let effect;
-            if (k.effect)
-                effect = k.effect({
-                    "totalDmg": totalDmg,
-                    "substitutePreDmg": substitutePreDmg,
-                    "preCritReturn": preCritEffect
-                });
-            $("roco kingdom", () => {
-                if (RK_TACKLE_CAT[getPkmn(false).getTempMoveStats(getPkmn(false).moveThisTurn, "cat")] == getMoveStats(k).tackle.cat) {
-                    getMoveStats(k).tackle.effect({
-                        "effectReturn": effect
-                    });
-                }
-            });
-            if (getPkmn(false)?.tempEffect.rage.turns > 0) {
-                addSmallText("others", "rageBuilding", {
+        });
+    }
+    if (preCritEffect?.isHighCritRatio)
+        criticalHitRatioMultiplier = 8;
+    if (arguments[1]?.forceCrit)
+        criticalHitRatioMultiplier = Infinity;
+    let isCrit = (Math.random() < criticalHitRatioMultiplier * getPkmn(true).critProbMultiplier * getStats(getPkmn(true).name).spe / 512);
+    let dmg = 0, totalDmg = 0;
+    $("pokemon", () => {
+        if (k.cat == "physical")
+            dmg = calculateDmg(k.power, getAttack(true), getDefense(false, isCrit), getPkmn(true).lv, k.type, getType(false), getType(true));
+        else
+            dmg = calculateDmg(k.power, getSp(true, isCrit), getSp(false, isCrit), getPkmn(true).lv, k.type, getType(false), getType(true));
+    });
+    $("roco kingdom", () => {
+        if (k.cat == "physical")
+            dmg = calculateDmgRk(k.power, getAttack(true), getDefense(false, isCrit), k.type, getType(false), getType(true));
+        else
+            dmg = calculateDmgRk(k.power, getPkmn(true).spa, getPkmn(false).spd, k.type, getType(false), getType(true));
+    });
+    if (k.cat == "physical" || k.cat == "special") {
+        switch (calculateEffectiveness(k.type, getType(false))) {
+            case 4:
+            case 2:
+                addSmallText("others", "superEffective");
+                break;
+            case 0.5:
+            case 0.25:
+                addSmallText("others", "notVeryEffective");
+                break;
+            case 0:
+                addSmallText("others", "noEffect", {
                     "pokemon": [getName(getPkmn(false), false, true)],
                     "isEnemy": Number(!playerToMove) != viewpoint
                 });
-                modifyStats(false, "atk", 1, 1);
-            }
-            return effect;
         }
+        totalDmg += Math.min(dmg, getPkmn(false).hp);
+        if (isCrit) {
+            totalDmg += Math.min(dmg, getPkmn(false).hp);
+            addSmallText("others", "crit");
+        }
+        $("roco kingdom", () => {
+            totalDmg *= (1 - getPkmn(false).dmgDeduction);
+        });
+        dealDmg(false, totalDmg);
+        getPkmn(false).dmgTaken.push(totalDmg);
+        getPkmn(false).lastDmgTakenType = k.type;
+    }
+    let effect;
+    if (k.effect)
+        effect = k.effect({
+            "totalDmg": totalDmg,
+            "substitutePreDmg": substitutePreDmg,
+            "preCritReturn": preCritEffect
+        });
+    $("roco kingdom", () => {
+        if (RK_TACKLE_CAT[getPkmn(false).getTempMoveStats(getPkmn(false).moveThisTurn, "cat")] == getMoveStats(move).tackle.cat) {
+            getMoveStats(move).tackle.effect({
+                "effectReturn": effect
+            });
+        }
+    });
+    if (getPkmn(false)?.tempEffect.rage.turns > 0) {
+        addSmallText("others", "rageBuilding", {
+            "pokemon": [getName(getPkmn(false), false, true)],
+            "isEnemy": Number(!playerToMove) != viewpoint
+        });
+        modifyStats(false, "atk", 1, 1);
+    }
+    return effect;
 }
 function refreshPlayerToMove(ptm) {
     playerToMove = ptm;
@@ -1826,7 +1858,7 @@ function renderHP(info = battleInfo) {
     document.getElementById("p2Status").innerHTML = "";
     for (let i of [0, 1])
         if (info[Number(i != viewpoint)].currentPokemon != -1) {
-            insertEffects(info[Number(i != viewpoint)].build[info[Number(i != viewpoint)].currentPokemon], document.getElementById(`p${i + 1}Status`), false);
+            addEffectBadges(info[Number(i != viewpoint)].build[info[Number(i != viewpoint)].currentPokemon], document.getElementById(`p${i + 1}Status`), false);
         }
     refreshBalls(info);
 }
@@ -1952,22 +1984,6 @@ function putToSleep(isSelf, turns) {
         "pokemon": [getName(getPkmn(isSelf), false, true)],
         "isEnemy": ((viewpoint == -1) ? !isSelf : (Number(Number(isSelf) == playerToMove) != viewpoint))
     });
-}
-function addTempEffect(isSelf, effect, { turns = Infinity, prob = 1, layers = 1 } = {}) {
-    if (Math.random() < prob) {
-        getPkmn(isSelf).tempEffect[effect].turns = turns;
-        getPkmn(isSelf).tempEffect[effect].layers = layers;
-        if (effect == "confused")
-            addSmallText("others", "becomeConfused", {
-                "pokemon": [getName(getPkmn(isSelf), false, true)],
-                "isEnemy": ((viewpoint == -1) ? !isSelf : (Number(Number(isSelf) == playerToMove) != viewpoint))
-            });
-        else if (effect == "reflect" || effect == "light screen")
-            addSmallText("others", "gainArmor", {
-                "pokemon": [getName(getPkmn(isSelf), false, true)],
-                "isEnemy": ((viewpoint == -1) ? !isSelf : (Number(Number(isSelf) == playerToMove) != viewpoint))
-            });
-    }
 }
 function refreshLang() {
     for (let i of document.querySelectorAll("[data-transl-cat]")) {

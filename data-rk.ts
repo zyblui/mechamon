@@ -4569,7 +4569,10 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "status",
     "cost": 3,
     "power": 0,
-    "desc": "敌方获得1层寄生。"
+    "desc": "敌方获得1层寄生。",
+    "effect": function () {
+        getPkmn(false).addTempEffect("寄生", { layers: 1 });
+    }
 }, {
     "name": "仙人掌刺击",
     "type": "grass",
@@ -4672,14 +4675,13 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "physical",
     "cost": 1,
     "power": 35,
-    "desc": "造成物伤，应对状态：本次技能威力变为4倍。",
     "tackle": {
         "cat": "status",
         "preCritEffect": function () {
-
+            getPkmn(true).moveStats["闪燃"].power = 4 * getPkmn(true).getTempMoveStats("闪燃", "power");
         },
         "effect": function () {
-
+            getPkmn(true).moveStats["闪燃"].power = getPkmn(true).getTempMoveStats("闪燃", "power") / 4;
         }
     }
 }, {
@@ -4848,8 +4850,7 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "physical",
     "cost": 3,
     "power": 140,
-    "priority": -1,
-    "desc": "造成物理伤害，先手-1。"
+    "priority": -1
 }, {
     "name": "水光冲击",
     "type": "water",
@@ -4980,7 +4981,7 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "physical",
     "cost": 2,
     "power": 55,
-    "desc": "造成物理伤害，先手+1。"
+    "priority": 1
 }, {
     "name": "乘风",
     "type": "flying",
@@ -5137,7 +5138,10 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "status",
     "cost": 3,
     "power": 0,
-    "desc": "自己获得物防 + 140% 和速度 - 30。"
+    "desc": "自己获得物防 + 140% 和速度 - 30。",
+    /*"effect": function () {
+        getPkmn(true).defMultiplier += 1.4;
+    }*/
 }, {
     "name": "落石",
     "type": "ground",
@@ -5167,7 +5171,7 @@ const RK_SKILLS: RkSkill[] = [{
     "power": 50,
     "desc": "造成物伤，敌方 2 回合无法更换精灵。",
     "effect": function () {
-        addTempEffect(false, "stoneLock", { "turns": 2 });
+        getPkmn(false).addTempEffect("stoneLock", { "turns": 2 });
     }
 }, {
     "name": "遁地",
@@ -5213,7 +5217,12 @@ const RK_SKILLS: RkSkill[] = [{
     "cost": 3,
     "power": 0,
     "dmgDeduction": 0.7,
-    "desc": "减伤 70%，应对攻击：敌方获得物攻 - 50%。"
+    "tackle": {
+        "cat": "attack",
+        "effect": function () {
+            getPkmn(false).atkMultiplier = Math.max(0, getPkmn(false).atkMultiplier - 0.5);
+        }
+    }
 }, {
     "name": "跺地",
     "type": "ground",
@@ -5233,7 +5242,9 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "status",
     "cost": 4,
     "power": 0,
-    "desc": "自己获得1层蓄势印记。"
+    "effect": function () {
+        addMark(playerToMove, "蓄势印记", 1);
+    }
 }, {
     "name": "壁垒",
     "type": "ground",
@@ -5377,7 +5388,15 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "status",
     "cost": 2,
     "power": 0,
-    "desc": "驱散敌方印记，每层印记回复自己10%生命。"
+    "effect": function () {
+        let marks = battleInfo[Number(!playerToMove)].marks;
+        let totalLayers = marks.positive.layers + marks.negative.layers;
+        marks.positive.name = "";
+        marks.positive.layers = 0;
+        marks.negative.name = "";
+        marks.negative.layers = 0;
+        getPkmn(true).hp = Math.min(getPkmn(true).maxHp, getPkmn(true).hp + getPkmn(true).maxHp * 0.1 * totalLayers);
+    }
 }, {
     "name": "超级糖果",
     "type": "cute",
@@ -5447,7 +5466,12 @@ const RK_SKILLS: RkSkill[] = [{
     "cost": 2,
     "power": 0,
     "dmgDeduction": 0.7,
-    "desc": "减伤70%，应对攻击：自己获得魔防+40%。"
+    "tackle": {
+        "cat": "attack",
+        "effect": function () {
+            getPkmn(true).spdMultiplier += 0.4;
+        }
+    }
 }, {
     "name": "花香",
     "type": "grass",
@@ -5498,7 +5522,9 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "status",
     "cost": 3,
     "power": 0,
-    "desc": "自己获得魔防+170%。"
+    "effect": function () {
+        getPkmn(true).spdMultiplier += 1.7;
+    }
 }, {
     "name": "践踏",
     "type": "normal",
@@ -5574,7 +5600,12 @@ const RK_SKILLS: RkSkill[] = [{
     "cost": 2,
     "power": 0,
     "dmgDeduction": 0.7,
-    "desc": "减伤70%，应对攻击：自己获得物防+40%。"
+    "tackle": {
+        "cat": "defense",
+        "effect": function () {
+            getPkmn(true).defMultiplier += 0.4;
+        }
+    }
 }, {
     "name": "顶端优势",
     "type": "grass",
@@ -5587,7 +5618,11 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "status",
     "cost": 3,
     "power": 0,
-    "desc": "为场下每个精灵回复3能量。"
+    "effect": function () {
+        for (let i = 0; i < 6; i++) if (i != battleInfo[playerToMove].currentPokemon && battleInfo[playerToMove].build[i].hp > 0) {
+            battleInfo[playerToMove].build[i].energy = Math.min(battleInfo[playerToMove].build[i].energy + 3, 10);
+        }
+    }
 }, {
     "name": "花炮",
     "type": "grass",
@@ -5608,13 +5643,17 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "status",
     "cost": 2,
     "power": 0,
-    "desc": "敌方获得1层棘刺印记。"
+    "desc": "敌方获得1层棘刺印记。",
+    "effect": function () {
+        addMark(Number(!playerToMove), "棘刺印记", 1);
+    }
 }, {
     "name": "天旋地转",
     "type": "normal",
     "cat": "physical",
     "cost": 3,
     "power": 60,
+    "priority": 1,
     "desc": "造成物理伤害，先手+1，迸发：本次技能威力+30。"
 }, {
     "name": "主场优势",
@@ -5622,7 +5661,9 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "status",
     "cost": 3,
     "power": 0,
-    "desc": "自己获得1层攻击印记。"
+    "effect": function () {
+        addMark(playerToMove, "攻击印记", 1);
+    }
 }, {
     "name": "孢子爆散",
     "type": "grass",
@@ -5636,7 +5677,10 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "status",
     "cost": 2,
     "power": 0,
-    "desc": "敌方获得10层灼烧。"
+    "desc": "敌方获得10层灼烧。",
+    "effect": function () {
+        getPkmn(false).addTempEffect("burned", { layers: 10 });
+    }
 }, {
     "name": "流星火雨",
     "type": "fire",
@@ -5857,7 +5901,9 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "physical",
     "cost": 3,
     "power": 90,
-    "desc": "造成物伤。每次使用后，本技能威力永久+45。"
+    "effect": function () {
+        getPkmn(true).moveStats["迫近攻击"].power = 45 + getPkmn(true).getTempMoveStats("迫近攻击", "power");
+    }
 }, {
     "name": "移花接木",
     "type": "grass",
@@ -5906,7 +5952,15 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "physical",
     "cost": 3,
     "power": 85,
-    "desc": "造成物伤，应对状态：本次技能威力变为3倍。"
+    "tackle": {
+        "cat": "status",
+        "preCritEffect": function () {
+            getPkmn(true).moveStats["偷袭"].power = 3 * getPkmn(true).getTempMoveStats("偷袭", "power");
+        },
+        "effect": function () {
+            getPkmn(true).moveStats["偷袭"].power = getPkmn(true).getTempMoveStats("偷袭", "power") / 3;
+        }
+    }
 }, {
     "name": "毒沼",
     "type": "poison",
@@ -6099,21 +6153,40 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "status",
     "cost": 2,
     "power": 0,
-    "desc": "自己回复25%生命，应对防御：改为回复50%生命。"
+    "effect": function () {
+        getPkmn(true).hp = Math.min(getPkmn(true).maxHp, getPkmn(true).hp + getPkmn(true).maxHp * 0.25);
+    },
+    "tackle": {
+        "cat": "defense",
+        "effect": function () {
+            getPkmn(true).hp = Math.min(getPkmn(true).maxHp, getPkmn(true).hp + getPkmn(true).maxHp * 0.25);
+        }
+    }
 }, {
     "name": "技巧打击",
     "type": "fighting",
     "cat": "physical",
     "cost": 2,
     "power": 35,
-    "desc": "造成物伤，应对状态：本次技能威力变为10倍。"
+    "tackle": {
+        "cat": "status",
+        "preCritEffect": function () {
+            getPkmn(true).moveStats["技巧打击"].power = 10 * getPkmn(true).getTempMoveStats("技巧打击", "power");
+        },
+        "effect": function () {
+            getPkmn(true).moveStats["技巧打击"].power = getPkmn(true).getTempMoveStats("技巧打击", "power") / 10;
+        }
+    }
 }, {
     "name": "蓄水",
     "type": "water",
     "cat": "status",
     "cost": 1,
     "power": 0,
-    "desc": "下次使用的技能能耗-6。"
+    "desc": "下次使用的技能能耗-6。",
+    "effect": function () {
+        getPkmn(true).addTempEffect("蓄水", { turns: 1 });
+    }
 }, {
     "name": "盐水浴",
     "type": "water",
@@ -6200,7 +6273,9 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "special",
     "cost": 0,
     "power": 30,
-    "desc": "造成魔伤，自己回复1能量。"
+    "effect": function () {
+        getPkmn(true).energy = Math.min(10, getPkmn(true).energy + 1);
+    }
 }, {
     "name": "鸣叫",
     "type": "flying",
@@ -6282,6 +6357,7 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "status",
     "cost": 1,
     "power": 0,
+    "priority": 1,
     "desc": "若敌方本回合回复生命，改为失去2倍。先手+1。"
 }, {
     "name": "黑手",
@@ -6317,6 +6393,7 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "status",
     "cost": 1,
     "power": 0,
+    "priority": -1,
     "desc": "敌方和自己均脱离，先手-1。"
 }, {
     "name": "风墙",

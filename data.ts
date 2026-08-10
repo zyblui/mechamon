@@ -304,7 +304,7 @@ const MOVES: PkmnMove[] = [{
     "pp": 10,
     "priority": 0,
     "effect": function () {
-        addTempEffect(false, "confused", { turns: 1 + Math.ceil(Math.random() * 4) });
+        getPkmn(false).addTempEffect( "confused", { turns: 1 + Math.ceil(Math.random() * 4) });
     }
 }, {
     "name": "confusion",
@@ -315,7 +315,7 @@ const MOVES: PkmnMove[] = [{
     "pp": 25,
     "priority": 0,
     "effect": function () {
-        addTempEffect(false, "confused", { turns: 1 + Math.ceil(Math.random() * 4), prob: 0.1 });
+        getPkmn(false).addTempEffect( "confused", { turns: 1 + Math.ceil(Math.random() * 4), prob: 0.1 });
     }
 }, {
     "name": "constrict",
@@ -393,7 +393,7 @@ const MOVES: PkmnMove[] = [{
     "priority": 0,
     "preDmgEffect": function () {
         charge("dig", 1);
-        addTempEffect(true, "semiInvulnerable", { turns: 1 });
+        getPkmn(true).addTempEffect( "semiInvulnerable", { turns: 1 });
         addSmallText("others", "digHole", {
             "pokemon": [getName(getPkmn(true), false, true)],
             "isEnemy": playerToMove != viewpoint
@@ -637,7 +637,7 @@ const MOVES: PkmnMove[] = [{
     "priority": 0,
     "preDmgEffect": function () {
         charge("fly", 1);
-        addTempEffect(true, "semiInvulnerable", { turns: 1 });
+        getPkmn(true).addTempEffect( "semiInvulnerable", { turns: 1 });
         addSmallText("others", "flyHigh", {
             "pokemon": [getName(getPkmn(true), false, true)],
             "isEnemy": playerToMove != viewpoint
@@ -927,7 +927,7 @@ const MOVES: PkmnMove[] = [{
     "pp": 10,
     "priority": 0,
     "effect": function () {
-        if (!getType(false).includes("grass")) addTempEffect(false, "leech seed");
+        if (!getType(false).includes("grass")) getPkmn(false).addTempEffect( "leech seed");
     }
 }, {
     "name": "leer",
@@ -960,7 +960,7 @@ const MOVES: PkmnMove[] = [{
     "pp": 30,
     "priority": 0,
     "effect": function () {
-        addTempEffect(true, "light screen");
+        getPkmn(true).addTempEffect( "light screen");
     }
 }, {
     "name": "lovely kiss",
@@ -1082,7 +1082,7 @@ const MOVES: PkmnMove[] = [{
     "pp": 30,
     "priority": 0,
     "effect": function () {
-        addTempEffect(true, "mist");
+        getPkmn(true).addTempEffect( "mist");
     }
 }, {
     "name": "night shade",
@@ -1125,12 +1125,12 @@ const MOVES: PkmnMove[] = [{
         if (Math.random() < 0.5) {
             setUncontrollable(true, "petal dance", 2);
             setDelay(true, function () {
-                addTempEffect(true, "confused");
+                getPkmn(true).addTempEffect( "confused");
             }, 2);
         } else {
             setUncontrollable(true, "petal dance", 3);
             setDelay(true, function () {
-                addTempEffect(true, "confused");
+                getPkmn(true).addTempEffect( "confused");
             }, 3);
         }
     }
@@ -1201,7 +1201,7 @@ const MOVES: PkmnMove[] = [{
     "pp": 20,
     "priority": 0,
     "effect": function () {
-        addTempEffect(false, "confused", { turns: 1 + Math.ceil(Math.random() * 4), prob: 0.1 });
+        getPkmn(false).addTempEffect( "confused", { turns: 1 + Math.ceil(Math.random() * 4), prob: 0.1 });
     }
 }, {
     "name": "psychic",
@@ -1242,7 +1242,7 @@ const MOVES: PkmnMove[] = [{
     "pp": 20,
     "priority": 0,
     "effect": function () {
-        addTempEffect(true, "rage");
+        getPkmn(true).addTempEffect( "rage");
         setUncontrollable(true, "rage", Infinity);
     }
 }, {
@@ -1294,7 +1294,7 @@ const MOVES: PkmnMove[] = [{
     "pp": 20,
     "priority": 0,
     "effect": function () {
-        addTempEffect(true, "reflect");
+        getPkmn(true).addTempEffect( "reflect");
     }
 }, {
     "name": "rest",
@@ -1692,7 +1692,7 @@ const MOVES: PkmnMove[] = [{
     "pp": 20,
     "priority": 0,
     "effect": function () {
-        addTempEffect(false, "confused", { turns: 1 + Math.ceil(Math.random() * 4), prob: 1 });
+        getPkmn(false).addTempEffect( "confused", { turns: 1 + Math.ceil(Math.random() * 4), prob: 1 });
     }
 }, {
     "name": "surf",
@@ -1778,13 +1778,13 @@ const MOVES: PkmnMove[] = [{
             setUncontrollable(true, "thrash", 2);
             setUncontrollable(false, "", 2);
             setDelay(true, function () {
-                addTempEffect(true, "confused");
+                getPkmn(true).addTempEffect( "confused");
             }, 2);
         } else {
             setUncontrollable(true, "thrash", 3);
             setUncontrollable(false, "", 3);
             setDelay(true, function () {
-                addTempEffect(true, "confused");
+                getPkmn(true).addTempEffect( "confused");
             }, 3);
         }
     }
