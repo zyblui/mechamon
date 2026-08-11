@@ -1,8 +1,4 @@
 "use strict";
-class TempEffectValue {
-    turns = 0;
-    layers = 0;
-}
 class MonInstanceTemplate {
     modeName = "";
     playerNo;
@@ -28,13 +24,13 @@ class MonInstanceTemplate {
         isCrit: false
     };
     tempEffect = {
-        "confused": new TempEffectValue(),
-        "semiInvulnerable": new TempEffectValue(),
-        "rage": new TempEffectValue(),
-        "reflect": new TempEffectValue(),
-        "light screen": new TempEffectValue(),
-        "mist": new TempEffectValue(),
-        "leech seed": new TempEffectValue()
+        "confused": 0,
+        "semiInvulnerable": 0,
+        "rage": 0,
+        "reflect": 0,
+        "light screen": 0,
+        "mist": 0,
+        "leech seed": 0
     };
     delay = [];
     sleepTurns = 0;
@@ -77,12 +73,9 @@ class MonInstanceTemplate {
         if (settings.mode == this.modeName)
             func();
     }
-    addTempEffect(effect, { turns = Infinity, prob = 1, layers = 1 } = {}) {
+    addTempEffect(effect, { turns = Infinity, prob = 1 } = {}) {
         if (Math.random() < prob) {
-            if (!this.tempEffect[effect])
-                this.tempEffect[effect] = new TempEffectValue();
-            this.tempEffect[effect].turns = turns;
-            this.tempEffect[effect].layers = layers;
+            this.tempEffect[effect] = turns;
             let isEnemy = ((viewpoint == -1) ? !(this.playerNo == playerToMove) : (this.playerNo != viewpoint));
             if (effect == "confused")
                 addSmallText("others", "becomeConfused", {
@@ -121,6 +114,10 @@ class RkPetInstance extends MonInstanceTemplate {
     };
     dmgDeduction = 0;
     moveThisTurn = "";
+    rkEffect = {
+        "burned": 0,
+        "poisoned": 0
+    };
     constructor(mon, playerNo) {
         let monStats = getStats(mon.name);
         let maxHp = Math.round(Math.round(monStats.hp * 1.7 + Number(mon.dvActive.has("hp")) * mon.dv.hp * 0.85 + 70) + 100);
@@ -135,6 +132,12 @@ class RkPetInstance extends MonInstanceTemplate {
             this[this.nature.decrease] *= 0.9;
         }
         //rk effect
+    }
+    addRkEffect(name, layers) {
+        if (this.rkEffect[name])
+            this.rkEffect[name] += layers;
+        else
+            this.rkEffect[name] = layers;
     }
 }
 let MonInstance = PkmnInstance;
@@ -498,7 +501,7 @@ let nextPlayerEffect = [{
         }
     }, {
         "name": "confused",
-        "condition": function () { return getPkmn(true).tempEffect.confused.turns > 0; },
+        "condition": function () { return getPkmn(true).tempEffect.confused > 0; },
         "exclude": "slp",
         "effect": function () {
             addSmallText("others", "confused", {
@@ -1163,8 +1166,7 @@ function addSmallText(...args) {
 function sendOutPkmn(pkmn) {
     if (getPkmn(true)) {
         for (let j in getPkmn(true).tempEffect) {
-            getPkmn(true).tempEffect[j].turns = 0;
-            getPkmn(true).tempEffect[j].layers = 0;
+            getPkmn(true).tempEffect[j] = 0;
         }
         getPkmn(true).mimicMove = "";
         getPkmn(true).tempType = [];
@@ -1307,7 +1309,7 @@ function addEffectBadges(pkmn, outputArea, showFull) {
         $("roco kingdom", () => insertPropertyMod(Number(pkmn.valueMultiplier[j].toFixed(2)), 1, Number(pkmn.valueMultiplier[j].toFixed(2)), outputArea, showFull, j));
     }
     for (let j in pkmn.tempEffect) {
-        if (pkmn.tempEffect[j]?.turns) {
+        if (pkmn.tempEffect[j]) {
             let tempEffectSpan = document.createElement("span");
             tempEffectSpan.innerText = "[" + ((showFull) ? getL10n("tempEffects", j).toUpperCase() : getL10n("tempEffects", j)) + "]";
             tempEffectSpan.classList.add("debuff");
@@ -1406,14 +1408,14 @@ function getDefense(isSelf, isCrit) {
     if (isCrit)
         return getPkmn(isSelf).def * STAGE_MULTIPLIER[getPkmn(isSelf).defStage];
     else
-        return getPkmn(isSelf).def * STAGE_MULTIPLIER[getPkmn(isSelf).defStage] * ((getPkmn(isSelf).tempEffect.reflect.turns) ? 2 : 1);
+        return getPkmn(isSelf).def * STAGE_MULTIPLIER[getPkmn(isSelf).defStage] * ((getPkmn(isSelf).tempEffect.reflect) ? 2 : 1);
 }
 function getSp(isSelf, isCrit) {
     if (isCrit)
         return getPkmn(isSelf).sp * STAGE_MULTIPLIER[getPkmn(isSelf).spStage];
     else
         return getPkmn(isSelf).sp * STAGE_MULTIPLIER[getPkmn(isSelf).spStage] * ((getPkmn(isSelf)
-            .tempEffect["light screen"].turns) ? 2 : 1);
+            .tempEffect["light screen"]) ? 2 : 1);
 }
 function sortAttackFn(a, b) {
     if (b.type == "switch" && a.type == "move")
@@ -1458,8 +1460,8 @@ function nextTurn() {
     attacks.sort(sortAttackFn);
     for (let i of [true, false]) {
         for (let index in getPkmn(i).tempEffect) {
-            if (getPkmn(i).tempEffect[index].turns > 0)
-                getPkmn(i).tempEffect[index].turns--;
+            if (getPkmn(i).tempEffect[index] > 0)
+                getPkmn(i).tempEffect[index]--;
         }
     }
     $("roco kingdom", () => {
@@ -1494,77 +1496,70 @@ function nextTurn() {
             getPkmn(true).energy -= getPkmn(true).getTempMoveStats(i.move, "cost");
         });
         if (i.dirAttack) {
-            attack(i.move, {
-                "attackOrder": attackOrder
-            });
+            attack(i.move);
             judgeHP();
             continue;
         }
         getPkmn(true).lastMoveUsed = i.move;
-        for (let k of $("moves"))
-            if (k.name == i.move) {
-                if (k.dmgDeduction)
-                    getPkmn(true).dmgDeduction = k.dmgDeduction;
-                let effect;
-                if (k.cat != "status" && Math.random() > k.acc * ACC_STAGE_MULTIPLIER[getPkmn(true).accStage] *
-                    ACC_STAGE_MULTIPLIER[getPkmn(false).evaStage] / 100) {
-                    addSmallText("others", "attackMiss", {
-                        "pokemon": [getName(getPkmn(true), false, true)],
-                        "isEnemy": playerToMove != viewpoint
-                    });
-                    if (k.missEffect)
-                        k.missEffect();
-                }
-                else {
-                    let preDmgEffect = {};
-                    if (k.preDmgEffect)
-                        preDmgEffect = k.preDmgEffect();
-                    if (getPkmn(true).charge.turns > 0) {
-                        continue outer;
-                    }
-                    if (getPkmn(false).tempEffect.semiInvulnerable.turns > 0 && !preDmgEffect.nullifySemiInvulnerable)
-                        break;
-                    effect = attack(k.name, {
-                        "attackOrder": attackOrder
-                    });
-                }
-                if (getPkmn(true)?.status == "psn")
-                    dealDmg(true, getPkmn(true).maxHp / 16, { ignoreSubstitute: true });
-                else if (getPkmn(true)?.status == "tox") {
-                    dealDmg(true, getPkmn(true).maxHp * getPkmn(true).toxicCounter / 16, { ignoreSubstitute: true });
-                    getPkmn(true).toxicCounter++;
-                }
-                if (getPkmn(true)?.tempEffect["leech seed"].turns > 0) {
-                    if (getPkmn(true).status == "tox") {
-                        dealDmg(true, getPkmn(true).maxHp * getPkmn(true).toxicCounter / 16, { ignoreSubstitute: true });
-                        getPkmn(true).toxicCounter++;
-                    }
-                    else
-                        dealDmg(true, getPkmn(true).maxHp / 16, { ignoreSubstitute: true });
-                }
-                getPkmn(true).revealedMoves.add(k.name);
-                judgeHP();
-                if (getPkmn(true)) {
-                    $("pokemon", () => {
-                        getPkmn(true).moves[k.name]--;
-                        let outOfMoves = true;
-                        for (let m in getPkmn(true).moves) {
-                            if (getPkmn(true).moves[m])
-                                outOfMoves = false;
-                        }
-                        if (outOfMoves)
-                            setUncontrollable(true, "struggle", Infinity);
-                    });
-                    if (effect?.flinch) {
-                        nextTurn();
-                    }
-                    else
-                        continue outer;
-                }
-                else
-                    refreshSequence();
-                break;
+        let k = getMoveStats(i.move);
+        if (k.dmgDeduction)
+            getPkmn(true).dmgDeduction = k.dmgDeduction;
+        let effect;
+        if (k.cat != "status" && Math.random() > k.acc * ACC_STAGE_MULTIPLIER[getPkmn(true).accStage] *
+            ACC_STAGE_MULTIPLIER[getPkmn(false).evaStage] / 100) {
+            addSmallText("others", "attackMiss", {
+                "pokemon": [getName(getPkmn(true), false, true)],
+                "isEnemy": playerToMove != viewpoint
+            });
+            if (k.missEffect)
+                k.missEffect();
+        }
+        else {
+            let preDmgEffect = {};
+            if (k.preDmgEffect)
+                preDmgEffect = k.preDmgEffect();
+            if (getPkmn(true).charge.turns > 0) {
+                continue outer;
             }
+            if (getPkmn(false).tempEffect.semiInvulnerable > 0 && !preDmgEffect.nullifySemiInvulnerable)
+                break;
+            effect = attack(k.name);
+        }
+        if (getPkmn(true)?.status == "psn")
+            dealDmg(true, getPkmn(true).maxHp / 16, { ignoreSubstitute: true });
+        else if (getPkmn(true)?.status == "tox") {
+            dealDmg(true, getPkmn(true).maxHp * getPkmn(true).toxicCounter / 16, { ignoreSubstitute: true });
+            getPkmn(true).toxicCounter++;
+        }
+        if (getPkmn(true)?.tempEffect["leech seed"] > 0) {
+            if (getPkmn(true).status == "tox") {
+                dealDmg(true, getPkmn(true).maxHp * getPkmn(true).toxicCounter / 16, { ignoreSubstitute: true });
+                getPkmn(true).toxicCounter++;
+            }
+            else
+                dealDmg(true, getPkmn(true).maxHp / 16, { ignoreSubstitute: true });
+        }
+        getPkmn(true).revealedMoves.add(k.name);
+        judgeHP();
+        if (getPkmn(true)) {
+            $("pokemon", () => {
+                getPkmn(true).moves[k.name]--;
+                let outOfMoves = true;
+                for (let m in getPkmn(true).moves) {
+                    if (getPkmn(true).moves[m])
+                        outOfMoves = false;
+                }
+                if (outOfMoves)
+                    setUncontrollable(true, "struggle", Infinity);
+            });
+            if (effect?.flinch) {
+                nextTurn();
+            }
+            else
+                continue outer;
+        }
+        else
+            refreshSequence();
     }
     attacks = [];
     for (let i of [true, false])
@@ -1670,20 +1665,16 @@ function getName(pkmn, showSpeciesName, returnArr) {
     else
         return getL10n(...arr);
 }
-function attack(move, preAttackInfo) {
+function attack(move) {
     let k = getMoveStats(move);
     let criticalHitRatioMultiplier = 1;
     let preCritEffect;
     let substitutePreDmg = (getPkmn(false).substituteHp > 0);
     if (k.preCritEffect) {
-        preCritEffect = k.preCritEffect({
-            "preAttackInfo": preAttackInfo
-        });
+        preCritEffect = k.preCritEffect();
         $("roco kingdom", () => {
             if (RK_TACKLE_CAT[getPkmn(false).getTempMoveStats(getPkmn(false).moveThisTurn, "cat")] == getMoveStats(move).tackle.cat) {
-                getMoveStats(move).tackle.effect({
-                    "preAttackInfo": preAttackInfo
-                });
+                getMoveStats(move).tackle.preCritEffect();
             }
         });
     }
@@ -1747,7 +1738,11 @@ function attack(move, preAttackInfo) {
             });
         }
     });
-    if (getPkmn(false)?.tempEffect.rage.turns > 0) {
+    for (let i in getPkmn(true).moves) {
+        if (getMoveStats(i).passiveEffect)
+            getMoveStats(i).passiveEffect();
+    }
+    if (getPkmn(false)?.tempEffect.rage > 0) {
         addSmallText("others", "rageBuilding", {
             "pokemon": [getName(getPkmn(false), false, true)],
             "isEnemy": Number(!playerToMove) != viewpoint
@@ -1916,7 +1911,7 @@ function renderTable() {
         document.getElementById("startGame").disabled = true;
 }
 function modifyStats(isSelf, stat, delta, prob) {
-    if (getPkmn(isSelf).tempEffect.mist.turns > 0 && delta < 0)
+    if (getPkmn(isSelf).tempEffect.mist > 0 && delta < 0)
         return;
     let rand = Math.random();
     if (rand < prob && getPkmn(isSelf)[stat + "Stage"] + delta >= -6 && getPkmn(isSelf)[stat + "Stage"] + delta <= 6) {

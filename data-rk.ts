@@ -4452,7 +4452,13 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "status",
     "cost": 3,
     "power": 60,
-    "desc": "造成魔伤，每使用过1个其他系别技能，本技能威力永久+30。"
+    "passiveEffect": function () {
+        for (let i of attacks) if (i.user == playerToMove && i.type == "move") {
+            if (getPkmn(true).getTempMoveStats(i.move, "type") != "light") {
+                getPkmn(true).moveStats["过曝"].power = getPkmn(true).getTempMoveStats("过曝", "power") + 30;
+            }
+        }
+    }
 }, {
     "name": "光刃",
     "type": "light",
@@ -4571,7 +4577,7 @@ const RK_SKILLS: RkSkill[] = [{
     "power": 0,
     "desc": "敌方获得1层寄生。",
     "effect": function () {
-        getPkmn(false).addTempEffect("寄生", { layers: 1 });
+        getPkmn(false).addRkEffect("寄生", 1);
     }
 }, {
     "name": "仙人掌刺击",
@@ -4605,7 +4611,13 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "special",
     "cost": 7,
     "power": 100,
-    "desc": "造成魔伤，每次使用其他草系技能后，本技能威力永久+60。"
+    "passiveEffect": function () {
+        for (let i of attacks) if (i.user == playerToMove && i.type == "move") {
+            if (getPkmn(true).getTempMoveStats(i.move, "type") == "grass" && i.move != "光能聚集") {
+                getPkmn(true).moveStats["光能聚集"].power = getPkmn(true).getTempMoveStats("光能聚集", "power") + 60;
+            }
+        }
+    }
 }, {
     "name": "火苗",
     "type": "fire",
@@ -4690,7 +4702,13 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "physical",
     "cost": 3,
     "power": 15,
-    "desc": "造成物伤，每使用1次其他火系技能，本技能威力永久翻倍。"
+    "passiveEffect": function () {
+        for (let i of attacks) if (i.user == playerToMove && i.type == "move") {
+            if (getPkmn(true).getTempMoveStats(i.move, "type") == "fire" && i.move != "山火") {
+                getPkmn(true).moveStats["山火"].power = getPkmn(true).getTempMoveStats("山火", "power") * 2;
+            }
+        }
+    }
 }, {
     "name": "拍击",
     "type": "normal",
@@ -4719,14 +4737,21 @@ const RK_SKILLS: RkSkill[] = [{
     "cost": 2,
     "power": 0,
     "dmgDeduction": 0.7,
-    "desc": "减伤70%，应对攻击：自己获得魔攻+40%。"
+    "tackle": {
+        "cat": "attack",
+        "effect": function () {
+            getPkmn(true).spaMultiplier += 0.4;
+        }
+    }
 }, {
     "name": "水炮",
     "type": "water",
     "cat": "special",
     "cost": 5,
     "power": 110,
-    "desc": "造成魔伤，每次使用后，本技能能耗永久-1。"
+    "effect": function () {
+        getPkmn(true).moveStats["水炮"].cost = Math.max(0, getPkmn(true).getTempMoveStats("水炮", "cost") - 1);
+    }
 }, {
     "name": "洗礼",
     "type": "water",
@@ -4776,7 +4801,12 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "special",
     "cost": 7,
     "power": 150,
-    "desc": "造成魔伤，应对状态：本技能能耗永久-6。"
+    "tackle": {
+        "cat": "status",
+        "effect": function () {
+            getPkmn(true).moveStats["天洪"].cost = Math.max(0, getPkmn(true).getTempMoveStats("天洪", "cost") - 6);
+        }
+    }
 }, {
     "name": "旋转突击",
     "type": "normal",
@@ -4864,7 +4894,14 @@ const RK_SKILLS: RkSkill[] = [{
     "cost": 2,
     "power": 0,
     "dmgDeduction": 0.7,
-    "desc": "减伤70%，应对攻击：自己获得全技能能耗-2。"
+    "tackle": {
+        "cat": "attack",
+        "effect": function () {
+            for (let i in getPkmn(true).moves) {
+                getPkmn(true).moveStats[i].cost = Math.max(0, getPkmn(true).getTempMoveStats(i, "cost") - 2);
+            }
+        }
+    }
 }, {
     "name": "恶能量",
     "type": "dark",
@@ -4967,7 +5004,13 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "physical",
     "cost": 4,
     "power": 180,
-    "desc": "造成物伤，敌方每有1能量，本次技能威力-10%。"
+    "preCritEffect": function () {
+        let powerDecrement = getPkmn(true).getTempMoveStats("坟场搏击", "power") * 0.1 * getPkmn(false).energy;
+        getPkmn(true).moveStats["坟场搏击"].power -= powerDecrement;
+    },
+    "effect": function (e: EffectParam) {
+        getPkmn(true).moveStats["坟场搏击"].power += e.preCritReturn.powerDecrement;
+    }
 }, {
     "name": "啄击",
     "type": "flying",
@@ -4995,7 +5038,17 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "physical",
     "cost": 3,
     "power": 70,
-    "desc": "造成物伤，若先于敌方攻击，本次技能威力+50%。"
+    "preCritEffect": function () {
+        let powerIncrement = 0;
+        if (attacks[0].user == playerToMove) powerIncrement = getPkmn(true).getTempMoveStats("扇风", "power") * 0.5;
+        getPkmn(true).moveStats["扇风"].power += powerIncrement;
+        return {
+            "powerIncrement": powerIncrement
+        };
+    },
+    "effect": function (e: EffectParam) {
+        getPkmn(true).moveStats["扇风"].power = Math.max(0, getPkmn(true).getTempMoveStats("扇风", "power") - e.preCritReturn.powerIncrement);
+    }
 }, {
     "name": "羽化加速",
     "type": "flying",
@@ -5016,7 +5069,10 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "status",
     "cost": 4,
     "power": 0,
-    "desc": "自己获得1层风起印记。"
+    "desc": "自己获得1层风起印记。",
+    "effect": function () {
+        addMark(playerToMove, "风起印记", 1);
+    }
 }, {
     "name": "俯冲猛击",
     "type": "flying",
@@ -5086,7 +5142,12 @@ const RK_SKILLS: RkSkill[] = [{
     "cost": 2,
     "power": 0,
     "dmgDeduction": 0.6,
-    "desc": "减伤60%，应对攻击：敌方失去3能量。"
+    "tackle": {
+        "cat": "attack",
+        "effect": function () {
+            getPkmn(false).energy = Math.max(0, getPkmn(false).energy - 3);
+        }
+    }
 }, {
     "name": "灵光",
     "type": "ghost",
@@ -5100,14 +5161,25 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "physical",
     "cost": 3,
     "power": 85,
-    "desc": "造成物伤，应对状态：使敌方失去6能量。"
+    "tackle": {
+        "cat": "status",
+        "effect": function () {
+            getPkmn(false).energy = Math.max(0, getPkmn(false).energy - 6);
+        }
+    }
 }, {
     "name": "抽枝",
     "type": "grass",
     "cat": "physical",
     "cost": 4,
     "power": 85,
-    "desc": "造成物伤，应对状态：自己回复50%生命和5能量。"
+    "tackle": {
+        "cat": "status",
+        "effect": function () {
+            getPkmn(true).hp = Math.min(getPkmn(true).maxHp, getPkmn(true).hp + getPkmn(true).maxHp * 0.5);
+            getPkmn(true).energy = Math.min(10, getPkmn(true).energy + 5);
+        }
+    }
 }, {
     "name": "泥巴喷射",
     "type": "ground",
@@ -5120,10 +5192,9 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "status",
     "cost": 3,
     "power": 0,
-    "desc": "自己获得物防 + 160% 和魔防 - 60%。",
     "effect": function () {
         getPkmn(true).valueMultiplier.def += 1.6;
-        getPkmn(true).valueMultiplier.spd = Math.max(0, getPkmn(true).valueMultiplier.def - 0.6);
+        getPkmn(true).valueMultiplier.spd = Math.max(0, getPkmn(true).valueMultiplier.spd - 0.6);
     }
 }, {
     "name": "音波弹",
@@ -5679,7 +5750,7 @@ const RK_SKILLS: RkSkill[] = [{
     "power": 0,
     "desc": "敌方获得10层灼烧。",
     "effect": function () {
-        getPkmn(false).addTempEffect("burned", { layers: 10 });
+        getPkmn(false).addRkEffect("burned", 10);
     }
 }, {
     "name": "流星火雨",
@@ -5694,14 +5765,32 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "physical",
     "cost": 3,
     "power": 80,
-    "desc": "造成物伤，若敌方本回合替换精灵，本次技能威力+100。"
+    "preCritEffect": function () {
+        let powerIncrement = 0;
+        for (let i of attacks) if (i.user == Number(!playerToMove) && i.type == "switch") powerIncrement = 100;
+        getPkmn(true).moveStats["当头棒喝"].power = getPkmn(true).getTempMoveStats("当头棒喝", "power") + powerIncrement;
+        return {
+            "powerIncrement": powerIncrement
+        };
+    },
+    "effect": function (e: EffectParam) {
+        getPkmn(true).moveStats["当头棒喝"].power = getPkmn(true).getTempMoveStats("当头棒喝", "power") - e.preCritReturn.powerIncrement;
+    }
 }, {
     "name": "焚烧烙印",
     "type": "fire",
     "cat": "status",
     "cost": 3,
     "power": 0,
-    "desc": "驱散双方所有印记，每驱散1层，敌方获得5层灼烧。"
+    "effect": function () {
+        let totalLayers = battleInfo[0].marks.positive.layers + battleInfo[0].marks.negative.layers + battleInfo[1].marks.positive.layers + battleInfo[1].marks.negative
+            .layers;
+        for (let i of [0, 1]) for (let j of ["positive", "negative"]) {
+            battleInfo[i].marks[j].name = "";
+            battleInfo[i].marks[j].layers = 0;
+        }
+        getPkmn(false).addRkEffect("burned", 5 * totalLayers);
+    }
 }, {
     "name": "高温回火",
     "type": "fire",
@@ -5729,7 +5818,13 @@ const RK_SKILLS: RkSkill[] = [{
     "cost": 2,
     "power": 0,
     "dmgDeduction": 0.6,
-    "desc": "减伤60%，应对攻击：自己获得物攻和魔攻+40%。"
+    "tackle": {
+        "cat": "attack",
+        "effect": function () {
+            getPkmn(true).atkMultiplier += 0.4;
+            getPkmn(true).spaMultiplier += 0.4;
+        }
+    }
 }, {
     "name": "气势一击",
     "type": "normal",
@@ -5743,14 +5838,29 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "special",
     "cost": 6,
     "power": 130,
-    "desc": "造成魔伤，每使用1次普通系技能，本技能能耗永久-2。"
+    "passiveEffect": function () {
+        for (let i of attacks) if (i.user == playerToMove && i.type == "move") {
+            if (getPkmn(true).getTempMoveStats(i.move, "type") == "normal") {
+                getPkmn(true).moveStats["蓄能轰击"].cost = Math.max(0, getPkmn(true).getTempMoveStats("蓄能轰击", "cost") - 2);
+            }
+        }
+    }
 }, {
     "name": "突袭",
     "type": "normal",
     "cat": "special",
     "cost": 2,
     "power": 50,
-    "desc": "造成魔伤，应对状态：本次技能威力变为3倍。"
+    "desc": "造成魔伤，应对状态：本次技能威力变为3倍。",
+    "tackle": {
+        "cat": "status",
+        "preCritEffect": function () {
+
+        },
+        "effect": function () {
+
+        }
+    }
 }, {
     "name": "无畏之心",
     "type": "normal",
