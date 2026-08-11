@@ -7224,7 +7224,13 @@ const RK_SKILLS: RkSkill[] = [{
     "cost": 2,
     "power": 0,
     "dmgDeduction": 0.7,
-    "desc": "减伤70%，应对攻击：敌方获得6层灼烧。"
+    "desc": "减伤70%，应对攻击：敌方获得6层灼烧。",
+    "tackle": {
+        "cat": "attack",
+        "effect": function () {
+            getPkmn(false).addRkEffect("burned", 6);
+        }
+    }
 }, {
     "name": "打雪仗",
     "type": "ice",
@@ -7308,7 +7314,6 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "special",
     "cost": 2,
     "power": 60,
-    "desc": "造成魔伤，驱散敌方所有印记。",
     "effect": function () {
         battleInfo[Number(!playerToMove)].marks.positive.name = "";
         battleInfo[Number(!playerToMove)].marks.positive.layers = 0;
@@ -7349,7 +7354,15 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "status",
     "cost": 1,
     "power": 0,
-    "desc": "自己获得物攻+80%，应对防御：额外使敌方获得物防-80%。"
+    "effect": function () {
+        getPkmn(true).atkMultiplier += 0.8;
+    },
+    "tackle": {
+        "cat": "defense",
+        "effect": function () {
+            getPkmn(false).defMultiplier = Math.max(0, getPkmn(false).defMultiplier - 0.8);
+        }
+    }
 }, {
     "name": "埋伏",
     "type": "normal",
@@ -7363,9 +7376,9 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "status",
     "cost": 2,
     "power": 0,
-    "desc": "敌方获得物防和魔防-120%。",
     "effect": function () {
-
+        getPkmn(false).defMultiplier = Math.max(0, getPkmn(false).defMultiplier - 1.2);
+        getPkmn(false).spdMultiplier = Math.max(0, getPkmn(false).spdMultiplier - 1.2);
     }
 }, {
     "name": "一拳",
@@ -7379,7 +7392,15 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "physical",
     "cost": 3,
     "power": 85,
-    "desc": "造成物伤，应对状态：本次技能威力变为2倍。"
+    "tackle": {
+        "cat": "status",
+        "preCritEffect": function () {
+            getPkmn(true).moveStats["无影脚"].power = getPkmn(true).getTempMoveStats("无影脚", "power") * 2;
+        },
+        "effect": function () {
+            getPkmn(true).moveStats["无影脚"].power = getPkmn(true).getTempMoveStats("无影脚", "power") / 2;
+        }
+    }
 }, {
     "name": "截拳",
     "type": "fighting",
@@ -12610,3 +12631,13 @@ const RK_TACKLE_CAT: {
     "special": "attack",
     "defense": "defense"
 };
+const RK_NEXT_PLAYER_EFFECT = [];
+const RK_NEXT_TURN_EFFECT = [{
+    "name": "burned",
+    "condition": () => true,
+    "effect": function () {
+        for (let i of [true,false]){
+            
+        }
+    }
+}];

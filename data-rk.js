@@ -7293,7 +7293,6 @@ const RK_SKILLS = [{
         "cat": "special",
         "cost": 2,
         "power": 60,
-        "desc": "造成魔伤，驱散敌方所有印记。",
         "effect": function () {
             battleInfo[Number(!playerToMove)].marks.positive.name = "";
             battleInfo[Number(!playerToMove)].marks.positive.layers = 0;
@@ -7334,7 +7333,15 @@ const RK_SKILLS = [{
         "cat": "status",
         "cost": 1,
         "power": 0,
-        "desc": "自己获得物攻+80%，应对防御：额外使敌方获得物防-80%。"
+        "effect": function () {
+            getPkmn(true).atkMultiplier += 0.8;
+        },
+        "tackle": {
+            "cat": "defense",
+            "effect": function () {
+                getPkmn(false).defMultiplier = Math.max(0, getPkmn(false).defMultiplier - 0.8);
+            }
+        }
     }, {
         "name": "埋伏",
         "type": "normal",
@@ -7348,8 +7355,9 @@ const RK_SKILLS = [{
         "cat": "status",
         "cost": 2,
         "power": 0,
-        "desc": "敌方获得物防和魔防-120%。",
         "effect": function () {
+            getPkmn(false).defMultiplier = Math.max(0, getPkmn(false).defMultiplier - 1.2);
+            getPkmn(false).spdMultiplier = Math.max(0, getPkmn(false).spdMultiplier - 1.2);
         }
     }, {
         "name": "一拳",
@@ -7363,7 +7371,15 @@ const RK_SKILLS = [{
         "cat": "physical",
         "cost": 3,
         "power": 85,
-        "desc": "造成物伤，应对状态：本次技能威力变为2倍。"
+        "tackle": {
+            "cat": "status",
+            "preCritEffect": function () {
+                getPkmn(true).moveStats["无影脚"].power = getPkmn(true).getTempMoveStats("无影脚", "power") * 2;
+            },
+            "effect": function () {
+                getPkmn(true).moveStats["无影脚"].power = getPkmn(true).getTempMoveStats("无影脚", "power") / 2;
+            }
+        }
     }, {
         "name": "截拳",
         "type": "fighting",
