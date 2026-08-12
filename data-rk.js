@@ -6942,7 +6942,9 @@ const RK_SKILLS = [{
         "cat": "special",
         "cost": 3,
         "power": 70,
-        "desc": "造成魔伤，敌方获得魔防-50%。"
+        "effect": function () {
+            getPkmn(false).spdMultiplier = Math.max(0, getPkmn(false).spdMultiplier - 0.5);
+        }
     }, {
         "name": "电流",
         "type": "electric",
@@ -6955,35 +6957,73 @@ const RK_SKILLS = [{
         "cat": "status",
         "cost": 1,
         "power": 0,
-        "desc": "敌方获得魔防-100%。"
+        "effect": function () {
+            getPkmn(false).spdMultiplier = Math.max(0, getPkmn(false).spdMultiplier - 1);
+        }
     }, {
         "name": "冰锋横扫",
         "type": "ice",
         "cat": "special",
         "cost": 4,
         "power": 0,
-        "desc": "造成魔伤，本技能威力等于敌方精灵技能总能耗的10倍。"
+        "preCritEffect": function () {
+            let power = 0;
+            for (let i in getPkmn(false).moves) {
+                power += (10 * getPkmn(false).getTempMoveStats(i, "cost"));
+            }
+            getPkmn(true).moveStats["冰锋横扫"].power = power;
+        },
+        "effect": function () {
+            getPkmn(true).moveStats["冰锋横扫"].power = 0;
+        }
     }, {
         "name": "增程电池",
         "type": "electric",
         "cat": "status",
         "cost": 2,
         "power": 0,
-        "desc": "自己获得1层蓄电印记。"
+        "desc": "自己获得1层蓄电印记。",
+        "effect": function () {
+            addMark(playerToMove, "蓄电印记", 1);
+        }
     }, {
         "name": "雾气环绕",
         "type": "ice",
         "cat": "status",
         "cost": 1,
         "power": 0,
-        "desc": "回复能量，回复值等于敌方技能总能耗的一半。"
+        "effect": function () {
+            let totalCost = 0;
+            for (let i in getPkmn(false).moves) {
+                totalCost += getPkmn(false).getTempMoveStats(i, "cost");
+            }
+            getPkmn(true).energy = Math.min(10, getPkmn(true).energy + Math.floor(totalCost / 2));
+        }
     }, {
         "name": "极寒领域",
         "type": "ice",
         "cat": "special",
         "cost": 6,
         "power": 105,
-        "desc": "造成魔伤，若敌方有冻结，本次技能威力+60，应对状态：使冻结翻倍。"
+        "desc": "造成魔伤，若敌方有冻结，本次技能威力+60，应对状态：使冻结翻倍。",
+        "preCritEffect": function () {
+            let powerIncrement = 0;
+            if (getPkmn(false).rkEffect.frozen)
+                powerIncrement = 60;
+            getPkmn(true).moveStats["极寒领域"].power = getPkmn(true).getTempMoveStats("极寒领域", "power") + powerIncrement;
+            return {
+                "powerIncrement": powerIncrement
+            };
+        },
+        "effect": function (e) {
+            getPkmn(true).moveStats["极寒领域"].power = getPkmn(true).getTempMoveStats("极寒领域", "power") - e.preCritReturn.powerIncrement;
+        },
+        "tackle": {
+            "cat": "status",
+            "effect": function () {
+                getPkmn(false).addRkEffect("frozen", getPkmn(false).rkEffect.frozen);
+            }
+        }
     }, {
         "name": "冰锥",
         "type": "ice",
@@ -7003,7 +7043,12 @@ const RK_SKILLS = [{
         "cat": "status",
         "cost": 4,
         "power": 0,
-        "desc": "敌方获得1层冻结，且每有1层冻结获得全技能能耗+1。"
+        "effect": function () {
+            getPkmn(false).addRkEffect("frozen", 1);
+            for (let i in getPkmn(false).moves) {
+                getPkmn(false).moveStats[i].cost = getPkmn(false).getTempMoveStats(i, "cost") + getPkmn(false).rkEffect.frozen;
+            }
+        }
     }, {
         "name": "丢冰块",
         "type": "ice",
@@ -7018,21 +7063,35 @@ const RK_SKILLS = [{
         "cost": 2,
         "power": 0,
         "dmgDeduction": 0.7,
-        "desc": "减伤70%，应对攻击：回复能量，回复值等于被应对技能能耗的2倍。"
+        "tackle": {
+            "cat": "attack",
+            "effect": function () {
+                for (let i of attacks)
+                    if (i.type == "move" && i.user != playerToMove) {
+                        getPkmn(true).energy = Math.min(10, getPkmn(true).energy + getPkmn(false).getTempMoveStats(i.move, "cost") * 2);
+                    }
+            }
+        }
     }, {
         "name": "暴风雪",
         "type": "ice",
         "cat": "physical",
         "cost": 3,
         "power": 85,
-        "desc": "造成物伤，敌方获得1层冻结。"
+        "desc": "造成物伤，敌方获得1层冻结。",
+        "effect": function () {
+            getPkmn(false).addRkEffect("frozen", 1);
+        }
     }, {
         "name": "冰晶坠",
         "type": "ice",
         "cat": "physical",
         "cost": 4,
         "power": 90,
-        "desc": "造成物伤，敌方获得全技能能耗+1。"
+        "effect": function () {
+            for (let i in getPkmn(false).moves)
+                getPkmn(false).moveStats[i].cost = getPkmn(false).getTempMoveStats(i, "cost") + 1;
+        }
     }, {
         "name": "冰墙",
         "type": "ice",
@@ -7040,14 +7099,26 @@ const RK_SKILLS = [{
         "cost": 2,
         "power": 0,
         "dmgDeduction": 0.8,
-        "desc": "减伤80%，应对攻击：敌方获得2层冻结。"
+        "desc": "减伤80%，应对攻击：敌方获得2层冻结。",
+        "tackle": {
+            "cat": "attack",
+            "effect": function () {
+                getPkmn(false).addRkEffect("frozen", 2);
+            }
+        }
     }, {
         "name": "冰雹",
         "type": "ice",
         "cat": "physical",
         "cost": 4,
         "power": 105,
-        "desc": "造成物伤，应对状态：额外使敌方获得全技能能耗+3。"
+        "tackle": {
+            "cat": "status",
+            "effect": function () {
+                for (let i in getPkmn(false).moves)
+                    getPkmn(false).moveStats[i].cost = getPkmn(false).getTempMoveStats(i, "cost") + 3;
+            }
+        }
     }, {
         "name": "冰蛋壳",
         "type": "ice",
@@ -7055,7 +7126,13 @@ const RK_SKILLS = [{
         "cost": 3,
         "power": 0,
         "dmgDeduction": 0.6,
-        "desc": "减伤60%，应对攻击：敌方获得2层减速印记。"
+        "desc": "减伤60%，应对攻击：敌方获得2层减速印记。",
+        "tackle": {
+            "cat": "attack",
+            "effect": function () {
+                addMark(Number(!playerToMove), "减速印记", 2);
+            }
+        }
     }, {
         "name": "冰天雪地",
         "type": "ice",
@@ -7063,14 +7140,35 @@ const RK_SKILLS = [{
         "cost": 2,
         "power": 0,
         "dmgDeduction": 0.8,
-        "desc": "减伤80%，应对攻击：被应对技能能耗+3。"
+        "tackle": {
+            "cat": "attack",
+            "effect": function () {
+                for (let i of attacks)
+                    if (i.type == "move" && i.user != playerToMove) {
+                        getPkmn(false).moveStats[i.move].cost = getPkmn(false).getTempMoveStats(i.move, "cost") + 3;
+                    }
+            }
+        }
     }, {
         "name": "滚雪球",
         "type": "ice",
         "cat": "physical",
         "cost": 3,
         "power": 55,
-        "desc": "造成物伤，敌方获得2层冻结，应对状态：额外获得2层，本次技能威力翻倍。"
+        "desc": "造成物伤，敌方获得2层冻结，应对状态：额外获得2层，本次技能威力翻倍。",
+        "effect": function () {
+            getPkmn(false).addRkEffect("frozen", 2);
+        },
+        "tackle": {
+            "cat": "status",
+            "preCritEffect": function () {
+                getPkmn(true).moveStats["滚雪球"].power = getPkmn(true).getTempMoveStats("滚雪球", "power") * 2;
+            },
+            "effect": function () {
+                getPkmn(true).moveStats["滚雪球"].power = getPkmn(true).getTempMoveStats("滚雪球", "power") / 2;
+                getPkmn(false).addRkEffect("frozen", 2);
+            }
+        }
     }, {
         "name": "冰捆缚",
         "type": "ice",
@@ -7084,14 +7182,20 @@ const RK_SKILLS = [{
         "cat": "status",
         "cost": 4,
         "power": 0,
-        "desc": "敌方获得2层减速印记。"
+        "desc": "敌方获得2层减速印记。",
+        "effect": function () {
+            addMark(Number(!playerToMove), "减速印记", 2);
+        }
     }, {
         "name": "冰冻光线",
         "type": "ice",
         "cat": "special",
         "cost": 7,
         "power": 90,
-        "desc": "造成魔伤，敌方获得全技能能耗+2。"
+        "effect": function () {
+            for (let i in getPkmn(false).moves)
+                getPkmn(false).moveStats[i].cost = getPkmn(false).getTempMoveStats(i, "cost") + 2;
+        }
     }, {
         "name": "冬至",
         "type": "ice",
@@ -7112,14 +7216,26 @@ const RK_SKILLS = [{
         "cat": "status",
         "cost": 1,
         "power": 0,
-        "desc": "敌方获得4层冻结。"
+        "desc": "敌方获得4层冻结。",
+        "effect": function () {
+            getPkmn(false).addRkEffect("frozen", 4);
+        }
     }, {
         "name": "冰点",
         "type": "ice",
         "cat": "status",
         "cost": 2,
         "power": 0,
-        "desc": "敌方获得5层冻结，应对防御：额外获得5层。"
+        "desc": "敌方获得5层冻结，应对防御：额外获得5层。",
+        "effect": function () {
+            getPkmn(false).addRkEffect("frozen", 5);
+        },
+        "tackle": {
+            "cat": "defense",
+            "effect": function () {
+                getPkmn(false).addRkEffect("frozen", 5);
+            }
+        }
     }, {
         "name": "碎冰冰",
         "type": "ice",
@@ -7209,7 +7325,13 @@ const RK_SKILLS = [{
         "cost": 2,
         "power": 0,
         "dmgDeduction": 0.7,
-        "desc": "减伤70%，应对攻击：敌方获得6层灼烧。"
+        "desc": "减伤70%，应对攻击：敌方获得6层灼烧。",
+        "tackle": {
+            "cat": "attack",
+            "effect": function () {
+                getPkmn(false).addRkEffect("burned", 6);
+            }
+        }
     }, {
         "name": "打雪仗",
         "type": "ice",
@@ -12595,3 +12717,12 @@ const RK_TACKLE_CAT = {
     "special": "attack",
     "defense": "defense"
 };
+const RK_NEXT_PLAYER_EFFECT = [];
+const RK_NEXT_TURN_EFFECT = [{
+        "name": "burned",
+        "condition": () => true,
+        "effect": function () {
+            for (let i of [true, false]) {
+            }
+        }
+    }];

@@ -116,7 +116,8 @@ class RkPetInstance extends MonInstanceTemplate {
     moveThisTurn = "";
     rkEffect = {
         "burned": 0,
-        "poisoned": 0
+        "poisoned": 0,
+        "frozen": 0
     };
     constructor(mon, playerNo) {
         let monStats = getStats(mon.name);

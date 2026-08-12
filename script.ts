@@ -213,10 +213,12 @@ class RkPetInstance extends MonInstanceTemplate {
     rkEffect: {
         "burned": number,
         "poisoned": number,
+        "frozen": number,
         [key: string]: number;
     } = {
             "burned": 0,
-            "poisoned": 0
+            "poisoned": 0,
+            "frozen": 0
         };
     constructor(mon: BuildMon, playerNo: number) {
         let monStats = getStats(mon.name) as Mon;
