@@ -6913,14 +6913,26 @@ const RK_SKILLS: RkSkill[] = [{
     "cost": 3,
     "power": 0,
     "dmgDeduction": 0.8,
-    "desc": "减伤80%，应对攻击：敌方获得2层星陨印记。"
+    "desc": "减伤80%，应对攻击：敌方获得2层星陨印记。",
+    "tackle": {
+        "cat": "attack",
+        "effect": function () {
+            addMark(Number(!playerToMove), "星陨印记", 2);
+        }
+    }
 }, {
     "name": "错乱",
     "type": "psychic",
     "cat": "special",
     "cost": 2,
     "power": 65,
-    "desc": "造成魔伤，应对状态：敌方获得3层星陨印记。"
+    "desc": "造成魔伤，应对状态：敌方获得3层星陨印记。",
+    "tackle": {
+        "cat": "status",
+        "effect": function () {
+            addMark(Number(!playerToMove), "星陨印记", 3);
+        }
+    }
 }, {
     "name": "撕裂",
     "type": "dark",
@@ -7251,42 +7263,106 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "special",
     "cost": 3,
     "power": 40,
-    "desc": "造成魔伤，敌方每有1层冻结，本次技能威力+20。"
+    "preCritEffect": function () {
+        let powerIncrement = 20 * getPkmn(false).rkEffect.frozen;
+        getPkmn(true).moveStats["碎冰冰"].power = getPkmn(true).getTempMoveStats("碎冰冰", "power") + powerIncrement;
+        return {
+            "powerIncrement": powerIncrement
+        };
+    },
+    "effect": function (e: EffectParam) {
+        getPkmn(true).moveStats["碎冰冰"].power = Math.max(0, getPkmn(true).getTempMoveStats("碎冰冰", "power") - e.preCritReturn.powerIncrement);
+    }
 }, {
     "name": "离子震荡",
     "type": "mecha",
     "cat": "special",
     "cost": 3,
     "power": 90,
-    "desc": "造成魔伤，本技能位于3号位时威力+40，传动1。"
+    "preCritEffect": function () {
+        let powerIncrement = 0;
+        if (Object.keys(getPkmn(true).moves).indexOf("离子震荡") == 3) powerIncrement = 40;
+        getPkmn(true).moveStats["离子震荡"].power = getPkmn(true).getTempMoveStats("离子震荡", "power") + powerIncrement;
+        return {
+            "powerIncrement": powerIncrement
+        };
+    },
+    "effect": function (e: EffectParam) {
+        getPkmn(true).moveStats["离子震荡"].power = Math.max(0, getPkmn(true).getTempMoveStats("离子震荡", "power") - e.preCritReturn.powerIncrement);
+        changeMoveOrder(getPkmn(true).moves, 1, 2);
+        changeMoveOrder(getPkmn(true).moves, 2, 3);
+        changeMoveOrder(getPkmn(true).moves, 3, 4);
+    }
 }, {
     "name": "杠杆置换",
     "type": "mecha",
     "cat": "status",
     "cost": 0,
     "power": 0,
-    "desc": "自己回复2能量，交换两侧技能位置。"
+    "effect": function () {
+        getPkmn(true).energy = Math.min(10, getPkmn(true).energy + 2);
+        let moveNo = Object.keys(getPkmn(true).moves).indexOf("杠杆置换");
+        changeMoveOrder(getPkmn(true).moves, (moveNo - 1 + 4) % 4, (moveNo + 1) % 4);
+    }
 }, {
     "name": "械斗",
     "type": "mecha",
     "cat": "physical",
     "cost": 1,
     "power": 45,
-    "desc": "造成物伤，本技能位于1号位时威力+60，传动1。"
+    "preCritEffect": function () {
+        let powerIncrement = 0;
+        if (Object.keys(getPkmn(true).moves).indexOf("械斗") == 1) powerIncrement = 60;
+        getPkmn(true).moveStats["械斗"].power = getPkmn(true).getTempMoveStats("械斗", "power") + powerIncrement;
+        return {
+            "powerIncrement": powerIncrement
+        };
+    },
+    "effect": function (e: EffectParam) {
+        getPkmn(true).moveStats["械斗"].power = Math.max(0, getPkmn(true).getTempMoveStats("械斗", "power") - e.preCritReturn.powerIncrement);
+        changeMoveOrder(getPkmn(true).moves, 1, 2);
+        changeMoveOrder(getPkmn(true).moves, 2, 3);
+        changeMoveOrder(getPkmn(true).moves, 3, 4);
+    }
 }, {
     "name": "磁暴",
     "type": "mecha",
     "cat": "special",
     "cost": 2,
     "power": 70,
-    "desc": "造成魔伤，本技能位于1号或3号位时威力+30，传动1。"
+    "preCritEffect": function () {
+        let powerIncrement = 0;
+        if (Object.keys(getPkmn(true).moves).indexOf("磁暴") == 1 || Object.keys(getPkmn(true).moves).indexOf("磁暴") == 3) powerIncrement = 30;
+        getPkmn(true).moveStats["磁暴"].power = getPkmn(true).getTempMoveStats("磁暴", "power") + powerIncrement;
+        return {
+            "powerIncrement": powerIncrement
+        };
+    },
+    "effect": function (e: EffectParam) {
+        getPkmn(true).moveStats["磁暴"].power = Math.max(0, getPkmn(true).getTempMoveStats("磁暴", "power") - e.preCritReturn.powerIncrement);
+        changeMoveOrder(getPkmn(true).moves, 1, 2);
+        changeMoveOrder(getPkmn(true).moves, 2, 3);
+        changeMoveOrder(getPkmn(true).moves, 3, 4);
+    }
 }, {
     "name": "钢铁洪流",
     "type": "mecha",
     "cat": "physical",
     "cost": 3,
     "power": 70,
-    "desc": "造成物伤，本技能位于1号位时威力+90，传动2。"
+    "preCritEffect": function () {
+        let powerIncrement = 0;
+        if (Object.keys(getPkmn(true).moves).indexOf("钢铁洪流") == 1) powerIncrement = 90;
+        getPkmn(true).moveStats["钢铁洪流"].power = getPkmn(true).getTempMoveStats("钢铁洪流", "power") + powerIncrement;
+        return {
+            "powerIncrement": powerIncrement
+        };
+    },
+    "effect": function (e: EffectParam) {
+        getPkmn(true).moveStats["钢铁洪流"].power = Math.max(0, getPkmn(true).getTempMoveStats("钢铁洪流", "power") - e.preCritReturn.powerIncrement);
+        changeMoveOrder(getPkmn(true).moves, 1, 3);
+        changeMoveOrder(getPkmn(true).moves, 2, 4);
+    }
 }, {
     "name": "啮合传递",
     "type": "mecha",
@@ -7307,7 +7383,23 @@ const RK_SKILLS: RkSkill[] = [{
     "cat": "status",
     "cost": 0,
     "power": 0,
-    "desc": "使用后两侧技能的威力永久+20，应对防御：变为威力永久+30。"
+    "effect": function () {
+        let moveNo = Object.keys(getPkmn(true).moves).indexOf("联动装置");
+        let leftMove = Object.keys(getPkmn(true).moves)[(moveNo - 1 + 4) % 4];
+        getPkmn(true).moveStats[leftMove].power = getPkmn(true).getTempMoveStats(leftMove, "power") + 20;
+        let rightMove = Object.keys(getPkmn(true).moves)[(moveNo + 1) % 4];
+        getPkmn(true).moveStats[rightMove].power = getPkmn(true).getTempMoveStats(rightMove, "power") + 20;
+    },
+    "tackle": {
+        "cat": "defense",
+        "effect": function () {
+            let moveNo = Object.keys(getPkmn(true).moves).indexOf("联动装置");
+            let leftMove = Object.keys(getPkmn(true).moves)[(moveNo - 1 + 4) % 4];
+            getPkmn(true).moveStats[leftMove].power = getPkmn(true).getTempMoveStats(leftMove, "power") + 10;
+            let rightMove = Object.keys(getPkmn(true).moves)[(moveNo + 1) % 4];
+            getPkmn(true).moveStats[rightMove].power = getPkmn(true).getTempMoveStats(rightMove, "power") + 10;
+        }
+    }
 }, {
     "name": "冷风",
     "type": "ice",

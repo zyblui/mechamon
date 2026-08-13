@@ -2169,3 +2169,19 @@ function addMark(playerIndex, name, layers) {
         battleInfo[playerIndex].marks[mark.cat].layers = layers;
     }
 }
+function changeMoveOrder(moves, index1, index2) {
+    let obj = {};
+    let addEntry = (index) => obj[Object.keys(moves)[index]] = Object.values(moves)[index];
+    for (let i = 0; i < Object.keys(moves).length; i++) {
+        if (i == index1)
+            addEntry(index2);
+        else if (i == index2)
+            addEntry(index1);
+        else
+            addEntry(i);
+    }
+    for (let i in moves)
+        delete moves[i];
+    for (let i in obj)
+        moves[i] = obj[i];
+}
